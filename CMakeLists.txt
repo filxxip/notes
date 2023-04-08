@@ -4,34 +4,42 @@ project(notesdatabaseproject VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.4.2 COMPONENTS Quick Core Widgets REQUIRED)
 
 qt_standard_project_setup()
 
 qt_add_executable(appnotesdatabaseproject
     main.cpp
+    src/gui/statuses.h
+    src/gui/mycontroller.h
+    src/gui/mycontroller.cpp
 )
 
 qt_add_qml_module(appnotesdatabaseproject
     URI notesdatabaseproject
     VERSION 1.0
-    QML_FILES Main.qml
+    QML_FILES
+        Main.qml
+        src/gui/EntryField.qml
+        src/gui/CustomButton.qml
+        src/gui/ButtonText.qml
+        src/gui/LoginView.qml
+        src/gui/GUIConfig.qml
+        src/gui/qmldir
+        src/gui/TitleBox.qml
+        src/gui/RectangleSolidBorder.qml
+
 )
 
+
 set_target_properties(appnotesdatabaseproject PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
+    AUTOMOC ON
+    AUTORCC ON
+    AUTOUIC ON
 )
 
 target_include_directories(appnotesdatabaseproject PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 target_link_libraries(appnotesdatabaseproject
-    PRIVATE Qt6::Quick
+    PRIVATE Qt6::Quick Qt6::Core Qt6::Widgets
 )
-
-install(TARGETS appnotesdatabaseproject
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
