@@ -3,8 +3,8 @@ from src.backend.tables.base import Base
 from dataclasses import dataclass
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import DateTime, Integer, String
-from src.backend.json_generator import JsonGeneratorObject
-from src.backend.utils import set_conversion, convert_str_date_to_datetime
+from ..json_generator import JsonGeneratorObject
+from ..utils import set_conversion, convert_str_date_to_datetime
 
 @set_conversion(birthday=convert_str_date_to_datetime, age=int)
 @dataclass

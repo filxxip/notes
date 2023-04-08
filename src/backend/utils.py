@@ -9,7 +9,7 @@ from flask import request, jsonify
 from flask_sqlalchemy.query import Query
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 
-from src.backend.main_config_database_vars import db_session
+from main_config_database_vars import db_session
 
 _T = TypeVar("_T", bound=Any)
 

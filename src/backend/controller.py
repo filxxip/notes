@@ -1,17 +1,11 @@
 from __future__ import annotations
 
-from src.backend.tables.base import Base
-from src.backend.tables.category import Category
-from src.backend.tables.notes import Note
-from src.backend.tables.person import Person
-from src.backend.tables.schema import Schemas
-
-print("in controllers")
+from tables import Base, Person, Note, Category, Schemas
 import json
 import table_schemas
-from src.backend.APIs import ItemAPI, GroupAPI, GroupSortedAPI
-from src.backend.main_config_database_vars import app, engine, db_session
-from src.backend.utils import save_session
+from APIs import ItemAPI, GroupAPI, GroupSortedAPI
+from main_config_database_vars import app, engine, db_session
+from utils import save_session
 
 
 class APIController:
@@ -40,4 +34,3 @@ class APIController:
         for T, schema in zip((Person, Note, Category),
                              (table_schemas.people_schema, table_schemas.notes_schema, table_schemas.category_schema)):
             db_session.add(Schemas(name=T.__name__, schema=json.dumps(schema)))
-
