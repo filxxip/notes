@@ -5,25 +5,57 @@ import Statuses 1.0
 
 import "src/gui"
 
-Window{
+Window {
     Rectangle {
-        anchors.fill : parent
+        anchors.fill: parent
         gradient: Gradient {
-               GradientStop { position: 0.0; color: "#5ed4b1" }
-           }
+            GradientStop {
+                position: 0.0
+                color: "#5ed4b1"
+            }
         }
+    }
     MouseArea {
-            anchors.fill: parent
-            onClicked: forceActiveFocus()
-        }
-    width: 640
-    height: 480
+        anchors.fill: parent
+        onClicked: forceActiveFocus()
+    }
+    width: 800
+    height: 640
     visible: true
 
-    Component.onCompleted: {
-        console.log(Statuses.MyStatus.First)
-    }
-    LoginView{
+    Column {
+        spacing : 50
+        anchors.centerIn: parent
+        SwitchButton {
+            id : switcher
+            width: GUIConfig.userView.defaultEntryWidth - 20
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: 40
+            onLeftButtonClicked: {
+            }
+
+            onRightButtonClicked: console.log("right")
+            leftButtontext: "Log in"
+            rightButtonText: "Sign up"
+        }
+        Rectangle{
+            width: GUIConfig.userView.defaultEntryWidth+100
+            height: 500
+            radius: 10
+            color : "#376945"
+            Loader{
+                id : componentLoader
+                source : switcher.leftIsClicked? "src/gui/LoginView.qml":"src/gui/RegisterView.qml"
+            }
+
+//            LoginView {
+//                anchors.centerIn: parent
+//            }
+
+//            RegisterView{
+//                anchors.centerIn: parent
+//            }
+        }
 
     }
 }

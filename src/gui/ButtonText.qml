@@ -11,7 +11,7 @@ Text {
     id : textField
     text: parent.contentText
 
-    color : "black"
+    color : mouseArea.pressed?"#ac28ed":"black"
     anchors.centerIn: parent
     MouseArea {
         id :mouseArea
@@ -20,19 +20,10 @@ Text {
         hoverEnabled: true
 
         onPressed: {
-            textField.color = "#ac28ed"
             customClicked()
         }
         onReleased: {
-//            textField.color = "#85b9e0"
-             textField.color = "black"
             customReleased()
-        }
-        onEntered: {
-            textField.color = "#2a6ea2"
-        }
-        onExited: {
-            textField.color = "black"
         }
     }
 }

@@ -2,53 +2,50 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
 ColumnLayout {
+    spacing: 40
     anchors.centerIn: parent
-    spacing : 30
-    width: GUIConfig.userView.defaultEntryWidth
-
-    TitleBox{
-
-        width: parent.width
+    TitleBox {
+        title: "Login"
+        width: GUIConfig.userView.defaultEntryWidth
         height: 50
     }
 
+    Column {
 
+        Column {
+            spacing: 20
 
-    EntryField {
-        width: parent.width
-        height: GUIConfig.userView.defaultEntryHeight
-        placeholder: "Login..."
-    }
-
-    Item{
-        Layout.fillWidth : true
-        height: GUIConfig.userView.defaultEntryHeight + 40
-        EntryField {
-            id : passwordEntry
-            width : parent.width
-            height : GUIConfig.userView.defaultEntryHeight
-            anchors.top: parent.top
-            passwordStatus: true
-            placeholder: "Password..."
-
+            EntryField {
+                width: GUIConfig.userView.defaultEntryWidth
+                height: 40
+                placeholder: "Login..."
+                Keys.onTabPressed: {
+                    passwordEntry.textInput.forceActiveFocus()
+                }
+            }
+            EntryField {
+                id: passwordEntry
+                width: GUIConfig.userView.defaultEntryWidth
+                height: 40
+                passwordStatus: true
+                placeholder: "Password..."
+            }
         }
-
-        RowLayout{
-            width: parent.width
-            height : 40
-            anchors.bottom: parent.bottom
+        RowLayout {
+            width: GUIConfig.userView.defaultEntryWidth
+            height: 40
             spacing: 30
 
-            ButtonText{
+            ButtonText {
                 Layout.fillWidth: true
                 contentText: "new account"
                 height: parent.height
             }
-            ButtonText{
+            ButtonText {
                 contentText: "show password"
                 Layout.fillWidth: true
                 height: parent.height
-                onCustomClicked:{
+                onCustomClicked: {
                     passwordEntry.passwordStatus = false
                 }
                 onCustomReleased: {
@@ -57,16 +54,14 @@ ColumnLayout {
             }
         }
     }
-
-    Rectangle{
-        width: parent.width*0.3
-        height:40
-        color : "transparent"
+    Rectangle {
+        width: GUIConfig.userView.defaultEntryWidth * 0.3
+        height: 40
+        color: "transparent"
         Layout.alignment: Qt.AlignHCenter
-        CustomButton{
+        CustomButton {
             contentText: "LOGIN"
             anchors.fill: parent
         }
     }
-
 }

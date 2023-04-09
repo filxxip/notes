@@ -4,6 +4,7 @@ Rectangle {
     id : outerRect
     property bool passwordStatus: false
     property string placeholder
+    property alias textInput : textInput
 //    border.color: myController.myModel.color
 
     radius: 10
