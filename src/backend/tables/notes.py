@@ -4,13 +4,14 @@ from dataclasses import dataclass
 from sqlalchemy import ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import DateTime, Integer, String
-from ..json_generator import JsonGeneratorObject
+
+from ..json_generator import auto_apply_jsonify_content
 from ..utils import set_conversion, convert_str_date_to_datetime
 
 
+@auto_apply_jsonify_content
 @set_conversion(releaseDate=convert_str_date_to_datetime)
-@dataclass
-class Note(Base, JsonGeneratorObject):
+class Note(Base):
     __tablename__ = "Notes"
     id: Mapped[int] = mapped_column(
         Integer(), primary_key=True, nullable=False, autoincrement=True)

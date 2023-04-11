@@ -4,6 +4,9 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     spacing: 40
     anchors.centerIn: parent
+
+    signal clickedNewAccount
+
     TitleBox {
         title: "Login"
         width: GUIConfig.userView.defaultEntryWidth
@@ -11,7 +14,6 @@ ColumnLayout {
     }
 
     Column {
-
         Column {
             spacing: 20
 
@@ -19,6 +21,7 @@ ColumnLayout {
                 width: GUIConfig.userView.defaultEntryWidth
                 height: 40
                 placeholder: "Login..."
+
                 Keys.onTabPressed: {
                     passwordEntry.textInput.forceActiveFocus()
                 }
@@ -39,6 +42,7 @@ ColumnLayout {
             ButtonText {
                 Layout.fillWidth: true
                 contentText: "new account"
+                onCustomReleased: logController.setLoginActive(false)
                 height: parent.height
             }
             ButtonText {

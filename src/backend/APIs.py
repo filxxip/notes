@@ -9,7 +9,7 @@ from flask.views import MethodView
 from jsonschema.exceptions import ValidationError, SchemaError
 
 from src.backend.main_config_database_vars import db_session
-from utils import _T, catchable_db_connection_exceptions, jsonify_result, save_session, get_relevant_sorted_query
+from utils import _T, catchable_db_connection_exceptions, jsonify_result, get_relevant_sorted_query
 
 
 @dataclass
@@ -48,17 +48,19 @@ class ItemAPI(MethodViewWithClassName):
 
     @catchable_db_connection_exceptions(ValidationError, SchemaError, IndexError)
     @jsonify_result
-    @save_session
     def patch(self, index: int):
         item = self._get_on_id(index)
         jsonschema.validate(request.form.to_dict(), json.loads(
             db_session.query(Schemas).where(Schemas.name == self.className.__name__).first().schema))
-        return item.update_from_json(json.dumps(request.form.to_dict())).to_json()
+        item = item.update_from_json(json.dumps(request.form.to_dict()))
+        db_session.commit()
+        # print(item)
+        return item.to_json()
 
     @catchable_db_connection_exceptions(IndexError)
-    @save_session
     def delete(self, index: int):
         db_session.delete(self._get_on_id(index))
+        db_session.commit()
         return "Object removed from database"
 
 
@@ -69,11 +71,11 @@ class GroupAPI(MethodViewWithClassName):
         return [item.to_json() for item in get_relevant_sorted_query(self.className).all()]
 
     @catchable_db_connection_exceptions(ValidationError, SchemaError)
-    @save_session
     def post(self):
         jsonschema.validate(request.form.to_dict(), json.loads(
             db_session.query(Schemas).where(Schemas.name == self.className.__name__).first().schema))
         db_session.add(self.className.from_json(json.dumps(request.form.to_dict())))
+        db_session.commit()
         return "Adding new object to database"
 
 

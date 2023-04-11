@@ -23,9 +23,8 @@ ColumnLayout {
             contentText: "have account? Log in!"
             width : GUIConfig.userView.defaultEntryWidth
             height: 20
-            onCustomClicked:{
-                console.log("show login view")
-            }
+            onCustomReleased: logController.setLoginActive(true)
+
         }
     }
 

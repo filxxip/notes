@@ -5,7 +5,6 @@ import json
 import table_schemas
 from APIs import ItemAPI, GroupAPI, GroupSortedAPI
 from main_config_database_vars import app, engine, db_session
-from utils import save_session
 
 
 class APIController:
@@ -28,9 +27,9 @@ class APIController:
         Base.metadata.drop_all(bind=engine, tables=tables_to_clear)
         Base.metadata.create_all(bind=engine, tables=tables_to_clear)
 
-    @save_session
     def init_schemas(self):
         self.reclear_tables([Schemas])
         for T, schema in zip((Person, Note, Category),
                              (table_schemas.people_schema, table_schemas.notes_schema, table_schemas.category_schema)):
             db_session.add(Schemas(name=T.__name__, schema=json.dumps(schema)))
+        db_session.commit()

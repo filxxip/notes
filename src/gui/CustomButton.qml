@@ -7,13 +7,19 @@ Button {
         text: contentText
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        }
-    background: Rectangle{
+    }
+    background: Rectangle {
         radius: 10
         gradient: Gradient {
-                GradientStop { position: 0; color: pressed?"#85b9e0":"#1f6091" }
-                GradientStop { position: 1; color: pressed?"#348acb":"#17486d" }
+            GradientStop {
+                position: 0
+                color: pressed ? "#85b9e0" : "#1f6091"
             }
-    }
 
+            GradientStop {
+                position: 1
+                color: pressed ? "#348acb" : "#17486d"
+            }
+        }
+    }
 }

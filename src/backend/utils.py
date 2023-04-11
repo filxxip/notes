@@ -9,19 +9,20 @@ from flask import request, jsonify
 from flask_sqlalchemy.query import Query
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 
-from main_config_database_vars import db_session
+from main_config_database_vars import db_session, app
 
 _T = TypeVar("_T", bound=Any)
 
 
-def save_session(function: callable):
-    @wraps(function)
-    def wrapper(*args, **kwargs):
-        result = function(*args, **kwargs)
-        db_session.commit()
-        return result
-
-    return wrapper
+# def save_session(function: callable):
+#     @wraps(function)
+#     def wrapper(*args, **kwargs):
+#         # with app.app_context():
+#             result = function(*args, **kwargs)
+#             db_session.commit()
+#             return result
+#
+#     return wrapper
 
 
 def set_conversion(**attrs: Callable):
@@ -43,13 +44,21 @@ def jsonify_result(function: callable):
     return wrapper
 
 
+def set_jsonify_attributes(*args: str):
+    """To apply on JsonGeneratorObject instance"""
+    def wrapper(cls):
+        cls.__serialize_attrs__ = args
+
+    return wrapper
+
+
 def catchable_db_connection_exceptions(*exs: Type[Exception]):
     def wrapper(func: Callable):
         def inner_wrapper(*args, **kwargs):
             try:
                 return func(*args, **kwargs)
             except exs as ex:
-                return "Invalid access to database, error occurred : " + str(ex)
+                return "Invalid access to database, error occurred : " + str(ex), 404
 
         return inner_wrapper
 

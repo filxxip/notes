@@ -6,7 +6,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 from src.backend.tables.base import Base
 
 
-@dataclass
 class Schemas(Base):
     __tablename__ = "Schamas"
     name: Mapped[str] = mapped_column(primary_key=True)

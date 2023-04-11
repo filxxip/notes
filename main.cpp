@@ -2,32 +2,51 @@
  #include <QQmlApplicationEngine>
 #include <iostream>
 //#include <jsoncpp/json/json.h>
-#include <QJsonObject>
-#include <QString>
-#include <string>
+#include <QColor>
+#include <QCoreApplication>
+#include <QDebug>
+#include <QDir>
+#include <QFileInfo>
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QObject>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QString>
+#include "gui/log_controller.h"
+#include "gui/mycontroller.h"
+#include "gui/statuses.h"
+#include "src/controller/abstract_data_client.h"
+#include <curl/curl.h>
 #include <netinet/in.h>
+#include <nlohmann/json.hpp>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <QDebug>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include "gui/statuses.h"
-#include <QColor>
-#include <QObject>
-#include "gui/mycontroller.h"
 
+#define RUN_QML 0
 
-int main(int argc, char *argv[]) {
+static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
+{
+    ((std::string *) userp)->append((char *) contents, size * nmemb);
+    return size * nmemb;
+}
+size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata)
+{
+    size_t num_bytes = size * nmemb;
+    //    std::cout << "Received " << num_bytes << " bytes of data." << std::endl;
+    std::cout << "Data: " << std::string(ptr, num_bytes) << std::endl;
+    return size * nmemb;
+}
+namespace {
 ////    MyClass obj;
 ////    connect(&obj, &MyClass::mySignal, [](const QJsonObject & jsonData){
 ////    QString value1 = jsonData["key1"].toString();
 ////    int value2 = jsonData["key2"].toInt();
 ////    });
-
 
 //    // Connect to the Python server
 //    int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -81,23 +100,97 @@ int main(int argc, char *argv[]) {
 ////    std::cout << "Pass: " << json[0]["password"].toString().toStdString() << std::endl;
 
 //    // Close the socket
-    
+
 //     close(sock);
 //     shutdown(sock, SHUT_RDWR);
 
 //    return 0;
+} // namespace
+int main1(int argc, char *argv[])
+{
+    using json = nlohmann::json;
+#if RUN_QML
+    QGuiApplication app(argc, argv);
 
-     QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+    const QUrl url("qrc:/notesdatabaseproject/Main.qml");
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreationFailed,
+        &app,
+        []() { QCoreApplication::exit(-1); },
+        Qt::QueuedConnection);
+    qmlRegisterUncreatableMetaObject(Statuses::staticMetaObject, "Statuses", 1, 0, "Statuses", "");
 
-     QQmlApplicationEngine engine;
-     const QUrl url("qrc:/notesdatabaseproject/Main.qml");
-     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
-         &app, []() { QCoreApplication::exit(-1); },
-         Qt::QueuedConnection);
-     qmlRegisterUncreatableMetaObject(Statuses::staticMetaObject, "Statuses", 1, 0, "Statuses", "");
-     auto myController = new MyController();
-     engine.rootContext()->setContextProperty("myController", myController);
-     engine.load(url);
+    auto myController = new MyController();
+    auto logController = new LogController();
 
-     return app.exec();
+    engine.rootContext()->setContextProperty("myController", myController);
+    engine.rootContext()->setContextProperty("logController", logController);
+
+    engine.load(url);
+#endif
+
+    ServerDataClient dataclient;
+    auto j = dataclient.convertToJson("http://127.0.0.1:5000/people/10");
+
+//     CURL *curl;
+//     CURLcode res;
+
+//     curl = curl_easy_init();
+
+//     if (curl) {
+//         curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1:5000/people");
+//         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+//         res = curl_easy_perform(curl);
+//         std
+
+//         if (res != CURLE_OK) {
+//             std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+//         }
+
+//         curl_easy_cleanup(curl);
+//     }
+//     return 0;
+#if RUN_QML
+    return app.exec();
+#endif
+}
+int main()
+{
+    CURL *curl;
+    CURLcode res;
+    std::string url = "http://127.0.0.1:5000/people/10";
+    std::string response_data;
+
+    curl = curl_easy_init();
+    qDebug() << "what";
+    if (curl) {
+        qDebug() << "what";
+        // set the URL
+        std::string json_data = R"({"name": "John Doe", "age": 30})";
+        curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_data.c_str());
+        //        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, "Content-Type: application/json");
+
+        // set the CURLOPT_WRITEDATA option to point to the response_data string
+        //        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        //        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_data);
+
+        // perform the request
+        res = curl_easy_perform(curl);
+        qDebug() << "Response data: " << QString::fromStdString(response_data);
+        // check for errors
+        if (res != CURLE_OK) {
+            qDebug() << "what";
+            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+        }
+
+        // cleanup
+        curl_easy_cleanup(curl);
+    }
+
+    qDebug() << "Response data: " << QString::fromStdString(response_data);
+
+    return 0;
 }

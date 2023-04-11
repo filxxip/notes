@@ -24,38 +24,38 @@ Window {
     visible: true
 
     Column {
-        spacing : 50
+        spacing: 50
         anchors.centerIn: parent
         SwitchButton {
-            id : switcher
+            id: switcher
             width: GUIConfig.userView.defaultEntryWidth - 20
             anchors.horizontalCenter: parent.horizontalCenter
             height: 40
-            onLeftButtonClicked: {
-            }
-
-            onRightButtonClicked: console.log("right")
             leftButtontext: "Log in"
             rightButtonText: "Sign up"
+            leftIsClicked: logController.loginActive
+            onLeftClicked: logController.loginActive = true
+            onRightClicked: logController.loginActive = false
         }
-        Rectangle{
-            width: GUIConfig.userView.defaultEntryWidth+100
+        Rectangle {
+            width: GUIConfig.userView.defaultEntryWidth + 100
             height: 500
             radius: 10
-            color : "#376945"
-            Loader{
-                id : componentLoader
-                source : switcher.leftIsClicked? "src/gui/LoginView.qml":"src/gui/RegisterView.qml"
+            color: "#376945"
+            id: viewParent
+            Component {
+                id: loginView
+                LoginView {}
+            }
+            Component {
+                id: registerView
+                RegisterView {}
             }
 
-//            LoginView {
-//                anchors.centerIn: parent
-//            }
-
-//            RegisterView{
-//                anchors.centerIn: parent
-//            }
+            Loader {
+                anchors.centerIn: parent
+                sourceComponent: logController.loginActive ? loginView : registerView
+            }
         }
-
     }
 }
