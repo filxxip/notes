@@ -2,7 +2,7 @@ from __future__ import annotations
 import json
 from typing_extensions import Type, TypeVar, Any
 
-from src.backend.tables import Base
+from src.backend.database.tables import Base
 
 # class JsonGeneratorObject:
 #     __serialize_attrs__ : dict[Type, list[str]]

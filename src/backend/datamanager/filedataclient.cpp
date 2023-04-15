@@ -1,19 +1,18 @@
 #include "filedataclient.h"
 
 FileDataClient::FileDataClient()
-{
-    fileManager = FileManager();
-}
+    : DataClient()
+{}
 
 void FileDataClient::setAdditionalParameters(const QString &additionalParameters)
 {
     QStringList paramsList = additionalParameters.split("&");
     for (const auto &el : paramsList) {
         QStringList data = el.split("=");
-        additionParams.at(data.at(0).toStdString()) = data.at(1).toStdString();
+        additionParams.insert({data.at(0).toStdString(), data.at(1).toStdString()});
     }
 }
-void FileDataClient::update(const QString &filePath) const
+void FileDataClient::update(const Path &filePath) const
 {
     auto file = fileManager.readFromFile(filePath);
     if (file.has_value()) {
@@ -21,16 +20,17 @@ void FileDataClient::update(const QString &filePath) const
         for (const auto &[key, value] : additionParams) {
             content[key] = value;
         }
+        fileManager.writeToFile(filePath, QString::fromStdString(content.dump()));
     }
     additionParams.clear();
 }
 
-void FileDataClient::remove(const QString &path) const
+void FileDataClient::remove(const Path &path) const
 {
     fileManager.removeFile(path);
 }
 
-void FileDataClient::add(const QString &path) const
+void FileDataClient::add(const Path &path) const
 {
     json content;
     for (const auto &[key, value] : additionParams) {
@@ -40,7 +40,7 @@ void FileDataClient::add(const QString &path) const
     fileManager.writeToFile(path, QString::fromStdString(content.dump()));
 }
 
-std::optional<json> FileDataClient::get(const QString &path) const
+std::optional<json> FileDataClient::get(const Path &path) const
 {
     auto content = fileManager.readFromFile(path);
     if (content.has_value()) {
@@ -48,7 +48,3 @@ std::optional<json> FileDataClient::get(const QString &path) const
     }
     return {};
 }
-//void FileDataClient::writeJsonToFile(json jsonObject, const QString &path) const
-//{
-//    fileManager.writeToFile(path, QString::fromStdString(jsonObject.dump()));
-//}

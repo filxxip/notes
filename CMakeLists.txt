@@ -30,6 +30,8 @@ qt_add_executable(appnotesdatabaseproject
     src/backend/datamanager/filedataclientadapter.h
     src/backend/datamanager/filemanager.cpp
     src/backend/datamanager/filemanager.h
+    src/backend/datamanager/pathmanager/path.cpp
+    src/backend/datamanager/pathmanager/path.h
     src/backend/datamanager/serverdataclient.cpp
     src/backend/datamanager/serverdataclient.h
     resources/resources.qrc

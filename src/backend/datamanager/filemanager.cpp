@@ -1,32 +1,29 @@
 #include "filemanager.h"
 
-QString FileManager::getMainFileSrc() const
-{
-    QString current = __FILE__;
-    current.replace("src/controller/abstract_data_client.cpp", "");
-    return current;
-}
+//QString FileManager::getMainFileSrc() const
+//{
+//    QString current = __FILE__;
+//    current.replace("src/controller/abstract_data_client.cpp", "");
+//    return current;
+//}
 
-std::optional<QString> FileManager::readFromFile(const QString &path) const
+std::optional<QString> FileManager::readFromFile(const Path &path) const
 {
-    auto newPath = getMainFileSrc() + path;
-    if (!QFileInfo::exists(newPath)) {
-        qDebug() << path;
-        qDebug() << "File doesn't exist!";
+    if (!QFileInfo::exists(path.getFullPath())) {
         return {};
     }
-    QFile file(newPath);
+    QFile file(path.getFullPath());
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open file:" << file.errorString();
         return {};
     }
     return file.readAll();
 }
 
-void FileManager::writeToFile(const QString &path, const QString &content) const
+void FileManager::writeToFile(const Path &path, const QString &content) const
 {
-    auto newPath = getMainFileSrc() + path;
-    QFile file(newPath);
+    readFromFile(path);
+    auto p = path.getFullPath();
+    QFile file(path.getFullPath());
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "Cannot write data to file";
     }
@@ -34,8 +31,9 @@ void FileManager::writeToFile(const QString &path, const QString &content) const
     out << content;
 }
 
-bool FileManager::removeFile(const QString &path) const
+bool FileManager::removeFile(const Path &path) const
 {
-    QFile file(getMainFileSrc() + path);
+    QFile file(path.getFullPath());
+    qDebug() << "xxx";
     return file.remove();
 }

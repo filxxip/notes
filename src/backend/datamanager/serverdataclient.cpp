@@ -5,7 +5,7 @@ void ServerDataClient::setAdditionalParameters(const QString &params)
 {
     additionalParams = params;
 }
-void ServerDataClient::update(const QString &url) const
+void ServerDataClient::update(const Path &url) const
 {
     //    curlpp::Easy request;
     //    request.setOpt<curlpp::options::Url>(url.toStdString());
@@ -13,15 +13,15 @@ void ServerDataClient::update(const QString &url) const
     //    request.perform();
     //    additionalParams.clear();
 }
-void ServerDataClient::remove(const QString &url) const
+void ServerDataClient::remove(const Path &url) const
 {
     //    curlpp::Easy request;
     //    request.setOpt<curlpp::options::Url>(url.toStdString());
     //    request.setOpt<curlpp::options::CustomRequest>("DELETE");
     //    request.perform();
 }
-void ServerDataClient::add(const QString &) const {}
-std::optional<json> ServerDataClient::get(const QString &) const
+void ServerDataClient::add(const Path &) const {}
+std::optional<json> ServerDataClient::get(const Path &) const
 {
     return {};
 }

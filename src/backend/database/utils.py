@@ -1,5 +1,5 @@
 from __future__ import annotations
-from src.backend.tables.schema import Schemas
+from src.backend.database.tables.schema import Schemas
 import datetime
 import json
 from functools import wraps

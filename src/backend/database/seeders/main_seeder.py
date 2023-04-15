@@ -1,5 +1,5 @@
 from .seeder_base import Seeder
-from src.backend.main_config_database_vars import db_session
+from src.backend.database.main_config_database_vars import db_session
 
 
 class OverallSeeder(Seeder):

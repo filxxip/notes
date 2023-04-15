@@ -1,8 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Window
 
-import Statuses 1.0
-
+//import Statuses 1.0
 import "src/gui"
 
 Window {

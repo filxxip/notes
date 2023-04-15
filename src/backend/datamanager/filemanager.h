@@ -2,15 +2,14 @@
 #include <QDir>
 #include <QFile>
 #include <QString>
+#include "dataclient.h"
 
 class FileManager
 {
-    QString getMainFileSrc() const;
-
 public:
-    std::optional<QString> readFromFile(const QString &path) const;
+    std::optional<QString> readFromFile(const Path &path) const;
 
-    void writeToFile(const QString &path, const QString &content) const;
+    void writeToFile(const Path &path, const QString &content) const;
 
-    bool removeFile(const QString &path) const;
+    bool removeFile(const Path &path) const;
 };

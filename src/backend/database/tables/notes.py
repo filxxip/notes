@@ -4,7 +4,7 @@ from sqlalchemy import ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import DateTime, Integer, String
 
-from src.backend.tables.base import Base
+from src.backend.database.tables.base import Base
 from ..json_generator import auto_apply_jsonify_content
 from ..utils import set_conversion, convert_str_date_to_datetime
 

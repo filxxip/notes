@@ -2,27 +2,31 @@
 #include <QString>
 #include "dataclient.h"
 
+namespace costam {
+FilePath convertUrlToJsonFilePath(const Path &path);
+}
+namespace {
+FilePath convertUrlToJsonFilePath(const Path &path);
+}
+
 class FileDataClientAdapter : public DataClient
 {
-public:
     std::shared_ptr<DataClient> dataClient;
 
-    int getDirectoryElementsNumber(const QString &path) const;
+    int getDirectoryElementsNumber(const Path &path) const;
 
-    QString generatePathWithIndex(const QString &path, int index) const;
-
-    QString convertUrlToDirectoryPath(const QString &path) const;
+    FilePath generatePathWithIndex(const Path &path, int index) const;
 
 public:
     FileDataClientAdapter(std::shared_ptr<DataClient> dataClient_);
 
     void setAdditionalParameters(const QString &params);
 
-    void update(const QString &path) const;
+    void update(const Path &path) const;
 
-    void remove(const QString &path) const;
+    void remove(const Path &path) const;
 
-    void add(const QString &path) const;
+    void add(const Path &path) const;
 
-    std::optional<json> get(const QString &path) const;
+    std::optional<json> get(const Path &path) const;
 };

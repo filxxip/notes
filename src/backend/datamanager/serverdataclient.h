@@ -27,8 +27,8 @@ class ServerDataClient : public DataClient
 public:
     ServerDataClient();
     void setAdditionalParameters(const QString &params);
-    void update(const QString &) const;
-    void remove(const QString &) const;
-    void add(const QString &) const;
-    std::optional<json> get(const QString &) const;
+    void update(const Path &) const;
+    void remove(const Path &) const;
+    void add(const Path &) const;
+    std::optional<json> get(const Path &) const;
 };

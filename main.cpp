@@ -197,7 +197,9 @@ int main1(int argc, char *argv[])
 //}
 
 #include "src/backend/datamanager/filedataclient.h"
+#include "src/backend/datamanager/filedataclientadapter.h"
 #include <curl/curl.h>
+#include <memory>
 #include <stdio.h>
 #include <string.h>
 
@@ -206,10 +208,30 @@ static size_t write_callback22(char *ptr, size_t size, size_t nmemb, std::string
     userdata->append(ptr, size * nmemb);
     return size * nmemb;
 }
+
+class Some{
+
+};
+#include "src/backend/datamanager/pathmanager/path.h"
 int main(int argc, char *argv[])
 {
+    //    FilePath url = FilePath("somestering");
+    //    qDebug() << url.getFullPath();
+    //    auto x2 = std::make_shared<FileDataClient>();
+    //    auto y = std::make_shared<FileDataClient>();
     FileDataClientAdapter adapter(std::make_shared<FileDataClient>());
-    qDebug() << adapter.convertUrlToDirectoryPath("http://127.0.0.1:5000/people/12");
+    //    adapter.remove(UrlPath("people/6"));
+    //    adapter.remove(UrlPath("people/0"));
+    //    qDebug() << QString::fromStdString(content.value().dump());
+    adapter.setAdditionalParameters("surname=FIlip");
+    //    adapter.add(UrlPath("people"));
+    adapter.update(UrlPath("people/1"));
+    qDebug() << QString::fromStdString(adapter.get(UrlPath("people/1")).value()["name"]);
+    //    qDebug() << QString::fromStdString(jaa.value()["name"]);
+    //    qDebug() << QString(adapter.get(UrlPath("people/12")).value().dump());
+    //    auto p = costam::convertUrlToJsonFilePath(UrlPath("people/12"));
+    //    qDebug() << p.getFullPath();
+    qDebug() << UrlPath("people/12").getFullPath();
     CURL *curl;
     CURLcode res;
     curl = curl_easy_init();

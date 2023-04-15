@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from sqlalchemy import Text
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.backend.tables.base import Base
+from src.backend.database.tables.base import Base
 
 
 class Schemas(Base):

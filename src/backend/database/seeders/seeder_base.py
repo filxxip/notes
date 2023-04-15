@@ -1,6 +1,6 @@
 import abc
 
-from src.backend.tables import Base
+from src.backend.database.tables import Base
 
 
 class Seeder(abc.ABC):

@@ -2,7 +2,7 @@ import random
 from datetime import datetime, timedelta
 
 from .seeder_base import Seeder
-from src.backend.tables import Base, Person
+from src.backend.database.tables import Base, Person
 
 
 class PersonSeeder(Seeder):

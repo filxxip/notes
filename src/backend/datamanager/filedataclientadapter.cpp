@@ -2,48 +2,61 @@
 #include <QDir>
 #include <QStringList>
 
-FileDataClientAdapter::FileDataClientAdapter(std::shared_ptr<DataClient> dataClient_)
-    : dataClient(std::move(dataClient_))
-{}
-
-QString FileDataClientAdapter::convertUrlToDirectoryPath(const QString &path) const
+namespace {
+constexpr char EXTENSION[] = ".json";
+constexpr char DELIMETER[] = "/";
+FilePath convertUrlToJsonFilePath(const Path &path)
 {
-    QStringList splittedPath = path.split("/");
-    QString sep("/");
-    QString result = std::accumulate(splittedPath.begin() + 3,
-                                     splittedPath.end(),
-                                     QString(),
-                                     [&sep](auto &str1, auto &str2) { return str1 + sep + str2; });
-    return result.mid(1);
+    auto newpath = FilePath(path.getRelativePath());
+    newpath.add(".json");
+    return newpath;
 }
+
+} // namespace
+
+FileDataClientAdapter::FileDataClientAdapter(std::shared_ptr<DataClient> dataClient_)
+    : dataClient(dataClient_)
+{}
 
 void FileDataClientAdapter::setAdditionalParameters(const QString &params)
 {
     dataClient->setAdditionalParameters(params);
 }
 
-int FileDataClientAdapter::getDirectoryElementsNumber(const QString &url) const
+int FileDataClientAdapter::getDirectoryElementsNumber(const Path &url) const
 {
-    auto path = convertUrlToDirectoryPath(url);
-    return QDir(path).count();
+    auto path = FilePath(url.getRelativePath());
+    return QDir(path.getFullPath()).count() - 2;
 }
 
-QString FileDataClientAdapter::generatePathWithIndex(const QString &url, int index) const
+FilePath FileDataClientAdapter::generatePathWithIndex(const Path &url, int index) const
 {
-    return convertUrlToDirectoryPath(url) + "/" + QString::number(index);
+    auto path = FilePath(url.getRelativePath());
+    path.add(DELIMETER + QString::number(index) + EXTENSION);
+    return path;
 }
 
-void FileDataClientAdapter::add(const QString &path) const
+void FileDataClientAdapter::add(const Path &path) const
 {
-    dataClient->add(generatePathWithIndex(path, getDirectoryElementsNumber(path)));
+    QStringList filenames = QDir(FilePath(path.getRelativePath()).getFullPath())
+                                .entryList(QDir::Files);
+    std::vector<int> elements;
+    std::transform(filenames.begin(),
+                   filenames.end(),
+                   std::back_inserter(elements),
+                   [](auto &element) { return element.replace(".json", "").toInt(); });
+    auto maxelement = std::max_element(elements.begin(), elements.end());
+    dataClient->add(
+        generatePathWithIndex(path, 1 + (maxelement != elements.end() ? *maxelement : 0)));
 }
 
-std::optional<json> FileDataClientAdapter::get(const QString &url) const
+std::optional<json> FileDataClientAdapter::get(const Path &url) const
 {
-    QStringList els = convertUrlToDirectoryPath(url).split("/");
+    auto path = convertUrlToJsonFilePath(url);
+    qDebug() << path.getFullPath();
     bool ok;
-    if (els.last().toDouble(&ok)) {
-        return dataClient->get(url);
+    if (path.lastWithoutExtension().toDouble(&ok)) {
+        return dataClient->get(path);
     }
     auto num = getDirectoryElementsNumber(url);
     json jsonArray = json::array();
@@ -56,12 +69,12 @@ std::optional<json> FileDataClientAdapter::get(const QString &url) const
     return jsonArray;
 }
 
-void FileDataClientAdapter::update(const QString &url) const
+void FileDataClientAdapter::update(const Path &url) const
 {
-    dataClient->update(convertUrlToDirectoryPath(url));
+    dataClient->update(convertUrlToJsonFilePath(url));
 }
 
-void FileDataClientAdapter::remove(const QString &url) const
+void FileDataClientAdapter::remove(const Path &url) const
 {
-    dataClient->remove(convertUrlToDirectoryPath(url));
+    dataClient->remove(convertUrlToJsonFilePath(url));
 }
