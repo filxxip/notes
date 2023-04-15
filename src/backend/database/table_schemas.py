@@ -2,7 +2,6 @@ people_schema = {
     "type": "object",
     "properties": {
         "name": {"type": "string"},
-        "age": {"type": ["number", "string"]},
         "surname": {"type": "string"},
         "email": {"type": "string"},
         "password": {"type": "string"},
@@ -13,7 +12,7 @@ people_schema = {
 }
 
 
-category_schema = {
+notes_schema = {
     "type": "object",
     "properties": {
         "category": {"type": ["number", "string"]},
@@ -25,7 +24,7 @@ category_schema = {
     "additionalProperties": False
 }
 
-notes_schema = {
+category_schema = {
     "type": "object",
     "properties": {
         "name": {"type": "string"},

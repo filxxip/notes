@@ -16,6 +16,7 @@
 #include "gui/log_controller.h"
 #include "gui/mycontroller.h"
 #include "gui/statuses.h"
+#include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/controller/abstract_data_client.h"
 #include <curl/curl.h>
 #include <netinet/in.h>
@@ -131,8 +132,8 @@ int main1(int argc, char *argv[])
     engine.load(url);
 #endif
 
-    ServerDataClient dataclient;
-    auto j = dataclient.convertToJson("http://127.0.0.1:5000/people/10");
+//    ServerDataClient dataclient;
+//    auto j = dataclient.convertToJson("http://127.0.0.1:5000/people");
 
 //     CURL *curl;
 //     CURLcode res;
@@ -156,41 +157,89 @@ int main1(int argc, char *argv[])
     return app.exec();
 #endif
 }
-int main()
+//int main2()
+//{
+//    CURL *curl;
+//    CURLcode res;
+//    std::string url = "http://127.0.0.1:5000/people/10";
+//    std::string response_data;
+
+//    curl = curl_easy_init();
+//    qDebug() << "what";
+//    if (curl) {
+//        qDebug() << "what";
+//        // set the URL
+//        std::string json_data = R"({"name": "John Doe", "age": 30})";
+//        curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+//        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_data.c_str());
+//        //        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, "Content-Type: application/json");
+
+//        // set the CURLOPT_WRITEDATA option to point to the response_data string
+//        //        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+//        //        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_data);
+
+//        // perform the request
+//        res = curl_easy_perform(curl);
+//        qDebug() << "Response data: " << QString::fromStdString(response_data);
+//        // check for errors
+//        if (res != CURLE_OK) {
+//            qDebug() << "what";
+//            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+//        }
+
+//        // cleanup
+//        curl_easy_cleanup(curl);
+//    }
+
+//    qDebug() << "Response data: " << QString::fromStdString(response_data);
+
+//    return 0;
+//}
+
+#include "src/backend/datamanager/filedataclient.h"
+#include <curl/curl.h>
+#include <stdio.h>
+#include <string.h>
+
+static size_t write_callback22(char *ptr, size_t size, size_t nmemb, std::string *userdata)
 {
+    userdata->append(ptr, size * nmemb);
+    return size * nmemb;
+}
+int main(int argc, char *argv[])
+{
+    FileDataClientAdapter adapter(std::make_shared<FileDataClient>());
+    qDebug() << adapter.convertUrlToDirectoryPath("http://127.0.0.1:5000/people/12");
     CURL *curl;
     CURLcode res;
-    std::string url = "http://127.0.0.1:5000/people/10";
-    std::string response_data;
-
     curl = curl_easy_init();
-    qDebug() << "what";
     if (curl) {
-        qDebug() << "what";
-        // set the URL
-        std::string json_data = R"({"name": "John Doe", "age": 30})";
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_data.c_str());
-        //        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, "Content-Type: application/json");
+        curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1:5000/people/11");
+        curl_easy_setopt(curl, CURLOPT_DEFAULT_PROTOCOL, "https");
+        struct curl_slist *headers = NULL;
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        std::string result;
 
-        // set the CURLOPT_WRITEDATA option to point to the response_data string
-        //        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        //        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_data);
+        curl_mime *mime;
+        curl_mimepart *part;
+        mime = curl_mime_init(curl);
+        part = curl_mime_addpart(mime);
+        curl_mime_name(part, "namee");
+        curl_mime_data(part, "Filip", CURL_ZERO_TERMINATED);
+        part = curl_mime_addpart(mime);
+        curl_mime_name(part, "surname");
+        curl_mime_data(part, "xxxx", CURL_ZERO_TERMINATED);
+        curl_easy_setopt(curl, CURLOPT_MIMEPOST, mime);
 
-        // perform the request
+        // Set the write function and write data to store the response in the result variable
+//        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback22);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &result);
+
         res = curl_easy_perform(curl);
-        qDebug() << "Response data: " << QString::fromStdString(response_data);
-        // check for errors
-        if (res != CURLE_OK) {
-            qDebug() << "what";
-            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-        }
-
-        // cleanup
-        curl_easy_cleanup(curl);
+        curl_mime_free(mime);
+        std::cout << "res: " << result << std::endl;
     }
-
-    qDebug() << "Response data: " << QString::fromStdString(response_data);
-
+    curl_easy_cleanup(curl);
     return 0;
 }

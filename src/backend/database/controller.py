@@ -24,8 +24,11 @@ class APIController:
         app.add_url_rule('/notes/<sorted_name>', view_func=GroupSortedAPI.as_view('each_note_sorted', Note))
 
     def reclear_tables(self, tables_to_clear=None):
-        Base.metadata.drop_all(bind=engine, tables=tables_to_clear)
-        Base.metadata.create_all(bind=engine, tables=tables_to_clear)
+        tabs = None
+        if tables_to_clear is list:
+            tabs = [table.__table__ for table in tables_to_clear]
+        Base.metadata.drop_all(bind=engine, tables=tabs)
+        Base.metadata.create_all(bind=engine, tables=tabs)
 
     def init_schemas(self):
         self.reclear_tables([Schemas])
