@@ -2,9 +2,6 @@
 #include <QString>
 #include "dataclient.h"
 
-namespace costam {
-FilePath convertUrlToJsonFilePath(const Path &path);
-}
 namespace {
 FilePath convertUrlToJsonFilePath(const Path &path);
 }

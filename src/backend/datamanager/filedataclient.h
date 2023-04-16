@@ -4,7 +4,7 @@
 #include "filemanager.h"
 #include <map>
 
-class FileDataClient : public DataClient
+class FileDataClient final : public DataClient
 {
     FileManager fileManager;
 
@@ -15,13 +15,13 @@ class FileDataClient : public DataClient
 public:
     FileDataClient();
 
-    void setAdditionalParameters(const QString &params);
+    void setAdditionalParameters(const QString &params) override;
 
-    void update(const Path &path);
+    void update(const Path &path) override;
 
-    void remove(const Path &path);
+    void remove(const Path &path) override;
 
-    void add(const Path &path);
+    void add(const Path &path) override;
 
-    std::optional<json> get(const Path &path) const;
+    std::optional<json> get(const Path &path) const override;
 };

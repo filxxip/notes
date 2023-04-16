@@ -35,6 +35,9 @@ qt_add_executable(appnotesdatabaseproject
     src/backend/datamanager/pathmanager/path.h
     src/backend/datamanager/serverdataclient.cpp
     src/backend/datamanager/serverdataclient.h
+
+    src/backend/datamanager/directobjsmanagers/personmanager.h
+    src/backend/datamanager/directobjsmanagers/personmanager.cpp
     resources/resources.qrc
 )
 

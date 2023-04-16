@@ -1,11 +1,9 @@
- #include <QGuiApplication>
- #include <QQmlApplicationEngine>
-#include <iostream>
 #include <QColor>
 #include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
+#include <QGuiApplication>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QObject>
@@ -15,12 +13,14 @@
 #include "gui/log_controller.h"
 #include "gui/mycontroller.h"
 #include "gui/statuses.h"
+#include "src/backend/datamanager/directobjsmanagers/personmanager.h"
 #include "src/backend/datamanager/filedataclient.h"
 #include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/backend/datamanager/pathmanager/path.h"
 #include "src/backend/datamanager/serverdataclient.h"
 #include "src/controller/abstract_data_client.h"
 #include <curl/curl.h>
+#include <iostream>
 #include <memory>
 #include <netinet/in.h>
 #include <nlohmann/json.hpp>
@@ -55,12 +55,18 @@ int main(int argc, char *argv[])
 
     engine.load(url);
 #endif
-    FileDataClientAdapter adapter(std::make_shared<FileDataClient>());
-    ServerDataClient client;
+    //    FileDataClientAdapter adapter(std::make_shared<FileDataClient>());
+    //    ServerDataClient client;
+    PersonManager manager(std::make_shared<ServerDataClient>());
+    auto person = manager.get(3);
+    qDebug() << person.value().birthday;
+    manager.addParam("name", "Juliusz");
+    manager.update(3);
+
     //    client.setAdditionalParameters("name=Janusz");
     //    adapter.add(UrlPath("people"));
-    adapter.get(UrlPath("people/1"));
-    //    qDebug() << QString::fromStdString(adapter.get(UrlPath("people/1")).value().dump());
+//    adapter.get(UrlPath("people/1"));
+//    qDebug() << QString::fromStdString(adapter.get(UrlPath("people/1")).value().dump());
 //    qDebug() << QString::fromStdString(client.get(UrlPath("people/3")).value().dump());
 #if RUN_QML
     return app.exec();

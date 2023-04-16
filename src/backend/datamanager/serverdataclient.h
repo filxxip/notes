@@ -12,18 +12,26 @@ namespace {
 using json = nlohmann::json;
 }
 
-class ServerDataClient : public DataClient
+class ServerDataClient final : public DataClient
 {
     mutable QString additionalParams;
+
     mutable curlpp::Easy request;
+
     void initRequest(const Path &url, std::string mode) const;
+
     void performRequest() const;
+
     void addParamsToRequest() const;
 
 public:
-    void setAdditionalParameters(const QString &params);
-    void update(const Path &);
-    void remove(const Path &);
-    void add(const Path &);
-    std::optional<json> get(const Path &) const;
+    void setAdditionalParameters(const QString &params) override;
+
+    void update(const Path &) override;
+
+    void remove(const Path &) override;
+
+    void add(const Path &) override;
+
+    std::optional<json> get(const Path &) const override;
 };

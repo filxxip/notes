@@ -1,0 +1,47 @@
+#include "personmanager.h"
+
+PersonManager::PersonManager(std::shared_ptr<FileDataClient> dataClient_)
+    : dataClient(dataClient_)
+{}
+
+UrlPath PersonManager::generatePath(int index) const
+{
+    return UrlPath(QString("people/%1").arg(QString::number(index)));
+}
+
+void PersonManager::update(int index)
+{
+    dataClient->setAdditionalParameters(params);
+    dataClient->update(generatePath(index));
+    params.clear();
+}
+
+void PersonManager::remove(int index)
+{
+    dataClient->remove(generatePath(index));
+    params.clear();
+}
+
+PersonManager &PersonManager::addParam(const QString &key, const QString &value)
+{
+    params += QString("&%1=%2").arg(key, value);
+    return *this;
+}
+
+void PersonManager::add(Person person) const
+{
+    this->addParam("name", person.name)
+        .addParam("surname", person.surname)
+        .addParam("birthday", person.birthday)
+        .addParam("country", person.country)
+        .addParam("email", person.email)
+        .addParam("password", person.password);
+    dataClient->setAdditionalParameters(params);
+    dataClient->add("person");
+    params.clear();
+}
+
+void PersonManager::get(int index) const
+{
+    auto content = dataClient->g
+}
