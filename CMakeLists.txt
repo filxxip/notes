@@ -6,13 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 message("CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
 
 find_package(Qt6 6.4.2 COMPONENTS Quick Core Widgets  REQUIRED)
-
+include(FindPkgConfig)
+pkg_check_modules(CURLPP REQUIRED curlpp)
 find_package(nlohmann_json 3.7.0 REQUIRED)
 find_package(CURL REQUIRED )
 set(curlpp_DIR "/usr/include/curlpp")
 #find_package(curlpp REQUIRED)
 #target_link_libraries(appnotesdatabaseproject PRIVATE nlohmann_json::nlohmann_json)
-
+#target_link_libraries(notesdatabaseproject ${CURLPP_LDFLAGS})
 qt_standard_project_setup()
 
 qt_add_executable(appnotesdatabaseproject
@@ -64,7 +65,7 @@ set_target_properties(appnotesdatabaseproject PROPERTIES
 )
 
 target_include_directories(appnotesdatabaseproject PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-
+#target_link_libraries(appnotesdatabaseproject ${CURLPP_LDFLAGS})
 target_link_libraries(appnotesdatabaseproject
-    PRIVATE Qt6::Quick Qt6::Core Qt6::Widgets CURL::libcurl
+    PRIVATE Qt6::Quick Qt6::Core Qt6::Widgets ${CURLPP_LDFLAGS}
 )
