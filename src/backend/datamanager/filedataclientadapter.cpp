@@ -36,7 +36,7 @@ FilePath FileDataClientAdapter::generatePathWithIndex(const Path &url, int index
     return path;
 }
 
-void FileDataClientAdapter::add(const Path &path) const
+void FileDataClientAdapter::add(const Path &path)
 {
     QStringList filenames = QDir(FilePath(path.getRelativePath()).getFullPath())
                                 .entryList(QDir::Files);
@@ -53,7 +53,6 @@ void FileDataClientAdapter::add(const Path &path) const
 std::optional<json> FileDataClientAdapter::get(const Path &url) const
 {
     auto path = convertUrlToJsonFilePath(url);
-    qDebug() << path.getFullPath();
     bool ok;
     if (path.lastWithoutExtension().toDouble(&ok)) {
         return dataClient->get(path);
@@ -69,12 +68,12 @@ std::optional<json> FileDataClientAdapter::get(const Path &url) const
     return jsonArray;
 }
 
-void FileDataClientAdapter::update(const Path &url) const
+void FileDataClientAdapter::update(const Path &url)
 {
     dataClient->update(convertUrlToJsonFilePath(url));
 }
 
-void FileDataClientAdapter::remove(const Path &url) const
+void FileDataClientAdapter::remove(const Path &url)
 {
     dataClient->remove(convertUrlToJsonFilePath(url));
 }

@@ -25,18 +25,18 @@ void ServerDataClient::addParamsToRequest() const
     additionalParams.clear();
 }
 
-void ServerDataClient::update(const Path &url) const
+void ServerDataClient::update(const Path &url)
 {
     initRequest(url, "PATCH");
     addParamsToRequest();
     performRequest();
 }
-void ServerDataClient::remove(const Path &url) const
+void ServerDataClient::remove(const Path &url)
 {
     initRequest(url, "DELETE");
     performRequest();
 }
-void ServerDataClient::add(const Path &url) const
+void ServerDataClient::add(const Path &url)
 {
     initRequest(url, "POST");
     addParamsToRequest();

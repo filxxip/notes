@@ -3,9 +3,12 @@
 #include <QFile>
 #include <QString>
 #include "dataclient.h"
+#include <optional>
 
 class FileManager
 {
+    std::optional<QFile> createFile(const Path &path) const;
+
 public:
     std::optional<QString> readFromFile(const Path &path) const;
 

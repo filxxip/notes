@@ -1,6 +1,8 @@
 #include "path.h"
 #include <QDebug>
+#include <QFileInfo>
 #include <QStringList>
+
 namespace {
 constexpr char RELATIVE_PATH[] = "/src/backend/datamanager/pathmanager/path.cpp";
 constexpr char HOST[] = "http://127.0.0.1:5000";
@@ -43,6 +45,11 @@ FilePath::FilePath(const QString &path_)
     : Path(path_)
 {}
 
+bool FilePath::exists() const
+{
+    return QFileInfo::exists(getFullPath()); //idk
+}
+
 QString FilePath::lastWithoutExtension() const
 {
     auto paths = path.split(DELIMETER);
@@ -58,3 +65,8 @@ QString UrlPath::getMainFileSrc() const
 UrlPath::UrlPath(const QString &path_)
     : Path(path_)
 {}
+
+bool UrlPath::exists() const
+{
+    return true; //idk
+}

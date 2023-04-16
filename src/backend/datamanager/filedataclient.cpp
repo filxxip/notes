@@ -27,9 +27,8 @@ void FileDataClient::update(const Path &filePath)
         for (const auto &[key, value] : additionParams) {
             content[key] = value;
         }
-        fileManager.writeToFile(filePath, QString::fromStdString(content.dump()));
+        performWritingToFile(std::move(content), filePath);
     }
-    additionParams.clear();
 }
 
 void FileDataClient::remove(const Path &path)
@@ -43,8 +42,7 @@ void FileDataClient::add(const Path &path)
     for (const auto &[key, value] : additionParams) {
         content[key] = value;
     }
-    additionParams.clear();
-    fileManager.writeToFile(path, QString::fromStdString(content.dump()));
+    performWritingToFile(std::move(content), path);
 }
 
 std::optional<json> FileDataClient::get(const Path &path) const

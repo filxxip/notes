@@ -19,6 +19,8 @@ public:
     virtual Path &addPart(QString string);
 
     virtual Path &add(QString string);
+
+    virtual bool exists() const = 0;
 };
 
 class FilePath : public Path
@@ -30,6 +32,8 @@ public:
     FilePath(const QString &path_);
 
     QString lastWithoutExtension() const;
+
+    bool exists() const;
 };
 
 class UrlPath : public Path
@@ -39,4 +43,6 @@ protected:
 
 public:
     UrlPath(const QString &path_);
+
+    bool exists() const;
 };

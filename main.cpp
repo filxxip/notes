@@ -1,7 +1,6 @@
  #include <QGuiApplication>
  #include <QQmlApplicationEngine>
 #include <iostream>
-//#include <jsoncpp/json/json.h>
 #include <QColor>
 #include <QCoreApplication>
 #include <QDebug>
@@ -60,7 +59,7 @@ int main(int argc, char *argv[])
     ServerDataClient client;
     //    client.setAdditionalParameters("name=Janusz");
     //    adapter.add(UrlPath("people"));
-    client.update(UrlPath("people/10"));
+    adapter.get(UrlPath("people/1"));
     //    qDebug() << QString::fromStdString(adapter.get(UrlPath("people/1")).value().dump());
 //    qDebug() << QString::fromStdString(client.get(UrlPath("people/3")).value().dump());
 #if RUN_QML

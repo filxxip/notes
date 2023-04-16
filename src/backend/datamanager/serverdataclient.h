@@ -14,14 +14,6 @@ using json = nlohmann::json;
 
 class ServerDataClient : public DataClient
 {
-    //    CURL *curl;
-    //    mutable CURLcode res;
-
-    //    curl_mime *mime;
-    //    curl_mimepart *part;
-    //    //to finish
-    //    std::string result;
-    //    static size_t handle_response(char *ptr, size_t size, size_t nmemb, void *userdata);
     mutable QString additionalParams;
     mutable curlpp::Easy request;
     void initRequest(const Path &url, std::string mode) const;
@@ -30,8 +22,8 @@ class ServerDataClient : public DataClient
 
 public:
     void setAdditionalParameters(const QString &params);
-    void update(const Path &) const;
-    void remove(const Path &) const;
-    void add(const Path &) const;
+    void update(const Path &);
+    void remove(const Path &);
+    void add(const Path &);
     std::optional<json> get(const Path &) const;
 };
