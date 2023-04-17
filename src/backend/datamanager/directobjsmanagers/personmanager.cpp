@@ -30,13 +30,15 @@ PersonManager &PersonManager::addParam(const QString &key, const QString &value)
 
 void PersonManager::add(Person person)
 {
-    this->addParam("name", person.name)
+    copyParamsFromObjectChanges(person);
+    /*his->addParam("name", person.name)
         .addParam("surname", person.surname)
         .addParam("birthday", person.birthday)
         .addParam("country", person.country)
         .addParam("email", person.email)
-        .addParam("password", person.password);
-    dataClient->setAdditionalParameters(params);
+        .addParam("password", person.password);*/
+
+    //    dataClient->setAdditionalParameters(params);
     dataClient->add(UrlPath("person"));
     params.clear();
 }
@@ -46,17 +48,19 @@ QString PersonManager::getContentValue(const json &jsonFile, std::string key) co
     return QString::fromStdString(jsonFile[key].get<std::string>());
 }
 
-std::optional<PersonManager::Person> PersonManager::get(int index) const
+std::optional<Person> PersonManager::get(int index) const
 {
     std::optional<json> content = dataClient->get(generatePath(index));
     if (content.has_value()) {
         auto contentValue = content.value();
-        return Person{getContentValue(contentValue, "name"),
-                      getContentValue(contentValue, "surname"),
-                      getContentValue(contentValue, "country"),
-                      getContentValue(contentValue, "birthday"),
-                      getContentValue(contentValue, "email"),
-                      getContentValue(contentValue, "password")};
+        Person person;
+        person.name = getContentValue(contentValue, "name");
+        person.surname = getContentValue(contentValue, "surname");
+        person.birthday = getContentValue(contentValue, "birthday");
+        person.country = getContentValue(contentValue, "country");
+        person.email = getContentValue(contentValue, "email");
+        person.password = getContentValue(contentValue, "password");
+        return person;
     }
     return {};
 }

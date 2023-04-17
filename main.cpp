@@ -59,8 +59,9 @@ int main(int argc, char *argv[])
     //    ServerDataClient client;
     PersonManager manager(std::make_shared<ServerDataClient>());
     auto person = manager.get(3);
-    qDebug() << person.value().birthday;
-    manager.addParam("name", "Juliusz");
+    person->name = "Jarek";
+    person->surname = "Kowalczuk";
+    manager.copyParamsFromObjectChanges(person.value());
     manager.update(3);
 
     //    client.setAdditionalParameters("name=Janusz");
