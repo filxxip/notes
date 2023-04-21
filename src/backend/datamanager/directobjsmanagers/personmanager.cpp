@@ -8,7 +8,6 @@ QString getContentStrValue(const json &jsonFile, std::string key)
 }
 QString getContentIntValue(const json &jsonFile, std::string key)
 {
-    qDebug() << QString::number(jsonFile[key].get<int>());
     return QString::number(jsonFile[key].get<int>());
 }
 } // namespace
@@ -24,17 +23,16 @@ UrlPath PersonManager::generatePath(int index) const
 
 void PersonManager::update(const Person &person)
 {
-    QString params;
-    for (const auto &[key, value] : *(person.getMapOfUpdates().get())) {
-        params += QString("&%1=%2").arg(key, value);
-    }
-    params = params.remove(0, 1);
-    qDebug() << params;
+    //    QString params;
+    //    for (const auto &[key, value] : *(person.getMapOfUpdates().get())) {
+    //        params += QString("&%1=%2").arg(key, value);
+    //    }
+    //    params = params.remove(0, 1);
+    //    qDebug() << params;
     //    qDebug() << person.id.get();
-    dataClient->setAdditionalParameters(params);
-    qDebug() << generatePath(person.id.get().toInt()).getFullPath();
+    dataClient->setAdditionalParameters(generateParms(person.getMapOfUpdates()));
+    //    qDebug() << generatePath(person.id.get().toInt()).getFullPath();
     dataClient->update(generatePath(person.id.get().toInt()));
-    params.clear();
 }
 
 void PersonManager::remove(int index)
@@ -42,25 +40,29 @@ void PersonManager::remove(int index)
     dataClient->remove(generatePath(index));
 }
 
-//PersonManager &PersonManager::addParam(const QString &key, const QString &value)
-//{
-//    params += QString("&%1=%2").arg(key, value);
-//    return *this;
-//}
+QString PersonManager::generateParms(
+    const std::shared_ptr<std::unordered_map<QString, QString>> &map) const
+{
+    QString params;
+    for (const auto &[key, value] : *map) {
+        params += QString("&%1=%2").arg(key, value);
+    }
+    return params.remove(0, 1);
+}
 
 void PersonManager::add(const Person &person)
 {
-    QString params;
-    for (const auto &[key, value] : *(person.getMapOfAtrributes().get())) {
-        params += QString("&%1=%2").arg(key, value);
-    }
-    params = params.remove(0, 1);
-    qDebug() << params;
+    //    QString params;
+    //    for (const auto &[key, value] : *(person.getMapOfAtrributes().get())) {
+    //        params += QString("&%1=%2").arg(key, value);
+    //    }
+    //    params = params.remove(0, 1);
+    //    qDebug() << params;
     //    auto &updatesMap = *(basic.getMapOfUpdates().get());
     //    for (const auto &[key, value] : updatesMap) {
     //        addParam(key, value);
     //    }
-    dataClient->setAdditionalParameters(params);
+    dataClient->setAdditionalParameters(generateParms(person.getMapOfAtrributes()));
     //    copyParamsFromObjectChanges(person);
     dataClient->add(UrlPath("people"));
 }

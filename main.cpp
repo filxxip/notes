@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     qDebug() << person->name.get();
     person->birthday = "2003-04-04";
     person->name = "Jaroslaw";
-    person->surname = "Kowalczukiewicz";
+    person->surname = "Kowalczukie222wicz";
     second.add(person.value());
 //    Person p;
 //    p.name = "Filipekkkk";
