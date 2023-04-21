@@ -34,7 +34,7 @@ class MethodViewWithClassName(MethodView):
 
 class ItemAPI(MethodViewWithClassName):
     def _validate_index(self, index: int) -> bool:
-        return 0 <= index < db_session.query(self.className).count()
+        return 0 < index <= db_session.query(self.className).count()
 
     def _get_on_id(self, index: int) -> ProtocolDatabaseClass:
         if not self._validate_index(index):
@@ -54,7 +54,6 @@ class ItemAPI(MethodViewWithClassName):
             db_session.query(Schemas).where(Schemas.name == self.className.__name__).first().schema))
         item = item.update_from_json(json.dumps(request.form.to_dict()))
         db_session.commit()
-        # print(item)
         return item.to_json()
 
     @catchable_db_connection_exceptions(IndexError)

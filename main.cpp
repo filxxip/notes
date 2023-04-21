@@ -13,7 +13,7 @@
 #include "gui/log_controller.h"
 #include "gui/mycontroller.h"
 #include "gui/statuses.h"
-#include "src/backend/datamanager/directobjsmanagers/personmanager.h"
+#include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"
 #include "src/backend/datamanager/filedataclient.h"
 #include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/backend/datamanager/pathmanager/path.h"
@@ -57,17 +57,18 @@ int main(int argc, char *argv[])
 #endif
     //    FileDataClientAdapter adapter(std::make_shared<FileDataClient>());
     ServerDataClient client;
-    PersonManager manager(std::make_shared<ServerDataClient>());
-    PersonManager second(
+    PeopleManager manager = PeopleManager(std::make_shared<ServerDataClient>());
+    PeopleManager second(
         std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
     //    PersonManager manager(
     //        std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
     auto person = manager.get(3);
     qDebug() << person->name.get();
     person->birthday = "2003-04-04";
-    person->name = "Jaroslaw";
+    person->name = "Jaroslaw22323";
     person->surname = "Kowalczukie222wicz";
-    second.add(person.value());
+
+    manager.add(person.value());
 //    Person p;
 //    p.name = "Filipekkkk";
 //    p.country = "Polska";

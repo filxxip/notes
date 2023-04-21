@@ -41,6 +41,13 @@ qt_add_executable(appnotesdatabaseproject
 
     src/backend/datamanager/directobjsmanagers/personmanager.h
     src/backend/datamanager/directobjsmanagers/personmanager.cpp
+    src/backend/datamanager/directobjsmanagers/basicstructure.h
+    src/backend/datamanager/directobjsmanagers/basicstructure.cpp
+    src/backend/datamanager/directobjsmanagers/overallmanager.h
+    src/backend/datamanager/directobjsmanagers/overallmanager.cpp
+    src/backend/datamanager/directobjsmanagers/people/peoplemanager.h
+    src/backend/datamanager/directobjsmanagers/people/person.h
+    src/backend/datamanager/directobjsmanagers/people/peoplemanager.cpp
     resources/resources.qrc
 )
 
