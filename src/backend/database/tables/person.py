@@ -19,7 +19,6 @@ class Person(Base):
         Integer(), primary_key=True, nullable=False, autoincrement=True)
     name: Mapped[str] = mapped_column(String(50))
     surname: Mapped[str] = mapped_column(String(50))
-    # age: Mapped[int] = mapped_column(Integer())
     email: Mapped[str] = mapped_column(String(50))
     password: Mapped[str] = mapped_column(String(50))
     country: Mapped[str] = mapped_column(String(50))

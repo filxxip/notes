@@ -56,16 +56,28 @@ int main(int argc, char *argv[])
     engine.load(url);
 #endif
     //    FileDataClientAdapter adapter(std::make_shared<FileDataClient>());
-    //    ServerDataClient client;
+    ServerDataClient client;
     PersonManager manager(std::make_shared<ServerDataClient>());
+    PersonManager second(
+        std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
+    //    PersonManager manager(
+    //        std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
     auto person = manager.get(3);
-    person->name = "Jarek";
-    person->surname = "Kowalczuk";
-    manager.copyParamsFromObjectChanges(person.value());
-    manager.update(3);
-
-    //    client.setAdditionalParameters("name=Janusz");
-    //    adapter.add(UrlPath("people"));
+    qDebug() << person->name.get();
+    person->birthday = "2003-04-04";
+    person->name = "Jaroslaw";
+    person->surname = "Kowalczukiewicz";
+    second.add(person.value());
+//    Person p;
+//    p.name = "Filipekkkk";
+//    p.country = "Polska";
+//    p.email = "jakis tam mail";
+//    p.birthday = "2003-04-03";
+//    p.surname = "Filip2";
+//    p.password = "password";
+//    manager.add(p);
+//    client.setAdditionalParameters("name=Janusz");
+//    adapter.add(UrlPath("people"));
 //    adapter.get(UrlPath("people/1"));
 //    qDebug() << QString::fromStdString(adapter.get(UrlPath("people/1")).value().dump());
 //    qDebug() << QString::fromStdString(client.get(UrlPath("people/3")).value().dump());

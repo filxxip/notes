@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from tables import Base, Person, Note, Category, Schemas
+from .tables import Base, Person, Note, Category, Schemas
 import json
-import table_schemas
-from APIs import ItemAPI, GroupAPI, GroupSortedAPI
-from main_config_database_vars import app, engine, db_session
+from . import table_schemas
+from .APIs import ItemAPI, GroupAPI, GroupSortedAPI
+from .main_config_database_vars import app, engine, db_session
 
 
 class APIController:
