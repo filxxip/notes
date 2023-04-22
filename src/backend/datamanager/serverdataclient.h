@@ -1,6 +1,5 @@
 #pragma once
 #include <QDir>
-#include <QFile>
 #include <QString>
 #include "dataclient.h"
 #include <curl/curl.h>

@@ -44,7 +44,7 @@ void FileDataClientAdapter::add(const Path &path)
     std::transform(filenames.begin(),
                    filenames.end(),
                    std::back_inserter(elements),
-                   [](auto &element) { return element.replace(".json", "").toInt(); });
+                   [](auto &element) { return element.replace(EXTENSION, "").toInt(); });
     auto maxelement = std::max_element(elements.begin(), elements.end());
     dataClient->add(
         generatePathWithIndex(path, 1 + (maxelement != elements.end() ? *maxelement : 0)));

@@ -1,5 +1,4 @@
 #pragma once
-#include <QString>
 #include "dataclient.h"
 #include "filemanager.h"
 #include <map>

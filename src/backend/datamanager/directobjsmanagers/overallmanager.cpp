@@ -1,6 +1,6 @@
 #include "overallmanager.h"
 
-namespace {
+namespace OverallManagerMethods {
 
 QString getContentStrValue(const json &jsonFile, std::string key)
 {
@@ -12,7 +12,7 @@ QString getContentIntValue(const json &jsonFile, std::string key)
     return QString::number(jsonFile[key].get<int>());
 }
 
-} // namespace
+} // namespace OverallManagerMethods
 
 template<typename DataObject>
 OverallManager<DataObject>::OverallManager(QString name_, std::shared_ptr<DataClient> dataClient_)
@@ -57,23 +57,9 @@ void OverallManager<DataObject>::add(const DataObject &person)
     dataClient->add(UrlPath(name));
 }
 
-//template<typename DataObject>
-//std::optional<DataObject> PersonManager<DataObject>::get(int index) const
-//{
-//    std::optional<json> content = dataClient->get(generatePath(index));
-//    if (content.has_value()) {
-//        auto contentValue = content.value();
-//        Person person;
-//        person.id = getContentIntValue(contentValue, "id");
-//        person.name = getContentStrValue(contentValue, "name");
-//        person.surname = getContentStrValue(contentValue, "surname");
-//        person.birthday = getContentStrValue(contentValue, "birthday");
-//        person.country = getContentStrValue(contentValue, "country");
-//        person.email = getContentStrValue(contentValue, "email");
-//        person.password = getContentStrValue(contentValue, "password");
-//        return person;
-//    }
-//    return {};
-//}
-template class OverallManager<Person>;
-//template class PersonManager<Person>;
+#include "categories/category.h"
+#include "notes/note.h"
+#include "people/person.h"
+REGISTER_MANAGER(Person)
+REGISTER_MANAGER(Note)
+REGISTER_MANAGER(Category)

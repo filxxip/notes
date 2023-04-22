@@ -13,23 +13,13 @@
 #include "gui/log_controller.h"
 #include "gui/mycontroller.h"
 #include "gui/statuses.h"
+#include "src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h"
+#include "src/backend/datamanager/directobjsmanagers/notes/notesmanager.h"
 #include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"
 #include "src/backend/datamanager/filedataclient.h"
 #include "src/backend/datamanager/filedataclientadapter.h"
-#include "src/backend/datamanager/pathmanager/path.h"
 #include "src/backend/datamanager/serverdataclient.h"
-#include "src/controller/abstract_data_client.h"
-#include <curl/curl.h>
-#include <iostream>
 #include <memory>
-#include <netinet/in.h>
-#include <nlohmann/json.hpp>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <string>
-#include <sys/socket.h>
-#include <unistd.h>
 #define RUN_QML 0
 using json = nlohmann::json;
 int main(int argc, char *argv[])
@@ -57,31 +47,16 @@ int main(int argc, char *argv[])
 #endif
     //    FileDataClientAdapter adapter(std::make_shared<FileDataClient>());
     ServerDataClient client;
-    PeopleManager manager = PeopleManager(std::make_shared<ServerDataClient>());
-    PeopleManager second(
+    auto manager = CategoriesManager(std::make_shared<ServerDataClient>());
+    auto second = CategoriesManager(
         std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
     //    PersonManager manager(
     //        std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
-    auto person = manager.get(3);
-    qDebug() << person->name.get();
-    person->birthday = "2003-04-04";
-    person->name = "Jaroslaw22323";
-    person->surname = "Kowalczukie222wicz";
+    auto note = manager.get(1);
+    note->creationDate = "2003-10-20";
+    note->name = "Give me freedomplease";
+    second.add(note.value());
 
-    manager.add(person.value());
-//    Person p;
-//    p.name = "Filipekkkk";
-//    p.country = "Polska";
-//    p.email = "jakis tam mail";
-//    p.birthday = "2003-04-03";
-//    p.surname = "Filip2";
-//    p.password = "password";
-//    manager.add(p);
-//    client.setAdditionalParameters("name=Janusz");
-//    adapter.add(UrlPath("people"));
-//    adapter.get(UrlPath("people/1"));
-//    qDebug() << QString::fromStdString(adapter.get(UrlPath("people/1")).value().dump());
-//    qDebug() << QString::fromStdString(client.get(UrlPath("people/3")).value().dump());
 #if RUN_QML
     return app.exec();
 #endif

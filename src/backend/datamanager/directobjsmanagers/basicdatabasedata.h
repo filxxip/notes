@@ -6,6 +6,9 @@
 #include <memory>
 #include <unordered_map>
 
+#define ADD_ATTRIBUTE(name) DatabaseData name{initMapData(#name)};
+#define ADD_ID(name) IDDatabaseData name{#name};
+
 class BasicDatabaseData
 {
 protected:

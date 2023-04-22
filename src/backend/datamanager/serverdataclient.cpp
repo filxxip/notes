@@ -1,7 +1,5 @@
 #include "serverdataclient.h"
-#include <curl/curl.h>
-#include <curlpp/Easy.hpp>
-#include <sstream>
+
 void ServerDataClient::setAdditionalParameters(const QString &params)
 {
     additionalParams = params;

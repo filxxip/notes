@@ -10,11 +10,12 @@
 #include "../pathmanager/path.h"
 #include "basicdatabasedata.h"
 #include "basicstructure.h"
-#include "people/person.h"
+
+#define REGISTER_MANAGER(cls) template class OverallManager<cls>;
 
 namespace OverallManagerMethods {
 
-QString getContentStrValue(const json &jsonFile, std::string key);
+extern QString getContentStrValue(const json &jsonFile, std::string key);
 QString getContentIntValue(const json &jsonFile, std::string key);
 
 } // namespace OverallManagerMethods

@@ -39,12 +39,20 @@ qt_add_executable(appnotesdatabaseproject
     src/backend/datamanager/directobjsmanagers/basicdatabasedata.cpp
     src/backend/datamanager/directobjsmanagers/basicdatabasedata.h
 
-    src/backend/datamanager/directobjsmanagers/personmanager.h
-    src/backend/datamanager/directobjsmanagers/personmanager.cpp
+
     src/backend/datamanager/directobjsmanagers/basicstructure.h
     src/backend/datamanager/directobjsmanagers/basicstructure.cpp
     src/backend/datamanager/directobjsmanagers/overallmanager.h
     src/backend/datamanager/directobjsmanagers/overallmanager.cpp
+
+    src/backend/datamanager/directobjsmanagers/notes/note.h
+    src/backend/datamanager/directobjsmanagers/notes/notesmanager.h
+    src/backend/datamanager/directobjsmanagers/notes/notesmanager.cpp
+
+    src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h
+    src/backend/datamanager/directobjsmanagers/categories/category.h
+    src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.cpp
+
     src/backend/datamanager/directobjsmanagers/people/peoplemanager.h
     src/backend/datamanager/directobjsmanagers/people/person.h
     src/backend/datamanager/directobjsmanagers/people/peoplemanager.cpp

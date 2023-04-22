@@ -26,7 +26,6 @@ std::optional<QString> FileManager::readFromFile(const Path &path) const
 void FileManager::writeToFile(const Path &path, const QString &content) const
 {
     auto file = createFile(path);
-    auto x = path.getFullPath();
     if (!file.has_value() || !file->open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "Cannot write data to file";
         return;
