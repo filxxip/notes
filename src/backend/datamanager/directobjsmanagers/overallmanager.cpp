@@ -27,6 +27,12 @@ UrlPath OverallManager<DataObject>::generatePath(int index) const
 }
 
 template<typename DataObject>
+UrlPath OverallManager<DataObject>::generatePath() const
+{
+    return UrlPath(QString(name));
+}
+
+template<typename DataObject>
 void OverallManager<DataObject>::update(const DataObject &person)
 {
     dataClient->setAdditionalParameters(generateParms(person.getMapOfUpdates()));
@@ -55,6 +61,29 @@ void OverallManager<DataObject>::add(const DataObject &person)
 {
     dataClient->setAdditionalParameters(generateParms(person.getMapOfAtrributes()));
     dataClient->add(UrlPath(name));
+}
+template<typename DataObject>
+std::optional<DataObject> OverallManager<DataObject>::get(int index) const
+{
+    std::optional<json> content = dataClient->get(generatePath(index));
+    if (content.has_value()) {
+        return generateInstance(content.value());
+    }
+    return {};
+}
+
+template<typename DataObject>
+std::optional<QList<DataObject>> OverallManager<DataObject>::get() const
+{
+    QList<DataObject> list;
+    std::optional<json> content = dataClient->getGroup(generatePath());
+    if (content.has_value()) {
+        for (const auto &element : content.value()) {
+            list.push_back(generateInstance(element));
+        }
+        return list;
+    }
+    return {};
 }
 
 #include "categories/category.h"

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDate>
+#include <QList>
 #include <QString>
 #include <algorithm>
 #include <memory>
@@ -26,9 +27,13 @@ class OverallManager
     QString name;
 
 protected:
+    virtual DataObject generateInstance(const json &genson) const = 0;
+
     std::shared_ptr<DataClient> dataClient;
 
     UrlPath generatePath(int index) const;
+
+    UrlPath generatePath() const;
 
     QString generateParms(const std::shared_ptr<std::unordered_map<QString, QString>> &map) const;
 
@@ -41,5 +46,7 @@ public:
 
     void add(const DataObject &object);
 
-    virtual std::optional<DataObject> get(int index) const = 0;
+    std::optional<DataObject> get(int index) const;
+
+    std::optional<QList<DataObject>> get() const;
 };

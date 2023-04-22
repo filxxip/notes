@@ -3,40 +3,38 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     Component.onCompleted: anchors.centerIn = parent
-    spacing : 30
+    spacing: 30
     width: GUIConfig.userView.defaultEntryWidth
 
-    TitleBox{
+    TitleBox {
         title: "Sign up"
         width: GUIConfig.userView.defaultEntryWidth
         height: 50
     }
-    Column{
-       spacing : 10
-        LoginRepeater{
-            model : ["Name...", "Surname...", "Email...", "Password...", "Age...", "Country...", "Birthday..."]
+    Column {
+        spacing: 10
+        LoginRepeater {
+            model: ["Name...", "Surname...", "Email...", "Password...", "Country...", "Birthday..."]
             customEntryHeight: 30
             customEntryWidth: GUIConfig.userView.defaultEntryWidth
         }
 
-        ButtonText{
+        ButtonText {
             contentText: "have account? Log in!"
-            width : GUIConfig.userView.defaultEntryWidth
+            width: GUIConfig.userView.defaultEntryWidth
             height: 20
             onCustomReleased: logController.setLoginActive(true)
-
         }
     }
 
-    Rectangle{
-        width: GUIConfig.userView.defaultEntryWidth*0.3
-        height:40
-        color : "transparent"
+    Rectangle {
+        width: GUIConfig.userView.defaultEntryWidth * 0.3
+        height: 40
+        color: "transparent"
         Layout.alignment: Qt.AlignHCenter
-        CustomButton{
+        CustomButton {
             contentText: "Register"
             anchors.fill: parent
         }
     }
-
 }

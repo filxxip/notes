@@ -46,26 +46,33 @@ void FileDataClientAdapter::add(const Path &path)
                    std::back_inserter(elements),
                    [](auto &element) { return element.replace(EXTENSION, "").toInt(); });
     auto maxelement = std::max_element(elements.begin(), elements.end());
-    dataClient->add(
-        generatePathWithIndex(path, 1 + (maxelement != elements.end() ? *maxelement : 0)));
+    auto index = 1 + (maxelement != elements.end() ? *maxelement : 0);
+    setAdditionalParameters("id=" + QString::number(index));
+    dataClient->add(generatePathWithIndex(path, index));
 }
 
 std::optional<json> FileDataClientAdapter::get(const Path &url) const
 {
-    auto path = convertUrlToJsonFilePath(url);
-    bool ok;
-    if (path.lastWithoutExtension().toDouble(&ok)) {
-        return dataClient->get(path);
-    }
-    auto num = getDirectoryElementsNumber(url);
-    json jsonArray = json::array();
-    for (int i = 0; i < num; i++) {
-        auto content = get(generatePathWithIndex(url, i));
-        if (content.has_value()) {
-            jsonArray.push_back(content.value());
-        }
-    }
-    return jsonArray;
+    //    auto path = convertUrlToJsonFilePath(url);
+    //    bool ok;
+    //    if (path.lastWithoutExtension().toDouble(&ok)) {
+    return dataClient->get(convertUrlToJsonFilePath(url));
+    //    }
+
+    //    auto num = getDirectoryElementsNumber(url);
+    //    json jsonArray = json::array();
+    //    for (int i = 0; i < num; i++) {
+    //        auto content = get(generatePathWithIndex(url, i));
+    //        if (content.has_value()) {
+    //            jsonArray.push_back(content.value());
+    //        }
+    //    }
+    //    return jsonArray;
+}
+
+std::optional<json> FileDataClientAdapter::getGroup(const Path &path) const
+{
+    return dataClient->getGroup(FilePath(path.getRelativePath()));
 }
 
 void FileDataClientAdapter::update(const Path &url)

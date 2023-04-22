@@ -13,7 +13,7 @@ void FileDataClient::setAdditionalParameters(const QString &additionalParameters
     }
 }
 
-void FileDataClient::performWritingToFile(json content, const Path &path)
+void FileDataClient::performWritingToFile(const json &content, const Path &path)
 {
     fileManager.writeToFile(path, QString::fromStdString(content.dump()));
     additionParams.clear();
@@ -27,7 +27,7 @@ void FileDataClient::update(const Path &filePath)
         for (const auto &[key, value] : additionParams) {
             content[key] = value;
         }
-        performWritingToFile(std::move(content), filePath);
+        performWritingToFile(content, filePath);
     }
 }
 
@@ -42,14 +42,29 @@ void FileDataClient::add(const Path &path)
     for (const auto &[key, value] : additionParams) {
         content[key] = value;
     }
-    performWritingToFile(std::move(content), path);
+    performWritingToFile(content, path);
 }
 
 std::optional<json> FileDataClient::get(const Path &path) const
 {
     auto content = fileManager.readFromFile(path);
+
     if (content.has_value()) {
         return json::parse(content.value().toStdString());
+    }
+    return {};
+}
+
+std::optional<json> FileDataClient::getGroup(const Path &path) const
+{
+    auto content = fileManager.readFromDir(path);
+
+    if (content.has_value()) {
+        json jsonArray = json::array();
+        for (const auto &element : content.value()) {
+            jsonArray.push_back(json::parse(element.toStdString()));
+        }
+        return jsonArray;
     }
     return {};
 }

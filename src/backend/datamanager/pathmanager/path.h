@@ -26,23 +26,25 @@ public:
 class FilePath : public Path
 {
 protected:
-    QString getMainFileSrc() const;
+    QString getMainFileSrc() const override;
 
 public:
-    FilePath(const QString &path_);
+    enum class Type { ABSOLUTE, NORMAL };
+
+    FilePath(const QString &path_, Type type = Type::NORMAL);
 
     QString lastWithoutExtension() const;
 
-    bool exists() const;
+    bool exists() const override;
 };
 
 class UrlPath : public Path
 {
 protected:
-    QString getMainFileSrc() const;
+    QString getMainFileSrc() const override;
 
 public:
     UrlPath(const QString &path_);
 
-    bool exists() const;
+    bool exists() const override;
 };

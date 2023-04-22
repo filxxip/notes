@@ -9,7 +9,9 @@ class FileDataClient final : public DataClient
 
     std::map<std::string, std::string> additionParams;
 
-    void performWritingToFile(json content, const Path &path);
+    void performWritingToFile(const json &content, const Path &path);
+
+    std::optional<json> performGetter(const std::optional<QString> &list) const;
 
 public:
     FileDataClient();
@@ -23,4 +25,6 @@ public:
     void add(const Path &path) override;
 
     std::optional<json> get(const Path &path) const override;
+
+    std::optional<json> getGroup(const Path &path) const override;
 };

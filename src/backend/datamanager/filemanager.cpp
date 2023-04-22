@@ -23,6 +23,22 @@ std::optional<QString> FileManager::readFromFile(const Path &path) const
     return file->readAll();
 }
 
+std::optional<QStringList> FileManager::readFromDir(const Path &path) const
+{
+    auto dir = QDir(path.getFullPath());
+    if (dir.exists()) {
+        QStringList list;
+        for (const auto &name : dir.entryInfoList(QDir::Files)) {
+            auto content = readFromFile(FilePath(name.absoluteFilePath(), FilePath::Type::ABSOLUTE));
+            if (content.has_value()) {
+                list.append(content.value());
+            }
+        }
+        return list;
+    }
+    return {};
+}
+
 void FileManager::writeToFile(const Path &path, const QString &content) const
 {
     auto file = createFile(path);

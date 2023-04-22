@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QFile>
 #include <QString>
+#include <QStringList>
 #include "dataclient.h"
 #include <optional>
 
@@ -13,6 +14,8 @@ class FileManager
 
 public:
     std::optional<QString> readFromFile(const Path &path) const;
+
+    std::optional<QStringList> readFromDir(const Path &path) const;
 
     void writeToFile(const Path &path, const QString &content) const;
 

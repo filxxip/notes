@@ -2,7 +2,7 @@
 
 void ServerDataClient::setAdditionalParameters(const QString &params)
 {
-    additionalParams = params;
+    additionalParams = additionalParams.isEmpty() ? params : (additionalParams + "&" + params);
 }
 
 void ServerDataClient::initRequest(const Path &url, std::string mode) const
@@ -50,4 +50,9 @@ std::optional<json> ServerDataClient::get(const Path &url) const
     request.setOpt(writeStream);
     performRequest();
     return json::parse(response.str());
+}
+
+std::optional<json> ServerDataClient::getGroup(const Path &path) const
+{
+    return get(path);
 }

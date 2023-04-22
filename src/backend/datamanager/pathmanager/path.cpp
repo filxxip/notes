@@ -1,5 +1,6 @@
 #include "path.h"
 #include <QDebug>
+#include <QDir>
 #include <QFileInfo>
 #include <QStringList>
 
@@ -41,8 +42,8 @@ QString FilePath::getMainFileSrc() const
     return current;
 }
 
-FilePath::FilePath(const QString &path_)
-    : Path(path_)
+FilePath::FilePath(const QString &path_, Type type)
+    : Path((type == Type::NORMAL) ? path_ : QString(path_).replace(getMainFileSrc(), ""))
 {}
 
 bool FilePath::exists() const

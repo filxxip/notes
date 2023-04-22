@@ -33,4 +33,6 @@ public:
     void add(const Path &) override;
 
     std::optional<json> get(const Path &) const override;
+
+    std::optional<json> getGroup(const Path &path) const override;
 };

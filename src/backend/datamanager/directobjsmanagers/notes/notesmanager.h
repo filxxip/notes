@@ -4,8 +4,9 @@
 
 class NotesManager final : public OverallManager<Note>
 {
+protected:
+    Note generateInstance(const json &genson) const;
+
 public:
     NotesManager(std::shared_ptr<DataClient> dataClient_);
-
-    std::optional<Note> get(int index) const override;
 };
