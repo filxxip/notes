@@ -53,21 +53,7 @@ void FileDataClientAdapter::add(const Path &path)
 
 std::optional<json> FileDataClientAdapter::get(const Path &url) const
 {
-    //    auto path = convertUrlToJsonFilePath(url);
-    //    bool ok;
-    //    if (path.lastWithoutExtension().toDouble(&ok)) {
     return dataClient->get(convertUrlToJsonFilePath(url));
-    //    }
-
-    //    auto num = getDirectoryElementsNumber(url);
-    //    json jsonArray = json::array();
-    //    for (int i = 0; i < num; i++) {
-    //        auto content = get(generatePathWithIndex(url, i));
-    //        if (content.has_value()) {
-    //            jsonArray.push_back(content.value());
-    //        }
-    //    }
-    //    return jsonArray;
 }
 
 std::optional<json> FileDataClientAdapter::getGroup(const Path &path) const

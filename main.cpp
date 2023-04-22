@@ -52,7 +52,8 @@ int main(int argc, char *argv[])
 
     auto servermanager = NotesManager(std::make_shared<ServerDataClient>());
     auto list = servermanager.get();
-    for (const auto el : list.value()) {
+    for (const auto el :
+         list.value()) { //problem z tym, ze nie rozpoznaje kiedy string a kiedy int i przez to json przechowuje same stringi a sorver sobie automatycznie castuje stringa na inta, trzeba by manipulowac w kreatorze np note str methoda i int metoda
         qDebug() << el.title.get();
     }
     //    FileManager m;
