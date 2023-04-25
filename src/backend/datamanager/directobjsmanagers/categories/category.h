@@ -1,10 +1,10 @@
-//#pragma once
-//#include "../basicstructure.h"
+#pragma once
+#include "../basicdatabasedata.h"
 
-//struct Category : public BasicForDatabaseStructure
-//{
-//    ADD_ID(id)
-//    ADD_ATTRIBUTE(color)
-//    ADD_ATTRIBUTE(creationDate)
-//    ADD_ATTRIBUTE(name)
-//};
+struct Category
+{
+    ConstIntData id{"id"};
+    StrData content{"color"};
+    StrData title{"name"};
+    DateData creationDate{"creationDate"};
+};

@@ -1,10 +1,5 @@
 #include "serverdataclient.h"
 
-//void ServerDataClient::setAdditionalParameters(const QString &params)
-//{
-//    additionalParams = additionalParams.isEmpty() ? params : (additionalParams + "&" + params);
-//}
-
 void ServerDataClient::setAdditionalParameters(const QString &key, int value)
 {
     setAdditionalParameters(key, QString::number(value));

@@ -1,35 +1,37 @@
-//#include "notesmanager.h"
+#include "notesmanager.h"
 
-//NotesManager::NotesManager(std::shared_ptr<DataClient> dataClient_)
-//    : OverallManager("notes", dataClient_)
-//{}
+NotesManager::NotesManager(std::shared_ptr<DataClient> dataClient_)
+    : OverallManager("notes", dataClient_)
+{}
 
-////std::optional<Note> NotesManager::get(int index) const
-////{
-////    std::optional<json> content = dataClient->get(generatePath(index));
-////    if (content.has_value()) {
-////        auto contentValue = content.value();
-////        Note note;
-////        note.id = QString::number(index);
-////        note.title = OverallManagerMethods::getContentStrValue(contentValue, "title");
-////        note.content = OverallManagerMethods::getContentStrValue(contentValue, "content");
-////        note.releaseDate = OverallManagerMethods::getContentStrValue(contentValue, "releaseDate");
-////        note.owner = OverallManagerMethods::getContentStrValue(contentValue, "owner");
-////        note.category = OverallManagerMethods::getContentStrValue(contentValue, "category");
-////        return note;
-////    }
-////    return {};
-////}
+Note NotesManager::generateInstance(const json &genson) const
+{
+    Note note;
+    note.id.setBaseOnJson(genson);
+    note.category.setBaseOnJson(genson);
+    note.content.setBaseOnJson(genson);
+    note.owner.setBaseOnJson(genson);
+    note.releaseDate.setBaseOnJson(genson);
+    note.title.setBaseOnJson(genson);
+    return note;
+}
 
-//Note NotesManager::generateInstance(const json &contentValue) const
-//{
-//    Note note;
-//    qDebug() << QString::fromStdString(contentValue.dump());
-//    note.id = OverallManagerMethods::getContentStrValue(contentValue, "id");
-//    note.title = OverallManagerMethods::getContentStrValue(contentValue, "title");
-//    note.content = OverallManagerMethods::getContentStrValue(contentValue, "content");
-//    note.releaseDate = OverallManagerMethods::getContentStrValue(contentValue, "releaseDate");
-//    note.owner = OverallManagerMethods::getContentStrValue(contentValue, "owner");
-//    note.category = OverallManagerMethods::getContentStrValue(contentValue, "category");
-//    return note;
-//}
+void NotesManager::update(const Note &object)
+{
+    setAdditionUpdateParameter(object.releaseDate, OverallManagerMethods::datetimeToQString);
+    setAdditionUpdateParameter(object.owner);
+    setAdditionUpdateParameter(object.category);
+    setAdditionUpdateParameter(object.title);
+    setAdditionUpdateParameter(object.content);
+    dataClient->update(generatePath(object.id.get()));
+}
+
+void NotesManager::add(const Note &object)
+{
+    setAdditionAddParameter(object.releaseDate, OverallManagerMethods::datetimeToQString);
+    setAdditionAddParameter(object.owner);
+    setAdditionAddParameter(object.category);
+    setAdditionAddParameter(object.title);
+    setAdditionAddParameter(object.content);
+    dataClient->add(UrlPath(name));
+}

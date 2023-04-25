@@ -18,11 +18,6 @@ FileDataClientAdapter::FileDataClientAdapter(std::shared_ptr<DataClient> dataCli
     : dataClient(dataClient_)
 {}
 
-//void FileDataClientAdapter::setAdditionalParameters(const QString &params)
-//{
-//    dataClient->setAdditionalParameters(params);
-//}
-
 void FileDataClientAdapter::setAdditionalParameters(const QString &key, int value)
 {
     dataClient->setAdditionalParameters(key, value);

@@ -1,12 +1,18 @@
-//#pragma once
-//#include "../overallmanager.h"
-//#include "note.h"
+#pragma once
 
-//class NotesManager final : public OverallManager<Note>
-//{
-//protected:
-//    Note generateInstance(const json &genson) const;
+#include "../overallmanager.h"
+#include "note.h"
+#include <functional>
 
-//public:
-//    NotesManager(std::shared_ptr<DataClient> dataClient_);
-//};
+class NotesManager final : public OverallManager<Note>
+{
+protected:
+    Note generateInstance(const json &genson) const override;
+
+public:
+    NotesManager(std::shared_ptr<DataClient> dataClient_);
+
+    void update(const Note &object) override;
+
+    void add(const Note &object) override;
+};

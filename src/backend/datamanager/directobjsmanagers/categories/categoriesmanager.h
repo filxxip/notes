@@ -1,15 +1,18 @@
-//#pragma once
+#pragma once
 
-//#include "../overallmanager.h"
-//#include "category.h"
+#include "../overallmanager.h"
+#include "category.h"
+#include <functional>
 
-//class CategoriesManager final : public OverallManager<Category>
-//{
-//protected:
-//    Category generateInstance(const json &genson) const;
+class CategoriesManager final : public OverallManager<Category>
+{
+protected:
+    Category generateInstance(const json &genson) const override;
 
-//public:
-//    CategoriesManager(std::shared_ptr<DataClient> dataClient_);
+public:
+    CategoriesManager(std::shared_ptr<DataClient> dataClient_);
 
-//    //    std::optional<Category> get(int index) const override;
-//};
+    void update(const Category &object) override;
+
+    void add(const Category &object) override;
+};

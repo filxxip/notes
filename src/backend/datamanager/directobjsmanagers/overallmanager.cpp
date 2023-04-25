@@ -2,48 +2,6 @@
 
 namespace OverallManagerMethods {
 
-template<typename T>
-T getContentValue(const json &jsonFile, const std::string &key)
-{
-    throw UndefinedDataException("These type is not supported");
-}
-template<>
-QString getContentValue<QString>(const json &jsonFile, const std::string &key)
-{
-    return QString::fromStdString(jsonFile[key].get<std::string>());
-}
-
-template<>
-int getContentValue<int>(const json &jsonFile, const std::string &key)
-{
-    return jsonFile[key].get<int>();
-}
-
-template<>
-QDateTime getContentValue<QDateTime>(const json &jsonFile, const std::string &key)
-{
-    QStringList content = QString::fromStdString(jsonFile[key].get<std::string>()).split("-");
-    return QDateTime(QDate(content.at(0).toInt(), content.at(1).toInt(), content.at(2).toInt()),
-                     QTime(content.at(3).toInt(), content.at(4).toInt(), content.at(5).toInt()));
-}
-
-//QString getContentStrValue(const json &jsonFile, std::string key)
-//{
-//    return QString::fromStdString(jsonFile[key].get<std::string>());
-//}
-
-//int getContentIntValue(const json &jsonFile, std::string key)
-//{
-//    return jsonFile[key].get<int>();
-//}
-
-//QDateTime getContentDateValue(const json &jsonFile, std::string key)
-//{
-//    QStringList content = QString::fromStdString(jsonFile[key].get<std::string>()).split("-");
-//    return QDateTime(QDate(content.at(0).toInt(), content.at(1).toInt(), content.at(2).toInt()),
-//                     QTime(content.at(3).toInt(), content.at(4).toInt(), content.at(5).toInt()));
-//}
-
 QString datetimeToQString(const QDateTime &datetime)
 {
     auto date = datetime.date();
@@ -77,13 +35,6 @@ UrlPath OverallManager<DataObject>::generatePath() const
     return UrlPath(QString(name));
 }
 
-//template<typename DataObject>
-//void OverallManager<DataObject>::update(const DataObject &person)
-//{
-//    dataClient->setAdditionalParameters(generateParms(person.getMapOfUpdates()));
-//    dataClient->update(generatePath(person.id.get().toInt()));
-//}
-
 template<typename DataObject>
 void OverallManager<DataObject>::remove(int index)
 {
@@ -101,12 +52,6 @@ QString OverallManager<DataObject>::generateParms(
     return params.remove(0, 1);
 }
 
-//template<typename DataObject>
-//void OverallManager<DataObject>::add(const DataObject &person)
-//{
-//    dataClient->setAdditionalParameters(generateParms(person.getMapOfAtrributes()));
-//    dataClient->add(UrlPath(name));
-//}
 template<typename DataObject>
 std::optional<DataObject> OverallManager<DataObject>::get(int index) const
 {
@@ -136,5 +81,5 @@ std::optional<QList<DataObject>> OverallManager<DataObject>::get() const
 #include "notes/note.h"
 #include "people/person.h"
 REGISTER_MANAGER(Person)
-//REGISTER_MANAGER(Note)
-//REGISTER_MANAGER(Category)
+REGISTER_MANAGER(Note)
+REGISTER_MANAGER(Category)

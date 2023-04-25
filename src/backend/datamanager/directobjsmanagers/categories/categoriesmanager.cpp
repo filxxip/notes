@@ -1,31 +1,31 @@
-//#include "categoriesmanager.h"
+#include "categoriesmanager.h"
 
-//CategoriesManager::CategoriesManager(std::shared_ptr<DataClient> dataClient_)
-//    : OverallManager("categories", dataClient_)
-//{}
+CategoriesManager::CategoriesManager(std::shared_ptr<DataClient> dataClient_)
+    : OverallManager("notes", dataClient_)
+{}
 
-////std::optional<Category> CategoriesManager::get(int index) const
-////{
-////    std::optional<json> content = dataClient->get(generatePath(index));
-////    if (content.has_value()) {
-////        auto contentValue = content.value();
-////        Category category;
-////        category.id = OverallManagerMethods::getContentStrValue(contentValue, "id");
-////        category.name = OverallManagerMethods::getContentStrValue(contentValue, "name");
-////        category.color = OverallManagerMethods::getContentStrValue(contentValue, "color");
-////        category.creationDate = OverallManagerMethods::getContentStrValue(contentValue,
-////                                                                          "creationDate");
-////        return category;
-////    }
-////    return {};
-////}
+Category CategoriesManager::generateInstance(const json &genson) const
+{
+    Category category;
+    category.id.setBaseOnJson(genson);
+    category.content.setBaseOnJson(genson);
+    category.creationDate.setBaseOnJson(genson);
+    category.title.setBaseOnJson(genson);
+    return category;
+}
 
-//Category CategoriesManager::generateInstance(const json &contentValue) const
-//{
-//    Category category;
-//    category.id = OverallManagerMethods::getContentStrValue(contentValue, "id");
-//    category.name = OverallManagerMethods::getContentStrValue(contentValue, "name");
-//    category.color = OverallManagerMethods::getContentStrValue(contentValue, "color");
-//    category.creationDate = OverallManagerMethods::getContentStrValue(contentValue, "creationDate");
-//    return category;
-//}
+void CategoriesManager::update(const Category &object)
+{
+    setAdditionUpdateParameter(object.creationDate, OverallManagerMethods::datetimeToQString);
+    setAdditionUpdateParameter(object.title);
+    setAdditionUpdateParameter(object.content);
+    dataClient->update(generatePath(object.id.get()));
+}
+
+void CategoriesManager::add(const Category &object)
+{
+    setAdditionAddParameter(object.creationDate, OverallManagerMethods::datetimeToQString);
+    setAdditionAddParameter(object.title);
+    setAdditionAddParameter(object.content);
+    dataClient->add(UrlPath(name));
+}

@@ -16,8 +16,6 @@ class FileDataClientAdapter : public DataClient
 public:
     FileDataClientAdapter(std::shared_ptr<DataClient> dataClient_);
 
-    //    void setAdditionalParameters(const QString &params) override;
-
     void setAdditionalParameters(const QString &key, int value) override;
 
     void setAdditionalParameters(const QString &key, const QString &value) override;

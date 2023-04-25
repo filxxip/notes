@@ -7,9 +7,6 @@
 #include <memory>
 #include <unordered_map>
 
-//#define ADD_ATTRIBUTE(name) DatabaseData name{initMapData(#name)};
-//#define ADD_ID(name) IDDatabaseData name{#name};
-
 class UndefinedDataException : public std::exception
 {
 public:
@@ -21,49 +18,62 @@ public:
 private:
     std::string msg_;
 };
-
-//template<typename T>
-//class AbstractData
-//{
-//}
-
 template<typename T>
-class DbData
+class BaseData
 {
+protected:
     QString __name__;
     std::optional<T> value;
+
+public:
+    BaseData(QString name);
+
+    virtual void set(T newvalue) = 0;
+
+    virtual BaseData<T> &operator=(T other) noexcept;
+
+    virtual const T &get() const = 0;
+
+    virtual const QString &getName() const;
+
+    virtual void setBaseOnJson(const json &genson);
+};
+
+template<typename T>
+class DbData : public BaseData<T>
+{
     std::optional<T> initValue;
 
 public:
+    using BaseData<T>::operator=;
+
     DbData(QString name);
 
-    void set(T newvalue);
+    void set(T newvalue) override;
 
-    virtual DbData<T> &operator=(T other) noexcept;
-
-    const T &get() const;
+    const T &get() const override;
 
     const std::optional<T> &getUpdated() const; //tylko updated i updatuje wtedy kiedy jest zmiana
 
-    const QString &getName() const { return __name__; }
-
-    void setBaseOnJson(const json &genson);
 };
 
 template<typename T>
-class ConstDbData
+class ConstDbData : public BaseData<T>
 {
-    QString __name__;
-    std::optional<T> value;
-
 public:
-    const QString &getName() const { return __name__; }
-    ConstDbData(QString name);
-    void set(T newvalue);
+    using BaseData<T>::operator=;
 
-    const T &get() const;
-    void setBaseOnJson(const json &genson);
+    ConstDbData(QString name);
+
+    void set(T newvalue) override;
+
+    const T &get() const override;
 };
+
+#define REGISTER_DATA(type) \
+    template class BaseData<type>; \
+    template class DbData<type>; \
+    template class ConstDbData<type>;
 
 using IntData = DbData<int>;
 using StrData = DbData<QString>;
@@ -72,52 +82,3 @@ using DateData = DbData<QDateTime>;
 using ConstIntData = ConstDbData<int>;
 using ConstStrData = ConstDbData<QString>;
 using ConstDateData = ConstDbData<QDateTime>;
-//class BasicDatabaseData
-//{
-//protected:
-//    QString __name__;
-
-//public:
-//    BasicDatabaseData(QString name);
-
-//    virtual void set(QString newvalue) = 0;
-
-//    virtual BasicDatabaseData &operator=(QString other) noexcept;
-
-//    virtual const QString &get() const = 0;
-//};
-
-//class IDDatabaseData final : public BasicDatabaseData
-//{
-//protected: //id tez musi isc do mapy????
-//    QString value;
-
-//public:
-//    using BasicDatabaseData::operator=;
-
-//    IDDatabaseData(QString name);
-
-//    void set(QString newvalue) override;
-
-//    const QString &get() const override;
-//};
-
-//class DatabaseData final : public BasicDatabaseData
-//{
-//    std::shared_ptr<std::unordered_map<QString, QString>> updatedKeyMap;
-//    std::shared_ptr<std::unordered_map<QString, QString>> keyMap;
-//    bool canbeupdated = false;
-
-//    void updateMap(const QString &val, std::shared_ptr<std::unordered_map<QString, QString>> &map);
-
-//public:
-//    using BasicDatabaseData::operator=;
-
-//    DatabaseData(QString name,
-//                 std::shared_ptr<std::unordered_map<QString, QString>> updatedkeyMap_,
-//                 std::shared_ptr<std::unordered_map<QString, QString>> keyMap_);
-
-//    const QString &get() const override;
-
-//    void set(QString newvalue) override;
-//};

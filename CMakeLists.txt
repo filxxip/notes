@@ -40,8 +40,6 @@ qt_add_executable(appnotesdatabaseproject
     src/backend/datamanager/directobjsmanagers/basicdatabasedata.h
 
 
-    src/backend/datamanager/directobjsmanagers/basicstructure.h
-    src/backend/datamanager/directobjsmanagers/basicstructure.cpp
     src/backend/datamanager/directobjsmanagers/overallmanager.h
     src/backend/datamanager/directobjsmanagers/overallmanager.cpp
 

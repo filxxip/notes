@@ -24,7 +24,6 @@ class ServerDataClient final : public DataClient
     void addParamsToRequest() const;
 
 public:
-    //    void setAdditionalParameters(const QString &params) override;
 
     void setAdditionalParameters(const QString &key, int value) override;
 
