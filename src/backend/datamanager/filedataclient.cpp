@@ -4,28 +4,65 @@ FileDataClient::FileDataClient()
     : DataClient()
 {}
 
-void FileDataClient::setAdditionalParameters(const QString &additionalParameters)
+//void FileDataClient::setAdditionalParameters(
+//    const QString &additionalParameters) //na biezaco klepac jsona, dwa paramy wstring i Template param
+//{
+//    QStringList paramsList = additionalParameters.split("&");
+//    for (const auto &el : paramsList) {
+//        QStringList data = el.split("=");
+//        additionParams.insert({data.at(0).toStdString(), data.at(1).toStdString()});
+//    }
+//}
+
+//void FileDataClient::setAdditionalParameters(
+//    const QString &key,
+//    const QString &value) //na biezaco klepac jsona, dwa paramy wstring i Template param
+//{
+//    //    QStringList paramsList = additionalParameters.split("&");
+//    //    for (const auto &el : paramsList) {
+//    //        QStringList data = el.split("=");
+//    additionParams.insert({key.toStdString(), value.toStdString()});
+//    //    }
+//}
+
+void FileDataClient::setAdditionalParameters(
+    const QString &key,
+    const QString &value) //na biezaco klepac jsona, dwa paramy wstring i Template param
 {
-    QStringList paramsList = additionalParameters.split("&");
-    for (const auto &el : paramsList) {
-        QStringList data = el.split("=");
-        additionParams.insert({data.at(0).toStdString(), data.at(1).toStdString()});
-    }
+    //    QStringList paramsList = additionalParameters.split("&");
+    //    for (const auto &el : paramsList) {
+    //        QStringList data = el.split("=");
+    addedParams[key.toStdString()] = value.toStdString();
+    //    additionParams.insert({key.toStdString(), value.toStdString()});
+    //    }
+}
+
+void FileDataClient::setAdditionalParameters(
+    const QString &key,
+    int value) //na biezaco klepac jsona, dwa paramy wstring i Template param
+{
+    //    QStringList paramsList = additionalParameters.split("&");
+    //    for (const auto &el : paramsList) {
+    //        QStringList data = el.split("=");
+    addedParams[key.toStdString()] = value;
+    //    additionParams.insert({key.toStdString(), value.toStdString()});
+    //    }
 }
 
 void FileDataClient::performWritingToFile(const json &content, const Path &path)
 {
     fileManager.writeToFile(path, QString::fromStdString(content.dump()));
-    additionParams.clear();
+    //    additionParams.clear();
+    addedParams.clear();
 }
 
 void FileDataClient::update(const Path &filePath)
 {
     auto file = fileManager.readFromFile(filePath);
     if (file.has_value()) {
-        auto content = json::parse(file.value().toStdString());
-        for (const auto &[key, value] : additionParams) {
-            content[key] = value;
+        json content = json::parse(file.value().toStdString());
+        for (const auto &pair : addedParams.items()) {
+            content[pair.key()] = pair.value();
         }
         performWritingToFile(content, filePath);
     }
@@ -38,11 +75,11 @@ void FileDataClient::remove(const Path &path)
 
 void FileDataClient::add(const Path &path)
 {
-    json content;
-    for (const auto &[key, value] : additionParams) {
-        content[key] = value;
-    }
-    performWritingToFile(content, path);
+    //    json content;
+    //    for (const auto &[key, value] : additionParams) {
+    //        content[key] = value;
+    //    }
+    performWritingToFile(addedParams, path);
 }
 
 std::optional<json> FileDataClient::get(const Path &path) const

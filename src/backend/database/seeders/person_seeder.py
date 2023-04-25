@@ -23,7 +23,9 @@ class PersonSeeder(Seeder):
             password = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz1234567890', k=8))
             country = random.choice(countries)
             birthday = convert_datetime_to_str(datetime.now() - timedelta(days=365 * random.randint(18, 65)))
+            birthday = datetime.now() - timedelta(days=365 * random.randint(18, 65))
             person = Person(name=name, surname=surname, email=email, password=password, country=country,
                             birthday=birthday)
+            print(person.birthday)
             people.append(person)
         return people

@@ -18,9 +18,19 @@ FileDataClientAdapter::FileDataClientAdapter(std::shared_ptr<DataClient> dataCli
     : dataClient(dataClient_)
 {}
 
-void FileDataClientAdapter::setAdditionalParameters(const QString &params)
+//void FileDataClientAdapter::setAdditionalParameters(const QString &params)
+//{
+//    dataClient->setAdditionalParameters(params);
+//}
+
+void FileDataClientAdapter::setAdditionalParameters(const QString &key, int value)
 {
-    dataClient->setAdditionalParameters(params);
+    dataClient->setAdditionalParameters(key, value);
+}
+
+void FileDataClientAdapter::setAdditionalParameters(const QString &key, const QString &value)
+{
+    dataClient->setAdditionalParameters(key, value);
 }
 
 int FileDataClientAdapter::getDirectoryElementsNumber(const Path &url) const
@@ -47,7 +57,7 @@ void FileDataClientAdapter::add(const Path &path)
                    [](auto &element) { return element.replace(EXTENSION, "").toInt(); });
     auto maxelement = std::max_element(elements.begin(), elements.end());
     auto index = 1 + (maxelement != elements.end() ? *maxelement : 0);
-    setAdditionalParameters("id=" + QString::number(index));
+    setAdditionalParameters("id", index);
     dataClient->add(generatePathWithIndex(path, index));
 }
 

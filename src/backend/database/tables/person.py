@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-import dataclasses
 from datetime import date
-
+import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import DateTime, Integer, String
 from sqlalchemy.ext.hybrid import hybrid_property

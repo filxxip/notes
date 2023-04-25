@@ -1,15 +1,33 @@
 #pragma once
-#include "../basicstructure.h"
+#include "../basicdatabasedata.h"
 
-struct Person : public BasicForDatabaseStructure
+#define INJECT_DATABASE_MAP std::map<std::string, int typeid(*this).name()::*> member_map;
+#define APPLY_ATTRIBUTE(name) member_map.insert({#name, typeid(*this).name()::##name});
+
+template<typename T>
+class DataBaseObjectType
 {
-    ADD_ID(id)
-    ADD_ATTRIBUTE(name)
-    ADD_ATTRIBUTE(surname)
-    ADD_ATTRIBUTE(country)
-    ADD_ATTRIBUTE(birthday)
-    ADD_ATTRIBUTE(email)
-    ADD_ATTRIBUTE(password)
+protected:
+    std::map<std::string, int T::*> member_map;
+};
+
+struct Person
+{
+    ConstIntData id{"id"};
+    StrData name{"name"};
+    StrData surname{"surname"};
+    StrData country{"country"};
+    DateData birthday{"birthday"};
+    StrData email{"email"};
+    StrData password{"password"};
+
+    //    ADD_ID(id)
+    //    ADD_ATTRIBUTE(name)
+    //    ADD_ATTRIBUTE(surname)
+    //    ADD_ATTRIBUTE(country)
+    //    ADD_ATTRIBUTE(birthday)
+    //    ADD_ATTRIBUTE(email)
+    //    ADD_ATTRIBUTE(password)
     /* IDDatabaseData id{"id"};
     DatabaseData name{initMapData("name")};
     DatabaseData surname{initMapData("surname")};

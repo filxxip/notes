@@ -12,7 +12,13 @@ namespace {
 
 class DataClient {
 public:
-    virtual void setAdditionalParameters(const QString &params) = 0;
+    //    virtual void setAdditionalParameters(const QString &params) = 0;
+
+    //    virtual void setAdditionalParameters(const QString &params) = 0;
+
+    virtual void setAdditionalParameters(const QString &key, int value) = 0;
+
+    virtual void setAdditionalParameters(const QString &key, const QString &value) = 0;
 
     virtual void update(const Path &path) = 0;
 

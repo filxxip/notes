@@ -56,7 +56,6 @@ def _update_from_json(self, json_obj: str):
 
 
 def _set_relevant_json_function(cls, attrs: list[str]):
-    print(attrs)
     cls.__json_attributes__ = attrs
     cls.to_json = _to_json
     cls.update_from_json = _update_from_json

@@ -1,8 +1,18 @@
 #include "serverdataclient.h"
 
-void ServerDataClient::setAdditionalParameters(const QString &params)
+//void ServerDataClient::setAdditionalParameters(const QString &params)
+//{
+//    additionalParams = additionalParams.isEmpty() ? params : (additionalParams + "&" + params);
+//}
+
+void ServerDataClient::setAdditionalParameters(const QString &key, int value)
 {
-    additionalParams = additionalParams.isEmpty() ? params : (additionalParams + "&" + params);
+    setAdditionalParameters(key, QString::number(value));
+}
+
+void ServerDataClient::setAdditionalParameters(const QString &key, const QString &value)
+{
+    additionalParams += QString("&%1=%2").arg(key, value);
 }
 
 void ServerDataClient::initRequest(const Path &url, std::string mode) const

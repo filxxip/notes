@@ -46,16 +46,20 @@ int main(int argc, char *argv[])
 
     engine.load(url);
 #endif
-
-    auto filemanager = NotesManager(
+    //sprawdzic czy napewno aby sie updatuje to co trzeba, dlaczego id pobrane jest w stringu a nie it z servera
+    auto filemanager = PeopleManager(
         std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
 
-    auto servermanager = NotesManager(std::make_shared<ServerDataClient>());
-    auto list = servermanager.get();
-    for (const auto el :
-         list.value()) { //problem z tym, ze nie rozpoznaje kiedy string a kiedy int i przez to json przechowuje same stringi a sorver sobie automatycznie castuje stringa na inta, trzeba by manipulowac w kreatorze np note str methoda i int metoda
-        qDebug() << el.title.get();
-    }
+    auto servermanager = PeopleManager(std::make_shared<ServerDataClient>());
+    qDebug() << servermanager.get(5).value().name.get();
+    auto l = filemanager.get(125);
+    l->birthday = QDateTime(QDate(2004, 04, 29), QTime(1, 1, 1));
+    l->name = "Pliska";
+    filemanager.add(l.value());
+    //    / for (auto &per : l.value())
+    //    {
+    //        filemanager.add(per);
+    //    }
     //    FileManager m;
     //    auto list = m.readFromDir(FilePath("people"));
     //    for (auto &el : list.value()) {

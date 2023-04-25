@@ -66,7 +66,7 @@ def catchable_db_connection_exceptions(*exs: Type[Exception]):
 
 
 def convert_str_date_to_datetime(d)->datetime.date:
-    return datetime.date(*[int(m) for m in d.split("-")]) if isinstance(d, str) else d
+    return datetime.datetime(*[int(m) for m in d.split("-")]) if isinstance(d, str) else d
 
 def convert_datetime_to_str(d:datetime.date)->str:
     return f"{d.year}-{d.month}-{d.day}"

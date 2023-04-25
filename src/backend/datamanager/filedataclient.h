@@ -7,7 +7,8 @@ class FileDataClient final : public DataClient
 {
     FileManager fileManager;
 
-    std::map<std::string, std::string> additionParams;
+    json addedParams;
+    //    std::map<std::string, std::string> additionParams;
 
     void performWritingToFile(const json &content, const Path &path);
 
@@ -16,7 +17,10 @@ class FileDataClient final : public DataClient
 public:
     FileDataClient();
 
-    void setAdditionalParameters(const QString &params) override;
+    //    void setAdditionalParameters(const QString &params) override;
+    void setAdditionalParameters(const QString &key, int value) override;
+
+    void setAdditionalParameters(const QString &key, const QString &value) override;
 
     void update(const Path &path) override;
 

@@ -1,5 +1,4 @@
 from __future__ import annotations
-from dataclasses import dataclass
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import DateTime, Integer, String
 
