@@ -1,4 +1,12 @@
 #include "filedataclient.h"
+#include "directobjsmanagers/overallmanager.h"
+
+//namespace {
+//bool operator!=(const QDateTime &dateTime, const std::string &str)
+//{
+//    return OverallManagerMethods::codeTypeToQString(dateTime) != QString::fromStdString(str);
+//}
+//} // namespace
 
 FileDataClient::FileDataClient()
     : DataClient()
@@ -56,25 +64,27 @@ std::optional<json> FileDataClient::getGroup(const Path &path) const
 {
     auto content = fileManager.readFromDir(path);
 
-    if (content.has_value()) {
-        json jsonArray = json::array();
-        for (const auto &element : content.value()) {
-            auto el = json::parse(element.toStdString());
-            bool condition = true;
-            for (auto it = el.begin(); it != el.end(); ++it) {
-                auto key = it.key();
-                auto value = it.value();
+    if (content) {
+        json jsonArray;
+        for (const auto &element : *content) {
+            json el = json::parse(element.toStdString());
 
+            bool condition = true;
+            for (const auto &[key, value] : filterParams.items()) {
                 if (el[key] != value) {
                     condition = false;
+                    break;
                 }
             }
+
             if (condition) {
                 jsonArray.push_back(std::move(el));
             }
         }
+
         return jsonArray;
     }
+
     return {};
 }
 

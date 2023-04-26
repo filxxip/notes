@@ -33,6 +33,25 @@ QString codeTypeToQString<int>(const int &object)
     return QString::number(object);
 }
 
+template<>
+QString codeTypeToQString<std::string>(const std::string &object)
+{
+    return QString::fromStdString(object);
+}
+
+template<>
+QString codeTypeToQString<json>(const json &object)
+{
+    switch (object.type()) {
+    case json::value_t::number_integer: {
+        return codeTypeToQString<int>(object.get<int>());
+    }
+    case json::value_t::string: {
+        return codeTypeToQString<std::string>(object.get<std::string>());
+    }
+    }
+    throw UndefinedDataException("This type is not supported"); //nie dziala dla dat niestety
+}
 } // namespace OverallManagerMethods
 
 template<typename DataObject>
@@ -73,7 +92,6 @@ QString OverallManager<DataObject>::generateParms(
 template<typename DataObject>
 std::optional<DataObject> OverallManager<DataObject>::get(int index) const
 {
-    //    std::optional<json> content = dataClient->get(generatePath(index));
     if (auto content = dataClient->get(generatePath(index)); content.has_value()) {
         return generateInstance(content.value());
     }
@@ -83,15 +101,8 @@ std::optional<DataObject> OverallManager<DataObject>::get(int index) const
 template<typename DataObject>
 std::optional<QList<DataObject>> OverallManager<DataObject>::get() const
 {
-    //    QList<DataObject> list;
-    //    std::optional<json> content = dataClient->getGroup(generatePath());
-    //    if (content.has_value()) {
-    //        for (const auto &element : content.value()) {
-    //            list.append(generateInstance(element));
-    //        }
-    //        return list;
-    //    }
     if (auto content = dataClient->getGroup(generatePath()); content.has_value()) {
+        dataClient->clearFilters();
         QList<DataObject> list;
         for (const auto &element : *content) {
             list.append(generateInstance(element));
@@ -105,16 +116,6 @@ template<typename DataObject>
 std::optional<QList<DataObject>> OverallManager<DataObject>::getFiltered(const json &genson) const
 {
     dataClient->setGroupFilter(genson);
-    //    QList<DataObject> list; //refactor
-
-    //    for (const auto)
-    //    std::optional<json> content = dataClient->getGroup(UrlPath(QString(name)+"?"+key+"="+value);
-    //    if (content.has_value()) {
-    //        for (const auto &element : content.value()) {
-    //            list.append(generateInstance(element));
-    //        }
-    //        return list;
-    //    }
     return get();
 }
 

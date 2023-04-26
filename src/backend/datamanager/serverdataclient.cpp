@@ -67,8 +67,8 @@ void ServerDataClient::setGroupFilter(const json &genson)
 {
     QString separator = groupFilterString.isEmpty() ? "?" : "&";
     for (auto it = genson.begin(); it != genson.end(); ++it) {
-        //        groupFilterString += separator + OverallManagerMethods::codeTypeToQString(it.key()) + "="
-        //                             + OverallManagerMethods::codeTypeToQString(it.value());
+        groupFilterString += separator + OverallManagerMethods::codeTypeToQString(it.key()) + "="
+                             + OverallManagerMethods::codeTypeToQString(it.value());
     }
 }
 void ServerDataClient::clearFilters()

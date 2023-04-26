@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDate>
+#include <QObject>
 #include <QString>
 #include "overallmanager.h"
 #include <algorithm>
@@ -18,6 +19,7 @@ public:
 private:
     std::string msg_;
 };
+
 template<typename T>
 class BaseData
 {

@@ -51,9 +51,11 @@ int main(int argc, char *argv[])
         std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
 
     auto servermanager = NotesManager(std::make_shared<ServerDataClient>());
-    auto el = filemanager.get(10);
-    el->category = 15;
-    filemanager.update(el.value());
+    auto el = filemanager.getFiltered(json{{"category", "21"}});
+    qDebug() << el->size();
+    for (const auto &e : el.value()) {
+        qDebug() << e.category.get();
+    }
 #if RUN_QML
     return app.exec();
 #endif
