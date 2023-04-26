@@ -13,6 +13,8 @@ using json = nlohmann::json;
 
 class ServerDataClient final : public DataClient
 {
+    QString groupFilterString;
+
     mutable QString additionalParams;
 
     mutable curlpp::Easy request;
@@ -38,4 +40,8 @@ public:
     std::optional<json> get(const Path &) const override;
 
     std::optional<json> getGroup(const Path &path) const override;
+
+    void clearFilters() override;
+
+    virtual void setGroupFilter(const json &genson) override;
 };

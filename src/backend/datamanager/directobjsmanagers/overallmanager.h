@@ -17,17 +17,9 @@
 
 #define REGISTER_MANAGER(cls) template class OverallManager<cls>;
 
-template<typename T>
-struct A
-{
-    int T::*attribute;
-    QString name;
-    std::function<QString(const T &)> converter;
-    bool isConstant;
-};
-
 namespace OverallManagerMethods {
-QString datetimeToQString(const QDateTime &datetime);
+template<typename T>
+QString codeTypeToQString(const T &object);
 
 } // namespace OverallManagerMethods
 
@@ -86,6 +78,8 @@ public:
     virtual void add(const DataObject &object) = 0;
 
     std::optional<DataObject> get(int index) const;
+
+    std::optional<QList<DataObject>> getFiltered(const json &genson) const;
 
     std::optional<QList<DataObject>> get() const;
 };

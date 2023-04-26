@@ -1,5 +1,6 @@
 #pragma once
 #include "dataclient.h"
+#include "directobjsmanagers/overallmanager.h"
 #include "filemanager.h"
 #include <map>
 
@@ -8,6 +9,8 @@ class FileDataClient final : public DataClient
     FileManager fileManager;
 
     json addedParams;
+
+    json filterParams;
 
     void performWritingToFile(const json &content, const Path &path);
 
@@ -29,4 +32,8 @@ public:
     std::optional<json> get(const Path &path) const override;
 
     std::optional<json> getGroup(const Path &path) const override;
+
+    void clearFilters() override;
+
+    virtual void setGroupFilter(const json &genson) override;
 };

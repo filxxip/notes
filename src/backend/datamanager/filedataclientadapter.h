@@ -29,4 +29,8 @@ public:
     std::optional<json> get(const Path &path) const override;
 
     std::optional<json> getGroup(const Path &path) const override;
+
+    void clearFilters() override;
+
+    virtual void setGroupFilter(const json &genson) override;
 };

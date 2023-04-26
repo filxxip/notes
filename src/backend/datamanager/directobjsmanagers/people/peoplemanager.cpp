@@ -19,7 +19,7 @@ Person PeopleManager::generateInstance(const json &genson) const
 ////jedno duze macro wstrzykiwane do obiektu aby tylko miec to i aby jedynie dziedziczyc po basic klasie reszte ogarnie makro poprzez podanie mu atrybutow
 void PeopleManager::update(const Person &object)
 {
-    setAdditionUpdateParameter(object.birthday, OverallManagerMethods::datetimeToQString);
+    setAdditionUpdateParameter(object.birthday, OverallManagerMethods::codeTypeToQString<QDateTime>);
     setAdditionUpdateParameter(object.surname);
     setAdditionUpdateParameter(object.country);
     setAdditionUpdateParameter(object.name);
@@ -30,7 +30,7 @@ void PeopleManager::update(const Person &object)
 
 void PeopleManager::add(const Person &object)
 {
-    setAdditionAddParameter(object.birthday, OverallManagerMethods::datetimeToQString);
+    setAdditionAddParameter(object.birthday, OverallManagerMethods::codeTypeToQString<QDateTime>);
     setAdditionAddParameter(object.surname);
     setAdditionAddParameter(object.country);
     setAdditionAddParameter(object.name);

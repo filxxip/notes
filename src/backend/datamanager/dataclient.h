@@ -12,9 +12,6 @@ namespace {
 
 class DataClient {
 public:
-    //    virtual void setAdditionalParameters(const QString &params) = 0;
-
-    //    virtual void setAdditionalParameters(const QString &params) = 0;
 
     virtual void setAdditionalParameters(const QString &key, int value) = 0;
 
@@ -29,4 +26,8 @@ public:
     virtual std::optional<json> get(const Path &path) const = 0;
 
     virtual std::optional<json> getGroup(const Path &path) const = 0;
+
+    virtual void setGroupFilter(const json &genson) = 0;
+
+    virtual void clearFilters() = 0;
 };

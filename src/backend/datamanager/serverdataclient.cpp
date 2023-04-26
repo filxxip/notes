@@ -1,4 +1,5 @@
 #include "serverdataclient.h"
+#include "directobjsmanagers/overallmanager.h"
 
 void ServerDataClient::setAdditionalParameters(const QString &key, int value)
 {
@@ -59,5 +60,18 @@ std::optional<json> ServerDataClient::get(const Path &url) const
 
 std::optional<json> ServerDataClient::getGroup(const Path &path) const
 {
-    return get(path);
+    return get(UrlPath(path.getRelativePath() + groupFilterString));
+}
+
+void ServerDataClient::setGroupFilter(const json &genson)
+{
+    QString separator = groupFilterString.isEmpty() ? "?" : "&";
+    for (auto it = genson.begin(); it != genson.end(); ++it) {
+        //        groupFilterString += separator + OverallManagerMethods::codeTypeToQString(it.key()) + "="
+        //                             + OverallManagerMethods::codeTypeToQString(it.value());
+    }
+}
+void ServerDataClient::clearFilters()
+{
+    groupFilterString.clear();
 }

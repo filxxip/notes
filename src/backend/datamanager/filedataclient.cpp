@@ -59,9 +59,30 @@ std::optional<json> FileDataClient::getGroup(const Path &path) const
     if (content.has_value()) {
         json jsonArray = json::array();
         for (const auto &element : content.value()) {
-            jsonArray.push_back(json::parse(element.toStdString()));
+            auto el = json::parse(element.toStdString());
+            bool condition = true;
+            for (auto it = el.begin(); it != el.end(); ++it) {
+                auto key = it.key();
+                auto value = it.value();
+
+                if (el[key] != value) {
+                    condition = false;
+                }
+            }
+            if (condition) {
+                jsonArray.push_back(std::move(el));
+            }
         }
         return jsonArray;
     }
     return {};
+}
+
+void FileDataClient::setGroupFilter(const json &genson)
+{
+    filterParams.merge_patch(genson);
+}
+void FileDataClient::clearFilters()
+{
+    filterParams.clear();
 }

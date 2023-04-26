@@ -2,10 +2,17 @@
 
 namespace OverallManagerMethods {
 
-QString datetimeToQString(const QDateTime &datetime)
+template<typename T>
+QString codeTypeToQString(const T &object)
 {
-    auto date = datetime.date();
-    auto time = datetime.time();
+    throw UndefinedDataException("This type is not supported");
+}
+
+template<>
+QString codeTypeToQString<QDateTime>(const QDateTime &object)
+{
+    auto date = object.date();
+    auto time = object.time();
     return QString("%1-%2-%3-%4-%5-%6")
         .arg(date.year())
         .arg(date.month())
@@ -13,6 +20,17 @@ QString datetimeToQString(const QDateTime &datetime)
         .arg(time.hour())
         .arg(time.minute())
         .arg(time.second());
+}
+
+template<>
+QString codeTypeToQString<QString>(const QString &object)
+{
+    return object;
+}
+template<>
+QString codeTypeToQString<int>(const int &object)
+{
+    return QString::number(object);
 }
 
 } // namespace OverallManagerMethods
@@ -55,8 +73,8 @@ QString OverallManager<DataObject>::generateParms(
 template<typename DataObject>
 std::optional<DataObject> OverallManager<DataObject>::get(int index) const
 {
-    std::optional<json> content = dataClient->get(generatePath(index));
-    if (content.has_value()) {
+    //    std::optional<json> content = dataClient->get(generatePath(index));
+    if (auto content = dataClient->get(generatePath(index)); content.has_value()) {
         return generateInstance(content.value());
     }
     return {};
@@ -65,16 +83,39 @@ std::optional<DataObject> OverallManager<DataObject>::get(int index) const
 template<typename DataObject>
 std::optional<QList<DataObject>> OverallManager<DataObject>::get() const
 {
-    QList<DataObject> list;
-    std::optional<json> content = dataClient->getGroup(generatePath());
-    qDebug() << QString::fromStdString(content.value().dump());
-    if (content.has_value()) {
-        for (const auto &element : content.value()) {
+    //    QList<DataObject> list;
+    //    std::optional<json> content = dataClient->getGroup(generatePath());
+    //    if (content.has_value()) {
+    //        for (const auto &element : content.value()) {
+    //            list.append(generateInstance(element));
+    //        }
+    //        return list;
+    //    }
+    if (auto content = dataClient->getGroup(generatePath()); content.has_value()) {
+        QList<DataObject> list;
+        for (const auto &element : *content) {
             list.append(generateInstance(element));
         }
         return list;
     }
     return {};
+}
+
+template<typename DataObject>
+std::optional<QList<DataObject>> OverallManager<DataObject>::getFiltered(const json &genson) const
+{
+    dataClient->setGroupFilter(genson);
+    //    QList<DataObject> list; //refactor
+
+    //    for (const auto)
+    //    std::optional<json> content = dataClient->getGroup(UrlPath(QString(name)+"?"+key+"="+value);
+    //    if (content.has_value()) {
+    //        for (const auto &element : content.value()) {
+    //            list.append(generateInstance(element));
+    //        }
+    //        return list;
+    //    }
+    return get();
 }
 
 #include "categories/category.h"

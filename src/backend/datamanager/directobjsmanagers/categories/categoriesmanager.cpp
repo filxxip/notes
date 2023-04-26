@@ -16,7 +16,8 @@ Category CategoriesManager::generateInstance(const json &genson) const
 
 void CategoriesManager::update(const Category &object)
 {
-    setAdditionUpdateParameter(object.creationDate, OverallManagerMethods::datetimeToQString);
+    setAdditionUpdateParameter(object.creationDate,
+                               OverallManagerMethods::codeTypeToQString<QDateTime>);
     setAdditionUpdateParameter(object.title);
     setAdditionUpdateParameter(object.content);
     dataClient->update(generatePath(object.id.get()));
@@ -24,7 +25,8 @@ void CategoriesManager::update(const Category &object)
 
 void CategoriesManager::add(const Category &object)
 {
-    setAdditionAddParameter(object.creationDate, OverallManagerMethods::datetimeToQString);
+    setAdditionAddParameter(object.creationDate,
+                            OverallManagerMethods::codeTypeToQString<QDateTime>);
     setAdditionAddParameter(object.title);
     setAdditionAddParameter(object.content);
     dataClient->add(UrlPath(name));
