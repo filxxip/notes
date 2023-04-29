@@ -21,7 +21,7 @@
 #include "src/backend/datamanager/serverdataclient.h"
 #include <chrono>
 #include <memory>
-#define RUN_QML 0
+#define RUN_QML 1
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     qmlRegisterUncreatableMetaObject(Statuses::staticMetaObject, "Statuses", 1, 0, "Statuses", "");
+    //    qRegisterMetaType<DbData<int>>("DbData<int>");
 
     auto myController = new MyController();
     auto logController = new LogController();

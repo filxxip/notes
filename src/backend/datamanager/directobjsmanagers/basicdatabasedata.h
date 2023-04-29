@@ -32,7 +32,13 @@ public:
 
     virtual void set(T newvalue) = 0;
 
-    virtual BaseData<T> &operator=(T other) noexcept;
+    //    BaseData<T> &operator=(const BaseData<T> &base) = default;
+    //    BaseData(const BaseData<T> &base) = default;
+
+    //    BaseData() = default;
+    //    ~BaseData() = default;
+    //    BaseData(const BaseData &) = default;
+    //    virtual BaseData<T> &operator=(T other) noexcept;
 
     virtual const T &get() const = 0;
 
@@ -47,7 +53,13 @@ class DbData : public BaseData<T>
     std::optional<T> initValue;
 
 public:
-    using BaseData<T>::operator=;
+    //public:
+    //    DbData() = default;
+    //    ~DbData() = default;
+    //    DbData(const DbData &) = default;
+    //    using BaseData<T>::operator=;
+    //    DbData(const DbData<T> &base) = default;
+    //    DbData<T> &operator=(const DbData<T> &base) = default;
 
     DbData(QString name);
 
@@ -63,14 +75,64 @@ template<typename T>
 class ConstDbData : public BaseData<T>
 {
 public:
-    using BaseData<T>::operator=;
-
+    //    using BaseData<T>::operator=;
+    std::string somestring;
+    //    ConstDbData() = default;
     ConstDbData(QString name);
+
+    //    ConstDbData(const DbData<T> &base) = default;
+    //    DbData<T> &operator=(const DbData<T> &base) = default;
 
     void set(T newvalue) override;
 
     const T &get() const override;
 };
+
+class MyIntData : public QObject, public DbData<int>
+{
+    Q_OBJECT
+
+    Q_PROPERTY(int value READ get WRITE set NOTIFY settingValueSignal)
+
+public:
+    MyIntData(QString name)
+        : DbData(name)
+        , QObject()
+    {}
+
+    void set(int newvalue) override
+    {
+        DbData::set(newvalue);
+        emit settingValueSignal();
+    }
+
+signals:
+    void settingValueSignal();
+};
+
+//class MyClassInt : public QObject, public DbData<int>
+//{
+//    Q_OBJECT
+//    Q_PROPERTY(int value READ get WRITE set NOTIFY valueChanged)
+
+//public:
+//    MyClassInt(QString name)
+//        : QObject()
+//        , DbData(std::move(name))
+//    {}
+//    void set(int newvalue)
+//    {
+//        DbData::set(newvalue);
+//        emit valueChanged();
+//    }
+//signals:
+//    void valueChanged();
+//};
+//Q_DECLARE_METATYPE_TEMPLATE_1ARG(BaseData)
+
+//Q_DECLARE_METATYPE_TEMPLATE_1ARG(DbData)
+
+//Q_DECLARE_METATYPE(MyClassInt)
 
 #define REGISTER_DATA(type) \
     template class BaseData<type>; \
@@ -80,6 +142,7 @@ public:
 using IntData = DbData<int>;
 using StrData = DbData<QString>;
 using DateData = DbData<QDateTime>;
+//Q_DECLARE_METATYPE_TEMPLATE_1ARG(DbData) //ogarnac jak sie dostawac do wartosci
 
 using ConstIntData = ConstDbData<int>;
 using ConstStrData = ConstDbData<QString>;

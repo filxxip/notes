@@ -42,7 +42,7 @@ ColumnLayout {
             ButtonText {
                 Layout.fillWidth: true
                 contentText: "new account"
-                onCustomReleased: logController.setLoginActive(false)
+                onCustomReleased: logController.loginActive = false
                 height: parent.height
             }
             ButtonText {
@@ -51,6 +51,7 @@ ColumnLayout {
                 height: parent.height
                 onCustomClicked: {
                     passwordEntry.passwordStatus = false
+                    myController.myModel.name += "el"
                 }
                 onCustomReleased: {
                     passwordEntry.passwordStatus = true

@@ -6,9 +6,16 @@ Rectangle {
     property string placeholder
     property alias textInput: textInput
 
-    //    border.color: myController.myModel.color
-    radius: 10
-
+    border.color: myController.myModel.color
+    //    radius: myController.myModel.somevalue.get
+    //    radius: myController.myData
+    Component.onCompleted: {
+        myController.myModel.intdata.value = 10
+        console.log(myController.myModel.some)
+        console.log(myController.myData)
+        console.log(myController.myModel.some.value)
+        console.log(myController.myModel.intdata.value)
+    }
     TextInput {
         clip: true
         id: textInput
@@ -21,9 +28,9 @@ Rectangle {
         passwordCharacter: "*"
         echoMode: outerRect.passwordStatus ? TextInput.Password : TextInput.Normal
         Text {
-            //            text : myController.myModel.name
-            text: outerRect.placeholder
+            text: myController.myModel.name
 
+            //            text: outerRect.placeholder
             visible: !textInput.text
             verticalAlignment: parent.verticalAlignment
             anchors.fill: parent

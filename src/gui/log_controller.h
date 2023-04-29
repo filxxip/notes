@@ -1,18 +1,19 @@
 #pragma once
 
 #include <QObject>
+#include <QPointer>
+#include "registerboxmodel.h"
 
-class LogController : public QObject{
-  Q_OBJECT
-  Q_PROPERTY(bool loginActive READ loginActive WRITE setLoginActive NOTIFY loginActiveChanged)
-public:
-  bool loginActive() const;
+class LogController : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(bool loginActive MEMBER m_loginActive NOTIFY loginActiveChanged)
+    Q_PROPERTY(RegisterViewModel *registerModel MEMBER registerModel CONSTANT)
 
-  Q_INVOKABLE void setLoginActive(bool loginActive);
+signals:
+    void loginActiveChanged();
 
-  signals:
-  void loginActiveChanged();
-
-  private:
-  bool m_loginActive;
+private:
+    bool m_loginActive;
+    QPointer<RegisterViewModel> registerModel = new RegisterViewModel();
 };

@@ -22,9 +22,7 @@ Row {
 
             color: rectangleRow.leftIsClicked ? "black" : "grey"
         }
-        onReleased: {
-            rectangleRow.leftClicked()
-        }
+        onReleased: rectangleRow.leftClicked()
     }
     Button {
         id: rightButton
@@ -36,8 +34,6 @@ Row {
             radius: 10
             color: rectangleRow.leftIsClicked ? "grey" : "black"
         }
-        onReleased: {
-            rectangleRow.rightClicked()
-        }
+        onReleased: rectangleRow.rightClicked()
     }
 }

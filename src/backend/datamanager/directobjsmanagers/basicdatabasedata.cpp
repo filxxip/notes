@@ -33,12 +33,12 @@ BaseData<T>::BaseData(QString name)
     : __name__(std::move(name))
 {}
 
-template<typename T>
-BaseData<T> &BaseData<T>::operator=(T other) noexcept
-{
-    set(std::move(other));
-    return *this;
-}
+//template<typename T>
+//BaseData<T> &BaseData<T>::operator=(T other) noexcept
+//{
+//    set(std::move(other));
+//    return *this;
+//}
 
 template<typename T>
 const QString &BaseData<T>::getName() const

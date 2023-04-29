@@ -24,6 +24,10 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/mycontroller.cpp
     src/gui/log_controller.cpp
     src/gui/log_controller.h
+    src/gui/customlistviewmodel.cpp
+    src/gui/customlistviewmodel.h
+    src/gui/registerboxmodel.cpp
+    src/gui/registerboxmodel.h
     src/backend/datamanager/dataclient.h
 
     src/backend/datamanager/filedataclient.cpp
