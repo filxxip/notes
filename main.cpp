@@ -19,6 +19,7 @@
 #include "src/backend/datamanager/filedataclient.h"
 #include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/backend/datamanager/serverdataclient.h"
+#include "src/gui/customlistviewmodel.h"
 #include <chrono>
 #include <memory>
 #define RUN_QML 1
@@ -37,6 +38,17 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     qmlRegisterUncreatableMetaObject(Statuses::staticMetaObject, "Statuses", 1, 0, "Statuses", "");
+    qmlRegisterUncreatableType<CustomType>("QMLAbstractModelListItems",
+                                           1,
+                                           0,
+                                           "CustomType",
+                                           "Not createable from qml");
+    qmlRegisterUncreatableType<CustomQVariant>("QMLAbstractModelListItems",
+                                               1,
+                                               0,
+                                               "CustomQVariant",
+                                               "Not createable from qml");
+    qRegisterMetaType<CustomType>();
     //    qRegisterMetaType<DbData<int>>("DbData<int>");
 
     auto myController = new MyController();

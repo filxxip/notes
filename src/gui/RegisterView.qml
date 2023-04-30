@@ -14,24 +14,26 @@ ColumnLayout {
     Column {
         spacing: 10
         ListView {
+            id: listview
             interactive: false
-            spacing: 20
-            height: 200
+            spacing: 12
             width: GUIConfig.userView.defaultEntryWidth
+            implicitHeight: contentHeight
             model: logController.registerModel
             delegate: EntryField {
-                width: ListView.view.width // Set the width to fill the available space
-                height: 30
+                id: entry
+                width: GUIConfig.userView.defaultEntryWidth // Set the width to fill the available space
+                height: 200 / listview.count
+                customcolor: model.color
                 placeholder: model.placeholder //poszukac tabulator i ten size zeby jakos automatycznie a nie liczbowo, jakos pomyslec z wyslaniem sygnalu  do updatu, moze tak ze index plus content i tam sobie stworze obiekt person(albo nie) i posprawdzam czy email git i haslo
                 //jesli nie to wtedy jakis kolorek poprzez wyslanie sygnalu(moze zmienna sympolizujaca aktywny czerwony kolor qproperty) a jesli git to trzeba sie odezwac do managera servera z prosba o dodanie.
                 //i wiadomo tez musze zrobic fajny wybor birthday, jakies scrollbary czy cos takiego
-
-                //                Keys.onTabPressed: {
-                //                    var nextItem = myRepeater.itemAt(index + 1)
-                //                    if (nextItem) {
-                //                        nextItem.textInput.forceActiveFocus()
-                //                    }
-                //                }
+                Keys.onTabPressed: listview.incrementCurrentIndex()
+                function onRegisterConfirmEnter() {
+                    model.value = entry.text
+                }
+                Component.onCompleted: logController.registerConfirmEnter.connect(
+                                           onRegisterConfirmEnter)
             }
         }
 
@@ -55,7 +57,12 @@ ColumnLayout {
         Layout.alignment: Qt.AlignHCenter
         CustomButton {
             contentText: "Register"
+            enabled: logController.registeringPossible
             anchors.fill: parent
+            onReleased: {
+                logController.registerConfirmEnter()
+                logController.registerObjectInModel()
+            }
         }
     }
 }

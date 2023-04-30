@@ -3,7 +3,7 @@
 
 template<typename T>
 CustomListModel<T>::CustomListModel::CustomListModel(QObject *parent)
-    : QAbstractListModel(parent)
+    : SomeInvocableClass(parent)
 {}
 
 template<typename T>
@@ -27,12 +27,18 @@ QHash<int, QByteArray> CustomListModel<T>::roleNames() const
 template<typename T>
 QVariant CustomListModel<T>::data(const QModelIndex &index, int role) const
 {
-    if (index.row() < 0 || index.row() >= m_data.count() || !activities.contains(role)) {
+    if (index.row() < 0 || index.row() >= m_data.count() || !getterActivities.contains(role)) {
         return QVariant();
     }
 
     const T &entry = m_data.at(index.row());
-    return activities[role](entry);
+    return getterActivities[role](entry);
+}
+
+template<typename T>
+QVariant CustomListModel<T>::data(int index, int role) const
+{
+    return data(this->index(index), role);
 }
 
 template class CustomListModel<EntryFieldModel>;
