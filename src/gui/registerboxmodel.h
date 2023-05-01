@@ -18,7 +18,7 @@ class RegisterViewModel : public CustomListModel<EntryFieldModel>
     Q_OBJECT
 
 public:
-    enum Roles { PLACEHOLDER, VALUE, COLOR, PASS_STATUS };
+    enum Roles { PLACEHOLDER = 0, VALUE, COLOR, PASS_STATUS };
 
     RegisterViewModel(QObject *parent = nullptr)
         : CustomListModel(parent)

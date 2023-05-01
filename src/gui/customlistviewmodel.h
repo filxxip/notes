@@ -1,6 +1,10 @@
 #pragma once
 #include <QAbstractListModel>
+#include <QMap>
+#include <QObject>
 #include <QPointer>
+#include <QProperty>
+#include <QQmlPropertyMap>
 #include <QSharedPointer>
 #include <QVariantMap>
 #include <functional>
@@ -30,6 +34,31 @@ std::function<void(T &, const QVariant &)> makeUpdateFunction(ReturnType T::*met
 
 //};
 
+class MyCustomClass : public QObject
+{
+    Q_OBJECT
+public:
+    explicit MyCustomClass(QObject *parent = nullptr)
+        : QObject(parent)
+    {}
+
+    QVariantMap properties;
+
+    Q_INVOKABLE void set(const QString &key, const QVariant &value)
+    {
+        if (properties.value(key) != value) {
+            properties[key] = value;
+            emit propertyChanged(key);
+        }
+    }
+
+    Q_INVOKABLE QVariant get(const QString &key) const { return properties.value(key); }
+
+    Q_INVOKABLE QVariant operator[](const QString &key) const { return get(key); }
+
+signals:
+    void propertyChanged(const QString &key);
+};
 class CustomQVariant : public QVariant
 {
     QAbstractListModel *model;
@@ -47,7 +76,7 @@ public:
     }
 };
 
-class CustomType : public QMap<QString, QVariant>
+class CustomType : public QVariantMap
 {
     QAbstractListModel *model;
     int customindex;
@@ -71,7 +100,7 @@ public:
         //        QMap<QString, QVariant>::insert(key, value);
         return QVariant();
     }
-    QVariant &operator[](const QString &key)
+    Q_INVOKABLE QVariant &operator[](QVariant key)
     {
         qDebug() << "wchodze tututututut" << key;
         //        CustomQVariant variant;
@@ -84,7 +113,7 @@ public:
         //        variant.setModel(model);
         //        QMap<QString, QVariant>::insert(key, value);
         auto varr = QVariant();
-        return QMap::operator[](key);
+        return QMap::operator[](key.value<QString>());
     }
 };
 
@@ -92,41 +121,85 @@ Q_DECLARE_METATYPE(CustomType)
 
 Q_DECLARE_METATYPE(CustomQVariant)
 
-class SomeInvocableClass : public QAbstractListModel
+class MyMap : public QObject
 {
     Q_OBJECT
 
-    int customindex;
-    QSharedPointer<QVariantMap> attributes = QSharedPointer<QVariantMap>::
-        create(); //ta mapa musi zawierac odnosnik do customlistmodel, emitacja sygnalu odbieranego przez custolismodel
+    //    Q_PROPERTY(QVariant operator[] READ getAtIndex NOTIFY isInserted)
+
+public slots:
+    void insert(QString key, QVariant value)
+    {
+        _map.insert(key, value);
+        emit isInserted(value);
+    }
 
 public:
-    using QAbstractListModel::QAbstractListModel;
-
-    Q_INVOKABLE void meth() { qDebug() << "Hello world"; }
-
-    //    Q_INVOKABLE QSharedPointer<QVariantMap> getmap() const
-    //    {
-    //        qDebug() << attributes;
-    //        //        QVariantMap map;
-    //        //        map.insert("key1", 10);
-    //        //        map.insert("key2", 12);
-    //        //        return map;
-    //        return attributes;
-    //    }
-    Q_INVOKABLE QMap<QString, QVariant> *get(
-        int index) //zadeklarowac enuma i wywolywac po prostu metode set jako q invokable
+    using QObject::QObject;
+    Q_INVOKABLE QVariant operator[](QString key) const
     {
-        qDebug() << "plisss";
-        CustomType *customtype = new CustomType();
-        customtype->setModel(this);
-        customtype->setIndex(index);
-        return customtype;
+        qDebug() << "prosze a";
+        return _map.operator[](key);
+    }
+
+    Q_INVOKABLE QVariant &method(const QString &key)
+    {
+        qDebug() << "prosze a";
+        return _map.operator[](key);
+    }
+signals:
+    void isInserted(QVariant key);
+
+private:
+    QMap<QString, QVariant> _map;
+};
+
+class AbstractListModelInvokableClass : public QAbstractListModel
+{
+    Q_OBJECT
+    int customindex;
+    QSharedPointer<QQmlPropertyMap> propertyMap = QSharedPointer<QQmlPropertyMap>();
+
+private slots:
+    void onMapUpdated(const QString &key, const QVariant &value)
+    {
+        auto id = getKeyByName(key);
+        if (id.has_value()) {
+            setData(index(customindex), value, id.value());
+            propertyMap.clear();
+        } else {
+            qDebug() << "Property undefined : " << key;
+        }
+    }
+
+protected:
+    virtual std::optional<int> getKeyByName(const QString &name) = 0;
+
+public:
+    AbstractListModelInvokableClass(QObject *parent = nullptr)
+        : QAbstractListModel(parent)
+    {
+        connect(propertyMap.data(),
+                &QQmlPropertyMap::valueChanged,
+                this,
+                &AbstractListModelInvokableClass::onMapUpdated);
+    }
+
+    Q_INVOKABLE MyCustomClass *get(int elementIndex)
+    {
+        MyCustomClass *t = new MyCustomClass();
+        customindex = elementIndex;
+        return t;
+    }
+    Q_INVOKABLE bool update(int indexxx, const QVariant &value, int role)
+    {
+        qDebug() << "XDDD";
+        return setData(index(indexxx), value, role);
     }
 };
 
 template<typename T>
-class CustomListModel : public SomeInvocableClass
+class CustomListModel : public AbstractListModelInvokableClass
 {
 protected:
     using TemplateType = T;
@@ -138,6 +211,17 @@ protected:
     QHash<int, std::function<QVariant(const T &)>> getterActivities;
 
     QHash<int, std::function<void(T &, const QVariant &)>> updateActivities;
+
+    std::optional<int> getKeyByName(const QString &name)
+    {
+        auto hashmap = roleNames();
+        for (auto keys = names.keys(); const auto &key : keys) {
+            if (hashmap[key] == name) {
+                return key;
+            }
+        }
+        return std::nullopt;
+    }
 
 public:
     explicit CustomListModel(QObject *parent = nullptr);

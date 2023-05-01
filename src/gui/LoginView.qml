@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
+import Statuses 1.0
 
 ColumnLayout {
     spacing: 40
@@ -76,7 +77,9 @@ ColumnLayout {
                 Keys.onTabPressed: listview.incrementCurrentIndex()
                 Component.onCompleted: {
                     console.log(logController.registerModel.get(0).value)
-                    logController.registerModel.meth()
+                    console.log(logController.registerModel.get(0)["value"])
+                    console.log(logController.registerModel.get(0)[value])
+                    //                    logController.registerModel.meth()
                     console.log(model + "xxx")
                 }
 
@@ -104,14 +107,18 @@ ColumnLayout {
                 Layout.fillWidth: true
                 height: parent.height
                 onCustomClicked: {
-                    console.log(logController.loginModel)
-                    logController.loginModel.items.get(1).passwordStatus = false
-                    listview.model.get(1).passwordStatus = false
-                    logController.loginModel[1].passwordStatus = false
-                    myController.myModel.name += "el"
+                    console.log(logController.loginModel.update)
+                    logController.loginModel.update(0, "Helll",
+                                                    Statuses.Roles.PLACEHOLER)
+                    //                    console.log(logController.loginModel)
+                    //                    logController.loginModel.items.get(1).passwordStatus = false
+                    //                    listview.model.get(1).passwordStatus = false
+                    //                    logController.loginModel[1].passwordStatus = false
+                    //                    myController.myModel.name += "el"
                 }
                 onCustomReleased: {
-                    logController.loginModel.at(1).passwordStatus = true
+
+                    //                    logController.loginModel.at(1).passwordStatus = true
                 }
             }
         }
@@ -125,6 +132,7 @@ ColumnLayout {
         CustomButton {
             contentText: "LOGIN"
             anchors.fill: parent
+            onReleased: logController.registerModel.get(0).valuexd = "something"
         }
     }
 }

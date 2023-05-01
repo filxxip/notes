@@ -3,7 +3,7 @@
 
 template<typename T>
 CustomListModel<T>::CustomListModel::CustomListModel(QObject *parent)
-    : SomeInvocableClass(parent)
+    : AbstractListModelInvokableClass(parent)
 {}
 
 template<typename T>
