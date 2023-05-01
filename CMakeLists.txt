@@ -75,7 +75,6 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/qmldir
         src/gui/TitleBox.qml
         src/gui/SwitchButton.qml
-        src/gui/LoginRepeater.qml
         src/gui/CloseButton.qml
 
 )

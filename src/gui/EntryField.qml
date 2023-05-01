@@ -6,31 +6,23 @@ FocusScope {
     property string placeholder
     property color customcolor
     readonly property alias text: textInput.text
+
     Rectangle {
         id: outerRect
         anchors.fill: parent
         border.color: myController.myModel.color
         radius: 6
-        //    radius: myController.myModel.somevalue.get
-        //    radius: myController.myData
-        //        Component.onCompleted: {
-        //            myController.myModel.intdata.value = 10
-        //            console.log(myController.myModel.some)
-        //            console.log(myController.myData)
-        //            console.log(myController.myModel.some.value)
-        //            console.log(myController.myModel.intdata.value)
-        //        }
         TextInput {
             clip: true
             id: textInput
             width: parent.width
             height: parent.height
             anchors.fill: parent
-            anchors.leftMargin: 0.05 * parent.width
-            anchors.rightMargin: 0.05 * parent.width
+            anchors.leftMargin: GUIConfig.userView.marginRatio * parent.width
+            anchors.rightMargin: GUIConfig.userView.marginRatio * parent.width
             verticalAlignment: TextInput.AlignVCenter
-            passwordCharacter: "*"
-            echoMode: outerRect.passwordStatus ? TextInput.Password : TextInput.Normal
+            passwordCharacter: GUIConfig.userView.passwordCharakter
+            echoMode: root.passwordStatus ? TextInput.Password : TextInput.Normal
             focus: true
             Text {
                 text: root.placeholder

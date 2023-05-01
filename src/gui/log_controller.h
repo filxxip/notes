@@ -20,16 +20,16 @@ public:
         : QObject()
     {
         QVector<EntryFieldModel> dataRegister;
-        dataRegister.push_back(EntryFieldModel{Statuses::PersonComponents::NAME, "Name..."});
-        dataRegister.push_back(EntryFieldModel{Statuses::PersonComponents::SURNAME, "Surname..."});
-        dataRegister.push_back(EntryFieldModel{Statuses::PersonComponents::EMAIL, "Email..."});
-        dataRegister.push_back(EntryFieldModel{Statuses::PersonComponents::PASSWORD, "Password..."});
-        dataRegister.push_back(EntryFieldModel{Statuses::PersonComponents::COUNTRY, "Country..."});
+        dataRegister.push_back(EntryFieldModel{ModelStatuses::PersonComponents::NAME, "Name..."});
+        dataRegister.push_back(EntryFieldModel{ModelStatuses::PersonComponents::SURNAME, "Surname..."});
+        dataRegister.push_back(EntryFieldModel{ModelStatuses::PersonComponents::EMAIL, "Email..."});
+        dataRegister.push_back(EntryFieldModel{ModelStatuses::PersonComponents::PASSWORD, "Password..."});
+        dataRegister.push_back(EntryFieldModel{ModelStatuses::PersonComponents::COUNTRY, "Country..."});
         registerModel->setEntries(std::move(dataRegister));
 
         QVector<EntryFieldModel> dataLogin;
-        dataLogin.push_back(EntryFieldModel{Statuses::PersonComponents::EMAIL, "Login..."});
-        auto entry = EntryFieldModel{Statuses::PersonComponents::PASSWORD, "Password..."};
+        dataLogin.push_back(EntryFieldModel{ModelStatuses::PersonComponents::EMAIL, "Login..."});
+        auto entry = EntryFieldModel{ModelStatuses::PersonComponents::PASSWORD, "Password..."};
         entry.passwordStatus = true;
         dataLogin.push_back(std::move(entry));
         loginModel->setEntries(std::move(dataLogin));
@@ -58,7 +58,7 @@ private:
 private slots:
     void onRegisteringModel()
     {
-        int passIndex = registerModel->indexOf(Statuses::PersonComponents::PASSWORD);
+        int passIndex = registerModel->indexOf(ModelStatuses::PersonComponents::PASSWORD);
         auto password = registerModel->data(passIndex, RegisterViewModel::COLOR).value<QString>();
         if (std::none_of(password.begin(), password.end(), [](const QChar &ch) {
                 return ch.isUpper();

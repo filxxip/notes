@@ -6,7 +6,7 @@
 
 struct EntryFieldModel
 {
-    Statuses::PersonComponents componentEnum;
+    ModelStatuses::PersonComponents componentEnum;
     QString placeholder;
     QString value = "";
     QColor color = "red";
@@ -24,11 +24,11 @@ public:
         : CustomListModel(parent)
     {
         //        QVector<EntryFieldModel> data;
-        //        data.push_back(EntryFieldModel{Statuses::PersonComponents::NAME, "Name..."});
-        //        data.push_back(EntryFieldModel{Statuses::PersonComponents::SURNAME, "Surname..."});
-        //        data.push_back(EntryFieldModel{Statuses::PersonComponents::EMAIL, "Email..."});
-        //        data.push_back(EntryFieldModel{Statuses::PersonComponents::PASSWORD, "Password..."});
-        //        data.push_back(EntryFieldModel{Statuses::PersonComponents::COUNTRY, "Country..."});
+        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::NAME, "Name..."});
+        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::SURNAME, "Surname..."});
+        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::EMAIL, "Email..."});
+        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::PASSWORD, "Password..."});
+        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::COUNTRY, "Country..."});
         //        setEntries(std::move(data));
         ADD_DATA(PLACEHOLDER, placeholder)
         ADD_DATA(VALUE, value)
@@ -42,7 +42,7 @@ public:
     //        //        endResetModel();
     //    }
 
-    int indexOf(Statuses::PersonComponents componentEnum)
+    int indexOf(ModelStatuses::PersonComponents componentEnum)
     {
         auto dist = std::distance(m_data.begin(),
                                   std::find_if(m_data.begin(),

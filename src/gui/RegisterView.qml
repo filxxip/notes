@@ -3,32 +3,33 @@ import QtQuick.Layouts 1.15
 
 ColumnLayout {
     Component.onCompleted: anchors.centerIn = parent
-    spacing: 30
+    spacing: GuiConfig.userView.registerView.layoutSpacing
     width: GUIConfig.userView.defaultEntryWidth
 
     TitleBox {
-        title: "Sign up"
+        title: GuiConfig.userView.registerView.titleContent
         width: GUIConfig.userView.defaultEntryWidth
-        height: 50
+        height: GuiConfig.userView.titleHeight
     }
     Column {
-        spacing: 10
+        spacing: GuiConfig.userView.registerView.columnSpacing
         ListView {
             id: listview
             interactive: false
-            spacing: 12
+            spacing: GuiConfig.userView.registerView.listViewSpacing
             width: GUIConfig.userView.defaultEntryWidth
             implicitHeight: contentHeight
             model: logController.registerModel
             delegate: EntryField {
                 id: entry
+                activeFocusOnTab: true
                 width: GUIConfig.userView.defaultEntryWidth // Set the width to fill the available space
-                height: 200 / listview.count
+                height: GuiConfig.userView.registerView.combinedHeight / listview.count
                 customcolor: model.color
                 placeholder: model.placeholder //poszukac tabulator i ten size zeby jakos automatycznie a nie liczbowo, jakos pomyslec z wyslaniem sygnalu  do updatu, moze tak ze index plus content i tam sobie stworze obiekt person(albo nie) i posprawdzam czy email git i haslo
                 //jesli nie to wtedy jakis kolorek poprzez wyslanie sygnalu(moze zmienna sympolizujaca aktywny czerwony kolor qproperty) a jesli git to trzeba sie odezwac do managera servera z prosba o dodanie.
                 //i wiadomo tez musze zrobic fajny wybor birthday, jakies scrollbary czy cos takiego
-                Keys.onTabPressed: listview.incrementCurrentIndex()
+                //                Keys.onTabPressed: listview.incrementCurrentIndex()
                 function onRegisterConfirmEnter() {
                     model.value = entry.text
                 }
@@ -37,11 +38,6 @@ ColumnLayout {
             }
         }
 
-        //        LoginRepeater {
-        //            model: ["Name...", "Surname...", "Email...", "Password...", "Country...", "Birthday..."]
-        //            customEntryHeight: 30
-        //            customEntryWidth: GUIConfig.userView.defaultEntryWidth
-        //        }
         ButtonText {
             contentText: "have account? Log in!"
             width: GUIConfig.userView.defaultEntryWidth

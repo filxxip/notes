@@ -5,13 +5,13 @@ Rectangle {
     signal customClicked
     signal customReleased
     property string contentText
-    color: "transparent"
+    color: GUIConfig.colors.transparent
 
     Text {
         id: textField
         text: parent.contentText
 
-        color: mouseArea.pressed ? "#ac28ed" : "black"
+        color: mouseArea.pressed ? GUIConfig.colors.purple : GUIConfig.colors.black
         anchors.centerIn: parent
         MouseArea {
             id: mouseArea

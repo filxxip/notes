@@ -17,28 +17,11 @@
 //    QColor myColor = Qt::yellow;
 //};
 
-class CustomModel
-{
-    Q_GADGET
-};
-
-struct SomeClass
-{
-    Q_GADGET
-
-    Q_PROPERTY(int value MEMBER value CONSTANT)
-public:
-    int value;
-};
-
-Q_DECLARE_METATYPE(SomeClass)
-
 class MyModel
 {
     Q_GADGET
     Q_PROPERTY(QColor color MEMBER color CONSTANT)
     Q_PROPERTY(QString name MEMBER name CONSTANT)
-    Q_PROPERTY(SomeClass some MEMBER some CONSTANT)
     Q_PROPERTY(MyIntData *intdata MEMBER intdata CONSTANT)
 
     //    Q_PROPERTY(ConstIntData somevalue MEMBER somevalue CONSTANT)
@@ -46,7 +29,6 @@ public:
     MyIntData *intdata = new MyIntData("name");
     QColor color = Qt::darkBlue;
     QString name = "Hello world";
-    SomeClass some{2};
     //    ConstIntData somevalue{"vvv"};
 };
 Q_DECLARE_METATYPE(MyModel)

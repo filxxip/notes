@@ -37,19 +37,12 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    qmlRegisterUncreatableMetaObject(Statuses::staticMetaObject, "Statuses", 1, 0, "Statuses", "");
-    qmlRegisterUncreatableType<CustomType>("QMLAbstractModelListItems",
-                                           1,
-                                           0,
-                                           "CustomType",
-                                           "Not createable from qml");
-    qmlRegisterUncreatableType<CustomQVariant>("QMLAbstractModelListItems",
-                                               1,
-                                               0,
-                                               "CustomQVariant",
-                                               "Not createable from qml");
-    qRegisterMetaType<CustomType>();
-    //    qRegisterMetaType<DbData<int>>("DbData<int>");
+    qmlRegisterUncreatableMetaObject(ModelStatuses::staticMetaObject,
+                                     "ModelStatuses",
+                                     1,
+                                     0,
+                                     "ModelStatuses",
+                                     "");
 
     auto myController = new MyController();
     auto logController = new LogController();

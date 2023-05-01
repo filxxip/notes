@@ -4,9 +4,6 @@
 #include <QObject>
 #include <QPointer>
 #include <QProperty>
-#include <QQmlPropertyMap>
-#include <QSharedPointer>
-#include <QVariantMap>
 #include <functional>
 
 #define ADD_DATA(role, name) addPart(role, &TemplateType::name, #name);
@@ -27,175 +24,38 @@ std::function<void(T &, const QVariant &)> makeUpdateFunction(ReturnType T::*met
         object.*method = variant.value<ReturnType>();
     };
 }
-
 } // namespace
 
-//class CustomQVariantList : public QVariantMap{
-
-//};
-
-class MyCustomClass : public QObject
-{
-    Q_OBJECT
-public:
-    explicit MyCustomClass(QObject *parent = nullptr)
-        : QObject(parent)
-    {}
-
-    QVariantMap properties;
-
-    Q_INVOKABLE void set(const QString &key, const QVariant &value)
-    {
-        if (properties.value(key) != value) {
-            properties[key] = value;
-            emit propertyChanged(key);
-        }
-    }
-
-    Q_INVOKABLE QVariant get(const QString &key) const { return properties.value(key); }
-
-    Q_INVOKABLE QVariant operator[](const QString &key) const { return get(key); }
-
-signals:
-    void propertyChanged(const QString &key);
-};
-class CustomQVariant : public QVariant
-{
-    QAbstractListModel *model;
-    int customindex;
-    int role;
-
-public:
-    using QVariant::QVariant;
-    void setRole(int role) { this->role = role; }
-    void setModel(QAbstractListModel *model) { this->model = model; }
-    QVariant &operator=(QVariant &qvariant)
-    {
-        model->setData(model->index(customindex), qvariant, role);
-        return *this;
-    }
-};
-
-class CustomType : public QVariantMap
-{
-    QAbstractListModel *model;
-    int customindex;
-
-public:
-    using QMap::QMap;
-
-    void setModel(QAbstractListModel *model) { this->model = model; }
-    void setIndex(int id) { customindex = id; }
-    QVariant insert(const QString &key, const QVariant &value)
-    {
-        qDebug() << "wchodze tututututut" << value;
-        //        CustomQVariant variant;
-        //        auto hashmap = model->roleNames();
-        //        for (auto keys = hashmap.keys(); const auto &key : keys) {
-        //            if (hashmap[key] == role) {
-        //                variant.setRole(key);
-        //            }
-        //        }
-        //        variant.setModel(model);
-        //        QMap<QString, QVariant>::insert(key, value);
-        return QVariant();
-    }
-    Q_INVOKABLE QVariant &operator[](QVariant key)
-    {
-        qDebug() << "wchodze tututututut" << key;
-        //        CustomQVariant variant;
-        //        auto hashmap = model->roleNames();
-        //        for (auto keys = hashmap.keys(); const auto &key : keys) {
-        //            if (hashmap[key] == role) {
-        //                variant.setRole(key);
-        //            }
-        //        }
-        //        variant.setModel(model);
-        //        QMap<QString, QVariant>::insert(key, value);
-        auto varr = QVariant();
-        return QMap::operator[](key.value<QString>());
-    }
-};
-
-Q_DECLARE_METATYPE(CustomType)
-
-Q_DECLARE_METATYPE(CustomQVariant)
-
-class MyMap : public QObject
+class AdapterForQmlModelObject : public QObject
 {
     Q_OBJECT
 
-    //    Q_PROPERTY(QVariant operator[] READ getAtIndex NOTIFY isInserted)
+    QAbstractListModel *model;
 
-public slots:
-    void insert(QString key, QVariant value)
-    {
-        _map.insert(key, value);
-        emit isInserted(value);
-    }
+    QModelIndex currentIndex;
 
 public:
-    using QObject::QObject;
-    Q_INVOKABLE QVariant operator[](QString key) const
-    {
-        qDebug() << "prosze a";
-        return _map.operator[](key);
-    }
+    AdapterForQmlModelObject(QAbstractListModel *modelPointer);
 
-    Q_INVOKABLE QVariant &method(const QString &key)
-    {
-        qDebug() << "prosze a";
-        return _map.operator[](key);
-    }
-signals:
-    void isInserted(QVariant key);
+    void setCurrentIndex(QModelIndex currentIndex);
 
-private:
-    QMap<QString, QVariant> _map;
+    Q_INVOKABLE QVariant get(int role) const;
+
+    Q_INVOKABLE bool update(const QVariant &variant, int role);
 };
 
 class AbstractListModelInvokableClass : public QAbstractListModel
 {
     Q_OBJECT
-    int customindex;
-    QSharedPointer<QQmlPropertyMap> propertyMap = QSharedPointer<QQmlPropertyMap>();
 
-private slots:
-    void onMapUpdated(const QString &key, const QVariant &value)
-    {
-        auto id = getKeyByName(key);
-        if (id.has_value()) {
-            setData(index(customindex), value, id.value());
-            propertyMap.clear();
-        } else {
-            qDebug() << "Property undefined : " << key;
-        }
-    }
-
-protected:
-    virtual std::optional<int> getKeyByName(const QString &name) = 0;
+    AdapterForQmlModelObject *model;
 
 public:
-    AbstractListModelInvokableClass(QObject *parent = nullptr)
-        : QAbstractListModel(parent)
-    {
-        connect(propertyMap.data(),
-                &QQmlPropertyMap::valueChanged,
-                this,
-                &AbstractListModelInvokableClass::onMapUpdated);
-    }
+    AbstractListModelInvokableClass(QObject *object);
 
-    Q_INVOKABLE MyCustomClass *get(int elementIndex)
-    {
-        MyCustomClass *t = new MyCustomClass();
-        customindex = elementIndex;
-        return t;
-    }
-    Q_INVOKABLE bool update(int indexxx, const QVariant &value, int role)
-    {
-        qDebug() << "XDDD";
-        return setData(index(indexxx), value, role);
-    }
+    virtual ~AbstractListModelInvokableClass() { delete model; }
+
+    Q_INVOKABLE AdapterForQmlModelObject *get(int elementIndex);
 };
 
 template<typename T>
@@ -212,17 +72,6 @@ protected:
 
     QHash<int, std::function<void(T &, const QVariant &)>> updateActivities;
 
-    std::optional<int> getKeyByName(const QString &name)
-    {
-        auto hashmap = roleNames();
-        for (auto keys = names.keys(); const auto &key : keys) {
-            if (hashmap[key] == name) {
-                return key;
-            }
-        }
-        return std::nullopt;
-    }
-
 public:
     explicit CustomListModel(QObject *parent = nullptr);
 
@@ -230,7 +79,9 @@ public:
 
     void setEntries(QVector<T> vector);
 
-    QHash<int, QByteArray> roleNames() const;
+    void addEntry(T element);
+
+    QHash<int, QByteArray> roleNames() const override;
 
     template<typename ReturnType>
     CustomListModel &addPart(int role, ReturnType T::*attributeProperty, const QByteArray &name)
@@ -241,20 +92,12 @@ public:
         return *this;
     }
 
-    QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, int role) const override;
 
     QVariant data(int index, int role) const;
 
-    bool setData(const QModelIndex &index, const QVariant &value, int role) override
-    {
-        if (index.row() < 0 || index.row() >= m_data.count() || !updateActivities.contains(role)) {
-            return false;
-        }
-        T &entry = m_data[index.row()];
-        updateActivities[role](entry, value);
-        emit dataChanged(index, index); // <- this does not trigger a recompution of the view
-        return true;
-    }
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+
     template<typename ValueType>
     bool setData(int indexvalue, const ValueType &value, int role)
     {

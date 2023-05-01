@@ -1,7 +1,7 @@
 import QtQuick 2.15
 
 Rectangle {
-    color: "transparent"
+    color: GUIConfig.colors.transparent
     property string title
     Text {
         id: innerText

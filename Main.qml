@@ -23,18 +23,16 @@ Window {
     visible: true
 
     Column {
-        spacing: 50
+        spacing: 30
         anchors.centerIn: parent
         SwitchButton {
             id: switcher
-            width: GUIConfig.userView.defaultEntryWidth - 20
             anchors.horizontalCenter: parent.horizontalCenter
-            height: 40
-            leftButtontext: "Log in"
-            rightButtonText: "Sign up"
             leftIsClicked: logController.loginActive
             onLeftClicked: logController.loginActive = true
             onRightClicked: logController.loginActive = false
+
+            mydata: GUIConfig.switchbutton
         }
         Rectangle {
             width: GUIConfig.userView.defaultEntryWidth + 100
