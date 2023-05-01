@@ -9,24 +9,24 @@ ColumnLayout {
     signal clickedNewAccount
 
     TitleBox {
-        title: "Login"
+        title: GuiConfig.userView.loginView.titleContent
         width: GUIConfig.userView.defaultEntryWidth
         height: GuiConfig.userView.titleHeight
     }
 
     Column {
-        spacing: 12
+        spacing: GuiConfig.userView.loginView.columnSpacing
         ListView {
             id: listview
             interactive: false
-            spacing: 20
+            spacing: GuiConfig.userView.loginView.listViewSpacing
             width: GUIConfig.userView.defaultEntryWidth
             implicitHeight: contentHeight
             model: logController.loginModel
             delegate: EntryField {
                 id: entry
-                width: GUIConfig.userView.defaultEntryWidth // Set the width to fill the available space
-                height: 80 / listview.count
+                width: GUIConfig.userView.defaultEntryWidth
+                height: GuiConfig.userView.loginView.combinedHeight / listview.count
                 customcolor: model.color
                 placeholder: model.placeholder
                 passwordStatus: model.passwordStatus
@@ -36,17 +36,17 @@ ColumnLayout {
 
         RowLayout {
             width: GUIConfig.userView.defaultEntryWidth
-            height: 40
-            spacing: 30
+            height: GuiConfig.userView.loginView.accessRegisterButtonHeight
+            spacing: GuiConfig.userView.loginView.accessRegisterButtonSpacing
 
             ButtonText {
                 Layout.fillWidth: true
-                contentText: "new account"
+                contentText: GuiConfig.userView.loginView.accessRegisterText
                 onCustomReleased: logController.loginActive = false
                 height: parent.height
             }
             ButtonText {
-                contentText: "show password"
+                contentText: GuiConfig.userView.loginView.showPasswordText
                 Layout.fillWidth: true
                 height: parent.height
                 property var element: logController.loginModel.get(1)
@@ -60,14 +60,13 @@ ColumnLayout {
     }
 
     Rectangle {
-        width: GUIConfig.userView.defaultEntryWidth * 0.3
-        height: 40
-        color: "transparent"
+        width: GUIConfig.userView.defaultEntryWidth * GUIConfig.userView.checkButtonRatio
+        height: GUIConfig.userView.checkButtonHeight
+        color: GuiConfig.colors.transparent
         Layout.alignment: Qt.AlignHCenter
         CustomButton {
-            contentText: "LOGIN"
+            contentText: GuiConfig.userView.loginView.checkContent
             anchors.fill: parent
-            onReleased: logController.registerModel.get(0).valuexd = "something"
         }
     }
 }

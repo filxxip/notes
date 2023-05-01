@@ -24,17 +24,28 @@ Item {
             readonly property int combinedHeight: 200
             readonly property int layoutSpacing: 30
             readonly property string titleContent: "Register"
+            readonly property string checkContent: "sign up"
+            readonly property string accessLoginText: "have account? Log in!"
+            property int accessLoginButtonHeight: 20
         }
-
+        readonly property var loginView: QtObject {
+            readonly property int listViewSpacing: 20
+            readonly property int columnSpacing: 12
+            readonly property int combinedHeight: 80
+            readonly property int layoutSpacing: 30
+            readonly property string titleContent: "Login"
+            readonly property string checkContent: "confirm"
+            readonly property string accessRegisterText: "new account"
+            readonly property string showPasswordText: "show password"
+            property int accessRegisterButtonHeight: 20
+            property int accessRegisterButtonSpacing: 30
+        }
+        readonly property real checkButtonRatio: 0.3
+        readonly property int checkButtonHeight: 40
         readonly property int defaultEntryWidth: 300
-        readonly property int defaultEntryHeight: 70
         readonly property real marginRatio: 0.05
-        readonly property string passwordCharakter: "#"
-        readonly property int loginSpacing: 20
-        readonly property int passwordSpacing: 12
         readonly property int titleHeight: 50
-        readonly property int combinedLoginHeight: 80
-        readonly property int combinedRegisterHeight: 200
+        readonly property real titleRatio: 0.8
     }
 
     QtObject {

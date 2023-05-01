@@ -12,6 +12,7 @@ Rectangle {
     }
     Component.onCompleted: {
 
-        innerText.font.pointSize = Math.min(width, height) * 0.8
+        innerText.font.pointSize = Math.min(
+                    width, height) * GUIConfig.userView.titleRatio
     }
 }

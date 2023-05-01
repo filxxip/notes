@@ -21,7 +21,7 @@ FocusScope {
             anchors.leftMargin: GUIConfig.userView.marginRatio * parent.width
             anchors.rightMargin: GUIConfig.userView.marginRatio * parent.width
             verticalAlignment: TextInput.AlignVCenter
-            passwordCharacter: GUIConfig.userView.passwordCharakter
+            passwordCharacter: GUIConfig.userView.registerView.passwordCharakter
             echoMode: root.passwordStatus ? TextInput.Password : TextInput.Normal
             focus: true
             Text {

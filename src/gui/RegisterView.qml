@@ -23,7 +23,7 @@ ColumnLayout {
             delegate: EntryField {
                 id: entry
                 activeFocusOnTab: true
-                width: GUIConfig.userView.defaultEntryWidth // Set the width to fill the available space
+                width: GUIConfig.userView.defaultEntryWidth
                 height: GuiConfig.userView.registerView.combinedHeight / listview.count
                 customcolor: model.color
                 placeholder: model.placeholder //poszukac tabulator i ten size zeby jakos automatycznie a nie liczbowo, jakos pomyslec z wyslaniem sygnalu  do updatu, moze tak ze index plus content i tam sobie stworze obiekt person(albo nie) i posprawdzam czy email git i haslo
@@ -39,20 +39,20 @@ ColumnLayout {
         }
 
         ButtonText {
-            contentText: "have account? Log in!"
+            contentText: GuiConfig.userView.registerView.accessLoginText
             width: GUIConfig.userView.defaultEntryWidth
-            height: 20
+            height: GuiConfig.userView.registerView.accessLoginButtonHeight
             onCustomReleased: logController.loginActive = true
         }
     }
 
     Rectangle {
-        width: GUIConfig.userView.defaultEntryWidth * 0.3
-        height: 40
-        color: "transparent"
+        width: GUIConfig.userView.defaultEntryWidth * GUIConfig.userView.checkButtonRatio
+        height: GUIConfig.userView.checkButtonHeight
+        color: GuiConfig.colors.transparent
         Layout.alignment: Qt.AlignHCenter
         CustomButton {
-            contentText: "Register"
+            contentText: GuiConfig.userView.registerView.checkContent
             enabled: logController.registeringPossible
             anchors.fill: parent
             onReleased: {
