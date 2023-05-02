@@ -1,19 +1,19 @@
 import datetime
-import json
 
+from .constants import api_data
 from flask import Flask
-from flask.json import JSONEncoder, JSONDecoder
+from flask.json import JSONEncoder
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = api_data.database_name
 
 
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
-            return obj.strftime('%Y-%m-%d-%H-%M-%S')
+            return obj.strftime(api_data.date_syntax)
         else:
             return super().default(obj)
 

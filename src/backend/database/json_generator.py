@@ -4,6 +4,8 @@ from typing_extensions import Type, TypeVar, Any
 
 from src.backend.database.tables import Base
 
+from .constants import information_texts
+
 _T = TypeVar("_T", bound=Any)
 
 
@@ -22,7 +24,7 @@ def _update_from_json(self, json_obj: str):
         if key in custom_dict and key in self.__json_attributes__:
             self.__setattr__(key, items[key])
         else:
-            raise AttributeError("Unsupported type: " + key)
+            raise AttributeError(information_texts.unsupportedType + key)
     return self
 
 
@@ -37,6 +39,7 @@ def _set_relevant_json_function(cls, attrs: list[str]):
 def apply_jsonify_content(*attrs: str):
     def wrapper(cls):
         _set_relevant_json_function(cls, list(attrs))
+
     return wrapper
 
 

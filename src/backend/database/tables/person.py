@@ -8,12 +8,12 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from src.backend.database.tables.base import Base
 from ..json_generator import auto_apply_jsonify_content
 from ..utils import set_conversion, convert_str_date_to_datetime
-
+from ..constants import tables_names
 
 @auto_apply_jsonify_content
 @set_conversion(birthday=convert_str_date_to_datetime)
 class Person(Base):
-    __tablename__ = "People"
+    __tablename__ = tables_names.peopleName
     id: Mapped[int] = mapped_column(
         Integer(), primary_key=True, nullable=False, autoincrement=True)
     name: Mapped[str] = mapped_column(String(50))

@@ -11,7 +11,6 @@ people_schema = {
     "additionalProperties": False
 }
 
-
 notes_schema = {
     "type": "object",
     "properties": {
@@ -34,18 +33,16 @@ category_schema = {
     "additionalProperties": False
 }
 
-
 guidialog_schema = {
     "type": "object",
     "properties": {
         "content": {"type": "string"},
         "title": {"type": "string"},
-        "isOk" : {"type" : "string"},
-        "isAbort" : {"type" : "string"},
-        "isYes" : {"type" : "string"},
-        "isNo" : {"type" : "string"},
+        "isOk": {"type": "string"},
+        "isAbort": {"type": "string"},
+        "isYes": {"type": "string"},
+        "isNo": {"type": "string"},
 
     },
     "additionalProperties": False
 }
-

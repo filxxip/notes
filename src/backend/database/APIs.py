@@ -7,7 +7,7 @@ import jsonschema
 from flask import request
 from flask.views import MethodView
 from jsonschema.exceptions import ValidationError, SchemaError
-
+from .constants import information_texts
 from .main_config_database_vars import db_session
 from .utils import _T, catchable_db_connection_exceptions, jsonify_result, get_relevant_sorted_query
 
@@ -38,7 +38,7 @@ class ItemAPI(MethodViewWithClassName):
 
     def _get_on_id(self, index: int) -> ProtocolDatabaseClass:
         if not self._validate_index(index):
-            raise IndexError("Such index is out of range: " + str(index))
+            raise IndexError(information_texts.outOfRange + str(index))
         return db_session.query(self.className).filter(index == self.className.id).first()
 
     @catchable_db_connection_exceptions(IndexError)
@@ -60,7 +60,7 @@ class ItemAPI(MethodViewWithClassName):
     def delete(self, index: int):
         db_session.delete(self._get_on_id(index))
         db_session.commit()
-        return "Object removed from database"
+        return information_texts.removingObject
 
 
 class GroupAPI(MethodViewWithClassName):
@@ -75,7 +75,7 @@ class GroupAPI(MethodViewWithClassName):
             db_session.query(Schemas).where(Schemas.name == self.className.__name__).first().schema))
         db_session.add(self.className.from_json(json.dumps(request.form.to_dict())))
         db_session.commit()
-        return "Adding new object to database"
+        return information_texts.addingObject
 
 
 class GroupSortedAPI(MethodViewWithClassName):

@@ -6,24 +6,27 @@ from . import table_schemas
 from .APIs import ItemAPI, GroupAPI, GroupSortedAPI
 from .main_config_database_vars import app, engine, db_session
 
+from .constants import api_data
+
 
 class APIController:
     def __init__(self):
         Base.metadata.create_all(bind=engine)
 
     def add_rules(self):
-        app.add_url_rule('/people/<int:index>', view_func=ItemAPI.as_view('myview_with_id', Person))
-        app.add_url_rule('/categories/<int:index>', view_func=ItemAPI.as_view('category_with_id', Category))
-        app.add_url_rule('/notes/<int:index>', view_func=ItemAPI.as_view('notes_with_id', Note))
-        app.add_url_rule('/guidialogs/<int:index>', view_func=ItemAPI.as_view('guidialogs_with_id', GuiDialog))
-        app.add_url_rule('/people', view_func=GroupAPI.as_view('each_person', Person))
-        app.add_url_rule('/categories', view_func=GroupAPI.as_view('each_category', Category))
-        app.add_url_rule('/notes', view_func=GroupAPI.as_view('each_note', Note))
-        app.add_url_rule('/guidialogs', view_func=GroupAPI.as_view('each_guidialog', GuiDialog))
-        app.add_url_rule('/people/<sorted_name>', view_func=GroupSortedAPI.as_view('each_person_sorted', Person))
-        app.add_url_rule('/categories/<sorted_name>',
-                         view_func=GroupSortedAPI.as_view('each_category_sorted', Category))
-        app.add_url_rule('/notes/<sorted_name>', view_func=GroupSortedAPI.as_view('each_note_sorted', Note))
+        app.add_url_rule(api_data.people_index, view_func=ItemAPI.as_view(api_data.people_index_name, Person))
+        app.add_url_rule(api_data.categories_index, view_func=ItemAPI.as_view(api_data.categories_index_name, Category))
+        app.add_url_rule(api_data.notes_index, view_func=ItemAPI.as_view(api_data.notes_index_name, Note))
+        app.add_url_rule(api_data.guidialogs_index,
+                         view_func=ItemAPI.as_view(api_data.guidialogs_index_name, GuiDialog))
+        app.add_url_rule(api_data.people, view_func=GroupAPI.as_view(api_data.people_name, Person))
+        app.add_url_rule(api_data.categories, view_func=GroupAPI.as_view(api_data.categories_name, Category))
+        app.add_url_rule(api_data.notes, view_func=GroupAPI.as_view(api_data.notes_name, Note))
+        app.add_url_rule(api_data.guidialogs, view_func=GroupAPI.as_view(api_data.guidialogs_name, GuiDialog))
+        app.add_url_rule(api_data.people_sorted, view_func=GroupSortedAPI.as_view(api_data.people_sorted_name, Person))
+        app.add_url_rule(api_data.categories_sorted,
+                         view_func=GroupSortedAPI.as_view(api_data.categories_sorted_name, Category))
+        app.add_url_rule(api_data.notes_sorted, view_func=GroupSortedAPI.as_view(api_data.notes_sorted_name, Note))
 
     def reclear_tables(self, tables_to_clear=None):
         tabs = None
@@ -35,6 +38,7 @@ class APIController:
     def init_schemas(self):
         self.reclear_tables([Schemas])
         for T, schema in zip((Person, Note, Category, GuiDialog),
-                             (table_schemas.people_schema, table_schemas.notes_schema, table_schemas.category_schema, table_schemas.guidialog_schema)):
+                             (table_schemas.people_schema, table_schemas.notes_schema, table_schemas.category_schema,
+                              table_schemas.guidialog_schema)):
             db_session.add(Schemas(name=T.__name__, schema=json.dumps(schema)))
         db_session.commit()

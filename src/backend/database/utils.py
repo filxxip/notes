@@ -1,28 +1,20 @@
 from __future__ import annotations
-from src.backend.database.tables.schema import Schemas
+
 import datetime
 import json
 from functools import wraps
 from typing import Any, Callable, Type, TypeVar
+
 import jsonschema
 from flask import request, jsonify
 from flask_sqlalchemy.query import Query
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 
-from .main_config_database_vars import db_session, app
+from src.backend.database.tables.schema import Schemas
+from .constants import information_texts
+from .main_config_database_vars import db_session
 
 _T = TypeVar("_T", bound=Any)
-
-
-# def save_session(function: callable):
-#     @wraps(function)
-#     def wrapper(*args, **kwargs):
-#         # with app.app_context():
-#             result = function(*args, **kwargs)
-#             db_session.commit()
-#             return result
-#
-#     return wrapper
 
 
 def set_conversion(**attrs: Callable):
@@ -46,6 +38,7 @@ def jsonify_result(function: callable):
 
 def set_jsonify_attributes(*args: str):
     """To apply on JsonGeneratorObject instance"""
+
     def wrapper(cls):
         cls.__serialize_attrs__ = args
 
@@ -58,20 +51,24 @@ def catchable_db_connection_exceptions(*exs: Type[Exception]):
             try:
                 return func(*args, **kwargs)
             except exs as ex:
-                return "Invalid access to database, error occurred : " + str(ex), 404
+                return information_texts.invalidAccess + str(ex), 404
 
         return inner_wrapper
 
     return wrapper
 
-def convert_str_to_bool(value)->bool:
-    return value=="true"
 
-def convert_str_date_to_datetime(d)->datetime.date:
+def convert_str_to_bool(value) -> bool:
+    return value == "true"
+
+
+def convert_str_date_to_datetime(d) -> datetime.date:
     return datetime.datetime(*[int(m) for m in d.split("-")]) if isinstance(d, str) else d
 
-def convert_datetime_to_str(d:datetime.date)->str:
+
+def convert_datetime_to_str(d: datetime.date) -> str:
     return f"{d.year}-{d.month}-{d.day}"
+
 
 def get_relevant_sorted_query(cls_name: Type[_T], sorted_name: str = None) -> Query:
     jsonschema.validate(request.args.to_dict(), json.loads(
@@ -83,10 +80,10 @@ def get_relevant_sorted_query(cls_name: Type[_T], sorted_name: str = None) -> Qu
             if all(getattr(obj, key, None) for obj in base.all()):
                 base = base.where(cls_name.__dict__[key] == filter_dict.get(key))
             else:
-                raise AttributeError("No such key in class dictionary : " + str(key))
+                raise AttributeError(information_texts.emptyKey + str(key))
     if sorted_name:
         if sorted_name in cls_name.__dict__ and isinstance(cls_name.__dict__[sorted_name], InstrumentedAttribute):
             base = base.order_by(sorted_name)
         else:
-            raise AttributeError("Cannot sort by : " + sorted_name)
+            raise AttributeError(information_texts.sortedDisable + sorted_name)
     return base

@@ -1,6 +1,7 @@
 from .seeder_base import Seeder
 from src.backend.database.tables import Base, GuiDialog
 
+
 class GuiDialogSeeder(Seeder):
     def seed(self) -> list[Base]:
         notes = []
@@ -11,6 +12,6 @@ class GuiDialogSeeder(Seeder):
         isYes = [False, True, True, False]
         isNo = [False, True, True, False]
         for title, content, isok, isabort, isyes, isno in zip(titles, contents, isOks, isAborts, isYes, isNo):
-            notes.append(GuiDialog(content = content, title = title, isOk = isok, isYes = isyes, isNo = isno, isAbort = isabort))
+            notes.append(GuiDialog(content=content, title=title, isOk=isok, isYes=isyes, isNo=isno, isAbort=isabort))
 
         return notes
