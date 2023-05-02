@@ -1,0 +1,7 @@
+env/
+.idea/
+.vscode/
+cmake-build-debug/
+__pycache__/
+instance/
+.token.txt
