@@ -31,16 +31,16 @@ void LogController::setRegistering(bool value)
 void LogController::onRegisteringModel()
 {
     int passIndex = registerModel->indexOf(ModelStatuses::PersonComponents::PASSWORD);
-    auto password = registerModel->data(passIndex, RegisterViewModel::COLOR).value<QString>();
+    auto password = registerModel->data(passIndex, ModelStatuses::Roles::COLOR).value<QString>();
     if (std::none_of(password.begin(), password.end(), [](const QChar &ch) {
             return ch.isUpper();
         })) {
-        auto previousColor = registerModel->data(passIndex, RegisterViewModel::COLOR);
-        registerModel->setData<QColor>(passIndex, "black", RegisterViewModel::COLOR);
+        auto previousColor = registerModel->data(passIndex, ModelStatuses::Roles::COLOR);
+        registerModel->setData<QColor>(passIndex, "black", ModelStatuses::Roles::COLOR);
         setRegistering(false);
         emit registeringChanged();
         QTimer::singleShot(2500, [this, previousColor, passIndex]() {
-            registerModel->setData(passIndex, previousColor, RegisterViewModel::COLOR);
+            registerModel->setData(passIndex, previousColor, ModelStatuses::Roles::COLOR);
             setRegistering(true);
         });
     }

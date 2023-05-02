@@ -10,5 +10,5 @@ struct GuiDialog
     BoolData isOk{"isOk"};
     BoolData isYes{"isYes"};
     BoolData isNo{"isNo"};
-    BoolData isAbort{"isAbort"};
+    StrData path{"path"};
 };

@@ -3,6 +3,7 @@
 #include <QDate>
 #include <QObject>
 #include <QString>
+#include <QVariant>
 #include "overallmanager.h"
 #include <algorithm>
 #include <memory>
@@ -34,6 +35,8 @@ public:
     void setName(QString name) { __name__ = std::move(name); }
 
     virtual void set(T newvalue) = 0;
+
+    inline operator QVariant() const { return QVariant::fromValue(get()); }
 
     //    BaseData<T> &operator=(const BaseData<T> &base) = default;
     //    BaseData(const BaseData<T> &base) = default;

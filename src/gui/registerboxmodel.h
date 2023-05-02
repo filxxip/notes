@@ -13,35 +13,19 @@ struct EntryFieldModel
     bool passwordStatus = false;
 };
 
-class RegisterViewModel : public CustomListModel<EntryFieldModel>
+class RegisterViewModel : public CustomListModel<EntryFieldModel, ModelStatuses::Roles>
 {
     Q_OBJECT
 
 public:
-    enum Roles { PLACEHOLDER = 0, VALUE, COLOR, PASS_STATUS };
-
     RegisterViewModel(QObject *parent = nullptr)
         : CustomListModel(parent)
     {
-        //        QVector<EntryFieldModel> data;
-        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::NAME, "Name..."});
-        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::SURNAME, "Surname..."});
-        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::EMAIL, "Email..."});
-        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::PASSWORD, "Password..."});
-        //        data.push_back(EntryFieldModel{ModelStatuses::PersonComponents::COUNTRY, "Country..."});
-        //        setEntries(std::move(data));
-        ADD_DATA(PLACEHOLDER, placeholder)
-        ADD_DATA(VALUE, value)
-        ADD_DATA(COLOR, color)
-        ADD_DATA(PASS_STATUS, passwordStatus)
+        ADD_DATA(ModelStatuses::Roles::PLACEHOLDER, placeholder)
+        ADD_DATA(ModelStatuses::Roles::VALUE, value)
+        ADD_DATA(ModelStatuses::Roles::COLOR, color)
+        ADD_DATA(ModelStatuses::Roles::PASS_STATUS, passwordStatus)
     }
-    //    Q_INVOKABLE void resetModel()
-    //    {
-    //        qDebug() << "hello";
-    //        //        beginResetModel();
-    //        //        endResetModel();
-    //    }
-
     int indexOf(ModelStatuses::PersonComponents componentEnum)
     {
         auto dist = std::distance(m_data.begin(),

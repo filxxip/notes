@@ -4,11 +4,11 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     Component.onCompleted: anchors.centerIn = parent
     spacing: GuiConfig.userView.registerView.layoutSpacing
-    width: GUIConfig.userView.defaultEntryWidth
+    width: GuiConfig.userView.defaultEntryWidth
 
     TitleBox {
         title: GuiConfig.userView.registerView.titleContent
-        width: GUIConfig.userView.defaultEntryWidth
+        width: GuiConfig.userView.defaultEntryWidth
         height: GuiConfig.userView.titleHeight
     }
     Column {

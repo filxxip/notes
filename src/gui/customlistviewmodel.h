@@ -13,6 +13,7 @@ template<typename T, typename ReturnType>
 std::function<QVariant(const T &)> makeGetterFunction(ReturnType T::*method)
 {
     return [method](const T &object) {
+        qDebug() << QVariant::fromValue<ReturnType>(object.*method);
         return QVariant::fromValue<ReturnType>(object.*method);
     }; //not the best way, there are some qtcore classes which can be initialized much faster with normal constructors
 }
@@ -58,7 +59,7 @@ public:
     Q_INVOKABLE AdapterForQmlModelObject *get(int elementIndex);
 };
 
-template<typename T>
+template<typename T, typename EnumData>
 class CustomListModel : public AbstractListModelInvokableClass
 {
 protected:
@@ -68,9 +69,9 @@ protected:
 
     QHash<int, QByteArray> names;
 
-    QHash<int, std::function<QVariant(const T &)>> getterActivities;
+    QHash<EnumData, std::function<QVariant(const T &)>> getterActivities;
 
-    QHash<int, std::function<void(T &, const QVariant &)>> updateActivities;
+    QHash<EnumData, std::function<void(T &, const QVariant &)>> updateActivities;
 
 public:
     explicit CustomListModel(QObject *parent = nullptr);
@@ -84,24 +85,24 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     template<typename ReturnType>
-    CustomListModel &addPart(int role, ReturnType T::*attributeProperty, const QByteArray &name)
+    CustomListModel &addPart(EnumData role, ReturnType T::*attributeProperty, const QByteArray &name)
     {
         getterActivities.insert(role, makeGetterFunction(attributeProperty));
         updateActivities.insert(role, makeUpdateFunction(attributeProperty));
-        names.insert(role, name);
+        names.insert(static_cast<int>(role), name);
         return *this;
     }
 
     QVariant data(const QModelIndex &index, int role) const override;
 
-    QVariant data(int index, int role) const;
+    QVariant data(int index, EnumData role) const;
 
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
     template<typename ValueType>
-    bool setData(int indexvalue, const ValueType &value, int role)
+    bool setData(int indexvalue, const ValueType &value, EnumData role)
     {
-        return setData(index(indexvalue), QVariant::fromValue(value), role);
+        return setData(index(indexvalue), QVariant::fromValue(value), static_cast<int>(role));
     }
 public slots:
     //    void resetModel2()

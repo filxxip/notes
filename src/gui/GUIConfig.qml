@@ -15,6 +15,22 @@ Item {
 
     readonly property alias switchbutton: switchbutton
 
+    readonly property alias dialog: dialog
+
+    readonly property alias window: window
+
+    QtObject {
+        id: window
+        readonly property int width: 800
+        readonly property int height: 640
+    }
+
+    QtObject {
+        id: dialog
+        readonly property real widthRatio: 0.5 * window.width
+        readonly property real heightRatio: 0.5 * window.height
+    }
+
     QtObject {
         id: userView
         readonly property var registerView: QtObject {

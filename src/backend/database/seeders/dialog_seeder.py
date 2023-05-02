@@ -8,10 +8,10 @@ class GuiDialogSeeder(Seeder):
         titles = ["Dialog1", "Dialog2", "Dialog3", "Dialog4"]
         contents = ['SomeContent', 'SpecificContent', 'Other Content', 'Super Secret']
         isOks = [True, False, False, True]
-        isAborts = [True, False, False, True]
         isYes = [False, True, True, False]
         isNo = [False, True, True, False]
-        for title, content, isok, isabort, isyes, isno in zip(titles, contents, isOks, isAborts, isYes, isNo):
-            notes.append(GuiDialog(content=content, title=title, isOk=isok, isYes=isyes, isNo=isno, isAbort=isabort))
+
+        for title, content, isok, isyes, isno in zip(titles, contents, isOks, isYes, isNo):
+            notes.append(GuiDialog(content=content, title=title, isOk=isok, isYes=isyes, isNo=isno, path = "undefined"))
 
         return notes

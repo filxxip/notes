@@ -39,9 +39,9 @@ guidialog_schema = {
         "content": {"type": "string"},
         "title": {"type": "string"},
         "isOk": {"type": "string"},
-        "isAbort": {"type": "string"},
         "isYes": {"type": "string"},
         "isNo": {"type": "string"},
+        "path" : {"type":"string"}
 
     },
     "additionalProperties": False

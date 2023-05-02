@@ -50,8 +50,10 @@ ColumnLayout {
                 Layout.fillWidth: true
                 height: parent.height
                 property var element: logController.loginModel.get(1)
-                onCustomClicked: element.update(false,
-                                                ModelStatuses.Roles.PASS_STATUS)
+                onCustomClicked: {
+                    element.update(false, ModelStatuses.Roles.PASS_STATUS)
+                    dialogController.visibility = true
+                }
 
                 onCustomReleased: element.update(
                                       true, ModelStatuses.Roles.PASS_STATUS)

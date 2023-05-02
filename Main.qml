@@ -3,6 +3,7 @@ import QtQuick.Window
 
 //import Statuses 1.0
 import "src/gui"
+import "src/gui/customdialog"
 
 Window {
     Rectangle {
@@ -54,5 +55,8 @@ Window {
                 sourceComponent: logController.loginActive ? loginView : registerView
             }
         }
+    }
+    CustomDialog {
+        visible: dialogController.visibility
     }
 }

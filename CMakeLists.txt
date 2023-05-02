@@ -28,6 +28,10 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/customlistviewmodel.h
     src/gui/registerboxmodel.cpp
     src/gui/registerboxmodel.h
+
+    src/gui/customdialog/dialogcontroller.cpp
+    src/gui/customdialog/dialogcontroller.h
+
     src/backend/datamanager/dataclient.h
 
     src/backend/datamanager/filedataclient.cpp
@@ -80,6 +84,7 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/TitleBox.qml
         src/gui/SwitchButton.qml
         src/gui/CloseButton.qml
+        src/gui/customdialog/CustomDialog.qml
 
 )
 

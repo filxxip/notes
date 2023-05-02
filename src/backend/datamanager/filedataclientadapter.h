@@ -15,6 +15,7 @@ class FileDataClientAdapter : public DataClient
 
 public:
     using DataClient::DataClient;
+
     FileDataClientAdapter(std::shared_ptr<DataClient> dataClient_);
 
     void setAdditionalParameters(json parameters) override;

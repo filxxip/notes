@@ -20,10 +20,12 @@
 #include "src/backend/datamanager/filedataclient.h"
 #include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/backend/datamanager/serverdataclient.h"
+#include "src/gui/customdialog/dialogcontroller.h"
 #include "src/gui/customlistviewmodel.h"
 #include <chrono>
 #include <memory>
-#define RUN_QML 0
+#define RUN_QML 1
+#define RUN_DATABASE 0
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
@@ -47,12 +49,15 @@ int main(int argc, char *argv[])
 
     auto myController = new MyController();
     auto logController = new LogController();
+    auto dialogController = new DialogController();
 
     engine.rootContext()->setContextProperty("myController", myController);
     engine.rootContext()->setContextProperty("logController", logController);
+    engine.rootContext()->setContextProperty("dialogController", dialogController);
 
     engine.load(url);
 #endif
+#ifdef RUN_DATABSE
     //sprawdzic czy napewno aby sie updatuje to co trzeba, dlaczego id pobrane jest w stringu a nie it z servera
     auto filemanager = PeopleManager(
         std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
@@ -64,6 +69,7 @@ int main(int argc, char *argv[])
         e.birthday.set(QDateTime(QDate(1, 1, 1), QTime(1, 1)));
         servermanager.add(e);
     }
+#endif
 #if RUN_QML
     return app.exec();
 #endif
