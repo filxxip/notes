@@ -8,13 +8,13 @@ GuiDialogsManager::GuiDialogsManager(std::shared_ptr<DataClient> dataClient_)
 GuiDialog GuiDialogsManager::generateInstance(const json &genson) const
 {
     GuiDialog guidialog;
-    guidialog.id.setBaseOnJson(genson);
-    guidialog.content.setBaseOnJson(genson);
-    guidialog.title.setBaseOnJson(genson);
-    guidialog.isOk.setBaseOnJson(genson);
-    guidialog.isYes.setBaseOnJson(genson);
-    guidialog.isNo.setBaseOnJson(genson);
-    guidialog.isAbort.setBaseOnJson(genson);
+    initObject(guidialog.id,
+               guidialog.content,
+               guidialog.title,
+               guidialog.isOk,
+               guidialog.isYes,
+               guidialog.isNo,
+               guidialog.isAbort);
     return guidialog;
 }
 
@@ -27,24 +27,9 @@ void GuiDialogsManager::update(const GuiDialog &object)
                  object.isOk,
                  object.isNo,
                  object.isYes);
-
-    //    setAdditionUpdateParameter(object.content);
-    //    setAdditionUpdateParameter(object.title);
-    //    setAdditionUpdateParameter(object.isAbort);
-    //    setAdditionUpdateParameter(object.isOk);
-    //    setAdditionUpdateParameter(object.isNo);
-    //    setAdditionUpdateParameter(object.isYes);
-    //    dataClient->update(generatePath(object.id.get()));
 }
 
 void GuiDialogsManager::add(const GuiDialog &object)
 {
     addObject(object.content, object.title, object.isAbort, object.isOk, object.isNo, object.isYes);
-    //    setAdditionAddParameter(object.content);
-    //    setAdditionAddParameter(object.title);
-    //    setAdditionAddParameter(object.isAbort);
-    //    setAdditionAddParameter(object.isOk);
-    //    setAdditionAddParameter(object.isNo);
-    //    setAdditionAddParameter(object.isYes);
-    //    dataClient->add(UrlPath(name));
 }

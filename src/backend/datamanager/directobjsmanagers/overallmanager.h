@@ -29,31 +29,42 @@ class OverallManager
             dataClient->setAdditionalParameters(data);
         }
     }
+
     template<typename T>
     void setAdditionAddParameter(const T &data)
     {
         dataClient->setAdditionalParameters(data);
     }
+
     template<typename T, typename... Args>
-    void addObjectBasicMethod(const T &t,
-                              const Args &...args) // recursive variadic function
+    void addObjectBasicMethod(const T &t, const Args &...args)
     {
         setAdditionAddParameter(t);
-        if constexpr (sizeof...(args) > 0)
+        if constexpr (sizeof...(args) > 0) {
             addObjectBasicMethod(args...);
+        }
     }
+
     template<typename T, typename... Args>
-    void updateObjectBasicMethod(const T &t,
-                                 const Args &...args) // recursive variadic function
+    void updateObjectBasicMethod(const T &t, const Args &...args)
     {
         setAdditionUpdateParameter(t);
-        if constexpr (sizeof...(args) > 0)
+        if constexpr (sizeof...(args) > 0) {
             updateObjectBasicMethod(args...);
+        }
     }
 
-protected:
+    std::shared_ptr<DataClient> dataClient;
+
+    UrlPath generatePath(int index) const;
+
+    UrlPath generatePath() const;
+
+    QString generateParms(const std::shared_ptr<std::unordered_map<QString, QString>> &map) const;
+
     QString name;
 
+protected:
     virtual DataObject generateInstance(const json &genson) const = 0;
 
     template<typename... Args>
@@ -70,13 +81,14 @@ protected:
         dataClient->add(UrlPath(name));
     }
 
-    std::shared_ptr<DataClient> dataClient;
-
-    UrlPath generatePath(int index) const;
-
-    UrlPath generatePath() const;
-
-    QString generateParms(const std::shared_ptr<std::unordered_map<QString, QString>> &map) const;
+    template<typename Arg, typename... Args>
+    void initObject(const json &genson, Arg &arg, Args &...args) const
+    {
+        arg.setBaseOnJson(genson);
+        if constexpr (sizeof...(args) > 0) {
+            initObject(genson, args...);
+        }
+    }
 
 public:
     explicit OverallManager(QString name_, std::shared_ptr<DataClient> dataClient_);

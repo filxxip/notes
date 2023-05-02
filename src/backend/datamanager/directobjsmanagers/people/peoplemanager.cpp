@@ -9,13 +9,14 @@ PeopleManager::PeopleManager(std::shared_ptr<DataClient> dataClient_)
 Person PeopleManager::generateInstance(const json &genson) const
 {
     Person person;
-    person.id.setBaseOnJson(genson);
-    person.name.setBaseOnJson(genson);
-    person.surname.setBaseOnJson(genson);
-    person.birthday.setBaseOnJson(genson);
-    person.country.setBaseOnJson(genson);
-    person.email.setBaseOnJson(genson);
-    person.password.setBaseOnJson(genson);
+    initObject(genson,
+               person.id,
+               person.name,
+               person.surname,
+               person.birthday,
+               person.country,
+               person.email,
+               person.password);
     return person;
 }
 
@@ -28,13 +29,6 @@ void PeopleManager::update(const Person &object)
                  object.name,
                  object.email,
                  object.password);
-    //    setAdditionUpdateParameter(object.birthday);
-    //    setAdditionUpdateParameter(object.surname);
-    //    setAdditionUpdateParameter(object.country);
-    //    setAdditionUpdateParameter(object.name);
-    //    setAdditionUpdateParameter(object.email);
-    //    setAdditionUpdateParameter(object.password);
-    //    dataClient->update(generatePath(object.id.get()));
 }
 
 void PeopleManager::add(const Person &object)
@@ -45,11 +39,4 @@ void PeopleManager::add(const Person &object)
               object.name,
               object.email,
               object.password);
-    //    setAdditionAddParameter(object.birthday);
-    //    setAdditionAddParameter(object.surname);
-    //    setAdditionAddParameter(object.country);
-    //    setAdditionAddParameter(object.name);
-    //    setAdditionAddParameter(object.email);
-    //    setAdditionAddParameter(object.password);
-    //    dataClient->add(UrlPath(name));
 }

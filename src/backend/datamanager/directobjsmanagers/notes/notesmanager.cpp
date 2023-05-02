@@ -7,12 +7,13 @@ NotesManager::NotesManager(std::shared_ptr<DataClient> dataClient_)
 Note NotesManager::generateInstance(const json &genson) const
 {
     Note note;
-    note.id.setBaseOnJson(genson);
-    note.category.setBaseOnJson(genson);
-    note.content.setBaseOnJson(genson);
-    note.owner.setBaseOnJson(genson);
-    note.releaseDate.setBaseOnJson(genson);
-    note.title.setBaseOnJson(genson);
+    initObject(genson,
+               note.id,
+               note.category,
+               note.content,
+               note.owner,
+               note.releaseDate,
+               note.title);
     return note;
 }
 
@@ -24,13 +25,6 @@ void NotesManager::update(const Note &object)
                  object.owner,
                  object.title,
                  object.content);
-
-    //    setAdditionUpdateParameter(object.releaseDate);
-    //    setAdditionUpdateParameter(object.owner);
-    //    setAdditionUpdateParameter(object.category);
-    //    setAdditionUpdateParameter(object.title);
-    //    setAdditionUpdateParameter(object.content);
-    //    dataClient->update(generatePath(object.id.get()));
 }
 
 void NotesManager::add(const Note &object)
