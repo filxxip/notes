@@ -4,6 +4,8 @@ PeopleManager::PeopleManager(std::shared_ptr<DataClient> dataClient_)
     : OverallManager("people", dataClient_)
 {}
 
+#define ADD_MANAGER_CONTENT()
+
 Person PeopleManager::generateInstance(const json &genson) const
 {
     Person person;
@@ -16,25 +18,38 @@ Person PeopleManager::generateInstance(const json &genson) const
     person.password.setBaseOnJson(genson);
     return person;
 }
-////jedno duze macro wstrzykiwane do obiektu aby tylko miec to i aby jedynie dziedziczyc po basic klasie reszte ogarnie makro poprzez podanie mu atrybutow
+
 void PeopleManager::update(const Person &object)
 {
-    setAdditionUpdateParameter(object.birthday);
-    setAdditionUpdateParameter(object.surname);
-    setAdditionUpdateParameter(object.country);
-    setAdditionUpdateParameter(object.name);
-    setAdditionUpdateParameter(object.email);
-    setAdditionUpdateParameter(object.password);
-    dataClient->update(generatePath(object.id.get()));
+    updateObject(object.id.get(),
+                 object.birthday,
+                 object.surname,
+                 object.country,
+                 object.name,
+                 object.email,
+                 object.password);
+    //    setAdditionUpdateParameter(object.birthday);
+    //    setAdditionUpdateParameter(object.surname);
+    //    setAdditionUpdateParameter(object.country);
+    //    setAdditionUpdateParameter(object.name);
+    //    setAdditionUpdateParameter(object.email);
+    //    setAdditionUpdateParameter(object.password);
+    //    dataClient->update(generatePath(object.id.get()));
 }
 
 void PeopleManager::add(const Person &object)
 {
-    setAdditionAddParameter(object.birthday);
-    setAdditionAddParameter(object.surname);
-    setAdditionAddParameter(object.country);
-    setAdditionAddParameter(object.name);
-    setAdditionAddParameter(object.email);
-    setAdditionAddParameter(object.password);
-    dataClient->add(UrlPath(name));
+    addObject(object.birthday,
+              object.surname,
+              object.country,
+              object.name,
+              object.email,
+              object.password);
+    //    setAdditionAddParameter(object.birthday);
+    //    setAdditionAddParameter(object.surname);
+    //    setAdditionAddParameter(object.country);
+    //    setAdditionAddParameter(object.name);
+    //    setAdditionAddParameter(object.email);
+    //    setAdditionAddParameter(object.password);
+    //    dataClient->add(UrlPath(name));
 }

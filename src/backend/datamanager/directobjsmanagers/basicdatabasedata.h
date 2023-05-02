@@ -143,6 +143,15 @@ void to_json(json &j, const BaseData<T> &p);
 template<typename T>
 void init_from_json(const json &j, BaseData<T> &p);
 
+using IntData = DbData<int>;
+using StrData = DbData<QString>;
+using DateData = DbData<QDateTime>;
+using BoolData = DbData<bool>;
+
+using ConstIntData = ConstDbData<int>;
+using ConstStrData = ConstDbData<QString>;
+using ConstDateData = ConstDbData<QDateTime>;
+using ConstBoolData = ConstDbData<bool>;
 //template<typename T>
 //to_json(json &j, const BaseData<T> &p);
 
@@ -150,18 +159,4 @@ void init_from_json(const json &j, BaseData<T> &p);
 //void from_json(const json &j, BaseData<T> &p);
 // namespace ns
 
-#define REGISTER_DATA(type) \
-    template class BaseData<type>; \
-    template class DbData<type>; \
-    template class ConstDbData<type>;
-
-using IntData = DbData<int>;
-using StrData = DbData<QString>;
-using DateData = DbData<QDateTime>;
-using BoolData = DbData<bool>;
 //Q_DECLARE_METATYPE_TEMPLATE_1ARG(DbData) //ogarnac jak sie dostawac do wartosci
-
-using ConstIntData = ConstDbData<int>;
-using ConstStrData = ConstDbData<QString>;
-using ConstDateData = ConstDbData<QDateTime>;
-using ConstBoolData = ConstDbData<bool>;

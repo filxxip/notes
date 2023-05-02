@@ -18,21 +18,6 @@ FileDataClientAdapter::FileDataClientAdapter(std::shared_ptr<DataClient> dataCli
     : dataClient(dataClient_)
 {}
 
-void FileDataClientAdapter::setAdditionalParameters(const QString &key, int value)
-{
-    dataClient->setAdditionalParameters(key, value);
-}
-
-void FileDataClientAdapter::setAdditionalParameters(const QString &key, const QString &value)
-{
-    dataClient->setAdditionalParameters(key, value);
-}
-
-void FileDataClientAdapter::setAdditionalParameters(const QString &key, bool value)
-{
-    dataClient->setAdditionalParameters(key, value);
-}
-
 void FileDataClientAdapter::setAdditionalParameters(json parameters)
 {
     dataClient->setAdditionalParameters(std::move(parameters));
@@ -62,7 +47,7 @@ void FileDataClientAdapter::add(const Path &path)
                    [](auto &element) { return element.replace(EXTENSION, "").toInt(); });
     auto maxelement = std::max_element(elements.begin(), elements.end());
     auto index = 1 + (maxelement != elements.end() ? *maxelement : 0);
-    setAdditionalParameters("id", index);
+    setAdditionalParameters({{"id", index}}); //can be error
     dataClient->add(generatePathWithIndex(path, index));
 }
 

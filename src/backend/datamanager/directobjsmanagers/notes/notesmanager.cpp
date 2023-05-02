@@ -18,20 +18,22 @@ Note NotesManager::generateInstance(const json &genson) const
 
 void NotesManager::update(const Note &object)
 {
-    setAdditionUpdateParameter(object.releaseDate);
-    setAdditionUpdateParameter(object.owner);
-    setAdditionUpdateParameter(object.category);
-    setAdditionUpdateParameter(object.title);
-    setAdditionUpdateParameter(object.content);
-    dataClient->update(generatePath(object.id.get()));
+    updateObject(object.id.get(),
+                 object.category,
+                 object.releaseDate,
+                 object.owner,
+                 object.title,
+                 object.content);
+
+    //    setAdditionUpdateParameter(object.releaseDate);
+    //    setAdditionUpdateParameter(object.owner);
+    //    setAdditionUpdateParameter(object.category);
+    //    setAdditionUpdateParameter(object.title);
+    //    setAdditionUpdateParameter(object.content);
+    //    dataClient->update(generatePath(object.id.get()));
 }
 
 void NotesManager::add(const Note &object)
 {
-    setAdditionAddParameter(object.releaseDate);
-    setAdditionAddParameter(object.owner);
-    setAdditionAddParameter(object.category);
-    setAdditionAddParameter(object.title);
-    setAdditionAddParameter(object.content);
-    dataClient->add(UrlPath(name));
+    addObject(object.category, object.releaseDate, object.owner, object.title, object.content);
 }

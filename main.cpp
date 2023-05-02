@@ -61,8 +61,8 @@ int main(int argc, char *argv[])
     auto el = servermanager.get();
     for (auto &e : el.value()) {
         e.name.set("Neymar");
-
-        servermanager.update(e);
+        e.birthday.set(QDateTime(QDate(1, 1, 1), QTime(1, 1)));
+        servermanager.add(e);
     }
 #if RUN_QML
     return app.exec();

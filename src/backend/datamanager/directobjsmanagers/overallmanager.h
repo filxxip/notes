@@ -15,64 +15,60 @@
 #include "../pathmanager/path.h"
 #include "basicdatabasedata.h"
 
-#define REGISTER_MANAGER(cls) template class OverallManager<cls>;
-
-namespace OverallManagerMethods {
 template<typename T>
-QString codeTypeToQString(const T &object);
-
-} // namespace OverallManagerMethods
-
-template<typename T>
-class DbData;
+class BaseData;
 
 template<typename DataObject>
 class OverallManager
 {
+    template<typename T>
+    void setAdditionUpdateParameter(const T &data)
+    {
+        auto &param = data.getUpdated();
+        if (param.has_value()) {
+            dataClient->setAdditionalParameters(data);
+        }
+    }
+    template<typename T>
+    void setAdditionAddParameter(const T &data)
+    {
+        dataClient->setAdditionalParameters(data);
+    }
+    template<typename T, typename... Args>
+    void addObjectBasicMethod(const T &t,
+                              const Args &...args) // recursive variadic function
+    {
+        setAdditionAddParameter(t);
+        if constexpr (sizeof...(args) > 0)
+            addObjectBasicMethod(args...);
+    }
+    template<typename T, typename... Args>
+    void updateObjectBasicMethod(const T &t,
+                                 const Args &...args) // recursive variadic function
+    {
+        setAdditionUpdateParameter(t);
+        if constexpr (sizeof...(args) > 0)
+            updateObjectBasicMethod(args...);
+    }
+
 protected:
     QString name;
 
     virtual DataObject generateInstance(const json &genson) const = 0;
-    template<typename T>
-    void setAdditionUpdateParameter(const DbData<T> &data)
-    {
-        auto &param = data.getUpdated();
-        if (param.has_value()) {
-            json j;
-            //            json genson;
 
-            //            genson[data.getName().toStdString()] = param.value();
-            dataClient->setAdditionalParameters(data);
-            //            dataClient->setAdditionalParameters(data.getName(), param.value())
-        }
-    }
-    template<typename T>
-    void setAdditionAddParameter(const DbData<T> &data)
+    template<typename... Args>
+    void updateObject(int id, const Args &...args) // recursive variadic function
     {
-        //        json genson;
-        //        genson[data.getName().toStdString()] = data.get();
-        dataClient->setAdditionalParameters(data);
-        //        dataClient->setAdditionalParameters(data.getName(), data.get());
+        updateObjectBasicMethod(args...);
+        dataClient->update(generatePath(id));
     }
-    //    template<typename T, typename Function>
-    //    void setAdditionUpdateParameter(const DbData<T> &data, Function converter)
-    //    {
-    //        auto &param = data.getUpdated();
-    //        if (param.has_value()) {
-    //            json genson;
-    //            genson[data.getName().toStdString()] = converter(param.value()).toStdString();
-    //            dataClient->setAdditionalParameters(genson);
-    //            //            dataClient->setAdditionalParameters(data.getName(), converter(param.value()));
-    //        }
-    //    }
-    //    template<typename T, typename Function>
-    //    void setAdditionAddParameter(const DbData<T> &data, Function converter)
-    //    {
-    //        json genson;
-    //        genson[data.getName().toStdString()] = converter(data.get()).toStdString();
-    //        dataClient->setAdditionalParameters(genson);
-    //        //        dataClient->setAdditionalParameters(data.getName(), converter(data.get()));
-    //    }
+
+    template<typename... Args>
+    void addObject(const Args &...args) // recursive variadic function
+    {
+        addObjectBasicMethod(args...);
+        dataClient->add(UrlPath(name));
+    }
 
     std::shared_ptr<DataClient> dataClient;
 

@@ -17,12 +17,8 @@ class FileDataClient final : public DataClient
     std::optional<json> performGetter(const std::optional<QString> &list) const;
 
 public:
-    FileDataClient();
+    using DataClient::DataClient;
 
-    void setAdditionalParameters(const QString &key, int value) override;
-
-    void setAdditionalParameters(const QString &key, const QString &value) override;
-    void setAdditionalParameters(const QString &key, bool value) override;
     void setAdditionalParameters(json parameters) override;
 
     void update(const Path &path) override;

@@ -1,31 +1,6 @@
 #include "filedataclient.h"
 #include "directobjsmanagers/overallmanager.h"
 
-//namespace {
-//bool operator!=(const QDateTime &dateTime, const std::string &str)
-//{
-//    return OverallManagerMethods::codeTypeToQString(dateTime) != QString::fromStdString(str);
-//}
-//} // namespace
-
-FileDataClient::FileDataClient()
-    : DataClient()
-{}
-
-void FileDataClient::setAdditionalParameters(const QString &key, const QString &value)
-{
-    addedParams[key.toStdString()] = value.toStdString();
-}
-
-void FileDataClient::setAdditionalParameters(const QString &key, int value)
-{
-    addedParams[key.toStdString()] = value;
-}
-
-void FileDataClient::setAdditionalParameters(const QString &key, bool value)
-{
-    addedParams[key.toStdString()] = value;
-}
 
 void FileDataClient::setAdditionalParameters(json parameters)
 {

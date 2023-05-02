@@ -20,22 +20,31 @@ GuiDialog GuiDialogsManager::generateInstance(const json &genson) const
 
 void GuiDialogsManager::update(const GuiDialog &object)
 {
-    setAdditionUpdateParameter(object.content);
-    setAdditionUpdateParameter(object.title);
-    setAdditionUpdateParameter(object.isAbort);
-    setAdditionUpdateParameter(object.isOk);
-    setAdditionUpdateParameter(object.isNo);
-    setAdditionUpdateParameter(object.isYes);
-    dataClient->update(generatePath(object.id.get()));
+    updateObject(object.id.get(),
+                 object.content,
+                 object.title,
+                 object.isAbort,
+                 object.isOk,
+                 object.isNo,
+                 object.isYes);
+
+    //    setAdditionUpdateParameter(object.content);
+    //    setAdditionUpdateParameter(object.title);
+    //    setAdditionUpdateParameter(object.isAbort);
+    //    setAdditionUpdateParameter(object.isOk);
+    //    setAdditionUpdateParameter(object.isNo);
+    //    setAdditionUpdateParameter(object.isYes);
+    //    dataClient->update(generatePath(object.id.get()));
 }
 
 void GuiDialogsManager::add(const GuiDialog &object)
 {
-    setAdditionAddParameter(object.content);
-    setAdditionAddParameter(object.title);
-    setAdditionAddParameter(object.isAbort);
-    setAdditionAddParameter(object.isOk);
-    setAdditionAddParameter(object.isNo);
-    setAdditionAddParameter(object.isYes);
-    dataClient->add(UrlPath(name));
+    addObject(object.content, object.title, object.isAbort, object.isOk, object.isNo, object.isYes);
+    //    setAdditionAddParameter(object.content);
+    //    setAdditionAddParameter(object.title);
+    //    setAdditionAddParameter(object.isAbort);
+    //    setAdditionAddParameter(object.isOk);
+    //    setAdditionAddParameter(object.isNo);
+    //    setAdditionAddParameter(object.isYes);
+    //    dataClient->add(UrlPath(name));
 }

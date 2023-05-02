@@ -217,7 +217,4 @@ const T &ConstDbData<T>::get() const
     throw UndefinedDataException("Undefined parameter: " + this->__name__.toStdString());
 }
 
-REGISTER_DATA(int)
-REGISTER_DATA(QString)
-REGISTER_DATA(QDateTime)
-REGISTER_DATA(bool)
+#include "utils/basicdatabasedataregister.h"

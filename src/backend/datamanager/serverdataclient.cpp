@@ -1,20 +1,59 @@
 #include "serverdataclient.h"
 #include "directobjsmanagers/overallmanager.h"
 
-void ServerDataClient::setAdditionalParameters(const QString &key, int value)
+namespace {
+
+template<typename T>
+QString codeTypeToQString(const T &object)
 {
-    setAdditionalParameters(key, QString::number(value));
+    throw UndefinedDataException("This type is not supported");
 }
 
-void ServerDataClient::setAdditionalParameters(const QString &key, const QString &value)
+template<>
+QString codeTypeToQString<QDateTime>(const QDateTime &object)
 {
-    additionalParams += QString("&%1=%2").arg(key, value);
+    auto date = object.date();
+    auto time = object.time();
+    return QString("%1-%2-%3-%4-%5-%6")
+        .arg(date.year())
+        .arg(date.month())
+        .arg(date.day())
+        .arg(time.hour())
+        .arg(time.minute())
+        .arg(time.second());
 }
 
-void ServerDataClient::setAdditionalParameters(const QString &key, bool value)
+template<>
+QString codeTypeToQString<QString>(const QString &object)
 {
-    additionalParams += QString("&%1=%2").arg(key, value ? "true" : "false");
+    return object;
 }
+template<>
+QString codeTypeToQString<int>(const int &object)
+{
+    return QString::number(object);
+}
+
+template<>
+QString codeTypeToQString<std::string>(const std::string &object)
+{
+    return QString::fromStdString(object);
+}
+
+template<>
+QString codeTypeToQString<json>(const json &object)
+{
+    switch (object.type()) {
+    case json::value_t::number_integer: {
+        return codeTypeToQString<int>(object.get<int>());
+    }
+    case json::value_t::string: {
+        return codeTypeToQString<std::string>(object.get<std::string>());
+    }
+    }
+    throw UndefinedDataException("This type is not supported"); //nie dziala dla dat niestety
+}
+} // namespace
 
 void ServerDataClient::setAdditionalParameters(json parameters)
 {
@@ -100,8 +139,8 @@ void ServerDataClient::setGroupFilter(const json &genson)
 {
     QString separator = groupFilterString.isEmpty() ? "?" : "&";
     for (auto it = genson.begin(); it != genson.end(); ++it) {
-        groupFilterString += separator + OverallManagerMethods::codeTypeToQString(it.key()) + "="
-                             + OverallManagerMethods::codeTypeToQString(it.value());
+        groupFilterString += separator + codeTypeToQString(it.key()) + "="
+                             + codeTypeToQString(it.value());
     }
 }
 void ServerDataClient::clearFilters()
