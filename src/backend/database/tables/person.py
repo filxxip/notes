@@ -32,4 +32,3 @@ class Person(Base):
         return years_diff
 
 
-Person(name = "aa", surname = "aa", email = "aa", password ="aa", country = "aa", birthday= "2000-1-1")

@@ -17,6 +17,10 @@ public:
 
     virtual void setAdditionalParameters(const QString &key, const QString &value) = 0;
 
+    virtual void setAdditionalParameters(const QString &key, bool value) = 0;
+
+    virtual void setAdditionalParameters(json parameters) = 0;
+
     virtual void update(const Path &path) = 0;
 
     virtual void remove(const Path &path) = 0;

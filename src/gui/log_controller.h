@@ -22,7 +22,7 @@ signals:
     void loginActiveChanged(); //jak sie zrobi operator= to moze ten person i template bedzie dzialac
 
 private:
-    bool m_loginActive;
+    bool m_loginActive = true;
     bool m_registeringPossible = true;
     QPointer<RegisterViewModel> registerModel = new RegisterViewModel();
     QPointer<RegisterViewModel> loginModel = new RegisterViewModel();

@@ -30,6 +30,9 @@ public:
     void setAdditionalParameters(const QString &key, int value) override;
 
     void setAdditionalParameters(const QString &key, const QString &value) override;
+    void setAdditionalParameters(const QString &key, bool value) override;
+
+    void setAdditionalParameters(json parameters) override;
 
     void update(const Path &) override;
 

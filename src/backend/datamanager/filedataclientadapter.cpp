@@ -28,6 +28,16 @@ void FileDataClientAdapter::setAdditionalParameters(const QString &key, const QS
     dataClient->setAdditionalParameters(key, value);
 }
 
+void FileDataClientAdapter::setAdditionalParameters(const QString &key, bool value)
+{
+    dataClient->setAdditionalParameters(key, value);
+}
+
+void FileDataClientAdapter::setAdditionalParameters(json parameters)
+{
+    dataClient->setAdditionalParameters(std::move(parameters));
+}
+
 int FileDataClientAdapter::getDirectoryElementsNumber(const Path &url) const
 {
     auto path = FilePath(url.getRelativePath());

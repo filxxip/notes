@@ -64,6 +64,8 @@ def catchable_db_connection_exceptions(*exs: Type[Exception]):
 
     return wrapper
 
+def convert_str_to_bool(value)->bool:
+    return value=="true"
 
 def convert_str_date_to_datetime(d)->datetime.date:
     return datetime.datetime(*[int(m) for m in d.split("-")]) if isinstance(d, str) else d

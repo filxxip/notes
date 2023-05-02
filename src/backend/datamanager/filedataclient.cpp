@@ -22,6 +22,16 @@ void FileDataClient::setAdditionalParameters(const QString &key, int value)
     addedParams[key.toStdString()] = value;
 }
 
+void FileDataClient::setAdditionalParameters(const QString &key, bool value)
+{
+    addedParams[key.toStdString()] = value;
+}
+
+void FileDataClient::setAdditionalParameters(json parameters)
+{
+    addedParams.merge_patch(parameters);
+}
+
 void FileDataClient::performWritingToFile(const json &content, const Path &path)
 {
     fileManager.writeToFile(path, QString::fromStdString(content.dump()));

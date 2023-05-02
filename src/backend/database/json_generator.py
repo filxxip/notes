@@ -4,35 +4,6 @@ from typing_extensions import Type, TypeVar, Any
 
 from src.backend.database.tables import Base
 
-# class JsonGeneratorObject:
-#     __serialize_attrs__ : dict[Type, list[str]]
-#
-#     def to_json(self) -> dict:
-#         # return {key : self.__dict__[key] for key in JsonGeneratorObject.__serialize_attrs__}
-#         return {pair: str(self.__dict__[
-#             pair]) for pair in self.__dict__ if pair[0][0] != ""}
-#         # return {"x":self.__class__.__name__}
-#
-#     @classmethod
-#     def from_json(cls: Type[_T], json_obj: str) -> _T:
-#         return cls(**json.loads(json_obj))
-#
-#     def update_from_json(self, json_obj: str) -> JsonGeneratorObject:
-#         items = json.loads(json_obj)
-#         for key in items:
-#             if key in self.__dict__:
-#                 self.__setattr__(key, items[key])
-#             else:
-#                 raise AttributeError("Unsupported type: " + key)
-#         return self
-#
-#
-# class JsonGenerator:
-#     def __init__(self, cls : Type, keys : list[str]):
-#         JsonGeneratorObject.__serialize_attrs__[cls] = keys
-#     def __call__(self, *args, **kwargs):
-
-
 _T = TypeVar("_T", bound=Any)
 
 

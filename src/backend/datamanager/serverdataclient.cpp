@@ -11,6 +11,39 @@ void ServerDataClient::setAdditionalParameters(const QString &key, const QString
     additionalParams += QString("&%1=%2").arg(key, value);
 }
 
+void ServerDataClient::setAdditionalParameters(const QString &key, bool value)
+{
+    additionalParams += QString("&%1=%2").arg(key, value ? "true" : "false");
+}
+
+void ServerDataClient::setAdditionalParameters(json parameters)
+{
+    for (const auto &[key, value] : parameters.items()) {
+        if (value.is_boolean()) {
+            additionalParams += QString("&%1=%2").arg(QString::fromStdString(key),
+                                                      value.get<bool>() ? "true" : "false");
+            continue;
+        }
+        if (value.is_number_integer()) {
+            additionalParams += QString("&%1=%2").arg(QString::fromStdString(key),
+                                                      QString::fromStdString(
+                                                          value.get<std::string>()));
+            continue;
+        }
+        if (value.is_number_integer()) {
+            additionalParams += QString("&%1=%2").arg(QString::fromStdString(key),
+                                                      QString::number(value.get<int>()));
+            continue;
+        }
+        if (value.is_string()) {
+            additionalParams += QString("&%1=%2").arg(QString::fromStdString(key),
+                                                      QString::fromStdString(
+                                                          value.get<std::string>()));
+            continue;
+        }
+    }
+}
+
 void ServerDataClient::initRequest(const Path &url, std::string mode) const
 {
     request.setOpt<curlpp::options::Url>(url.getFullPath().toStdString());

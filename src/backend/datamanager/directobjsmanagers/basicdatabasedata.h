@@ -28,7 +28,10 @@ protected:
     std::optional<T> value;
 
 public:
+    BaseData() = default;
     BaseData(QString name);
+
+    void setName(QString name) { __name__ = std::move(name); }
 
     virtual void set(T newvalue) = 0;
 
@@ -60,7 +63,7 @@ public:
     //    using BaseData<T>::operator=;
     //    DbData(const DbData<T> &base) = default;
     //    DbData<T> &operator=(const DbData<T> &base) = default;
-
+    DbData() = default;
     DbData(QString name);
 
     void set(T newvalue) override;
@@ -76,8 +79,8 @@ class ConstDbData : public BaseData<T>
 {
 public:
     //    using BaseData<T>::operator=;
-    std::string somestring;
     //    ConstDbData() = default;
+    ConstDbData() = default;
     ConstDbData(QString name);
 
     //    ConstDbData(const DbData<T> &base) = default;
@@ -134,6 +137,19 @@ signals:
 
 //Q_DECLARE_METATYPE(MyClassInt)
 
+template<typename T>
+void to_json(json &j, const BaseData<T> &p);
+
+template<typename T>
+void init_from_json(const json &j, BaseData<T> &p);
+
+//template<typename T>
+//to_json(json &j, const BaseData<T> &p);
+
+//template<typename T>
+//void from_json(const json &j, BaseData<T> &p);
+// namespace ns
+
 #define REGISTER_DATA(type) \
     template class BaseData<type>; \
     template class DbData<type>; \
@@ -142,8 +158,10 @@ signals:
 using IntData = DbData<int>;
 using StrData = DbData<QString>;
 using DateData = DbData<QDateTime>;
+using BoolData = DbData<bool>;
 //Q_DECLARE_METATYPE_TEMPLATE_1ARG(DbData) //ogarnac jak sie dostawac do wartosci
 
 using ConstIntData = ConstDbData<int>;
 using ConstStrData = ConstDbData<QString>;
 using ConstDateData = ConstDbData<QDateTime>;
+using ConstBoolData = ConstDbData<bool>;

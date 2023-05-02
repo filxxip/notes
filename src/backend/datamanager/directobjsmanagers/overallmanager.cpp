@@ -1,5 +1,7 @@
 #include "overallmanager.h"
 
+// namespace ns
+
 namespace OverallManagerMethods {
 
 template<typename T>
@@ -120,8 +122,10 @@ std::optional<QList<DataObject>> OverallManager<DataObject>::getFiltered(const j
 }
 
 #include "categories/category.h"
+#include "guidialogs/guidialog.h"
 #include "notes/note.h"
 #include "people/person.h"
 REGISTER_MANAGER(Person)
 REGISTER_MANAGER(Note)
 REGISTER_MANAGER(Category)
+REGISTER_MANAGER(GuiDialog)

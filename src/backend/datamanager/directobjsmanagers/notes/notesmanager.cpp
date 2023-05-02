@@ -18,8 +18,7 @@ Note NotesManager::generateInstance(const json &genson) const
 
 void NotesManager::update(const Note &object)
 {
-    setAdditionUpdateParameter(object.releaseDate,
-                               OverallManagerMethods::codeTypeToQString<QDateTime>);
+    setAdditionUpdateParameter(object.releaseDate);
     setAdditionUpdateParameter(object.owner);
     setAdditionUpdateParameter(object.category);
     setAdditionUpdateParameter(object.title);
@@ -29,7 +28,7 @@ void NotesManager::update(const Note &object)
 
 void NotesManager::add(const Note &object)
 {
-    setAdditionAddParameter(object.releaseDate, OverallManagerMethods::codeTypeToQString<QDateTime>);
+    setAdditionAddParameter(object.releaseDate);
     setAdditionAddParameter(object.owner);
     setAdditionAddParameter(object.category);
     setAdditionAddParameter(object.title);

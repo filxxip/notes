@@ -14,6 +14,7 @@
 #include "gui/mycontroller.h"
 #include "gui/statuses.h"
 #include "src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h"
+#include "src/backend/datamanager/directobjsmanagers/guidialogs/guidialogmanager.h"
 #include "src/backend/datamanager/directobjsmanagers/notes/notesmanager.h"
 #include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"
 #include "src/backend/datamanager/filedataclient.h"
@@ -22,7 +23,7 @@
 #include "src/gui/customlistviewmodel.h"
 #include <chrono>
 #include <memory>
-#define RUN_QML 1
+#define RUN_QML 0
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
@@ -53,14 +54,15 @@ int main(int argc, char *argv[])
     engine.load(url);
 #endif
     //sprawdzic czy napewno aby sie updatuje to co trzeba, dlaczego id pobrane jest w stringu a nie it z servera
-    auto filemanager = NotesManager(
+    auto filemanager = PeopleManager(
         std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
 
-    auto servermanager = NotesManager(std::make_shared<ServerDataClient>());
-    auto el = filemanager.getFiltered(json{{"category", "21"}});
-    qDebug() << el->size();
-    for (const auto &e : el.value()) {
-        qDebug() << e.category.get();
+    auto servermanager = PeopleManager(std::make_shared<ServerDataClient>());
+    auto el = servermanager.get();
+    for (auto &e : el.value()) {
+        e.name.set("Neymar");
+
+        servermanager.update(e);
     }
 #if RUN_QML
     return app.exec();

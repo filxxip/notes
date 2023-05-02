@@ -38,27 +38,41 @@ protected:
     {
         auto &param = data.getUpdated();
         if (param.has_value()) {
-            dataClient->setAdditionalParameters(data.getName(), param.value());
+            json j;
+            //            json genson;
+
+            //            genson[data.getName().toStdString()] = param.value();
+            dataClient->setAdditionalParameters(data);
+            //            dataClient->setAdditionalParameters(data.getName(), param.value())
         }
     }
     template<typename T>
     void setAdditionAddParameter(const DbData<T> &data)
     {
-        dataClient->setAdditionalParameters(data.getName(), data.get());
+        //        json genson;
+        //        genson[data.getName().toStdString()] = data.get();
+        dataClient->setAdditionalParameters(data);
+        //        dataClient->setAdditionalParameters(data.getName(), data.get());
     }
-    template<typename T, typename Function>
-    void setAdditionUpdateParameter(const DbData<T> &data, Function converter)
-    {
-        auto &param = data.getUpdated();
-        if (param.has_value()) {
-            dataClient->setAdditionalParameters(data.getName(), converter(param.value()));
-        }
-    }
-    template<typename T, typename Function>
-    void setAdditionAddParameter(const DbData<T> &data, Function converter)
-    {
-        dataClient->setAdditionalParameters(data.getName(), converter(data.get()));
-    }
+    //    template<typename T, typename Function>
+    //    void setAdditionUpdateParameter(const DbData<T> &data, Function converter)
+    //    {
+    //        auto &param = data.getUpdated();
+    //        if (param.has_value()) {
+    //            json genson;
+    //            genson[data.getName().toStdString()] = converter(param.value()).toStdString();
+    //            dataClient->setAdditionalParameters(genson);
+    //            //            dataClient->setAdditionalParameters(data.getName(), converter(param.value()));
+    //        }
+    //    }
+    //    template<typename T, typename Function>
+    //    void setAdditionAddParameter(const DbData<T> &data, Function converter)
+    //    {
+    //        json genson;
+    //        genson[data.getName().toStdString()] = converter(data.get()).toStdString();
+    //        dataClient->setAdditionalParameters(genson);
+    //        //        dataClient->setAdditionalParameters(data.getName(), converter(data.get()));
+    //    }
 
     std::shared_ptr<DataClient> dataClient;
 
