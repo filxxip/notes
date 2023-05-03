@@ -11,4 +11,5 @@ struct GuiDialog
     BoolData isYes{"isYes"};
     BoolData isNo{"isNo"};
     StrData path{"path"};
+    IntData fontSize{"fontSize"};
 };

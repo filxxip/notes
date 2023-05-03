@@ -9,11 +9,14 @@ DialogViewModel::DialogViewModel(QObject *parent)
     ADD_DATA(ModelStatuses::DialogRoles::IS_NO, isNo)
     ADD_DATA(ModelStatuses::DialogRoles::TITLE, title)
     ADD_DATA(ModelStatuses::DialogRoles::PATH, path)
+    ADD_DATA(ModelStatuses::DialogRoles::FONT_SIZE, fontSize)
     GuiDialog dialog;
-    dialog.content.set("xxx");
-    dialog.title.set("title");
+    dialog.content.set("xxxxfsdgfsdsdxxxfsdgfsdsdxxxfsdgfsdsdxxxfsdgfsdsdxxxfsdgfsdsdxfsdgfsdsdx");
+    dialog.title.set("Incorrect Data");
     dialog.isOk.set(true);
     dialog.isYes.set(true);
     dialog.isNo.set(true);
+    dialog.path.set("qrc:/resources/information.png");
+    dialog.fontSize.set(13);
     addEntry(dialog);
 }

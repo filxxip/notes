@@ -2,6 +2,8 @@ pragma Singleton
 
 import QtQuick 2.15
 
+import ModelStatuses 1.0
+
 Item {
     id: guiConfig
 
@@ -27,8 +29,21 @@ Item {
 
     QtObject {
         id: dialog
-        readonly property real widthRatio: 0.5 * window.width
-        readonly property real heightRatio: 0.5 * window.height
+        readonly property int width: 0.38 * window.width
+        readonly property int height: 0.38 * window.height
+        readonly property var gradient: gradients.dialogBoxGradient
+        readonly property int borderSize: 3
+        readonly property color borderColor: colors.darkRed
+        readonly property int mainRectangleHeight: height * 0.7
+        readonly property int bottomHeight: height * 0.2
+        readonly property real opacityValue: 0.2
+        readonly property int titleHeight: mainRectangleHeight * 0.3
+        readonly property int contentHeight: mainRectangleHeight * 0.7
+        readonly property int rightColumnWidth: 0.7 * width
+        readonly property int leftImageWidth: 0.3 * width
+        readonly property int itemMargins: 10
+        readonly property int imageMargins: 10
+        Component.onCompleted: console.log(width)
     }
 
     QtObject {
@@ -38,7 +53,6 @@ Item {
             readonly property int listViewSpacing: 12
             readonly property int columnSpacing: 12
             readonly property int combinedHeight: 200
-            readonly property int layoutSpacing: 30
             readonly property string titleContent: "Register"
             readonly property string checkContent: "sign up"
             readonly property string accessLoginText: "have account? Log in!"
@@ -47,7 +61,7 @@ Item {
         readonly property var loginView: QtObject {
             readonly property int listViewSpacing: 20
             readonly property int columnSpacing: 12
-            readonly property int combinedHeight: 80
+            readonly property int combinedHeight: 0.15 * userView.height
             readonly property int layoutSpacing: 30
             readonly property string titleContent: "Login"
             readonly property string checkContent: "confirm"
@@ -56,12 +70,18 @@ Item {
             property int accessRegisterButtonHeight: 20
             property int accessRegisterButtonSpacing: 30
         }
-        readonly property real checkButtonRatio: 0.3
+
+        readonly property var userViewDetails: (new Map([[ModelStatuses.UserViews.REGISTER, registerView], [ModelStatuses.UserViews.LOGIN, loginView]]))
+
+        readonly property real checkButtonWidth: 0.3 * userView.defaultEntryWidth
         readonly property int checkButtonHeight: 40
-        readonly property int defaultEntryWidth: 300
+        readonly property int defaultEntryWidth: 0.75 * width
         readonly property real marginRatio: 0.05
-        readonly property int titleHeight: 50
+        readonly property int titleHeight: 0.1 * height
         readonly property real titleRatio: 0.8
+        readonly property int height: 500
+        readonly property int width: 400
+        readonly property int layoutSpacing: 30
     }
 
     QtObject {
@@ -77,6 +97,7 @@ Item {
         readonly property color black: "black"
         readonly property color grey: "grey"
         readonly property color purple: "#ac28ed"
+        readonly property color darkRed: "#5e0515"
     }
 
     QtObject {
@@ -102,6 +123,18 @@ Item {
             GradientStop {
                 position: 1
                 color: "#348acb"
+            }
+        }
+
+        readonly property var dialogBoxGradient: Gradient {
+            GradientStop {
+                position: 0.8
+                color: "#e85b51"
+            }
+
+            GradientStop {
+                position: 0
+                color: "#f22213"
             }
         }
     }

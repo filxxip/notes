@@ -14,7 +14,8 @@ GuiDialog GuiDialogsManager::generateInstance(const json &genson) const
                guidialog.isOk,
                guidialog.isYes,
                guidialog.isNo,
-               guidialog.path);
+               guidialog.path,
+               guidialog.fontSize);
     return guidialog;
 }
 
@@ -26,10 +27,17 @@ void GuiDialogsManager::update(const GuiDialog &object)
                  object.isOk,
                  object.isNo,
                  object.isYes,
-                 object.path);
+                 object.path,
+                 object.fontSize);
 }
 
 void GuiDialogsManager::add(const GuiDialog &object)
 {
-    addObject(object.content, object.title, object.isOk, object.isNo, object.isYes, object.path);
+    addObject(object.content,
+              object.title,
+              object.isOk,
+              object.isNo,
+              object.isYes,
+              object.path,
+              object.fontSize);
 }

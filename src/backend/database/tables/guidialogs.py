@@ -22,3 +22,5 @@ class GuiDialog(Base):
     title: Mapped[str] = mapped_column(String(50))
     path : Mapped[str] = mapped_column(String(50))
     content: Mapped[str] = mapped_column(Text())
+    fontSize : Mapped[int] = mapped_column(Integer())
+

@@ -12,6 +12,6 @@ class GuiDialogSeeder(Seeder):
         isNo = [False, True, True, False]
 
         for title, content, isok, isyes, isno in zip(titles, contents, isOks, isYes, isNo):
-            notes.append(GuiDialog(content=content, title=title, isOk=isok, isYes=isyes, isNo=isno, path = "undefined"))
+            notes.append(GuiDialog(content=content, title=title, isOk=isok, isYes=isyes, isNo=isno,fontSize = 15, path = "undefined"))
 
         return notes

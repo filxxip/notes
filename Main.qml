@@ -35,12 +35,7 @@ Window {
 
             mydata: GUIConfig.switchbutton
         }
-        Rectangle {
-            width: GUIConfig.userView.defaultEntryWidth + 100
-            height: 500
-            radius: 10
-            color: "#376945"
-            id: viewParent
+        Item {
             Component {
                 id: loginView
                 LoginView {}

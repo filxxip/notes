@@ -22,10 +22,10 @@ LogController::LogController()
     connect(this, &LogController::registerObjectInModel, this, &LogController::onRegisteringModel);
 }
 
-void LogController::setRegistering(bool value)
+void LogController::setActivity(bool value)
 {
-    m_registeringPossible = value;
-    emit registeringChanged();
+    m_activity_possible = value;
+    emit activityStatusChanged();
 }
 
 void LogController::onRegisteringModel()
@@ -37,11 +37,10 @@ void LogController::onRegisteringModel()
         })) {
         auto previousColor = registerModel->data(passIndex, ModelStatuses::Roles::COLOR);
         registerModel->setData<QColor>(passIndex, "black", ModelStatuses::Roles::COLOR);
-        setRegistering(false);
-        emit registeringChanged();
+        setActivity(false);
         QTimer::singleShot(2500, [this, previousColor, passIndex]() {
             registerModel->setData(passIndex, previousColor, ModelStatuses::Roles::COLOR);
-            setRegistering(true);
+            setActivity(true);
         });
     }
 }

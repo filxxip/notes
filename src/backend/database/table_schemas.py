@@ -41,7 +41,8 @@ guidialog_schema = {
         "isOk": {"type": "string"},
         "isYes": {"type": "string"},
         "isNo": {"type": "string"},
-        "path" : {"type":"string"}
+        "path" : {"type":"string"},
+        "fontSize" : {"type":"integer"}
 
     },
     "additionalProperties": False
