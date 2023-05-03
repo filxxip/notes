@@ -14,9 +14,14 @@ template<typename T, typename ReturnType>
 std::function<QVariant(const T &)> makeGetterFunction(ReturnType T::*method)
 {
     return [method](const T &object) {
-        return std::is_constructible<QVariant, ReturnType>::value
-                   ? QVariant(object.*method)
-                   : QVariant::fromValue(object.*method);
+        constexpr auto isConstructible = std::is_constructible<QVariant, ReturnType>::value;
+        if constexpr (isConstructible)
+            return QVariant(object.*method);
+        else
+            return QVariant::fromValue(object.*method);
+        //        constexpr auto isConstructible = std::is_constructible<QVariant, ReturnType>::value;
+        //        return isConstructible ? QVariant(object.*method) : QVariant(0);
+        //                   : QVariant::fromValue(object.*method);
     };
 }
 
@@ -106,10 +111,26 @@ public:
     {
         return setData(index(indexvalue), QVariant::fromValue(value), static_cast<int>(role));
     }
-public slots:
-    //    void resetModel2()
-    //    {
-    //        beginResetModel();
-    //        endResetModel();
-    //    }???
+};
+
+template<typename ModelStructType, typename EnumRoles>
+class FastModelBuilder
+{
+    QPointer<CustomListModel<ModelStructType, EnumRoles>> model;
+
+public:
+    FastModelBuilder(QObject *qobject = nullptr)
+        : model(new CustomListModel<ModelStructType, EnumRoles>(qobject))
+    {}
+
+    template<typename ReturnType>
+    FastModelBuilder &add(EnumRoles role,
+                          ReturnType ModelStructType::*attributeProperty,
+                          const QByteArray &name)
+    {
+        model->addPart(role, attributeProperty, name);
+        return *this;
+    }
+
+    QPointer<CustomListModel<ModelStructType, EnumRoles>> build() { return model; }
 };

@@ -15,8 +15,6 @@ struct EntryFieldModel
 
 class RegisterViewModel : public CustomListModel<EntryFieldModel, ModelStatuses::Roles>
 {
-    Q_OBJECT
-
 public:
     RegisterViewModel(QObject *parent = nullptr)
         : CustomListModel(parent)

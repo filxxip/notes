@@ -45,7 +45,7 @@ Rectangle {
             ButtonText {
                 contentText: GuiConfig.userView.registerView.accessLoginText
                 width: GUIConfig.userView.defaultEntryWidth
-                height: GuiConfig.userView.registerView.accessLoginButtonHeight
+                height: GuiConfig.userView.accessButtonHeight
                 onCustomReleased: logController.loginActive = true
             }
         }

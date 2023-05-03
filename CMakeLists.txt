@@ -85,6 +85,7 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/SwitchButton.qml
         src/gui/CloseButton.qml
         src/gui/customdialog/CustomDialog.qml
+        src/gui/ButtonSwitcher.qml
 
 )
 

@@ -8,28 +8,32 @@ Rectangle {
     radius: 10
     color: "#376945"
     id: view
+    property var type: logController.userViewType
     ColumnLayout {
         spacing: GUIConfig.userView.layoutSpacing
         anchors.centerIn: view
+        Component.onCompleted: console.log(type)
         TitleBox {
-            title: GuiConfig.userView.loginView.titleContent
+            Component.onCompleted: console.log(
+                                       GuiConfig.userView.userViewDetails[type])
+            title: GuiConfig.userView.userViewDetails[type].titleContent
             width: GUIConfig.userView.defaultEntryWidth
             height: GuiConfig.userView.titleHeight
         }
 
         Column {
-            spacing: GuiConfig.userView.loginView.columnSpacing
+            spacing: GuiConfig.userView.columnSpacing
             ListView {
                 id: listview
                 interactive: false
                 spacing: GuiConfig.userView.loginView.listViewSpacing
                 width: GUIConfig.userView.defaultEntryWidth
                 implicitHeight: contentHeight
-                model: logController.loginModel
+                model: logController.userModel
                 delegate: EntryField {
                     id: entry
                     width: GUIConfig.userView.defaultEntryWidth
-                    height: GuiConfig.userView.loginView.combinedHeight / listview.count
+                    height: GuiConfig.userView.userViewDetails[type].combinedHeight / listview.count
                     customcolor: model.color
                     placeholder: model.placeholder
                     passwordStatus: model.passwordStatus
@@ -39,13 +43,13 @@ Rectangle {
                     }
 
                     Component.onCompleted: logController.confirmEnter.connect(
-                                               foo)
+                                               foo) //torepair
                 }
             }
 
             RowLayout {
                 width: GUIConfig.userView.defaultEntryWidth
-                height: GuiConfig.userView.loginView.accessRegisterButtonHeight
+                height: GuiConfig.userView.accessButtonHeight
                 spacing: GuiConfig.userView.loginView.accessRegisterButtonSpacing
 
                 ButtonText {
@@ -58,7 +62,7 @@ Rectangle {
                     contentText: GuiConfig.userView.loginView.showPasswordText
                     Layout.fillWidth: true
                     height: parent.height
-                    property var element: logController.loginModel.get(1)
+                    property var element: logController.userModel.get(1)
                     onCustomClicked: {
                         element.update(false, ModelStatuses.Roles.PASS_STATUS)
                         dialogController.visibility = true

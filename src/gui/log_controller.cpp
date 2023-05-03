@@ -20,6 +20,24 @@ LogController::LogController()
     loginModel->setEntries(std::move(dataLogin));
 
     connect(this, &LogController::registerObjectInModel, this, &LogController::onRegisteringModel);
+    using Status = SwitcherModel<ModelStatuses::UserViews>; //
+    switcherModel = FastModelBuilder<Status, ModelStatuses::UserViewsRoles>()
+                        .add(ModelStatuses::UserViewsRoles::TEXT,
+                             &SwitcherModel<ModelStatuses::UserViews>::text,
+                             "text")
+                        .add(ModelStatuses::UserViewsRoles::TYPE,
+                             &SwitcherModel<ModelStatuses::UserViews>::type,
+                             "type")
+                        .build();
+    SwitcherModel<ModelStatuses::UserViews> switcher;
+    switcher.text = "login";
+    switcher.type = ModelStatuses::UserViews::LOGIN;
+
+    switcherModel->addEntry(std::move(switcher));
+    SwitcherModel<ModelStatuses::UserViews> switcher2;
+    switcher2.text = "register";
+    switcher2.type = ModelStatuses::UserViews::REGISTER;
+    switcherModel->addEntry(std::move(switcher2));
 }
 
 void LogController::setActivity(bool value)

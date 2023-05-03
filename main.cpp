@@ -29,6 +29,9 @@
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
+    auto v = QVariant::fromValue(ModelStatuses::UserViews::LOGIN);
+    qDebug() << std::is_constructible<QVariant, ModelStatuses::UserViews>::value;
+
 #if RUN_QML
     QGuiApplication app(argc, argv);
 

@@ -1,7 +1,7 @@
 #include "customlistviewmodel.h"
 #include "../backend/datamanager/directobjsmanagers/guidialogs/guidialog.h"
 #include "customdialog/dialogcontroller.h"
-#include "registerboxmodel.h"
+#include "log_controller.h"
 
 AbstractListModelInvokableClass::AbstractListModelInvokableClass(QObject *object)
     : QAbstractListModel(object)
@@ -97,3 +97,5 @@ void CustomListModel<T, EnumData>::addEntry(T element)
 
 template class CustomListModel<EntryFieldModel, ModelStatuses::Roles>;
 template class CustomListModel<GuiDialog, ModelStatuses::DialogRoles>;
+template class CustomListModel<SwitcherModel<ModelStatuses::UserViews>,
+                               ModelStatuses::UserViewsRoles>;

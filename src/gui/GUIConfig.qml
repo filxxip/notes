@@ -51,8 +51,7 @@ Item {
         readonly property var registerView: QtObject {
             readonly property string passwordCharakter: "#"
             readonly property int listViewSpacing: 12
-            readonly property int columnSpacing: 12
-            readonly property int combinedHeight: 200
+            readonly property int combinedHeight: 0.4 * userView.height
             readonly property string titleContent: "Register"
             readonly property string checkContent: "sign up"
             readonly property string accessLoginText: "have account? Log in!"
@@ -60,7 +59,6 @@ Item {
         }
         readonly property var loginView: QtObject {
             readonly property int listViewSpacing: 20
-            readonly property int columnSpacing: 12
             readonly property int combinedHeight: 0.15 * userView.height
             readonly property int layoutSpacing: 30
             readonly property string titleContent: "Login"
@@ -71,7 +69,7 @@ Item {
             property int accessRegisterButtonSpacing: 30
         }
 
-        readonly property var userViewDetails: (new Map([[ModelStatuses.UserViews.REGISTER, registerView], [ModelStatuses.UserViews.LOGIN, loginView]]))
+        readonly property var userViewDetails: [registerView, loginView]
 
         readonly property real checkButtonWidth: 0.3 * userView.defaultEntryWidth
         readonly property int checkButtonHeight: 40
@@ -82,6 +80,8 @@ Item {
         readonly property int height: 500
         readonly property int width: 400
         readonly property int layoutSpacing: 30
+        readonly property int columnSpacing: 12
+        property int accessButtonHeight: 20
     }
 
     QtObject {
