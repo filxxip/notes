@@ -2,9 +2,9 @@
 
 #include <QDate>
 #include <QDateTime>
-#include <QList>
 #include <QString>
 #include <QTime>
+#include <QVector>
 #include <algorithm>
 #include <functional>
 #include <memory>
@@ -101,7 +101,7 @@ public:
 
     std::optional<DataObject> get(int index) const;
 
-    std::optional<QList<DataObject>> getFiltered(const json &genson) const;
+    std::optional<QVector<DataObject>> getFiltered(const json &genson) const;
 
-    std::optional<QList<DataObject>> get() const;
+    std::optional<QVector<DataObject>> get() const;
 };

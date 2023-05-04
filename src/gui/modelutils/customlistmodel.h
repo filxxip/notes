@@ -1,6 +1,30 @@
 #pragma once
 
 #include "invokablelistmodel.h"
+#include <functional>
+
+#define ADD_DATA(role, name) addPart(role, &TemplateType::name, #name);
+
+namespace {
+template<typename T, typename ReturnType>
+std::function<QVariant(const T &)> makeGetterFunction(ReturnType T::*method)
+{
+    return [method](const T &object) {
+        constexpr auto isConstructible = std::is_constructible<QVariant, ReturnType>::value;
+        if constexpr (isConstructible)
+            return QVariant(object.*method);
+        else
+            return QVariant::fromValue(object.*method);
+    };
+}
+
+template<typename T, typename ReturnType>
+std::function<void(T &, const QVariant &)> makeUpdateFunction(ReturnType T::*method)
+{
+    return [method](T &object, const QVariant &variant) {
+        object.*method = variant.value<ReturnType>();
+    };
+}
 
 template<typename StructType, typename EnumData>
 class CustomListModel : public AbstractListModelInvokableClass

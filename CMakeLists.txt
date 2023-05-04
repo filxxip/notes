@@ -74,17 +74,19 @@ qt_add_qml_module(appnotesdatabaseproject
     VERSION 1.0
     QML_FILES
         Main.qml
-        src/gui/EntryField.qml
-        src/gui/CustomButton.qml
-        src/gui/ButtonText.qml
-        src/gui/LoginView.qml
+        src/gui/customdialog/CustomDialog.qml
+
+        src/gui/qmlutils/ButtonSwitcher.qml
+        src/gui/qmlutils/ButtonText.qml
+        src/gui/qmlutils/CustomButton.qml
+        src/gui/qmlutils/EntryField.qml
+        src/gui/qmlutils/TitleBox.qml
+
+        src/gui/userView/LogView.qml
+
         src/gui/GUIConfig.qml
         src/gui/qmldir
-        src/gui/TitleBox.qml
-        src/gui/SwitchButton.qml
         src/gui/CloseButton.qml
-        src/gui/customdialog/CustomDialog.qml
-        src/gui/ButtonSwitcher.qml
 
 )
 

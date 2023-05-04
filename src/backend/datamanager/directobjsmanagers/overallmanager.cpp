@@ -45,11 +45,11 @@ std::optional<DataObject> OverallManager<DataObject>::get(int index) const
 }
 
 template<typename DataObject>
-std::optional<QList<DataObject>> OverallManager<DataObject>::get() const
+std::optional<QVector<DataObject>> OverallManager<DataObject>::get() const
 {
     if (auto content = dataClient->getGroup(generatePath()); content.has_value()) {
         dataClient->clearFilters();
-        QList<DataObject> list;
+        QVector<DataObject> list;
         for (const auto &element : *content) {
             list.append(generateInstance(element));
         }
@@ -59,7 +59,7 @@ std::optional<QList<DataObject>> OverallManager<DataObject>::get() const
 }
 
 template<typename DataObject>
-std::optional<QList<DataObject>> OverallManager<DataObject>::getFiltered(const json &genson) const
+std::optional<QVector<DataObject>> OverallManager<DataObject>::getFiltered(const json &genson) const
 {
     dataClient->setGroupFilter(genson);
     return get();

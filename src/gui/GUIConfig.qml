@@ -43,7 +43,6 @@ Item {
         readonly property int leftImageWidth: 0.3 * width
         readonly property int itemMargins: 10
         readonly property int imageMargins: 10
-        Component.onCompleted: console.log(width)
     }
 
     QtObject {
