@@ -9,6 +9,8 @@ Item {
 
     readonly property alias userView: userView
 
+    readonly property alias dateChooser: dateChooser
+
     readonly property alias colors: colors
 
     readonly property alias fonts: fonts
@@ -25,6 +27,14 @@ Item {
         id: window
         readonly property int width: 800
         readonly property int height: 640
+    }
+
+    QtObject {
+        id: dateChooser
+        readonly property int itemNumber: 9
+        readonly property int height: 400
+        readonly property int tumblerWidth: 130
+        readonly property int fontSize: 30
     }
 
     QtObject {

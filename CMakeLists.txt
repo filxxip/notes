@@ -37,9 +37,13 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/modelutils/customlistmodelregistering.h
     src/gui/modelutils/invokablelistmodel.cpp
     src/gui/modelutils/invokablelistmodel.h
+    src/gui/models/calendarmodel.h
 
     src/gui/userview/logcontroller.cpp
     src/gui/userview/logcontroller.h
+
+    src/gui/calendar/calendarcontroller.h
+    src/gui/calendar/calendarcontroller.cpp
 
     src/backend/datamanager/dataclient.h
 
@@ -84,6 +88,7 @@ qt_add_qml_module(appnotesdatabaseproject
     QML_FILES
         Main.qml
         src/gui/customdialog/CustomDialog.qml
+        src/gui/calendar/DateChooser.qml
 
         src/gui/qmlutils/ButtonSwitcher.qml
         src/gui/qmlutils/ButtonText.qml

@@ -19,6 +19,7 @@
 #include "src/backend/datamanager/filedataclient.h"
 #include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/backend/datamanager/serverdataclient.h"
+#include "src/gui/calendar/calendarcontroller.h"
 #include "src/gui/customdialog/dialogcontroller.h"
 #include "src/gui/userview/logcontroller.h"
 #include <chrono>
@@ -61,7 +62,6 @@ int main(int argc, char *argv[])
     auto ptr = std::make_shared<ServerDataClient>();
     auto logController = new LogController();
     auto dialogController = new DialogController(ptr);
-
     engine.rootContext()->setContextProperty("logController", logController);
     engine.rootContext()->setContextProperty("dialogController", dialogController);
 
