@@ -14,21 +14,6 @@ CalendarController::CalendarController()
     initializeModel(dayModel);
     initializeModel(monthModel);
     initializeModel(yearModel);
-    //    dayModel = FastModelBuilder<CalendarModel, EnumStatus>()
-    //                   .add(EnumStatus::CONTENT, &CalendarModel::content, "content")
-    //                   .add(EnumStatus::VISIBILITY, &CalendarModel::visibility, "visibility")
-    //                   .add(EnumStatus::VALUE, &CalendarModel::value, "value")
-    //                   .build();
-    //    monthModel = FastModelBuilder<CalendarModel, EnumStatus>()
-    //                     .add(EnumStatus::CONTENT, &CalendarModel::content, "content")
-    //                     .add(EnumStatus::VISIBILITY, &CalendarModel::visibility, "visibility")
-    //                     .add(EnumStatus::VALUE, &CalendarModel::value, "value")
-    //                     .build();
-    //    yearModel = FastModelBuilder<CalendarModel, EnumStatus>()
-    //                    .add(EnumStatus::CONTENT, &CalendarModel::content, "content")
-    //                    .add(EnumStatus::VISIBILITY, &CalendarModel::visibility, "visibility")
-    //                    .add(EnumStatus::VALUE, &CalendarModel::value, "value")
-    //                    .build();
     QVector<CalendarModel> days;
     for (int i = 1; i < 32; i++) {
         days.push_back({i, QString::number(i)});
