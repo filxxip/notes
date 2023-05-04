@@ -7,7 +7,6 @@ FocusScope {
     property string placeholder
     property color customcolor
     readonly property alias text: textInput.text
-
     Rectangle {
         id: outerRect
         anchors.fill: parent
@@ -32,6 +31,6 @@ FocusScope {
                 anchors.fill: parent
             }
         }
-        color: root.activeFocus ? root.customcolor.darker() : root.customcolor
+        color: root.activeFocus ? root.customcolor.lighter() : root.customcolor
     }
 }

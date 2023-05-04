@@ -18,12 +18,11 @@ Column {
         radius: 10
         color: "#376945"
         id: view
-        property var type: logController.userViewType //order of type enum and equivalent config data should be same
         ColumnLayout {
             spacing: GUIConfig.userView.layoutSpacing
             anchors.centerIn: view
             TitleBox {
-                title: GuiConfig.userView.userViewDetails[view.type].titleContent
+                title: GuiConfig.userView.userViewDetails[logController.userViewType].titleContent
                 width: GUIConfig.userView.defaultEntryWidth
                 height: GuiConfig.userView.titleHeight
             }
@@ -33,15 +32,14 @@ Column {
                 ListView {
                     id: listview
                     interactive: false
-                    spacing: GuiConfig.userView.userViewDetails[view.type].listViewSpacing
+                    spacing: GuiConfig.userView.userViewDetails[logController.userViewType].listViewSpacing
                     width: GUIConfig.userView.defaultEntryWidth
                     implicitHeight: contentHeight
                     model: logController.userModel
                     delegate: EntryField {
                         id: entry
                         width: GUIConfig.userView.defaultEntryWidth
-                        height: GuiConfig.userView.userViewDetails[view.type].combinedHeight
-                                / listview.count
+                        height: GuiConfig.userView.userViewDetails[logController.userViewType].combinedHeight / listview.count
                         customcolor: model.color
                         placeholder: model.placeholder
                         passwordStatus: model.passwordStatus
@@ -58,12 +56,13 @@ Column {
                     width: GUIConfig.userView.defaultEntryWidth
                     height: GuiConfig.userView.accessButtonHeight
                     spacing: GuiConfig.userView.accessButtonSpacing
-                    visible: view.type === ModelStatuses.UserViews.LOGIN
+                    visible: logController.userViewType === ModelStatuses.UserViews.LOGIN
                     ButtonText {
                         Layout.fillWidth: true
                         contentText: GuiConfig.userView.loginView.accessRegisterText
-                        onCustomReleased: logController.userViewType
-                                          = ModelStatuses.UserViews.REGISTER
+                        onCustomReleased: {
+                            logController.userViewType = ModelStatuses.UserViews.REGISTER
+                        }
                         height: parent.height
                     }
                     ButtonText {
@@ -99,7 +98,7 @@ Column {
                 Layout.alignment: Qt.AlignHCenter
                 CustomButton {
                     enabled: logController.activityPossible
-                    contentText: GuiConfig.userView.userViewDetails[view.type].checkContent
+                    contentText: GuiConfig.userView.userViewDetails[logController.userViewType].checkContent
                     anchors.fill: parent
                 }
             }

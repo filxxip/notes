@@ -34,7 +34,7 @@ LogController::LogController()
 void LogController::onSwitchedChanged(ModelStatuses::UserViews s)
 {
     m_userView = s;
-    emit userViewChanged(m_userView);
+    emit userViewChanged();
 }
 
 void LogController::setActivity(bool value)

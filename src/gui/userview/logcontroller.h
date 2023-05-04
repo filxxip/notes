@@ -56,5 +56,5 @@ signals:
 
     void activityStatusChanged();
 
-    void userViewChanged(ModelStatuses::UserViews newView);
+    void userViewChanged();
 };
