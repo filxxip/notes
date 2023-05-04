@@ -50,28 +50,31 @@ Item {
         id: userView
         readonly property var registerView: QtObject {
             readonly property string passwordCharakter: "#"
-            readonly property int listViewSpacing: 12
             readonly property int combinedHeight: 0.4 * userView.height
             readonly property string titleContent: "Register"
-            readonly property string checkContent: "sign up"
+            readonly property string checkContent: "SIGN UP"
             readonly property string accessLoginText: "have account? Log in!"
-            property int accessLoginButtonHeight: 20
+            readonly property int listViewSpacing: 10
         }
         readonly property var loginView: QtObject {
-            readonly property int listViewSpacing: 20
             readonly property int combinedHeight: 0.15 * userView.height
             readonly property int layoutSpacing: 30
             readonly property string titleContent: "Login"
-            readonly property string checkContent: "confirm"
+            readonly property string checkContent: "CONFIRM"
             readonly property string accessRegisterText: "new account"
             readonly property string showPasswordText: "show password"
-            property int accessRegisterButtonHeight: 20
-            property int accessRegisterButtonSpacing: 30
+            readonly property int listViewSpacing: 20
+        }
+        readonly property var guestView: QtObject {
+            readonly property int combinedHeight: 0.1 * userView.height
+            readonly property string titleContent: "Guest"
+            readonly property string checkContent: "CONFIRM"
+            readonly property int listViewSpacing: 20
         }
 
-        readonly property var userViewDetails: [registerView, loginView]
+        readonly property var userViewDetails: [registerView, loginView, guestView]
 
-        readonly property real checkButtonWidth: 0.3 * userView.defaultEntryWidth
+        readonly property real checkButtonWidth: 0.4 * userView.defaultEntryWidth
         readonly property int checkButtonHeight: 40
         readonly property int defaultEntryWidth: 0.75 * width
         readonly property real marginRatio: 0.05
@@ -81,7 +84,8 @@ Item {
         readonly property int width: 400
         readonly property int layoutSpacing: 30
         readonly property int columnSpacing: 12
-        property int accessButtonHeight: 20
+        readonly property int accessButtonHeight: 20
+        readonly property int accessButtonSpacing: 20
     }
 
     QtObject {
@@ -142,12 +146,10 @@ Item {
     QtObject {
         id: switchbutton
 
-        readonly property string leftButtonText: "Log in"
-        readonly property string rightButtonText: "Sign up"
-        readonly property int width: GUIConfig.userView.defaultEntryWidth - 20
+        readonly property int width: GUIConfig.userView.width - 20
         readonly property int height: 40
-        readonly property int radius: 10
-        readonly property color enableColor: colors.grey
-        readonly property color disableColor: colors.black
+        readonly property int radius: 4
+        readonly property color disableColor: colors.grey
+        readonly property color enableColor: colors.black
     }
 }

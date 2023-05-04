@@ -31,7 +31,6 @@ FocusScope {
                 anchors.fill: parent
             }
         }
-        //        color: root.activeFocus ? "#5d6d8f" : "#3b5387"
         color: root.activeFocus ? root.customcolor.darker() : root.customcolor
     }
 }

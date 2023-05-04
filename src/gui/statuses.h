@@ -7,7 +7,7 @@ namespace ModelStatuses {
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
-enum class UserViews { REGISTER, LOGIN };
+enum class UserViews { REGISTER, LOGIN, GUEST };
 
 enum class UserViewsRoles { TEXT, TYPE };
 

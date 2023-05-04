@@ -2,29 +2,32 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 TabBar {
-    id: tabBar
+    id: tabbar
     background: Rectangle {
         width: 0
         height: 0
     }
-    required property int combinedWidth
-    required property int elementHeight
+    property int combinedWidth: GUIConfig.switchbutton.width
+    property int elementHeight: GUIConfig.switchbutton.height
     required property var model
+    required property var tabSelectorEnum
     signal switched(int enumCode)
+    currentIndex: tabSelectorEnum
+    anchors.horizontalCenter: parent.horizontalCenter
 
     Repeater {
         id: repeater
-        model: tabBar.model
+        model: tabbar.model
         TabButton {
             text: model.text
-            width: tabBar.combinedWidth / repeater.count
-            height: tabBar.elementHeight
+            width: tabbar.combinedWidth / repeater.count
+            height: tabbar.elementHeight
             background: Rectangle {
-                color: tabBar.currentIndex == index ? "yellow" : "black"
+                color: tabbar.currentIndex === model.type ? GUIConfig.switchbutton.enableColor : GUIConfig.switchbutton.disableColor
                 anchors.fill: parent
-                radius: 3
+                radius: GUIConfig.switchbutton.radius
             }
-            onReleased: tabBar.switched(model.type)
+            onReleased: tabbar.switched(model.type)
         }
     }
 }

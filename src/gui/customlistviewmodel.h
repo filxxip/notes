@@ -34,37 +34,37 @@ std::function<void(T &, const QVariant &)> makeUpdateFunction(ReturnType T::*met
 }
 } // namespace
 
-class AdapterForQmlModelObject : public QObject
-{
-    Q_OBJECT
+//class AdapterForQmlModelObject : public QObject
+//{
+//    Q_OBJECT
 
-    QAbstractListModel *model;
+//    QAbstractListModel *model;
 
-    QModelIndex currentIndex;
+//    QModelIndex currentIndex;
 
-public:
-    AdapterForQmlModelObject(QAbstractListModel *modelPointer);
+//public:
+//    AdapterForQmlModelObject(QAbstractListModel *modelPointer);
 
-    void setCurrentIndex(QModelIndex currentIndex);
+//    void setCurrentIndex(QModelIndex currentIndex);
 
-    Q_INVOKABLE QVariant get(int role) const;
+//    Q_INVOKABLE QVariant get(int role) const;
 
-    Q_INVOKABLE bool update(const QVariant &variant, int role);
-};
+//    Q_INVOKABLE bool update(const QVariant &variant, int role);
+//};
 
-class AbstractListModelInvokableClass : public QAbstractListModel
-{
-    Q_OBJECT
+//class AbstractListModelInvokableClass : public QAbstractListModel
+//{
+//    Q_OBJECT
 
-    AdapterForQmlModelObject *model;
+//    AdapterForQmlModelObject *model;
 
-public:
-    AbstractListModelInvokableClass(QObject *object);
+//public:
+//    AbstractListModelInvokableClass(QObject *object);
 
-    virtual ~AbstractListModelInvokableClass() { delete model; }
+//    virtual ~AbstractListModelInvokableClass() { delete model; }
 
-    Q_INVOKABLE AdapterForQmlModelObject *get(int elementIndex);
-};
+//    Q_INVOKABLE AdapterForQmlModelObject *get(int elementIndex);
+//};
 
 template<typename T, typename EnumData>
 class CustomListModel : public AbstractListModelInvokableClass

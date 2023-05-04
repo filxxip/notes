@@ -78,7 +78,6 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/CustomButton.qml
         src/gui/ButtonText.qml
         src/gui/LoginView.qml
-        src/gui/RegisterView.qml
         src/gui/GUIConfig.qml
         src/gui/qmldir
         src/gui/TitleBox.qml

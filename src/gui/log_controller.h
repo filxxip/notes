@@ -17,9 +17,6 @@ class LogController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(ModelStatuses::UserViews userViewType MEMBER m_userView NOTIFY userViewChanged)
-    Q_PROPERTY(bool loginActive MEMBER m_loginActive NOTIFY loginActiveChanged)
-    //    Q_PROPERTY(RegisterViewModel *registerModel MEMBER registerModel CONSTANT)
-    //    Q_PROPERTY(RegisterViewModel *loginModel MEMBER loginModel CONSTANT)
     Q_PROPERTY(RegisterViewModel *userModel READ getUserModel NOTIFY userViewChanged CONSTANT)
     Q_PROPERTY(
         CustomListModel<SwitcherModel<ModelStatuses::UserViews>, ModelStatuses::UserViewsRoles>
@@ -38,6 +35,7 @@ private:
     bool m_activity_possible = true;
     QPointer<RegisterViewModel> registerModel = new RegisterViewModel();
     QPointer<RegisterViewModel> loginModel = new RegisterViewModel();
+    QPointer<RegisterViewModel> guestModel = new RegisterViewModel();
     QPointer<RegisterViewModel> userModel;
     QPointer<CustomListModel<SwitcherModel<ModelStatuses::UserViews>, ModelStatuses::UserViewsRoles>>
         switcherModel;
@@ -49,7 +47,10 @@ private:
         if (m_userView == ModelStatuses::UserViews::LOGIN) {
             return loginModel;
         }
-        return registerModel;
+        if (m_userView == ModelStatuses::UserViews::REGISTER) {
+            return registerModel;
+        }
+        return guestModel;
     }
 
 private slots:
@@ -57,6 +58,7 @@ private slots:
 public slots:
     void onSwitchedChanged(ModelStatuses::UserViews s)
     {
+        qDebug() << s;
         m_userView = s;
         emit userViewChanged(m_userView);
         if (s == ModelStatuses::UserViews::LOGIN) {

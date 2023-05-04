@@ -19,6 +19,10 @@ LogController::LogController()
     dataLogin.push_back(std::move(entry));
     loginModel->setEntries(std::move(dataLogin));
 
+    QVector<EntryFieldModel> guestData;
+    guestData.push_back(EntryFieldModel{ModelStatuses::PersonComponents::NAME, "Temporary name..."});
+    guestModel->setEntries(std::move(guestData));
+
     connect(this, &LogController::registerObjectInModel, this, &LogController::onRegisteringModel);
     using Status = SwitcherModel<ModelStatuses::UserViews>; //
     switcherModel = FastModelBuilder<Status, ModelStatuses::UserViewsRoles>()
@@ -37,6 +41,9 @@ LogController::LogController()
     SwitcherModel<ModelStatuses::UserViews> switcher2;
     switcher2.text = "register";
     switcher2.type = ModelStatuses::UserViews::REGISTER;
+    switcherModel->addEntry(std::move(switcher2));
+    switcher2.text = "log as guest";
+    switcher2.type = ModelStatuses::UserViews::GUEST;
     switcherModel->addEntry(std::move(switcher2));
 }
 
