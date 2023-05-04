@@ -1,12 +1,11 @@
 #include "dialogcontroller.h"
+#include <QMessageBox>
 
 DialogController::DialogController(std::shared_ptr<DataClient> dataClient)
     : QObject()
     , manager(dataClient)
 {
-    FastModelBuilder<GuiDialog, ModelStatuses::DialogRoles> builder;
-
-    dialogModel = DialogModelAliases::ModelBuilder()
+    dialogModel = ModelBuilder()
                       .add(Status::CONTENT, &GuiDialog::content, "content")
                       .add(Status::IS_OK, &GuiDialog::isOk, "isOk")
                       .add(Status::IS_YES, &GuiDialog::isYes, "isYes")

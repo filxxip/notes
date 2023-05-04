@@ -5,6 +5,7 @@ import ModelStatuses 1.0
 
 import "src/gui"
 import "src/gui/customdialog"
+import "src/gui/userview"
 
 Window {
     Rectangle {
@@ -24,5 +25,5 @@ Window {
     height: 640
     visible: true
 
-    LoginView {}
+    LogView {}
 }

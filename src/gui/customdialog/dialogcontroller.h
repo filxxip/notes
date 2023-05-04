@@ -1,14 +1,12 @@
 #pragma once
 #include "../../backend/datamanager/directobjsmanagers/guidialogs/guidialog.h"
 #include "../../backend/datamanager/directobjsmanagers/guidialogs/guidialogmanager.h"
-#include "../customlistviewmodel.h"
-#include "../registerboxmodel.h"
 #include "../statuses.h"
 
 #include <QObject>
 #include <QPointer>
-#include "../models/modelaliases.h"
 #include "../modelutils/customlistmodel.h"
+#include "../modelutils/listmodelbuilder.h"
 #include <functional>
 
 namespace {
@@ -20,7 +18,7 @@ class DialogController : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(DialogModelAliases::Model *dialogModel MEMBER dialogModel CONSTANT)
+    Q_PROPERTY(Model *dialogModel MEMBER dialogModel CONSTANT)
 
     Q_PROPERTY(int currentIndex MEMBER currentIndex NOTIFY indexChanged)
 
@@ -36,7 +34,7 @@ private:
 
     bool visibility = false;
 
-    QPointer<DialogModelAliases::Model> dialogModel;
+    QPointer<Model> dialogModel;
 
     int getDialogCode() const;
 

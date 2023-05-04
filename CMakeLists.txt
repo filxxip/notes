@@ -20,17 +20,26 @@ qt_standard_project_setup()
 qt_add_executable(appnotesdatabaseproject
     main.cpp
     src/gui/statuses.h
-    src/gui/mycontroller.h
-    src/gui/mycontroller.cpp
-    src/gui/log_controller.cpp
-    src/gui/log_controller.h
-    src/gui/customlistviewmodel.cpp
-    src/gui/customlistviewmodel.h
-    src/gui/registerboxmodel.cpp
-    src/gui/registerboxmodel.h
 
     src/gui/customdialog/dialogcontroller.cpp
     src/gui/customdialog/dialogcontroller.h
+
+    src/gui/models/entryfieldmodel.h
+    src/gui/models/switchermodel.h
+    src/gui/models/userviewlistmodel.cpp
+    src/gui/models/userviewlistmodel.h
+
+    src/gui/modelutils/adaptermodel.cpp
+    src/gui/modelutils/adaptermodel.h
+    src/gui/modelutils/customlistmodel.cpp
+    src/gui/modelutils/customlistmodel.h
+    src/gui/modelutils/listmodelbuilder.h
+    src/gui/modelutils/customlistmodelregistering.h
+    src/gui/modelutils/invokablelistmodel.cpp
+    src/gui/modelutils/invokablelistmodel.h
+
+    src/gui/userview/logcontroller.cpp
+    src/gui/userview/logcontroller.h
 
     src/backend/datamanager/dataclient.h
 
@@ -82,7 +91,7 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/qmlutils/EntryField.qml
         src/gui/qmlutils/TitleBox.qml
 
-        src/gui/userView/LogView.qml
+        src/gui/userview/LogView.qml
 
         src/gui/GUIConfig.qml
         src/gui/qmldir

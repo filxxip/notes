@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import "../"
 
 Rectangle {
     color: GUIConfig.colors.transparent

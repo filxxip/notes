@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import "../"
 
 FocusScope {
     id: root
@@ -10,7 +11,7 @@ FocusScope {
     Rectangle {
         id: outerRect
         anchors.fill: parent
-        border.color: myController.myModel.color
+        border.color: "blue"
         radius: 6
         TextInput {
             clip: true

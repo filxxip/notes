@@ -10,7 +10,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QString>
-#include "gui/log_controller.h"
 #include "gui/mycontroller.h"
 #include "gui/statuses.h"
 #include "src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h"
@@ -21,7 +20,7 @@
 #include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/backend/datamanager/serverdataclient.h"
 #include "src/gui/customdialog/dialogcontroller.h"
-#include "src/gui/customlistviewmodel.h"
+#include "src/gui/userview/logcontroller.h"
 #include <chrono>
 #include <memory>
 #define RUN_QML 1
@@ -59,11 +58,10 @@ int main(int argc, char *argv[])
                                      "ModelStatuses",
                                      "");
 
-    auto myController = new MyController();
+    auto ptr = std::make_shared<ServerDataClient>();
     auto logController = new LogController();
-    auto dialogController = new DialogController();
+    auto dialogController = new DialogController(ptr);
 
-    engine.rootContext()->setContextProperty("myController", myController);
     engine.rootContext()->setContextProperty("logController", logController);
     engine.rootContext()->setContextProperty("dialogController", dialogController);
 

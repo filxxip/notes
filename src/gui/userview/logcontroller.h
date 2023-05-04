@@ -7,6 +7,7 @@
 #include <QTimer>
 #include "../models/switchermodel.h"
 #include "../models/userviewlistmodel.h"
+#include "../modelutils/listmodelbuilder.h"
 #include "../statuses.h"
 
 namespace {
@@ -30,9 +31,9 @@ private:
     bool m_activity_possible = true;
 
     QHash<EnumStatus, QPointer<UserViewListModel>> models
-        = {{EnumStatus::LOGIN, new RegisterViewModel},
-           {EnumStatus::REGISTER, new RegisterViewModel},
-           {EnumStatus::GUEST, new RegisterViewModel}};
+        = {{EnumStatus::LOGIN, new UserViewListModel},
+           {EnumStatus::REGISTER, new UserViewListModel},
+           {EnumStatus::GUEST, new UserViewListModel}};
 
     QPointer<UserSwitcherModel> switcherModel;
 

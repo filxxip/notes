@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QColor>
 #include <QString>
 
 #include "../statuses.h"

@@ -1,6 +1,6 @@
 #include "userviewlistmodel.h"
 
-UserViewListModel::UserViewListModel(QObject *parent = nullptr)
+UserViewListModel::UserViewListModel(QObject *parent)
     : CustomListModel(parent)
 {
     ADD_DATA(ModelStatuses::Roles::PLACEHOLDER, placeholder)
@@ -8,6 +8,7 @@ UserViewListModel::UserViewListModel(QObject *parent = nullptr)
     ADD_DATA(ModelStatuses::Roles::COLOR, color)
     ADD_DATA(ModelStatuses::Roles::PASS_STATUS, passwordStatus)
 }
+
 int UserViewListModel::indexOf(ModelStatuses::PersonComponents componentEnum) const
 {
     auto dist = std::distance(m_data.begin(),

@@ -17,6 +17,7 @@ std::function<QVariant(const T &)> makeGetterFunction(ReturnType T::*method)
             return QVariant::fromValue(object.*method);
     };
 }
+} // namespace
 
 template<typename T, typename ReturnType>
 std::function<void(T &, const QVariant &)> makeUpdateFunction(ReturnType T::*method)
@@ -47,7 +48,7 @@ public:
 
     void setEntries(QVector<StructType> vector);
 
-    void addEntry(T element);
+    void addEntry(StructType element);
 
     QHash<int, QByteArray> roleNames() const override;
 

@@ -12,7 +12,7 @@ int CustomListModel<StructType, EnumData>::rowCount(const QModelIndex &parent) c
 }
 
 template<typename StructType, typename EnumData>
-void CustomListModel<StructType, EnumData>::setEntries(QVector<T> vector)
+void CustomListModel<StructType, EnumData>::setEntries(QVector<StructType> vector)
 {
     m_data = std::move(vector);
 }
@@ -31,8 +31,7 @@ QVariant CustomListModel<StructType, EnumData>::data(const QModelIndex &index, i
         return QVariant();
     }
 
-    const T &entry = m_data.at(index.row());
-    return getterActivities[static_cast<EnumData>(role)](entry);
+    return getterActivities[static_cast<EnumData>(role)](m_data.at(index.row()));
 }
 
 template<typename StructType, typename EnumData>
@@ -50,14 +49,13 @@ bool CustomListModel<StructType, EnumData>::setData(const QModelIndex &index,
         || !updateActivities.contains(static_cast<EnumData>(role))) {
         return false;
     }
-    T &entry = m_data[index.row()];
-    updateActivities[static_cast<EnumData>(role)](entry, value);
+    updateActivities[static_cast<EnumData>(role)](m_data[index.row()], value);
     emit dataChanged(index, index); // <- this does not trigger a recompution of the view
     return true;
 }
 
 template<typename StructType, typename EnumData>
-void CustomListModel<StructType, EnumData>::addEntry(T element)
+void CustomListModel<StructType, EnumData>::addEntry(StructType element)
 {
     m_data.append(std::move(element));
 }
