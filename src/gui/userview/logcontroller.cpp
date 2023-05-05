@@ -27,21 +27,21 @@ void LogController::setActivity(bool value)
     emit activityStatusChanged();
 }
 
-void LogController::onRegisteringModel()
-{
-    //    int passIndex = registerModel->indexOf(ModelStatuses::PersonComponents::PASSWORD);
-    //    auto password = registerModel->data(passIndex, ModelStatuses::Roles::COLOR).value<QString>();
+//void LogController::onRegisteringModel()
+//{
+//    //    int passIndex = registerModel->indexOf(ModelStatuses::PersonComponents::PASSWORD);
+//    //    auto password = registerModel->data(passIndex, ModelStatuses::Roles::COLOR).value<QString>();
 
-    //    auto hasNoUppercase = std::none_of(password.begin(), password.end(), [](const QChar &ch) {
-    //        return ch.isUpper(); //moze byc error
-    //    });
-    //    if (hasNoUppercase) {
-    //        auto previousColor = registerModel->data(passIndex, ModelStatuses::Roles::COLOR);
-    //        registerModel->setData<QColor>(passIndex, "black", ModelStatuses::Roles::COLOR);
-    //        setActivity(false);
-    //        QTimer::singleShot(2500, [this, previousColor, passIndex]() {
-    //            registerModel->setData(passIndex, previousColor, ModelStatuses::Roles::COLOR);
-    //            setActivity(true);
-    //        });
-    //    }
-}
+//    //    auto hasNoUppercase = std::none_of(password.begin(), password.end(), [](const QChar &ch) {
+//    //        return ch.isUpper(); //moze byc error
+//    //    });
+//    //    if (hasNoUppercase) {
+//    //        auto previousColor = registerModel->data(passIndex, ModelStatuses::Roles::COLOR);
+//    //        registerModel->setData<QColor>(passIndex, "black", ModelStatuses::Roles::COLOR);
+//    //        setActivity(false);
+//    //        QTimer::singleShot(2500, [this, previousColor, passIndex]() {
+//    //            registerModel->setData(passIndex, previousColor, ModelStatuses::Roles::COLOR);
+//    //            setActivity(true);
+//    //        });
+//    //    }
+//}

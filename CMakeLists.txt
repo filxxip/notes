@@ -41,6 +41,8 @@ qt_add_executable(appnotesdatabaseproject
 
     src/gui/userview/logcontroller.cpp
     src/gui/userview/logcontroller.h
+    src/gui/userview/entrycontroller.h
+    src/gui/userview/entrycontroller.cpp
 
     src/gui/calendar/calendarcontroller.h
     src/gui/calendar/calendarcontroller.cpp
