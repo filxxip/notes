@@ -30,8 +30,11 @@ private slots:
 class RegisterController : public EntryController
 {
     Q_OBJECT
+
+    QPointer<CalendarController> calendarController;
+
 public:
-    RegisterController();
+    RegisterController(QPointer<CalendarController> controller);
 
 public slots:
     void onConfirmed() override;

@@ -6,8 +6,9 @@ EntryController::EntryController()
     connect(this, &EntryController::confirm, this, &EntryController::onConfirmed);
 }
 
-RegisterController::RegisterController()
+RegisterController::RegisterController(QPointer<CalendarController> controller)
     : EntryController()
+    , calendarController(controller)
 {
     model->setEntries({{ModelStatuses::PersonComponents::NAME, "Name..."},
                        {ModelStatuses::PersonComponents::SURNAME, "Surname..."},

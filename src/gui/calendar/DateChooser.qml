@@ -12,7 +12,7 @@ Rectangle {
     property color backgroundColor: GUIConfig.colors.grey
     height: GUIConfig.dateChooser.height
     width: tumblerWidth * 3
-    color: "grey"
+    color: backgroundColor
 
     Component {
         id: delegateComponent

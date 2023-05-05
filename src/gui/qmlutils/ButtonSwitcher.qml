@@ -24,7 +24,8 @@ TabBar {
             width: tabbar.combinedWidth / repeater.count
             height: tabbar.elementHeight
             background: Rectangle {
-                color: tabbar.currentIndex === model.type ? GUIConfig.switchbutton.enableColor : GUIConfig.switchbutton.disableColor
+                property color currentBasicColor: tabbar.currentIndex === model.type ? GUIConfig.switchbutton.enableColor : GUIConfig.switchbutton.disableColor
+                color: tabbar.enabled ? currentBasicColor : currentBasicColor.lighter()
                 anchors.fill: parent
                 radius: GUIConfig.switchbutton.radius
             }

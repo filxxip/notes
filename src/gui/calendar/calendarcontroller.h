@@ -38,10 +38,20 @@ class CalendarController : public QObject
     Q_PROPERTY(CalendarListModel *dayModel MEMBER dayModel CONSTANT)
     Q_PROPERTY(CalendarListModel *yearModel MEMBER yearModel CONSTANT)
 
+    Q_PROPERTY(QString niceFormat READ getNiceDateFormat CONSTANT)
+
     QPointer<CalendarListModel> monthModel;
     QPointer<CalendarListModel> dayModel;
     QPointer<CalendarListModel> yearModel;
     QDate currentDate;
+
+    QString getNiceDateFormat() const
+    {
+        return QString("%1 %2 %3")
+            .arg(currentDate.day())
+            .arg(currentDate.month())
+            .arg(currentDate.year());
+    }
 
 public:
     CalendarController();

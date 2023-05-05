@@ -7,11 +7,19 @@ FocusScope {
     property string placeholder
     property color customcolor
     readonly property alias text: textInput.text
+    property var clickedSlot
+    onActiveFocusChanged: {
+        if (focus && clickedSlot) {
+            clickedSlot()
+        }
+    }
+
     Rectangle {
         id: outerRect
         anchors.fill: parent
         border.color: "blue"
         radius: 6
+
         TextInput {
             clip: true
             id: textInput
@@ -23,6 +31,7 @@ FocusScope {
             verticalAlignment: TextInput.AlignVCenter
             passwordCharacter: GUIConfig.userView.registerView.passwordCharakter
             echoMode: root.passwordStatus ? TextInput.Password : TextInput.Normal
+
             focus: true
             Text {
                 text: root.placeholder

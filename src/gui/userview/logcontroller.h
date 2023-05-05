@@ -35,16 +35,14 @@ public:
 private:
     EnumStatus m_userView = EnumStatus::LOGIN;
     bool m_activity_possible = true;
+    QPointer<CalendarController> calendarController = new CalendarController();
 
-    QHash<EnumStatus, QPointer<EntryController>> controllers{{EnumStatus::REGISTER,
-                                                              new RegisterController},
-                                                             {EnumStatus::LOGIN,
-                                                              new LoginController},
-                                                             {EnumStatus::GUEST,
-                                                              new GuestController}};
+    QHash<EnumStatus, QPointer<EntryController>>
+        controllers{{EnumStatus::REGISTER, new RegisterController(calendarController)},
+                    {EnumStatus::LOGIN, new LoginController},
+                    {EnumStatus::GUEST, new GuestController}};
 
     QPointer<UserSwitcherModel> switcherModel;
-    QPointer<CalendarController> calendarController = new CalendarController();
 
     void setActivity(bool value);
 
