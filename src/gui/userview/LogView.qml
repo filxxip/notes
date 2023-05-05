@@ -10,12 +10,13 @@ Column {
 
     Component {
         id: loginComponent
+
         Column {
             spacing: GuiConfig.userView.columnSpacing
             LogViewEntryPart {
                 configurationObject: GUIConfig.userView.loginView
-                entryModel: logController.loginModel
-                valueAssignSignal: logController.confirmLogin
+                entryModel: logController.entryController.model
+                valueAssignSignal: logController.entryController.confirm
             }
             RowLayout {
                 width: GUIConfig.userView.defaultEntryWidth
@@ -34,7 +35,8 @@ Column {
                     contentText: GuiConfig.userView.loginView.showPasswordText
                     Layout.fillWidth: true
                     height: parent.height
-                    property var element: logController.loginModel.get(1)
+                    property var element: logController.entryController.model.get(
+                                              1)
                     onCustomClicked: {
                         element.update(false, ModelStatuses.Roles.PASS_STATUS)
                         dialogController.visibility = true
@@ -52,8 +54,8 @@ Column {
             spacing: GuiConfig.userView.columnSpacing
             LogViewEntryPart {
                 configurationObject: GUIConfig.userView.registerView
-                entryModel: logController.registerModel
-                valueAssignSignal: logController.confirmRegister
+                entryModel: logController.entryController.model
+                valueAssignSignal: logController.entryController.confirm
             }
             ButtonText {
                 contentText: GuiConfig.userView.registerView.accessLoginText
@@ -69,8 +71,8 @@ Column {
             spacing: GuiConfig.userView.columnSpacing
             LogViewEntryPart {
                 configurationObject: GUIConfig.userView.guestView
-                entryModel: logController.guestModel
-                valueAssignSignal: logController.confirmGuest
+                entryModel: logController.entryController.model //lepiej gdyby podac wprost dany controller
+                valueAssignSignal: logController.entryController.confirm
             }
         }
     }
@@ -108,9 +110,7 @@ Column {
                         width: GUIConfig.userView.defaultEntryWidth
                         height: GuiConfig.userView.titleHeight
                     }
-                    property var registermap: [registerComponent, loginComponent, guestComponent]
                     Loader {
-                        id: loader
                         property var registermap: [registerComponent, loginComponent, guestComponent]
                         sourceComponent: registermap[logController.userViewType]
                     }
@@ -120,12 +120,11 @@ Column {
                         height: GUIConfig.userView.checkButtonHeight
                         color: GuiConfig.colors.transparent
                         Layout.alignment: Qt.AlignHCenter
-                        property var signalmap: [logController.confirmRegister, logController.confirmLogin, logController.confirmGuest]
                         CustomButton {
                             enabled: logController.activityPossible
                             contentText: GuiConfig.userView.userViewDetails[logController.userViewType].checkContent
                             anchors.fill: parent
-                            onClicked: parent.signalmap[logController.userViewType]()
+                            onClicked: logController.entryController.confirm()
                         }
                     }
                 }
