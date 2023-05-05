@@ -10,6 +10,13 @@ Rectangle {
     property var controller: logController.calendarController
     property int itemNumber: GUIConfig.dateChooser.itemNumber
     property color backgroundColor: GUIConfig.colors.grey
+    signal reset
+    onReset: {
+        repeater.itemAt(0).currentIndex = 0
+        repeater.itemAt(1).currentIndex = 0
+        repeater.itemAt(2).currentIndex = 0
+    }
+
     height: GUIConfig.dateChooser.height
     width: tumblerWidth * 3
     color: backgroundColor

@@ -14,8 +14,7 @@ RegisterController::RegisterController(QPointer<CalendarController> controller)
                        {ModelStatuses::PersonComponents::SURNAME, "Surname..."},
                        {ModelStatuses::PersonComponents::EMAIL, "Email..."},
                        {ModelStatuses::PersonComponents::PASSWORD, "Password..."},
-                       {ModelStatuses::PersonComponents::COUNTRY, "Country..."},
-                       {ModelStatuses::PersonComponents::BIRTHDAY, "Birthday..."}});
+                       {ModelStatuses::PersonComponents::COUNTRY, "Country..."}});
 }
 
 void RegisterController::onConfirmed()

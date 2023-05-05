@@ -38,27 +38,40 @@ class CalendarController : public QObject
     Q_PROPERTY(CalendarListModel *dayModel MEMBER dayModel CONSTANT)
     Q_PROPERTY(CalendarListModel *yearModel MEMBER yearModel CONSTANT)
 
-    Q_PROPERTY(QString niceFormat READ getNiceDateFormat CONSTANT)
+    Q_PROPERTY(QString niceFormat READ getNiceDateFormat NOTIFY niceFormatChanged CONSTANT)
 
     QPointer<CalendarListModel> monthModel;
     QPointer<CalendarListModel> dayModel;
     QPointer<CalendarListModel> yearModel;
-    QDate currentDate;
+
+    const QDate defaultDate = QDate(1901, 1, 1);
+    QDate currentDate = defaultDate;
 
     QString getNiceDateFormat() const
     {
-        return QString("%1 %2 %3")
+        return QString("Birthday : %1 %2 %3")
             .arg(currentDate.day())
-            .arg(currentDate.month())
+            .arg(monthModel->data(currentDate.month() - 1, EnumStatus::CONTENT).toString())
             .arg(currentDate.year());
     }
 
 public:
     CalendarController();
 
+    void clear()
+    {
+        emit resetGui();
+        currentDate = defaultDate;
+    }
+
 signals:
+    void resetGui();
+
     void currentDateChanged(int day, int month, int year);
+
     void dayChanged(int value);
+
+    void niceFormatChanged(QString content);
 
 private slots:
 

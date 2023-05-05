@@ -8,6 +8,7 @@ ListView {
     required property var configurationObject
     required property var entryModel
     required property var valueAssignSignal
+    readonly property int singleComponentHeight: configurationObject.combinedHeight / count
     interactive: false
     spacing: configurationObject.listViewSpacing
     width: GUIConfig.userView.defaultEntryWidth
@@ -16,7 +17,7 @@ ListView {
     delegate: EntryField {
         id: entry
         width: listview.width
-        height: listview.configurationObject.combinedHeight / listview.count
+        height: singleComponentHeight
         customcolor: model.color
         placeholder: model.placeholder
         passwordStatus: model.passwordStatus

@@ -51,4 +51,5 @@ void CalendarController::onCurrentDateChanged(int day, int month, int year)
                                    EnumStatus::VISIBILITY)) {
         currentCheck++;
     }
+    emit niceFormatChanged(getNiceDateFormat());
 }

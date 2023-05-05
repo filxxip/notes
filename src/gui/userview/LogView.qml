@@ -26,9 +26,7 @@ Column {
                 ButtonText {
                     Layout.fillWidth: true
                     contentText: GuiConfig.userView.loginView.accessRegisterText
-                    onCustomReleased: {
-                        logController.userViewType = ModelStatuses.UserViews.REGISTER
-                    }
+                    onCustomReleased: logController.userViewType = ModelStatuses.UserViews.REGISTER
                     height: parent.height
                 }
                 ButtonText {
@@ -48,30 +46,43 @@ Column {
             }
         }
     }
+
+    signal birtdayEntryChanged(string content)
+
     Component {
         id: registerComponent
 
         Column {
             spacing: GuiConfig.userView.columnSpacing
-            LogViewEntryPart {
-                id: entries
-                configurationObject: GUIConfig.userView.registerView
-                entryModel: logController.entryController.model
+            Column {
+                spacing: entries.spacing
+                LogViewEntryPart {
+                    id: entries
+                    configurationObject: GUIConfig.userView.registerView
+                    entryModel: logController.entryController.model
 
-                valueAssignSignal: logController.entryController.confirm
+                    valueAssignSignal: logController.entryController.confirm
+                }
+                EntryField {
+                    id: birthdayEntry
+                    width: entries.width
+                    height: entries.singleComponentHeight
+                    activeFocusOnTab: true
+                    customcolor: "red"
+                    clickedSlot: e => swipeView.currentIndex = 0
+                    readonly property var content: logController.calendarController.niceFormat
+                    placeholder: content ? content : "Birthday..."
+                    //                    Component.onCompleted: {
+                    //                        birthdayEntryChanged.connect(
+                    //                                    contentInput => birthdayEntry.text = contentInput)
+                    //                    }
+                }
             }
             ButtonText {
                 contentText: GuiConfig.userView.registerView.accessLoginText
                 width: GUIConfig.userView.defaultEntryWidth
                 height: GuiConfig.userView.accessButtonHeight
                 onCustomReleased: logController.userViewType = ModelStatuses.UserViews.LOGIN
-            }
-            Component.onCompleted: {
-                function foo() {
-                    swipeView.currentIndex = 0
-                }
-
-                entries.itemAtIndex(5).clickedSlot = foo
             }
         }
     }
@@ -186,6 +197,8 @@ Column {
                     DateChooser {
                         backgroundColor: GUIConfig.colors.transparent
                         height: 300
+                        Component.onCompleted: logController.calendarController.resetGui.connect(
+                                                   e => reset())
                     }
 
                     Rectangle {
@@ -197,7 +210,10 @@ Column {
                             contentText: "SELECT"
                             anchors.fill: parent
                             onClicked: {
+                                console.log("fsdfsdf")
                                 swipeView.currentIndex = 1
+                                //                                birtdayEntryChanged()
+                                //                                birthdayEntry.text = logController.calendarController.niceFormat
                             }
                         }
                     }

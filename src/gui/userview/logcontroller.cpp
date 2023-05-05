@@ -18,6 +18,7 @@ LogController::LogController()
 void LogController::onSwitchedChanged(ModelStatuses::UserViews s)
 {
     m_userView = s;
+    calendarController->clear();
     emit userViewChanged();
 }
 
