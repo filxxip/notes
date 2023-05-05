@@ -44,13 +44,6 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
 
-    DbData<int> data;
-    data.set(20);
-
-    auto variant = QVariant::fromValue(data);
-    qDebug() << "xd";
-    qDebug() << variant;
-    qDebug() << std::is_constructible<QVariant, DbData<QString>>::value;
 
     qmlRegisterUncreatableMetaObject(ModelStatuses::staticMetaObject,
                                      "ModelStatuses",

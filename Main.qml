@@ -28,7 +28,23 @@ Window {
     width: 800
     height: 640
     visible: true
+    //            anchors.fill: parent
+    //            interactive: false
 
-    DateChooser {}
-    //    LogView {}
+    //            Item {
+    LogView {}
+    //            }
+
+    //            Item {
+    //        DateChooser {}
+    //            }
+
+    //            Component {
+    //                id: cmp1
+    //                DateChooser {}
+    //            }
+    //            Component {
+    //                id: cmp2
+    //                LogView {}
+    //            }
 }

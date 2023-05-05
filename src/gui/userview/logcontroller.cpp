@@ -3,22 +3,20 @@
 LogController::LogController()
     : QObject()
 {
-    models[EnumStatus::REGISTER]->setEntries(
-        {{ModelStatuses::PersonComponents::NAME, "Name..."},
-         {ModelStatuses::PersonComponents::SURNAME, "Surname..."},
-         {ModelStatuses::PersonComponents::EMAIL, "Email..."},
-         {ModelStatuses::PersonComponents::PASSWORD, "Password..."},
-         {ModelStatuses::PersonComponents::COUNTRY, "Country..."}});
+    registerModel->setEntries({{ModelStatuses::PersonComponents::NAME, "Name..."},
+                               {ModelStatuses::PersonComponents::SURNAME, "Surname..."},
+                               {ModelStatuses::PersonComponents::EMAIL, "Email..."},
+                               {ModelStatuses::PersonComponents::PASSWORD, "Password..."},
+                               {ModelStatuses::PersonComponents::COUNTRY, "Country..."},
+                               {ModelStatuses::PersonComponents::BIRTHDAY, "Birthday..."}});
 
-    models[EnumStatus::LOGIN]->setEntries(
-        {{ModelStatuses::PersonComponents::EMAIL, "Login..."},
-         {ModelStatuses::PersonComponents::PASSWORD, "Password..."}});
-    models[EnumStatus::LOGIN]->setData(1, true, ModelStatuses::Roles::PASS_STATUS);
+    loginModel->setEntries({{ModelStatuses::PersonComponents::EMAIL, "Login..."},
+                            {ModelStatuses::PersonComponents::PASSWORD, "Password..."}});
+    loginModel->setData(1, true, ModelStatuses::Roles::PASS_STATUS);
 
-    models[EnumStatus::GUEST]->setEntries(
-        {{ModelStatuses::PersonComponents::NAME, "Temporary name..."}});
+    guestModel->setEntries({{ModelStatuses::PersonComponents::NAME, "Temporary name..."}});
 
-    connect(this, &LogController::registerObjectInModel, this, &LogController::onRegisteringModel);
+    //    connect(this, &LogController::registerObjectInModel, this, &LogController::onRegisteringModel);
 
     switcherModel
         = FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>()
@@ -45,8 +43,6 @@ void LogController::setActivity(bool value)
 
 void LogController::onRegisteringModel()
 {
-    auto &registerModel = models[EnumStatus::REGISTER];
-
     int passIndex = registerModel->indexOf(ModelStatuses::PersonComponents::PASSWORD);
     auto password = registerModel->data(passIndex, ModelStatuses::Roles::COLOR).value<QString>();
 
@@ -57,7 +53,7 @@ void LogController::onRegisteringModel()
         auto previousColor = registerModel->data(passIndex, ModelStatuses::Roles::COLOR);
         registerModel->setData<QColor>(passIndex, "black", ModelStatuses::Roles::COLOR);
         setActivity(false);
-        QTimer::singleShot(2500, [this, &registerModel, previousColor, passIndex]() {
+        QTimer::singleShot(2500, [this, previousColor, passIndex]() {
             registerModel->setData(passIndex, previousColor, ModelStatuses::Roles::COLOR);
             setActivity(true);
         });

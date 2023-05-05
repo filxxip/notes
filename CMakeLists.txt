@@ -90,6 +90,7 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/customdialog/CustomDialog.qml
         src/gui/calendar/DateChooser.qml
 
+
         src/gui/qmlutils/ButtonSwitcher.qml
         src/gui/qmlutils/ButtonText.qml
         src/gui/qmlutils/CustomButton.qml
@@ -99,6 +100,7 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/qmlutils/CustomDial.qml
 
         src/gui/userview/LogView.qml
+        src/gui/userview/LogViewEntryPart.qml
 
         src/gui/GUIConfig.qml
         src/gui/qmldir
