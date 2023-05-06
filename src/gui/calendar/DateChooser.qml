@@ -25,11 +25,13 @@ Rectangle {
         id: delegateComponent
         Label {
             text: model.content
-            opacity: 1.0 - Math.abs(
-                         Tumbler.displacement) / (Tumbler.tumbler.visibleItemCount / 2)
+            readonly property real absdisplacement: Math.abs(
+                                                        Tumbler.displacement)
+            opacity: 1.0 - absdisplacement / (Tumbler.tumbler.visibleItemCount / 2)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: outerRect.fontSize
+            color: absdisplacement < 0.5 ? GUIConfig.colors.red : GUIConfig.colors.black
         }
     }
 
@@ -41,6 +43,7 @@ Rectangle {
             model: [outerRect.controller.dayModel, outerRect.controller.monthModel, outerRect.controller.yearModel]
             signal dateChanged
             Tumbler {
+                id: tumbler
                 visibleItemCount: outerRect.itemNumber
                 model: modelData
                 width: outerRect.tumblerWidth

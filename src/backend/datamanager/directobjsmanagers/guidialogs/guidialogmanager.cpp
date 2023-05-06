@@ -8,7 +8,8 @@ GuiDialogsManager::GuiDialogsManager(std::shared_ptr<DataClient> dataClient_)
 GuiDialog GuiDialogsManager::generateInstance(const json &genson) const
 {
     GuiDialog guidialog;
-    initObject(guidialog.id,
+    initObject(genson,
+               guidialog.id,
                guidialog.content,
                guidialog.title,
                guidialog.isOk,

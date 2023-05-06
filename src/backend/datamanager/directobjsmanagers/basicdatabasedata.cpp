@@ -43,13 +43,6 @@ json generateJson(json &j, const QString &name, T t)
 }
 } // namespace
 
-//namespace ns {
-
-//std::string getFirstKey(json &j)
-//{
-//    return j.begin().key();
-//}
-//} // namespace ns
 template<typename T>
 void to_json(json &j, const BaseData<T> &p)
 {
@@ -63,16 +56,7 @@ void to_json(json &j, const BaseData<int> &p)
 {
     to_json<int>(j, p);
 }
-//template<>
-//void to_json<bool>(json &j, const BaseData<bool> &p);
 
-//template<typename T>
-//void init_from_json(const json &j, BaseData<T> &p)
-//{
-//    auto key = j[p.getName().toStdString()];
-//    //    int value = key.get<int>();
-//    p.set(key.get<int>());
-//}
 template<typename T>
 void init_from_json(const json &j, BaseData<T> &p)
 {
@@ -80,18 +64,6 @@ void init_from_json(const json &j, BaseData<T> &p)
     auto value = key.template get<T>(); //WTF
     p.set(value);
 }
-
-//template<>
-//void init_from_json<int>(const json &j, BaseData<int> &p);
-//template<>
-//void init_from_json<bool>(const json &j, BaseData<bool> &p);
-
-//void init_from_json(const json &j, BaseData<int> &p)
-//{
-//    auto key = j[p.getName().toStdString()];
-//    int value = key.get<int>();
-//    p.set(value);
-//}
 
 template<>
 void to_json<QString>(json &j, const BaseData<QString> &p)
@@ -102,7 +74,6 @@ void to_json<QString>(json &j, const BaseData<QString> &p)
 template<>
 void init_from_json<QString>(const json &j, BaseData<QString> &p)
 {
-    //    p.setName(getFirstKey(j));
     p.set(QString::fromStdString(j[p.getName().toStdString()].get<std::string>()));
 }
 
@@ -120,13 +91,11 @@ void to_json<QDateTime>(json &j, const BaseData<QDateTime> &p)
                      .arg(time.second())
                      .toStdString();
     j = generateJson(j, p.getName(), value);
-    //    j = json{p.getName().toStdString(), value};
 }
 
 template<>
 void init_from_json<QDateTime>(const json &j, BaseData<QDateTime> &p)
 {
-    //    p.setName(getFirstKey(j));
     QStringList content = QString::fromStdString(j[p.getName().toStdString()].get<std::string>())
                               .split("-");
     p.set(QDateTime(QDate(content.at(0).toInt(), content.at(1).toInt(), content.at(2).toInt()),
@@ -138,12 +107,6 @@ BaseData<T>::BaseData(QString name)
     : __name__(std::move(name))
 {}
 
-//template<typename T>
-//BaseData<T> &BaseData<T>::operator=(T other) noexcept
-//{
-//    set(std::move(other));
-//    return *this;
-//}
 
 template<typename T>
 const QString &BaseData<T>::getName() const
@@ -154,9 +117,12 @@ const QString &BaseData<T>::getName() const
 template<typename T>
 void BaseData<T>::setBaseOnJson(const json &genson)
 {
-    init_from_json(genson, *this);
-    //    this->value = genson[getName().toStdString()].get<BaseData<T>>().get();
-    //    set(getContentValue<T>(genson, __name__.toStdString()));
+    auto name = getName().toStdString();
+    if (genson.contains(name)) {
+        init_from_json(genson, *this);
+    } else {
+        throw UndefinedDataException("Json doesn't contain some key : " + name);
+    }
 }
 
 template<typename T>
@@ -202,8 +168,7 @@ template<typename T>
 void ConstDbData<T>::set(T newvalue)
 {
     if (this->value.has_value()) {
-        throw UndefinedDataException(
-            "Multiple set of attribute impossible"); //dziwne ze wszedzie this, cos przyslania jakby value i __name__
+        throw UndefinedDataException("Multiple set of attribute impossible");
     }
     this->value = std::move(newvalue);
 }

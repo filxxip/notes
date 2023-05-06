@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/resources">
-        <file>file.txt</file>
-        <file>information.png</file>
+        <file>anonymity.png</file>
     </qresource>
 </RCC>

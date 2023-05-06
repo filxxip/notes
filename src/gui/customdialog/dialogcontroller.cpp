@@ -1,8 +1,14 @@
 #include "dialogcontroller.h"
 #include <QMessageBox>
 
-DialogController::DialogController(std::shared_ptr<DataClient> dataClient)
-    : QObject()
+namespace {
+constexpr const char *INVALID_ACCESS = "Incorrect data accesss!";
+const auto ACCESS_TO_DIALOG_ERROR = QStringLiteral(
+    "Access to dialog code : %1 denied or is invalid. Check your database or data files.");
+} // namespace
+
+DialogController::DialogController(std::shared_ptr<DataClient> dataClient, QObject *obj)
+    : QObject(obj)
     , manager(dataClient)
 {
     dialogModel = ModelBuilder()
@@ -14,16 +20,12 @@ DialogController::DialogController(std::shared_ptr<DataClient> dataClient)
                       .add(Status::PATH, &GuiDialog ::path)
                       .add(Status::FONT_SIZE, &GuiDialog::fontSize)
                       .build();
-    GuiDialog dialog;
-    dialog.content.set("xxxxfsdgfsdsdxxxfsdgfsdsdxxxfsdgfsdsdxxxfsdgfsdsdxxxfsdgfsdsdxfsdgfsdsdx");
-    dialog.title.set("Incorrect Data");
-    dialog.isOk.set(true);
-    dialog.isYes.set(true);
-    dialog.isNo.set(true);
-    dialog.path.set("qrc:/resources/information.png");
-    dialog.fontSize.set(13);
-    dialogModel->addEntry(dialog);
-    //        dialogModel->setEntries(manager.get());
+    auto values = manager.get();
+    if (values.has_value()) {
+        dialogModel->setEntries(values.value());
+    } else {
+        qDebug() << INVALID_ACCESS;
+    }
 }
 
 int DialogController::getDialogCode() const
@@ -41,21 +43,38 @@ int DialogController::getDialogCode() const
     return code;
 }
 
+void DialogController::setVisibility(bool value)
+{
+    visibility = value;
+    emit visibilityChanged(value);
+}
+
 void DialogController::onAccepted()
 {
     emit activity(ActivityStatus::ACCEPT);
-    visibility = false;
+    setVisibility(false);
 }
 
 void DialogController::onRejected()
 {
     emit activity(ActivityStatus::REJECT);
-    visibility = false;
+    setVisibility(false);
+}
+
+bool DialogController::showDialog(int code)
+{
+    if (code > 0 && code < dialogModel->rowCount()) {
+        currentIndex = code;
+        setVisibility(true);
+        return true;
+    }
+    qDebug() << ACCESS_TO_DIALOG_ERROR.arg(QString::number(code));
+    return false;
 }
 
 void DialogController::applyConnection(std::function<void(ActivityStatus status)> method)
 {
-    auto connection = new QMetaObject::Connection;
+    auto connection = new QMetaObject::Connection; //dodac metode na visibility
     *connection = connect(this,
                           &DialogController::activity,
                           [this, method = std::move(method), connection](ActivityStatus status) {

@@ -5,6 +5,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QStringLiteral>
 #include "../modelutils/customlistmodel.h"
 #include "../modelutils/listmodelbuilder.h"
 #include <functional>
@@ -13,6 +14,13 @@ namespace {
 using Model = CustomListModel<GuiDialog, ModelStatuses::DialogRoles>;
 using ModelBuilder = FastModelBuilder<GuiDialog, ModelStatuses::DialogRoles>;
 } // namespace
+
+namespace DialogCodes {
+namespace UserViews {
+constexpr int EMPTY_NAME_GUEST = 1;
+}
+
+} // namespace DialogCodes
 
 class DialogController : public QObject
 {
@@ -38,10 +46,14 @@ private:
 
     int getDialogCode() const;
 
+    void setVisibility(bool value);
+
 public:
-    DialogController(std::shared_ptr<DataClient> dataClient);
+    DialogController(std::shared_ptr<DataClient> dataClient, QObject *obj = nullptr);
 
     enum class ActivityStatus { ACCEPT, REJECT };
+
+    bool showDialog(int code);
 
 public slots:
     void onAccepted();

@@ -3,6 +3,7 @@ import QtQuick.Dialogs
 import QtQuick.Controls 2.15
 import ModelStatuses 1.0
 import "../"
+import "../qmlutils"
 
 Dialog {
     background: Rectangle {

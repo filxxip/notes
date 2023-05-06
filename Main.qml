@@ -28,6 +28,10 @@ Window {
     width: 800
     height: 640
     visible: true
+    CustomDialog {
+        visible: dialogController.visibility
+    }
+
     //            anchors.fill: parent
     //            interactive: false
 

@@ -17,7 +17,6 @@ Column {
             LogViewEntryPart {
                 configurationObject: GUIConfig.userView.loginView
                 entryModel: logController.entryController.model
-                valueAssignSignal: logController.entryController.confirm
             }
             RowLayout {
                 width: GUIConfig.userView.defaultEntryWidth
@@ -60,8 +59,6 @@ Column {
                     id: entries
                     configurationObject: GUIConfig.userView.registerView
                     entryModel: logController.entryController.model
-
-                    valueAssignSignal: logController.entryController.confirm
                 }
                 EntryField {
                     id: birthdayEntry
@@ -95,7 +92,6 @@ Column {
             LogViewEntryPart {
                 configurationObject: GUIConfig.userView.guestView //pomyslec o podaniu konkretnego modelu np guest, login itd
                 entryModel: logController.entryController.model
-                valueAssignSignal: logController.entryController.confirm
             }
         }
     }

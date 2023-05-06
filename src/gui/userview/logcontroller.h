@@ -29,7 +29,9 @@ class LogController : public QObject
     Q_PROPERTY(bool activityPossible MEMBER m_activity_possible NOTIFY activityStatusChanged)
     Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
 public:
-    LogController(QObject *obj = nullptr);
+    LogController(std::shared_ptr<DataClient> dataclient_,
+                  QPointer<DialogController> dialogController_,
+                  QObject *obj = nullptr);
 
     QPointer<EntryController> getController() { return controllers[m_userView]; }
 
@@ -38,10 +40,7 @@ private:
     bool m_activity_possible = true;
     QPointer<CalendarController> calendarController = new CalendarController(this);
 
-    QHash<EnumStatus, QPointer<EntryController>>
-        controllers{{EnumStatus::REGISTER, new RegisterController(calendarController, this)},
-                    {EnumStatus::LOGIN, new LoginController(this)},
-                    {EnumStatus::GUEST, new GuestController(this)}};
+    QHash<EnumStatus, QPointer<EntryController>> controllers;
 
     QPointer<UserSwitcherModel> switcherModel;
 

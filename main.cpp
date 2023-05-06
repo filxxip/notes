@@ -24,8 +24,11 @@
 #include <cctype>
 #include <chrono>
 #include <memory>
+
 #define RUN_QML 1
+
 #define RUN_DATABASE 0
+
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
@@ -49,29 +52,27 @@ int main(int argc, char *argv[])
                                      0,
                                      "ModelStatuses",
                                      "");
-    auto ptr
-        = std::make_shared<ServerDataClient>(); //wszystko qpointer zwykly pointer i rodzic go usuwa
-
-    auto logController = new LogController(&engine);
-    auto dialogController = new DialogController(ptr);
+    auto ptr = std::make_shared<FileDataClientAdapter>(
+        std::make_shared<FileDataClient>()); //wszystko qpointer zwykly pointer i rodzic go usuwa
+    auto dialogController = new DialogController(ptr, &engine);
+    auto logController = new LogController(ptr, dialogController, &engine);
     engine.rootContext()->setContextProperty("logController", logController);
     engine.rootContext()->setContextProperty("dialogController", dialogController);
 
     engine.load(url);
 #endif
-#ifdef RUN_DATABSE
-    //sprawdzic czy napewno aby sie updatuje to co trzeba, dlaczego id pobrane jest w stringu a nie it z servera
-    auto filemanager = PeopleManager(
+
+#if RUN_DATABASE
+    auto filemanager = GuiDialogsManager(
         std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
 
-    auto servermanager = PeopleManager(std::make_shared<ServerDataClient>());
+    auto servermanager = GuiDialogsManager(std::make_shared<ServerDataClient>());
     auto el = servermanager.get();
     for (auto &e : el.value()) {
-        e.name.set("Neymar");
-        e.birthday.set(QDateTime(QDate(1, 1, 1), QTime(1, 1)));
-        servermanager.add(e);
+        filemanager.add(e);
     }
 #endif
+
 #if RUN_QML
     return app.exec();
 #endif

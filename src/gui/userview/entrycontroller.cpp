@@ -1,14 +1,19 @@
 #include "entrycontroller.h"
 
-EntryController::EntryController(QObject *obj)
+EntryController::EntryController(QPointer<DialogController> dialogController_, QObject *obj)
     : QObject(obj)
+    , dialogController(dialogController_)
 {
     connect(this, &EntryController::confirm, this, &EntryController::onConfirmed);
 }
 
-RegisterController::RegisterController(QPointer<CalendarController> controller, QObject *obj)
-    : EntryController(obj)
-    , calendarController(controller)
+RegisterController::RegisterController(QPointer<CalendarController> calendarController_,
+                                       std::shared_ptr<DataClient> dataclient_,
+                                       QPointer<DialogController> dialogController_,
+                                       QObject *obj)
+    : EntryController(dialogController_, obj)
+    , calendarController(calendarController_)
+    , dataClient(dataclient_)
 {
     model->setEntries({{ModelStatuses::PersonComponents::NAME, "Name..."},
                        {ModelStatuses::PersonComponents::SURNAME, "Surname..."},
@@ -22,8 +27,11 @@ void RegisterController::onConfirmed()
     qDebug() << "register";
 }
 
-LoginController::LoginController(QObject *obj)
-    : EntryController(obj)
+LoginController::LoginController(std::shared_ptr<DataClient> dataclient_,
+                                 QPointer<DialogController> dialogController_,
+                                 QObject *obj)
+    : EntryController(dialogController_, obj)
+    , dataClient(dataclient_)
 {
     model->setEntries({{ModelStatuses::PersonComponents::EMAIL, "Login..."},
                        {ModelStatuses::PersonComponents::PASSWORD, "Password..."}});
@@ -35,13 +43,20 @@ void LoginController::onConfirmed()
     qDebug() << "login";
 }
 
-GuestController::GuestController(QObject *obj)
-    : EntryController(obj)
+GuestController::GuestController(QPointer<DialogController> dialogController_, QObject *obj)
+    : EntryController(dialogController_, obj)
 {
     model->setEntries({{ModelStatuses::PersonComponents::NAME, "Temporary name..."}});
 }
 
 void GuestController::onConfirmed()
 {
-    qDebug() << "guest";
+    qDebug() << "confirm";
+    auto name = model->data(0, ModelStatuses::Roles::VALUE).toString();
+    qDebug() << name;
+    if (name.isEmpty()) {
+        dialogController->showDialog(DialogCodes::UserViews::EMPTY_NAME_GUEST);
+    } else {
+        emit operationSuccess();
+    }
 }

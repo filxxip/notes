@@ -68,14 +68,14 @@ protected:
     virtual DataObject generateInstance(const json &genson) const = 0;
 
     template<typename... Args>
-    void updateObject(int id, const Args &...args) // recursive variadic function
+    void updateObject(int id, const Args &...args)
     {
         updateObjectBasicMethod(args...);
         dataClient->update(generatePath(id));
     }
 
     template<typename... Args>
-    void addObject(const Args &...args) // recursive variadic function
+    void addObject(const Args &...args)
     {
         addObjectBasicMethod(args...);
         dataClient->add(UrlPath(name));
