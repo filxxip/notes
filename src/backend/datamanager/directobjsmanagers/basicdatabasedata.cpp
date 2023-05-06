@@ -107,6 +107,11 @@ BaseData<T>::BaseData(QString name)
     : __name__(std::move(name))
 {}
 
+template<typename T>
+bool BaseData<T>::operator==(const T &data) const
+{
+    return data == get();
+}
 
 template<typename T>
 const QString &BaseData<T>::getName() const

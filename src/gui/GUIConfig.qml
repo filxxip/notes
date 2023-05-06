@@ -58,7 +58,7 @@ Item {
     QtObject {
         id: userView
         readonly property var registerView: QtObject {
-            readonly property string passwordCharakter: "#"
+            readonly property string passwordCharakter: "*"
             readonly property int combinedHeight: 0.4 * userView.height
             readonly property string titleContent: "Register"
             readonly property string checkContent: "SIGN UP"

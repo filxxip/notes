@@ -43,6 +43,8 @@ public:
     virtual const QString &getName() const;
 
     virtual void setBaseOnJson(const json &genson);
+
+    virtual bool operator==(const T &data) const;
 };
 
 template<typename T>

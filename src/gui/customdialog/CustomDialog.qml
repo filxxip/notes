@@ -14,7 +14,7 @@ Dialog {
 
     id: customDialog
     property var currentElement: dialogController.dialogModel.get(
-                                     dialogController.dialogModel.currentIndex)
+                                     dialogController.currentIndex)
     width: GUIConfig.dialog.width
     height: GUIConfig.dialog.height
 

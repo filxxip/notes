@@ -1,5 +1,11 @@
 #include "entrycontroller.h"
 
+namespace {
+constexpr const char *DOUBLE_EMAIL
+    = "This is email is not unique in database or your data files. Check it and fix this issue.";
+
+}
+
 EntryController::EntryController(QPointer<DialogController> dialogController_, QObject *obj)
     : QObject(obj)
     , dialogController(dialogController_)
@@ -13,7 +19,7 @@ RegisterController::RegisterController(QPointer<CalendarController> calendarCont
                                        QObject *obj)
     : EntryController(dialogController_, obj)
     , calendarController(calendarController_)
-    , dataClient(dataclient_)
+    , manager(dataclient_)
 {
     model->setEntries({{ModelStatuses::PersonComponents::NAME, "Name..."},
                        {ModelStatuses::PersonComponents::SURNAME, "Surname..."},
@@ -31,7 +37,7 @@ LoginController::LoginController(std::shared_ptr<DataClient> dataclient_,
                                  QPointer<DialogController> dialogController_,
                                  QObject *obj)
     : EntryController(dialogController_, obj)
-    , dataClient(dataclient_)
+    , manager(dataclient_)
 {
     model->setEntries({{ModelStatuses::PersonComponents::EMAIL, "Login..."},
                        {ModelStatuses::PersonComponents::PASSWORD, "Password..."}});
@@ -40,7 +46,19 @@ LoginController::LoginController(std::shared_ptr<DataClient> dataclient_,
 
 void LoginController::onConfirmed()
 {
-    qDebug() << "login";
+    auto name = model->data(0, ModelStatuses::Roles::VALUE).toString();
+    auto password = model->data(1, ModelStatuses::Roles::VALUE).toString();
+    auto personWithGiveEmail = manager.getFiltered({{"email", name.toStdString()}});
+    if (personWithGiveEmail.has_value() && personWithGiveEmail->size() > 1) {
+        qDebug() << DOUBLE_EMAIL;
+        return;
+    }
+    if (personWithGiveEmail->size() == 1 && personWithGiveEmail->at(0).password == password) {
+        qDebug() << "Access";
+        emit operationSuccess();
+    } else {
+        dialogController->showDialog(DialogCodes::UserViews::LOGIN_INVALID_ACCESS);
+    }
 }
 
 GuestController::GuestController(QPointer<DialogController> dialogController_, QObject *obj)
@@ -51,7 +69,6 @@ GuestController::GuestController(QPointer<DialogController> dialogController_, Q
 
 void GuestController::onConfirmed()
 {
-    qDebug() << "confirm";
     auto name = model->data(0, ModelStatuses::Roles::VALUE).toString();
     qDebug() << name;
     if (name.isEmpty()) {

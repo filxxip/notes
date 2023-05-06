@@ -4,6 +4,7 @@
 #include <QPointer>
 #include <QTimer>
 #include "../../backend/datamanager/dataclient.h"
+#include "../../backend/datamanager/directobjsmanagers/people/peoplemanager.h"
 #include "../calendar/calendarcontroller.h"
 #include "../customdialog/dialogcontroller.h"
 #include "../models/switchermodel.h"
@@ -38,7 +39,7 @@ class RegisterController : public EntryController
 {
     Q_OBJECT
 
-    std::shared_ptr<DataClient> dataClient;
+    PeopleManager manager;
 
     QPointer<CalendarController> calendarController;
 
@@ -56,7 +57,7 @@ class LoginController : public EntryController
 {
     Q_OBJECT
 
-    std::shared_ptr<DataClient> dataClient;
+    PeopleManager manager;
 
 public:
     LoginController(std::shared_ptr<DataClient> dataclient_,

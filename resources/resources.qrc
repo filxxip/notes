@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/resources">
         <file>anonymity.png</file>
+        <file>login.png</file>
     </qresource>
 </RCC>

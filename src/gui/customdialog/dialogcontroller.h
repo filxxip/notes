@@ -18,6 +18,7 @@ using ModelBuilder = FastModelBuilder<GuiDialog, ModelStatuses::DialogRoles>;
 namespace DialogCodes {
 namespace UserViews {
 constexpr int EMPTY_NAME_GUEST = 1;
+constexpr int LOGIN_INVALID_ACCESS = 2;
 }
 
 } // namespace DialogCodes
