@@ -51,9 +51,10 @@ int main(int argc, char *argv[])
                                      0,
                                      "ModelStatuses",
                                      "");
+    auto ptr
+        = std::make_shared<ServerDataClient>(); //wszystko qpointer zwykly pointer i rodzic go usuwa
 
-    auto ptr = std::make_shared<ServerDataClient>();
-    auto logController = new LogController();
+    auto logController = new LogController(&engine);
     auto dialogController = new DialogController(ptr);
     engine.rootContext()->setContextProperty("logController", logController);
     engine.rootContext()->setContextProperty("dialogController", dialogController);

@@ -2,7 +2,7 @@
 
 AdapterForQmlModelObject::AdapterForQmlModelObject(QAbstractListModel *modelPointer)
     : model(modelPointer)
-    , QObject()
+    , QObject(modelPointer)
 {}
 
 void AdapterForQmlModelObject::setCurrentIndex(QModelIndex currentIndex)

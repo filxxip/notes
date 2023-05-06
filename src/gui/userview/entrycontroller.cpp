@@ -1,13 +1,13 @@
 #include "entrycontroller.h"
 
-EntryController::EntryController()
-    : QObject()
+EntryController::EntryController(QObject *obj)
+    : QObject(obj)
 {
     connect(this, &EntryController::confirm, this, &EntryController::onConfirmed);
 }
 
-RegisterController::RegisterController(QPointer<CalendarController> controller)
-    : EntryController()
+RegisterController::RegisterController(QPointer<CalendarController> controller, QObject *obj)
+    : EntryController(obj)
     , calendarController(controller)
 {
     model->setEntries({{ModelStatuses::PersonComponents::NAME, "Name..."},
@@ -22,8 +22,8 @@ void RegisterController::onConfirmed()
     qDebug() << "register";
 }
 
-LoginController::LoginController()
-    : EntryController()
+LoginController::LoginController(QObject *obj)
+    : EntryController(obj)
 {
     model->setEntries({{ModelStatuses::PersonComponents::EMAIL, "Login..."},
                        {ModelStatuses::PersonComponents::PASSWORD, "Password..."}});
@@ -35,8 +35,8 @@ void LoginController::onConfirmed()
     qDebug() << "login";
 }
 
-GuestController::GuestController()
-    : EntryController()
+GuestController::GuestController(QObject *obj)
+    : EntryController(obj)
 {
     model->setEntries({{ModelStatuses::PersonComponents::NAME, "Temporary name..."}});
 }

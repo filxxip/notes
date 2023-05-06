@@ -50,7 +50,7 @@ public:
 
     void addEntry(StructType element);
 
-    QHash<int, QByteArray> roleNames() const override;
+    QHash<int, QByteArray> roleNames() const override; //Q_META_ENUM
 
     template<typename ReturnType>
     CustomListModel &addPart(EnumData role,
@@ -74,4 +74,39 @@ public:
     {
         return setData(index(indexvalue), QVariant::fromValue(value), static_cast<int>(role));
     }
+
+    bool removeRow(int row, const QModelIndex &parent)
+    {
+        if (row < 0 || row >= rowCount(parent)) {
+            return false;
+        }
+        beginRemoveRows(parent, row, row);
+        m_data.removeAt(row);
+        endRemoveRows();
+        return true;
+    }
+    bool removeRows(int row, int count, const QModelIndex &parent)
+    {
+        qDebug() << rowCount(parent) << "row count";
+        if (row < 0 || row + count > rowCount(parent)) {
+            return false;
+        }
+        qDebug() << "usuwam od indeksu" << row << "liczbe rowna" << count;
+
+        beginRemoveRows(parent, row, row + count - 1);
+
+        // Remove the items from your internal data structure
+        // For example, if your model is a list of strings:
+        qDebug() << row;
+        for (int i = 0; i < count; i++) {
+            qDebug() << row + i << "hhhhhhhhhhhhhhhhhh";
+            m_data.removeAt(row);
+        }
+
+        endRemoveRows();
+        return true;
+    }
+
+    bool removeRows(int row, int count) { return removeRows(row, count, QModelIndex()); }
+    bool removeRow(int row) { return removeRow(row, QModelIndex()); }
 };

@@ -15,10 +15,13 @@ class EntryController : public QObject
     Q_PROPERTY(UserViewListModel *model MEMBER model CONSTANT)
 
 protected:
-    QPointer<UserViewListModel> model = new UserViewListModel;
+    QPointer<UserViewListModel> model
+        = new UserViewListModel; //window controler kazdy musi miec pointer
 
 public:
-    EntryController();
+    EntryController(QObject *obj = nullptr);
+
+    virtual ~EntryController() { qDebug() << "DELETE"; }
 
 signals:
     void confirm();
@@ -34,7 +37,7 @@ class RegisterController : public EntryController
     QPointer<CalendarController> calendarController;
 
 public:
-    RegisterController(QPointer<CalendarController> controller);
+    RegisterController(QPointer<CalendarController> controller, QObject *obj = nullptr);
 
 public slots:
     void onConfirmed() override;
@@ -44,7 +47,7 @@ class LoginController : public EntryController
 {
     Q_OBJECT
 public:
-    LoginController();
+    LoginController(QObject *obj = nullptr);
 
 public slots:
     void onConfirmed() override;
@@ -54,7 +57,7 @@ class GuestController : public EntryController
 {
     Q_OBJECT
 public:
-    GuestController();
+    GuestController(QObject *obj = nullptr);
 
 public slots:
     void onConfirmed() override;

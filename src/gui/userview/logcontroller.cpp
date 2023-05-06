@@ -1,11 +1,10 @@
 #include "logcontroller.h"
 
-LogController::LogController()
-    : QObject()
+LogController::LogController(QObject *obj)
+    : QObject(obj)
 {
-
     switcherModel
-        = FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>()
+        = FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
               .add(ModelStatuses::UserViewsRoles::TEXT, &SwitcherModel<EnumStatus>::text, "text")
               .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type, "type")
               .build();
@@ -18,7 +17,8 @@ LogController::LogController()
 void LogController::onSwitchedChanged(ModelStatuses::UserViews s)
 {
     m_userView = s;
-    calendarController->clear();
+    //    calendarController->clear();
+    qDebug() << "clear";
     emit userViewChanged();
 }
 

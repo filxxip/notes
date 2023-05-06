@@ -57,7 +57,9 @@ bool CustomListModel<StructType, EnumData>::setData(const QModelIndex &index,
 template<typename StructType, typename EnumData>
 void CustomListModel<StructType, EnumData>::addEntry(StructType element)
 {
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_data.append(std::move(element));
+    endInsertRows();
 }
 
 #include "customlistmodelregistering.h"

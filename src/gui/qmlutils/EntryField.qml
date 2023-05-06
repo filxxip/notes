@@ -7,8 +7,10 @@ FocusScope {
     property string placeholder
     property color customcolor
     readonly property alias text: textInput.text
+    property bool readOnly: false
     property var clickedSlot
     onActiveFocusChanged: {
+        console.log("XDDcojest")
         if (focus && clickedSlot) {
             clickedSlot()
         }
@@ -22,6 +24,7 @@ FocusScope {
 
         TextInput {
             clip: true
+            readOnly: root.readOnly
             id: textInput
             width: parent.width
             height: parent.height

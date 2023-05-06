@@ -8,7 +8,6 @@ Rectangle {
     signal customReleased
     property string contentText
     color: GUIConfig.colors.transparent
-
     Text {
         id: textField
         text: parent.contentText

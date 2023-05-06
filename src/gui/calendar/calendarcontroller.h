@@ -56,7 +56,9 @@ class CalendarController : public QObject
     }
 
 public:
-    CalendarController();
+    CalendarController(QObject *obj = nullptr);
+
+    virtual ~CalendarController() { qDebug() << "deddddddddddddddddddddddddd"; }
 
     void clear()
     {
