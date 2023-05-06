@@ -6,13 +6,13 @@ DialogController::DialogController(std::shared_ptr<DataClient> dataClient)
     , manager(dataClient)
 {
     dialogModel = ModelBuilder()
-                      .add(Status::CONTENT, &GuiDialog::content, "content")
-                      .add(Status::IS_OK, &GuiDialog::isOk, "isOk")
-                      .add(Status::IS_YES, &GuiDialog::isYes, "isYes")
-                      .add(Status::IS_NO, &GuiDialog::isNo, "isNo")
-                      .add(Status::TITLE, &GuiDialog::title, "title")
-                      .add(Status::PATH, &GuiDialog ::path, "path")
-                      .add(Status::FONT_SIZE, &GuiDialog::fontSize, "fontSize")
+                      .add(Status::CONTENT, &GuiDialog::content)
+                      .add(Status::IS_OK, &GuiDialog::isOk)
+                      .add(Status::IS_YES, &GuiDialog::isYes)
+                      .add(Status::IS_NO, &GuiDialog::isNo)
+                      .add(Status::TITLE, &GuiDialog::title)
+                      .add(Status::PATH, &GuiDialog ::path)
+                      .add(Status::FONT_SIZE, &GuiDialog::fontSize)
                       .build();
     GuiDialog dialog;
     dialog.content.set("xxxxfsdgfsdsdxxxfsdgfsdsdxxxfsdgfsdsdxxxfsdgfsdsdxxxfsdgfsdsdxfsdgfsdsdx");
@@ -38,8 +38,7 @@ int DialogController::getDialogCode() const
     if (dialogModel->data(currentIndex, ModelStatuses::DialogRoles::IS_OK).value<bool>()) {
         code |= QMessageBox::Ok;
     }
-    return code; //cos z tym indeksem outofrange pomyslec i pierdzieli sie undefined, cos chyba nie tak z ta zamiana na qvariant, pomyslec o innuym macro, napewno wtedy bedzie gdzialac conversja
-    //jak qvariant sie stworzy na bazie metody get z dbdata np a nie od razu z dbdata
+    return code;
 }
 
 void DialogController::onAccepted()

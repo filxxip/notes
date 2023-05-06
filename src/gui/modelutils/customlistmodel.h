@@ -4,7 +4,7 @@
 #include "invokablelistmodel.h"
 #include <functional>
 
-#define ADD_DATA(role, name) addPart(role, &TemplateType::name, #name);
+#define ADD_DATA(role, name) addPart(role, &TemplateType::name);
 
 namespace {
 template<typename T, typename ReturnType>
@@ -78,17 +78,13 @@ public:
     QHash<int, QByteArray> roleNames() const override; //Q_META_ENUM
 
     template<typename ReturnType>
-    CustomListModel &addPart(EnumData role,
-                             ReturnType StructType::*attributeProperty,
-                             const QByteArray &name)
+    CustomListModel &addPart(EnumData role, ReturnType StructType::*attributeProperty)
     {
-        qDebug() << QString(metaEnum.valueToKey(static_cast<int>(role)));
-        auto attributeQMLName = convertUnderscoreToCamelCase(
-            metaEnum.valueToKey(static_cast<int>(role)));
-        qDebug() << attributeQMLName;
+        auto intenum = static_cast<int>(role);
+        auto attributeQMLName = convertUnderscoreToCamelCase(metaEnum.valueToKey(intenum));
         getterActivities.insert(role, makeGetterFunction(attributeProperty));
         updateActivities.insert(role, makeUpdateFunction(attributeProperty));
-        names.insert(static_cast<int>(role), attributeQMLName);
+        names.insert(intenum, attributeQMLName);
         return *this;
     }
 

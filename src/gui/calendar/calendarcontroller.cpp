@@ -5,8 +5,8 @@ CalendarController::CalendarController(QObject *obj)
 {
     auto initializeModel = [this](QPointer<CalendarListModel> &model) {
         model = FastModelBuilder<CalendarModel, EnumStatus>(this)
-                    .add(EnumStatus::CONTENT, &CalendarModel::content, "content")
-                    .add(EnumStatus::VALUE, &CalendarModel::value, "value")
+                    .add(EnumStatus::CONTENT, &CalendarModel::content)
+                    .add(EnumStatus::VALUE, &CalendarModel::value)
                     .build();
     };
 

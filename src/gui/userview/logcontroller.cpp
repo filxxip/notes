@@ -3,11 +3,10 @@
 LogController::LogController(QObject *obj)
     : QObject(obj)
 {
-    switcherModel
-        = FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
-              .add(ModelStatuses::UserViewsRoles::TEXT, &SwitcherModel<EnumStatus>::text, "text")
-              .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type, "type")
-              .build();
+    switcherModel = FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
+                        .add(ModelStatuses::UserViewsRoles::TEXT, &SwitcherModel<EnumStatus>::text)
+                        .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type)
+                        .build();
 
     switcherModel->addEntry({"login", EnumStatus::LOGIN});
     switcherModel->addEntry({"register", EnumStatus::REGISTER});

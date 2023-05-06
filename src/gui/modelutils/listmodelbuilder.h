@@ -13,11 +13,9 @@ public:
     {}
 
     template<typename ReturnType>
-    FastModelBuilder &add(EnumRoles role,
-                          ReturnType ModelStructType::*attributeProperty,
-                          const QByteArray &name)
+    FastModelBuilder &add(EnumRoles role, ReturnType ModelStructType::*attributeProperty)
     {
-        model->addPart(role, attributeProperty, name);
+        model->addPart(role, attributeProperty);
         return *this;
     }
 

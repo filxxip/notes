@@ -7,7 +7,7 @@ UserViewListModel::UserViewListModel(QObject *parent)
     ADD_DATA(ModelStatuses::Roles::VALUE, value)
     ADD_DATA(ModelStatuses::Roles::COLOR, color)
     //    addPart(ModelStatuses::Roles::PASS_STATUS, &EntryFieldModel::passwordStatus, "passwordStatusss");
-    ADD_DATA(ModelStatuses::Roles::PASS_STATUS, passwordStatus)
+    ADD_DATA(ModelStatuses::Roles::PASSWORD_STATUS, passwordStatus)
 }
 
 int UserViewListModel::indexOf(ModelStatuses::PersonComponents componentEnum) const

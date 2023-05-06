@@ -27,7 +27,7 @@ LoginController::LoginController(QObject *obj)
 {
     model->setEntries({{ModelStatuses::PersonComponents::EMAIL, "Login..."},
                        {ModelStatuses::PersonComponents::PASSWORD, "Password..."}});
-    model->setData(1, true, ModelStatuses::Roles::PASS_STATUS);
+    model->setData(1, true, ModelStatuses::Roles::PASSWORD_STATUS);
 }
 
 void LoginController::onConfirmed()
