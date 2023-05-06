@@ -31,10 +31,10 @@ Item {
 
     QtObject {
         id: dateChooser
-        readonly property int itemNumber: 9
-        readonly property int height: 400
-        readonly property int tumblerWidth: 130
-        readonly property int fontSize: 30
+        readonly property int basicItemNumber: 9
+        readonly property int basicHeight: 400
+        readonly property int basicTumblerWidth: 130
+        readonly property int basicdFontSize: 20
     }
 
     QtObject {
@@ -95,6 +95,15 @@ Item {
         readonly property int columnSpacing: 12
         readonly property int accessButtonHeight: 20
         readonly property int accessButtonSpacing: 20
+        readonly property int radiusOfMainRectangle: 10
+
+        readonly property var dateChooser: QtObject {
+            readonly property int spacing: 40
+            readonly property int height: 300
+            readonly property string buttonText: "SELECT"
+            readonly property int itemNumber: 7
+            readonly property int tumblerWidth: 120
+        }
     }
 
     QtObject {
@@ -108,9 +117,11 @@ Item {
 
         readonly property color transparent: "transparent"
         readonly property color black: "black"
+        readonly property color red: "red"
         readonly property color grey: "grey"
         readonly property color purple: "#ac28ed"
         readonly property color darkRed: "#5e0515"
+        readonly property color backgroundGreen: "#376945"
     }
 
     QtObject {

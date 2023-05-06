@@ -106,7 +106,6 @@ qt_add_qml_module(appnotesdatabaseproject
 
         src/gui/GUIConfig.qml
         src/gui/qmldir
-        src/gui/CloseButton.qml
 
 )
 

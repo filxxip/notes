@@ -13,7 +13,7 @@ enum class UserViewsRoles { TEXT, TYPE };
 
 enum class PersonComponents { EMAIL, PASSWORD, NAME, SURNAME, BIRTHDAY, COUNTRY };
 
-enum class Roles { PLACEHOLDER, VALUE, COLOR, PASS_STATUS };
+enum class Roles { PLACEHOLDER, VALUE, COLOR, PASSWORD_STATUS };
 
 enum class DialogRoles { IS_OK, IS_NO, IS_YES, CONTENT, TITLE, PATH, FONT_SIZE };
 

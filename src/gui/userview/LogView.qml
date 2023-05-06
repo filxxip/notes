@@ -8,6 +8,7 @@ import "../calendar"
 
 Column {
 
+    //Component which is visible when guest login is on
     Component {
         id: loginComponent
 
@@ -45,6 +46,7 @@ Column {
         }
     }
 
+    //Component which is visible when register mode is on
     Component {
         id: registerComponent
 
@@ -69,8 +71,8 @@ Column {
                     }
 
                     clickedSlot: foo
-                    placeholder: logController.calendarController.niceFormat
-                    customcolor: "red"
+                    placeholder: "Birhday: " + logController.calendarController.niceFormat
+                    customcolor: GUIConfig.colors.red
                     readOnly: true
                 }
             }
@@ -82,18 +84,21 @@ Column {
             }
         }
     }
+
+    //Component which is visible when guest model is on
     Component {
         id: guestComponent
         Column {
             spacing: GuiConfig.userView.columnSpacing
             LogViewEntryPart {
-                configurationObject: GUIConfig.userView.guestView
-                entryModel: logController.entryController.model //lepiej gdyby podac wprost dany controller
+                configurationObject: GUIConfig.userView.guestView //pomyslec o podaniu konkretnego modelu np guest, login itd
+                entryModel: logController.entryController.model
                 valueAssignSignal: logController.entryController.confirm
             }
         }
     }
 
+    //main part of log view
     spacing: 30
     anchors.centerIn: parent
     ButtonSwitcher {
@@ -106,8 +111,8 @@ Column {
     Rectangle {
         width: GUIConfig.userView.width
         height: GUIConfig.userView.height
-        radius: 10
-        color: "#376945"
+        radius: GUIConfig.userView.radiusOfMainRectangle
+        color: GUIConfig.colors.backgroundGreen
         id: view
         SwipeView {
             id: swipeView
@@ -119,12 +124,14 @@ Column {
                 id: itemColumn
                 Column {
                     anchors.centerIn: itemColumn
-                    spacing: 40
+                    spacing: GUIConfig.userView.dateChooser.spacing
                     DateChooser {
                         backgroundColor: GUIConfig.colors.transparent
-                        height: 300
+                        height: GUIConfig.userView.dateChooser.height
                         Component.onCompleted: logController.calendarController.resetGui.connect(
                                                    reset)
+                        controller: logController.calendarController
+                        itemNumber: GUIConfig.userView.dateChooser.itemNumber
                     }
 
                     Rectangle {
@@ -133,7 +140,7 @@ Column {
                         color: GuiConfig.colors.transparent
                         anchors.horizontalCenter: parent.horizontalCenter
                         CustomButton {
-                            contentText: "SELECT"
+                            contentText: GUIConfig.userView.dateChooser.buttonText
                             anchors.fill: parent
                             onClicked: swipeView.currentIndex = 1
                         }

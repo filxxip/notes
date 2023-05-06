@@ -3,7 +3,9 @@
 template<typename StructType, typename EnumData>
 CustomListModel<StructType, EnumData>::CustomListModel::CustomListModel(QObject *parent)
     : AbstractListModelInvokableClass(parent)
-{}
+{
+    metaEnum = QMetaEnum::fromType<EnumData>();
+}
 
 template<typename StructType, typename EnumData>
 int CustomListModel<StructType, EnumData>::rowCount(const QModelIndex &parent) const
@@ -62,6 +64,46 @@ void CustomListModel<StructType, EnumData>::addEntry(StructType element)
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_data.append(std::move(element));
     endInsertRows();
+}
+
+template<typename StructType, typename EnumData>
+bool CustomListModel<StructType, EnumData>::removeRow(int row, const QModelIndex &parent)
+{
+    if (row < 0 || row >= rowCount(parent)) {
+        return false;
+    }
+    beginRemoveRows(parent, row, row);
+    m_data.removeAt(row);
+    endRemoveRows();
+    return true;
+}
+
+template<typename StructType, typename EnumData>
+bool CustomListModel<StructType, EnumData>::removeRows(int row, int count, const QModelIndex &parent)
+{
+    if (row < 0 || row + count > rowCount(parent)) {
+        return false;
+    }
+
+    beginRemoveRows(parent, row, row + count - 1);
+    for (int i = 0; i < count; i++) {
+        m_data.removeAt(row);
+    }
+
+    endRemoveRows();
+    return true;
+}
+
+template<typename StructType, typename EnumData>
+bool CustomListModel<StructType, EnumData>::removeRows(int row, int count)
+{
+    return removeRows(row, count, QModelIndex());
+}
+
+template<typename StructType, typename EnumData>
+bool CustomListModel<StructType, EnumData>::removeRow(int row)
+{
+    return removeRow(row, QModelIndex());
 }
 
 #include "customlistmodelregistering.h"

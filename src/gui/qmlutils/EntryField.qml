@@ -10,7 +10,6 @@ FocusScope {
     property bool readOnly: false
     property var clickedSlot
     onActiveFocusChanged: {
-        console.log("XDDcojest")
         if (focus && clickedSlot) {
             clickedSlot()
         }
@@ -19,7 +18,6 @@ FocusScope {
     Rectangle {
         id: outerRect
         anchors.fill: parent
-        border.color: "blue"
         radius: 6
 
         TextInput {

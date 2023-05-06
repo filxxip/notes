@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QMetaEnum>
 #include "invokablelistmodel.h"
 #include <functional>
 
@@ -17,7 +18,6 @@ std::function<QVariant(const T &)> makeGetterFunction(ReturnType T::*method)
             return QVariant::fromValue(object.*method);
     };
 }
-} // namespace
 
 template<typename T, typename ReturnType>
 std::function<void(T &, const QVariant &)> makeUpdateFunction(ReturnType T::*method)
@@ -27,11 +27,36 @@ std::function<void(T &, const QVariant &)> makeUpdateFunction(ReturnType T::*met
     };
 }
 
+QByteArray convertUnderscoreToCamelCase(const char *str)
+{
+    QString suppertStr(str);
+    QString result;
+    bool capNext = false;
+    for (auto c : suppertStr) {
+        if (c != '_') {
+            result.append(capNext ? c : c.toLower());
+            capNext = false;
+        } else {
+            capNext = true;
+        }
+    }
+    return result.toUtf8();
+} //where to store it
+} // namespace
+
 template<typename StructType, typename EnumData>
 class CustomListModel : public AbstractListModelInvokableClass
 {
+    /**Class used to creating cpp models which can be easily used in qml.
+     *  To add some attribute use addPart method.
+     *  EnumData's instances used in this class should have SOME_ATTR_TO_GET syntax.
+     *  Struct that this class will refer to should have someAttrToGet syntax.
+     *  Otherwise this class wont be working properly.*/
+
 protected:
     using TemplateType = StructType;
+
+    QMetaEnum metaEnum;
 
     QVector<StructType> m_data;
 
@@ -57,9 +82,13 @@ public:
                              ReturnType StructType::*attributeProperty,
                              const QByteArray &name)
     {
+        qDebug() << QString(metaEnum.valueToKey(static_cast<int>(role)));
+        auto attributeQMLName = convertUnderscoreToCamelCase(
+            metaEnum.valueToKey(static_cast<int>(role)));
+        qDebug() << attributeQMLName;
         getterActivities.insert(role, makeGetterFunction(attributeProperty));
         updateActivities.insert(role, makeUpdateFunction(attributeProperty));
-        names.insert(static_cast<int>(role), name);
+        names.insert(static_cast<int>(role), attributeQMLName);
         return *this;
     }
 
@@ -75,31 +104,11 @@ public:
         return setData(index(indexvalue), QVariant::fromValue(value), static_cast<int>(role));
     }
 
-    bool removeRow(int row, const QModelIndex &parent)
-    {
-        if (row < 0 || row >= rowCount(parent)) {
-            return false;
-        }
-        beginRemoveRows(parent, row, row);
-        m_data.removeAt(row);
-        endRemoveRows();
-        return true;
-    }
-    bool removeRows(int row, int count, const QModelIndex &parent)
-    {
-        if (row < 0 || row + count > rowCount(parent)) {
-            return false;
-        }
+    bool removeRow(int row, const QModelIndex &parent);
 
-        beginRemoveRows(parent, row, row + count - 1);
-        for (int i = 0; i < count; i++) {
-            m_data.removeAt(row);
-        }
+    bool removeRows(int row, int count, const QModelIndex &parent);
 
-        endRemoveRows();
-        return true;
-    }
+    bool removeRows(int row, int count);
 
-    bool removeRows(int row, int count) { return removeRows(row, count, QModelIndex()); }
-    bool removeRow(int row) { return removeRow(row, QModelIndex()); }
+    bool removeRow(int row);
 };

@@ -11,7 +11,8 @@
 #include "../statuses.h"
 
 namespace {
-
+constexpr int DEFAULT_MAXIMUM_YEAR = 2022;
+constexpr int DEFAULT_MINIMUM_YEAR = 1960;
 const QVector<QString> monthsNames = {"January",
                                       "February",
                                       "March",
@@ -44,8 +45,9 @@ class CalendarController : public QObject
     QPointer<CalendarListModel> dayModel;
     QPointer<CalendarListModel> yearModel;
 
-    const QDate defaultDate = QDate(1901, 1, 1);
-    QDate currentDate = defaultDate;
+    int maximumYear = DEFAULT_MAXIMUM_YEAR;
+    int minimumYear = DEFAULT_MINIMUM_YEAR;
+    QDate currentDate = QDate(minimumYear, 1, 1);
 
     QString getNiceDateFormat() const;
 
@@ -53,6 +55,8 @@ public:
     CalendarController(QObject *obj = nullptr);
 
     void clear();
+
+    void setMinMaxRange(int newMin, int newMax);
 
 signals:
     void resetGui();
@@ -63,5 +67,5 @@ signals:
 
 private slots:
 
-    void onCurrentDateChanged(int day, int month, int year);
+    void onCurrentDateChanged(int dayIndexDelta, int monthIndexDelta, int yearIndexDelta);
 };

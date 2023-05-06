@@ -10,7 +10,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QString>
-#include "gui/mycontroller.h"
 #include "gui/statuses.h"
 #include "src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h"
 #include "src/backend/datamanager/directobjsmanagers/guidialogs/guidialogmanager.h"
@@ -22,6 +21,7 @@
 #include "src/gui/calendar/calendarcontroller.h"
 #include "src/gui/customdialog/dialogcontroller.h"
 #include "src/gui/userview/logcontroller.h"
+#include <cctype>
 #include <chrono>
 #include <memory>
 #define RUN_QML 1
@@ -29,8 +29,6 @@
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
-    auto v = QVariant::fromValue(ModelStatuses::UserViews::LOGIN);
-    qDebug() << std::is_constructible<QVariant, ModelStatuses::UserViews>::value;
 
 #if RUN_QML
     QGuiApplication app(argc, argv);

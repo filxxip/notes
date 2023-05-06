@@ -23,10 +23,11 @@ CalendarController::CalendarController(QObject *obj)
     for (int i = 0; i < 12; i++) {
         months.append({i + 1, monthsNames[i]});
     }
+
     monthModel->setEntries(std::move(months));
 
     QVector<CalendarModel> years;
-    for (int i = 1901; i < 2050; i++) {
+    for (int i = minimumYear; i < maximumYear; i++) {
         years.append({i, QString::number(i)});
     }
     yearModel->setEntries(std::move(years));
@@ -39,7 +40,7 @@ CalendarController::CalendarController(QObject *obj)
 
 QString CalendarController::getNiceDateFormat() const
 {
-    return QString("Birthday : %1 %2 %3")
+    return QString("%1 %2 %3")
         .arg(currentDate.day())
         .arg(monthModel->data(currentDate.month() - 1, EnumStatus::CONTENT).toString())
         .arg(currentDate.year());
@@ -48,21 +49,34 @@ QString CalendarController::getNiceDateFormat() const
 void CalendarController::clear()
 {
     emit resetGui();
-    currentDate = defaultDate;
+    currentDate = QDate(minimumYear, 1, 1);
 }
 
-void CalendarController::onCurrentDateChanged(int day, int month, int year)
+void CalendarController::setMinMaxRange(int newMin, int newMax)
 {
+    minimumYear = newMin;
+    maximumYear = newMax;
+}
+
+void CalendarController::onCurrentDateChanged(int dayIndexDelta,
+                                              int monthIndexDelta,
+                                              int yearIndexDelta)
+{
+    auto day = dayIndexDelta + 1;
+    auto month = monthIndexDelta + 1;
+    auto year = yearIndexDelta + minimumYear;
+
     int begin = QDate(year, month, 1).daysInMonth();
-    int size = dayModel->rowCount();
-    for (int i = size + 1; i <= begin; i++) {
+
+    if (begin < dayModel->rowCount()) {
+        dayModel->removeRows(begin, dayModel->rowCount() - begin);
+    }
+
+    for (int i = dayModel->rowCount() + 1; i <= begin; i++) {
         dayModel->addEntry({i, QString::number(i)});
     }
-    int diff = size - begin;
-    if (diff > 0) {
-        dayModel->removeRows(begin, diff);
-        day -= diff;
-    }
-    currentDate = QDate(year, month, day);
+
+    currentDate = QDate(year, month, qMin(day, dayModel->rowCount()));
+
     emit niceFormatChanged(getNiceDateFormat());
 }

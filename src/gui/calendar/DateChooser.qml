@@ -5,10 +5,10 @@ import "../"
 
 Rectangle {
     id: outerRect
-    property int tumblerWidth: GUIConfig.dateChooser.tumblerWidth
-    property int fontSize: GUIConfig.dateChooser.fontSize
-    property var controller: logController.calendarController
-    property int itemNumber: GUIConfig.dateChooser.itemNumber
+    property int tumblerWidth: GUIConfig.dateChooser.basicTumblerWidth
+    property int fontSize: GUIConfig.dateChooser.basicdFontSize
+    required property var controller
+    property int itemNumber: GUIConfig.dateChooser.basicItemNumber
     property color backgroundColor: GUIConfig.colors.grey
     signal reset
     onReset: {
@@ -17,7 +17,7 @@ Rectangle {
         repeater.itemAt(2).currentIndex = 0
     }
 
-    height: GUIConfig.dateChooser.height
+    height: GUIConfig.dateChooser.basicHeight
     width: tumblerWidth * 3
     color: backgroundColor
 
@@ -52,9 +52,9 @@ Rectangle {
 
             function onDateChanged() {
                 outerRect.controller.currentDateChanged(
-                            repeater.itemAt(0).currentIndex + 1,
-                            repeater.itemAt(1).currentIndex + 1,
-                            repeater.itemAt(2).currentIndex + 1901)
+                            repeater.itemAt(0).currentIndex,
+                            repeater.itemAt(1).currentIndex,
+                            repeater.itemAt(2).currentIndex)
             }
 
             Component.onCompleted: {
