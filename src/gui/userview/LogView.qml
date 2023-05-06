@@ -70,7 +70,7 @@ Column {
                     }
 
                     clickedSlot: foo
-                    placeholder: "Birhday: " + logController.calendarController.niceFormat
+                    placeholder: "Birthday: " + logController.calendarController.niceFormat
                     customcolor: GUIConfig.colors.red
                     readOnly: true
                 }
