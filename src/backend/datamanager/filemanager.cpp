@@ -2,7 +2,7 @@
 
 std::optional<QFile> FileManager::createFile(const Path &path) const
 {
-    return std::make_optional<QFile>(path.getFullPath()); //powinien robic check directory
+    return std::make_optional<QFile>(path.getFullPath());
 }
 
 std::optional<QFile> FileManager::getFile(const Path &path) const

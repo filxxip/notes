@@ -63,7 +63,7 @@ void DialogController::onRejected()
 
 bool DialogController::showDialog(int code)
 {
-    if (code > 0 && code < dialogModel->rowCount()) {
+    if (code > 0 && code <= dialogModel->rowCount()) {
         currentIndex = code - 1;
         emit indexChanged(currentIndex);
         setVisibility(true);

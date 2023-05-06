@@ -1,1 +1,1 @@
-{"content":"Other Content","fontSize":15,"id":3,"isNo":false,"isOk":false,"isYes":false,"path":"undefined","title":"Dialog3"}
+{"content":"Your password has to contain some capital letter. Try again.","fontSize":15,"id":3,"isNo":false,"isOk":true,"isYes":false,"path":"qrc:/resources/passerror.png","title":"Incorrect Data"}

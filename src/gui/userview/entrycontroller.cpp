@@ -1,10 +1,13 @@
 #include "entrycontroller.h"
+#include <QRegularExpression>
 
 namespace {
 constexpr const char *DOUBLE_EMAIL
     = "This is email is not unique in database or your data files. Check it and fix this issue.";
 
-}
+const QRegularExpression emailRegex(".*@.*\\.com");
+
+} // namespace
 
 EntryController::EntryController(QPointer<DialogController> dialogController_, QObject *obj)
     : QObject(obj)
@@ -30,7 +33,36 @@ RegisterController::RegisterController(QPointer<CalendarController> calendarCont
 
 void RegisterController::onConfirmed()
 {
-    qDebug() << "register";
+    int passIndex = model->indexOf(ModelStatuses::PersonComponents::PASSWORD);
+    auto password = model->data(passIndex, ModelStatuses::Roles::VALUE).value<QString>();
+
+    int emailIndex = model->indexOf(ModelStatuses::PersonComponents::EMAIL);
+    auto email = model->data(emailIndex, ModelStatuses::Roles::VALUE).value<QString>();
+
+    auto hasNoUppercase = std::none_of(password.begin(), password.end(), [](const QChar &ch) {
+        return ch.isUpper();
+    });
+
+    auto hasNoEmailMatches = !emailRegex.match(email).hasMatch();
+
+    if (hasNoUppercase && hasNoEmailMatches) {
+        dialogController->showDialog(DialogCodes::UserViews::INVALID_REGISTER_PASSWORD_AND_EMAIL);
+        return;
+    }
+
+    if (hasNoUppercase) {
+        dialogController->showDialog(DialogCodes::UserViews::INVALID_REGISTER_PASSWORD);
+        return;
+    }
+    if (hasNoEmailMatches) {
+        dialogController->showDialog(DialogCodes::UserViews::INVALID_REGISTER_EMAIL);
+        return;
+    }
+
+    //dorzucic jeszcze sprawdzenie reszty elementow aby nie byly puste(i dialog do tego jakis), ewentualnie moze wybor kraju ale to za duzo roboty
+
+    qDebug() << "Access";
+    emit operationSuccess();
 }
 
 LoginController::LoginController(std::shared_ptr<DataClient> dataclient_,
@@ -73,7 +105,7 @@ void GuestController::onConfirmed()
     qDebug() << name;
     if (name.isEmpty()) {
         dialogController->showDialog(DialogCodes::UserViews::EMPTY_NAME_GUEST);
-    } else {
-        emit operationSuccess();
+        return;
     }
+    emit operationSuccess();
 }

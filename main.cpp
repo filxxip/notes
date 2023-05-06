@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QRegularExpression>
 #include <QString>
 #include "gui/statuses.h"
 #include "src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h"
@@ -32,6 +33,9 @@
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
+    QRegularExpression rx(".*@.*\\.com");
+    auto x = rx.match("ney@gmail.com");
+    qDebug() << x;
 
 #if RUN_QML
     QGuiApplication app(argc, argv);

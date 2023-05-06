@@ -19,6 +19,9 @@ namespace DialogCodes {
 namespace UserViews {
 constexpr int EMPTY_NAME_GUEST = 1;
 constexpr int LOGIN_INVALID_ACCESS = 2;
+constexpr int INVALID_REGISTER_PASSWORD = 3;
+constexpr int INVALID_REGISTER_EMAIL = 4;
+constexpr int INVALID_REGISTER_PASSWORD_AND_EMAIL = 5;
 }
 
 } // namespace DialogCodes

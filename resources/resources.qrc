@@ -2,5 +2,8 @@
     <qresource prefix="/resources">
         <file>anonymity.png</file>
         <file>login.png</file>
+        <file>emailerror.png</file>
+        <file>passandemail.png</file>
+        <file>passerror.png</file>
     </qresource>
 </RCC>
