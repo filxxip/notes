@@ -37,10 +37,12 @@ Column {
                     property var element: logController.entryController.model.get(
                                               1)
                     onCustomClicked: element.update(
-                                         false, ModelStatuses.Roles.PASS_STATUS)
+                                         false,
+                                         ModelStatuses.Roles.PASSWORD_STATUS)
 
                     onCustomReleased: element.update(
-                                          true, ModelStatuses.Roles.PASS_STATUS)
+                                          true,
+                                          ModelStatuses.Roles.PASSWORD_STATUS)
                 }
             }
         }
