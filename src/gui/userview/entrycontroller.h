@@ -21,8 +21,6 @@ protected:
 public:
     EntryController(QObject *obj = nullptr);
 
-    virtual ~EntryController() { qDebug() << "DELETE"; }
-
 signals:
     void confirm();
 

@@ -47,31 +47,17 @@ class CalendarController : public QObject
     const QDate defaultDate = QDate(1901, 1, 1);
     QDate currentDate = defaultDate;
 
-    QString getNiceDateFormat() const
-    {
-        return QString("Birthday : %1 %2 %3")
-            .arg(currentDate.day())
-            .arg(monthModel->data(currentDate.month() - 1, EnumStatus::CONTENT).toString())
-            .arg(currentDate.year());
-    }
+    QString getNiceDateFormat() const;
 
 public:
     CalendarController(QObject *obj = nullptr);
 
-    virtual ~CalendarController() { qDebug() << "deddddddddddddddddddddddddd"; }
-
-    void clear()
-    {
-        emit resetGui();
-        currentDate = defaultDate;
-    }
+    void clear();
 
 signals:
     void resetGui();
 
     void currentDateChanged(int day, int month, int year);
-
-    void dayChanged(int value);
 
     void niceFormatChanged(QString content);
 

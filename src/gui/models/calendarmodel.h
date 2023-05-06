@@ -6,5 +6,4 @@ struct CalendarModel
 {
     int value;
     QString content;
-    bool visibility = true;
 };

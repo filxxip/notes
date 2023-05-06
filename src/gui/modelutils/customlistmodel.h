@@ -87,19 +87,12 @@ public:
     }
     bool removeRows(int row, int count, const QModelIndex &parent)
     {
-        qDebug() << rowCount(parent) << "row count";
         if (row < 0 || row + count > rowCount(parent)) {
             return false;
         }
-        qDebug() << "usuwam od indeksu" << row << "liczbe rowna" << count;
 
         beginRemoveRows(parent, row, row + count - 1);
-
-        // Remove the items from your internal data structure
-        // For example, if your model is a list of strings:
-        qDebug() << row;
         for (int i = 0; i < count; i++) {
-            qDebug() << row + i << "hhhhhhhhhhhhhhhhhh";
             m_data.removeAt(row);
         }
 

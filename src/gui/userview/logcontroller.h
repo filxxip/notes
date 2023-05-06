@@ -20,10 +20,10 @@ class LogController : public QObject
 
     Q_OBJECT
 
-    Q_PROPERTY(EntryController *entryController READ getController CONSTANT) //ewentualnie notify
+    Q_PROPERTY(EntryController *entryController READ getController CONSTANT)
 
-    //    Q_PROPERTY(EnumStatus userViewType MEMBER m_userView NOTIFY userViewChanged)
-    Q_PROPERTY(EnumStatus userViewType READ userviewread WRITE userviewwrite NOTIFY userViewChanged)
+    Q_PROPERTY(
+        EnumStatus userViewType READ getUserView WRITE onSwitchedChanged NOTIFY userViewChanged)
 
     Q_PROPERTY(UserSwitcherModel *switcherModel MEMBER switcherModel CONSTANT)
     Q_PROPERTY(bool activityPossible MEMBER m_activity_possible NOTIFY activityStatusChanged)
@@ -47,18 +47,10 @@ private:
 
     void setActivity(bool value);
 
-    EnumStatus userviewread() { return m_userView; }
+    EnumStatus getUserView() const { return m_userView; }
 
 public slots:
-    void onSwitchedChanged(ModelStatuses::UserViews s);
-
-    void userviewwrite(EnumStatus status)
-    {
-        m_userView = status;
-        //        calendarController->clear();
-        qDebug() << "Fsdfsdfsdfsd";
-        emit userViewChanged();
-    }
+    void onSwitchedChanged(EnumStatus s);
 
 signals:
 

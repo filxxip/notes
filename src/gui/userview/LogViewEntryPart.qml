@@ -23,13 +23,9 @@ ListView {
         passwordStatus: model.passwordStatus
         activeFocusOnTab: true
         function foo() {
-            console.log("kurwa")
             model.value = entry.text
         }
         Component.onCompleted: listview.valueAssignSignal.connect(foo)
-        Component.onDestruction: {
-            listview.valueAssignSignal.disconnect(foo)
-            console.log("XDD" + this)
-        }
+        Component.onDestruction: listview.valueAssignSignal.disconnect(foo)
     }
 }

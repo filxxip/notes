@@ -29,8 +29,7 @@ Rectangle {
                          Tumbler.displacement) / (Tumbler.tumbler.visibleItemCount / 2)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            //            visible: model.visibility
-            font.family: outerRect.fontSize
+            font.pixelSize: outerRect.fontSize
         }
     }
 
@@ -40,7 +39,6 @@ Rectangle {
         Repeater {
             id: repeater
             model: [outerRect.controller.dayModel, outerRect.controller.monthModel, outerRect.controller.yearModel]
-            //            model: [20, 40, 60]
             signal dateChanged
             Tumbler {
                 visibleItemCount: outerRect.itemNumber
@@ -49,40 +47,9 @@ Rectangle {
                 height: outerRect.height
                 delegate: delegateComponent
                 wrap: false
-                id: tum
-                //                Component.onCompleted: {
-                //                    console.log(model + "moddddddddddddddddddd")
-                //                    for (var i = 0; i < tum.model; i++) {
-                //                        console.log("ustawiam")
-                //                        positionViewAtIndex(i, Tumbler.Center)
-                //                    }
-                //                }
-                onCurrentIndexChanged: {
-
-                    //                    repeater.itemAt(2).positionViewAtIndex(repeater.itemAt(
-                    //                                                               2).currentIndex,
-                    //                                                           Tumbler.Center)
-                    //                    if (index === 0) {
-                    //                        console.log("xxx")
-                    //                        var ia = repeater.itemAt(2).currentIndex
-                    //                        if (currentIndex % 2) {
-                    //                            repeater.itemAt(2).model = 30
-                    //                        } else {
-                    //                            repeater.itemAt(2).model = 60
-                    //                        }
-                    //                        console.log("wkonuje snapappaa")
-                    //                        //                        repeater.itemAt(2).positionViewAtIndex(ia,
-                    //                        //                                                               Tumbler.Center)
-                    //                        repeater.itemAt(2).currentIndex = ia
-                    //                        //                        repeater.itemAt(2).currentIndex = ia
-                    //                    }
-                    repeater.dateChanged()
-                }
+                onCurrentIndexChanged: repeater.dateChanged()
             }
 
-            //            function foo(value) {
-            //                itemAt(0).currentIndex = value - 1
-            //            }
             function onDateChanged() {
                 outerRect.controller.currentDateChanged(
                             repeater.itemAt(0).currentIndex + 1,

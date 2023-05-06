@@ -6,7 +6,6 @@ CalendarController::CalendarController(QObject *obj)
     auto initializeModel = [this](QPointer<CalendarListModel> &model) {
         model = FastModelBuilder<CalendarModel, EnumStatus>(this)
                     .add(EnumStatus::CONTENT, &CalendarModel::content, "content")
-                    .add(EnumStatus::VISIBILITY, &CalendarModel::visibility, "visibility")
                     .add(EnumStatus::VALUE, &CalendarModel::value, "value")
                     .build();
     };
@@ -38,40 +37,32 @@ CalendarController::CalendarController(QObject *obj)
                      &CalendarController::onCurrentDateChanged);
 }
 
+QString CalendarController::getNiceDateFormat() const
+{
+    return QString("Birthday : %1 %2 %3")
+        .arg(currentDate.day())
+        .arg(monthModel->data(currentDate.month() - 1, EnumStatus::CONTENT).toString())
+        .arg(currentDate.year());
+}
+
+void CalendarController::clear()
+{
+    emit resetGui();
+    currentDate = defaultDate;
+}
+
 void CalendarController::onCurrentDateChanged(int day, int month, int year)
 {
-    qDebug() << "wchodze tututu" << day << "  " << month << "  " << year;
     int begin = QDate(year, month, 1).daysInMonth();
-
     int size = dayModel->rowCount();
-    qDebug() << "oto size " << size;
-    qDebug() << "ilosc dni : " << begin;
     for (int i = size + 1; i <= begin; i++) {
-        CalendarModel c;
-        c.content = QString::number(i);
-        c.value = size;
-        c.visibility = true;
-        dayModel->addEntry(c);
+        dayModel->addEntry({i, QString::number(i)});
     }
     int diff = size - begin;
-    qDebug() << "oto diff" << diff;
     if (diff > 0) {
-        qDebug() << "ilosc dni" << begin;
         dayModel->removeRows(begin, diff);
         day -= diff;
     }
     currentDate = QDate(year, month, day);
-    //    while (!currentDate.isValid() && day != 0) {
-    //        qDebug() << "cos ten";
-    //        currentDate = QDate(year, month, --day);
-    //        emit dayChanged(day);
-    //    }
-    //    int currentCheck = 0;
-    //    while (this->dayModel->setData(currentCheck,
-    //                                   QDate(year, month, currentCheck + 1).isValid(),
-    //                                   EnumStatus::VISIBILITY)) {
-    //        currentCheck++;
-    //        qDebug() << "cos ten222";
-    //    }
     emit niceFormatChanged(getNiceDateFormat());
 }

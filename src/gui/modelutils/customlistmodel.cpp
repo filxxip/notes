@@ -14,7 +14,9 @@ int CustomListModel<StructType, EnumData>::rowCount(const QModelIndex &parent) c
 template<typename StructType, typename EnumData>
 void CustomListModel<StructType, EnumData>::setEntries(QVector<StructType> vector)
 {
+    beginResetModel();
     m_data = std::move(vector);
+    endResetModel(); // to check if it works!
 }
 
 template<typename StructType, typename EnumData>
@@ -50,7 +52,7 @@ bool CustomListModel<StructType, EnumData>::setData(const QModelIndex &index,
         return false;
     }
     updateActivities[static_cast<EnumData>(role)](m_data[index.row()], value);
-    emit dataChanged(index, index); // <- this does not trigger a recompution of the view
+    emit dataChanged(index, index);
     return true;
 }
 

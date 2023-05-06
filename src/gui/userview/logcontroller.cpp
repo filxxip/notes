@@ -14,11 +14,10 @@ LogController::LogController(QObject *obj)
     switcherModel->addEntry({"log as guest", EnumStatus::GUEST});
 }
 
-void LogController::onSwitchedChanged(ModelStatuses::UserViews s)
+void LogController::onSwitchedChanged(EnumStatus s)
 {
     m_userView = s;
-    //    calendarController->clear();
-    qDebug() << "clear";
+    calendarController->clear();
     emit userViewChanged();
 }
 
