@@ -99,8 +99,6 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/qmlutils/EntryField.qml
         src/gui/qmlutils/TitleBox.qml
 
-        src/gui/qmlutils/CustomDial.qml
-
         src/gui/userview/LogView.qml
         src/gui/userview/LogViewEntryPart.qml
 
