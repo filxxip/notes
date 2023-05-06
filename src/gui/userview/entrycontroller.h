@@ -15,8 +15,8 @@ class EntryController : public QObject
     Q_PROPERTY(UserViewListModel *model MEMBER model CONSTANT)
 
 protected:
-    QPointer<UserViewListModel> model
-        = new UserViewListModel; //window controler kazdy musi miec pointer
+    QPointer<UserViewListModel> model = new UserViewListModel(
+        this); //window controler kazdy musi miec pointer
 
 public:
     EntryController(QObject *obj = nullptr);
