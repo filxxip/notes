@@ -141,3 +141,17 @@ void ServerDataClient::clearFilters()
 {
     groupFilterString.clear();
 }
+
+bool ServerDataClient::isValid() const //:( -> my only idea
+{
+    try {
+        get(UrlPath(""));
+        return true;
+    } catch (curlpp::RuntimeError &e) {
+        qDebug() << e.what();
+    } catch (curlpp::LogicError &e) {
+        qDebug() << e.what();
+    }
+
+    return false;
+}

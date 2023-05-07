@@ -33,9 +33,20 @@
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
-    QRegularExpression rx(".*@.*\\.com");
-    auto x = rx.match("ney@gmail.com");
-    qDebug() << x;
+#if RUN_DATABASE
+    auto filemanager = GuiDialogsManager(
+        std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
+
+    auto servermanager = GuiDialogsManager(std::make_shared<ServerDataClient>());
+
+    for (int i = 1; i < 20; i++) {
+        servermanager.remove(i);
+    }
+    auto el = filemanager.get();
+    for (auto &e : el.value()) {
+        servermanager.add(e);
+    }
+#endif
 
 #if RUN_QML
     QGuiApplication app(argc, argv);
@@ -56,34 +67,21 @@ int main(int argc, char *argv[])
                                      0,
                                      "ModelStatuses",
                                      "");
-    auto ptr = std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>());
+    auto fileClient = std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>());
+    auto serverClient = std::make_shared<ServerDataClient>();
 
-    auto ptr2 = std::make_shared<ServerDataClient>();
+    auto ptr = serverClient;
 
-    auto dialogController = new DialogController(ptr2, &engine);
-    auto logController = new LogController(ptr2, dialogController, &engine);
-    engine.rootContext()->setContextProperty("logController", logController);
-    engine.rootContext()->setContextProperty("dialogController", dialogController);
+    if (ptr->isValid()) {
+        auto dialogController = new DialogController(ptr, &engine);
+        auto logController = new LogController(ptr, dialogController, &engine);
+        engine.rootContext()->setContextProperty("logController", logController);
+        engine.rootContext()->setContextProperty("dialogController", dialogController);
 
-    engine.load(url);
-#endif
+        engine.load(url);
 
-#if RUN_DATABASE
-    auto filemanager = GuiDialogsManager(
-        std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
-
-    auto servermanager = GuiDialogsManager(std::make_shared<ServerDataClient>());
-
-    for (int i = 1; i < 20; i++) {
-        servermanager.remove(i);
+        return app.exec();
     }
-    auto el = filemanager.get();
-    for (auto &e : el.value()) {
-        servermanager.add(e);
-    }
-#endif
-
-#if RUN_QML
-    return app.exec();
+    qDebug() << "Invalid access to database";
 #endif
 }

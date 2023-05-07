@@ -33,5 +33,7 @@ public:
 
     void clearFilters() override;
 
-    virtual void setGroupFilter(const json &genson) override;
+    void setGroupFilter(const json &genson) override;
+
+    bool isValid() const override;
 };

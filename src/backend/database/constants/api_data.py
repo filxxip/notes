@@ -1,5 +1,8 @@
 from typing import Final
 
+main_site : Final[str] = "/"
+main_site_information : Final[dict] = {"information":"Access to the database is correct."}
+
 people_index: Final[str] = '/people/<int:index>'
 categories_index: Final[str] = '/categories/<int:index>'
 notes_index: Final[str] = '/notes/<int:index>'

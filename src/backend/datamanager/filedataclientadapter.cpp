@@ -79,3 +79,8 @@ void FileDataClientAdapter::clearFilters()
 {
     dataClient->clearFilters();
 }
+
+bool FileDataClientAdapter::isValid() const
+{
+    return dataClient->isValid();
+}

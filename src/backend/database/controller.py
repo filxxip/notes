@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .utils import jsonify_result
 from .tables import Base, Person, Note, Category, Schemas, GuiDialog
 import json
 from . import table_schemas
@@ -8,6 +9,10 @@ from .main_config_database_vars import app, engine, db_session
 
 from .constants import api_data
 
+@jsonify_result
+@app.route(api_data.main_site)
+def main_site():
+    return api_data.main_site_information
 
 class APIController:
     def __init__(self):

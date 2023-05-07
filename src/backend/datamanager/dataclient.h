@@ -27,4 +27,6 @@ public:
     virtual void setGroupFilter(const json &genson) = 0;
 
     virtual void clearFilters() = 0;
+
+    virtual bool isValid() const = 0;
 };

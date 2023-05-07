@@ -81,3 +81,8 @@ void FileDataClient::clearFilters()
 {
     filterParams.clear();
 }
+
+bool FileDataClient::isValid() const
+{
+    return QDir(FilePath("").getFullPath()).exists();
+}
