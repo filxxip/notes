@@ -8,10 +8,9 @@ constexpr const char *DOUBLE_EMAIL
 
 const auto PERSON_CREATED = QStringLiteral("New user : %1 has just been added to database.");
 
-const QRegularExpression emailRegex(".*@.*\\.com");
-
 } // namespace
 
+//entry controller
 EntryController::EntryController(QPointer<DialogController> dialogController_, QObject *obj)
     : QObject(obj)
     , dialogController(dialogController_)
@@ -19,12 +18,16 @@ EntryController::EntryController(QPointer<DialogController> dialogController_, Q
     connect(this, &EntryController::confirm, this, &EntryController::onConfirmed);
 }
 
-void EntryController::emitSuccessDialogWithClear(int code)
+void EntryController::emitSuccessDialogWithClear(int code, Person person)
 {
     emit clear();
     dialogController->showDialog(code);
-    dialogController->applyConnection([this](auto status) { emit operationSuccess(); });
+    dialogController->applyConnection([this, person = std::move(person)](auto status) mutable {
+        emit operationSuccess(std::move(person));
+    });
 }
+
+//register controller
 RegisterController::RegisterController(QPointer<CalendarController> calendarController_,
                                        std::shared_ptr<DataClient> dataclient_,
                                        QPointer<DialogController> dialogController_,
@@ -56,18 +59,13 @@ void RegisterController::onConfirmed()
 
     auto temporaryStruct = {&password, &email, &country, &name, &surname};
 
-    if (std::any_of(std::begin(temporaryStruct), std::end(temporaryStruct), [](const auto data) {
-            return data->isEmpty();
-        })) {
+    if (Validators::emptyFieldsValidator(temporaryStruct)) {
         dialogController->showDialog(DialogCodes::UserViews::INVALID_FIELDS);
         return;
     }
 
-    auto hasNoUppercase = std::none_of(password.begin(), password.end(), [](const QChar &ch) {
-        return ch.isUpper();
-    });
-
-    auto hasNoEmailMatches = !emailRegex.match(email).hasMatch();
+    auto hasNoEmailMatches = !Validators::emailValidator(email);
+    auto hasNoUppercase = !Validators::passwordValidator(password);
 
     if (hasNoUppercase && hasNoEmailMatches) {
         dialogController->showDialog(DialogCodes::UserViews::INVALID_REGISTER_PASSWORD_AND_EMAIL);
@@ -96,9 +94,10 @@ void RegisterController::onConfirmed()
     qDebug() << PERSON_CREATED.arg(person.email.get());
 
     calendarController->clear();
-    emitSuccessDialogWithClear(DialogCodes::UserViews::REGISTER_NEW_USER_SUCCESS);
+    emitSuccessDialogWithClear(DialogCodes::UserViews::REGISTER_NEW_USER_SUCCESS, std::move(person));
 }
 
+//login controller
 LoginController::LoginController(std::shared_ptr<DataClient> dataclient_,
                                  QPointer<DialogController> dialogController_,
                                  QObject *obj)
@@ -121,12 +120,14 @@ void LoginController::onConfirmed()
     }
 
     if (personWithGiveEmail->size() == 1 && personWithGiveEmail->at(0).password == password) {
-        emitSuccessDialogWithClear(9);
+        emitSuccessDialogWithClear(DialogCodes::UserViews::LOGIN_PERSON_SUCCESS,
+                                   personWithGiveEmail->at(0));
     } else {
         dialogController->showDialog(DialogCodes::UserViews::LOGIN_INVALID_ACCESS);
     }
 }
 
+//guest controller
 GuestController::GuestController(QPointer<DialogController> dialogController_, QObject *obj)
     : EntryController(dialogController_, obj)
 {
@@ -141,5 +142,8 @@ void GuestController::onConfirmed()
         return;
     }
 
-    emitSuccessDialogWithClear(DialogCodes::UserViews::REGISTER_GUEST_SUCCESS);
+    Person person;
+    person.name = name;
+
+    emitSuccessDialogWithClear(DialogCodes::UserViews::REGISTER_GUEST_SUCCESS, std::move(person));
 }

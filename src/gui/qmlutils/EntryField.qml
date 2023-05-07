@@ -9,6 +9,11 @@ FocusScope {
     readonly property alias text: textInput.text
     property bool readOnly: false
     property var clickedSlot
+
+    signal setText(string newText)
+
+    onSetText: textInput.text = newText
+
     onActiveFocusChanged: {
         if (focus && clickedSlot) {
             clickedSlot()

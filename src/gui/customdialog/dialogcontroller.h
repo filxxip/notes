@@ -25,6 +25,9 @@ constexpr int INVALID_REGISTER_PASSWORD_AND_EMAIL = 5;
 constexpr int INVALID_FIELDS = 6;
 constexpr int REGISTER_NEW_USER_SUCCESS = 7;
 constexpr int REGISTER_GUEST_SUCCESS = 8;
+constexpr int LOGIN_PERSON_SUCCESS = 9;
+constexpr int INVALID_UPDATED_PASSWORD = 10;
+constexpr int INVALID_UPDATED_FIELDS = 11;
 }
 
 } // namespace DialogCodes

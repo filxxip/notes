@@ -48,8 +48,14 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/userview/entrycontroller.h
     src/gui/userview/entrycontroller.cpp
 
+    src/gui/usereditview/usereditcontroller.cpp
+    src/gui/usereditview/usereditcontroller.h
+
     src/gui/calendar/calendarcontroller.h
     src/gui/calendar/calendarcontroller.cpp
+
+    src/gui/cpputils/utils.cpp
+    src/gui/cpputils/utils.h
 
     src/backend/datamanager/dataclient.h
 
@@ -105,6 +111,8 @@ qt_add_qml_module(appnotesdatabaseproject
 
         src/gui/userview/LogView.qml
         src/gui/userview/LogViewEntryPart.qml
+
+        src/gui/usereditview/UserEditView.qml
 
         src/gui/GUIConfig.qml
         src/gui/qmldir

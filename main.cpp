@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     auto fileClient = std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>());
     auto serverClient = std::make_shared<ServerDataClient>();
 
-    auto ptr = serverClient;
+    auto ptr = fileClient;
 
     if (ptr->isValid()) {
         auto dialogController = new DialogController(ptr, &engine);

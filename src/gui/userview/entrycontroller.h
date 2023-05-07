@@ -22,7 +22,7 @@ protected:
 
     QPointer<UserViewListModel> model = new UserViewListModel(this);
 
-    void emitSuccessDialogWithClear(int code);
+    void emitSuccessDialogWithClear(int code, Person person);
 
 public:
     EntryController(QPointer<DialogController> dialogController_, QObject *obj = nullptr);
@@ -32,7 +32,7 @@ signals:
 
     void clear();
 
-    void operationSuccess();
+    void operationSuccess(Person person);
 
 private slots:
     virtual void onConfirmed() = 0;
@@ -64,7 +64,7 @@ class LoginController : public EntryController
 {
     Q_OBJECT
 
-    PeopleManager manager;
+    PeopleManager manager; //shared pointer pozniej, ktory bedzie trzymany przez glowny controller
 
 public:
     LoginController(std::shared_ptr<DataClient> dataclient_,

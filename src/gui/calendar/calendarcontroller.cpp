@@ -46,6 +46,11 @@ QString CalendarController::getNiceDateFormat() const
         .arg(currentDate.year());
 }
 
+void CalendarController::changeDate(int year, int month, int day)
+{
+    emit currentDateChanged(day - 1, month - 1, year - minimumYear);
+}
+
 void CalendarController::clear()
 {
     emit resetGui();
