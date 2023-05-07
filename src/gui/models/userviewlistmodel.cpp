@@ -6,7 +6,6 @@ UserViewListModel::UserViewListModel(QObject *parent)
     ADD_DATA(ModelStatuses::Roles::PLACEHOLDER, placeholder)
     ADD_DATA(ModelStatuses::Roles::VALUE, value)
     ADD_DATA(ModelStatuses::Roles::COLOR, color)
-    //    addPart(ModelStatuses::Roles::PASS_STATUS, &EntryFieldModel::passwordStatus, "passwordStatusss");
     ADD_DATA(ModelStatuses::Roles::PASSWORD_STATUS, passwordStatus)
 }
 

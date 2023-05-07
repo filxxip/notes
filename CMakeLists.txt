@@ -4,7 +4,11 @@ set(CMAKE_CXX_STANDARD 20)
 project(notesdatabaseproject VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2b")
+#add_compile_options(-std=c++2b)
+
 message("CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
+
 
 find_package(Qt6 6.4.2 COMPONENTS Quick Core Widgets  REQUIRED)
 include(FindPkgConfig)

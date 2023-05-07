@@ -1,15 +1,15 @@
 #include "calendarcontroller.h"
+#include <QTimer>
 
 CalendarController::CalendarController(QObject *obj)
     : QObject(obj)
 {
     auto initializeModel = [this](QPointer<CalendarListModel> &model) {
         model = FastModelBuilder<CalendarModel, EnumStatus>(this)
-                    .add(EnumStatus::CONTENT, &CalendarModel::content)
                     .add(EnumStatus::VALUE, &CalendarModel::value)
+                    .add(EnumStatus::CONTENT, &CalendarModel::content)
                     .build();
     };
-
     initializeModel(dayModel);
     initializeModel(monthModel);
     initializeModel(yearModel);

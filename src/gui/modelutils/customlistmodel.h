@@ -1,21 +1,42 @@
 #pragma once
 
 #include <QMetaEnum>
+#include "../models/calendarmodel.h"
 #include "invokablelistmodel.h"
 #include <functional>
 
 #define ADD_DATA(role, name) addPart(role, &TemplateType::name);
 
 namespace {
+template<typename Value>
+QVariant variantFromValue(const Value &value)
+{
+    constexpr auto isConstructible = std::is_constructible<QVariant, Value>::value;
+    if constexpr (isConstructible)
+        return QVariant(value);
+    else
+        return QVariant::fromValue(value);
+}
+
 template<typename T, typename ReturnType>
 std::function<QVariant(const T &)> makeGetterFunction(ReturnType T::*method)
 {
-    return [method](const T &object) {
-        constexpr auto isConstructible = std::is_constructible<QVariant, ReturnType>::value;
-        if constexpr (isConstructible)
-            return QVariant(object.*method);
-        else
-            return QVariant::fromValue(object.*method);
+    return [method](const T &object) { return variantFromValue(object.*method); };
+}
+
+//template<typename T, typename ReturnType>
+//std::function<QVariant(const T &)> makeGetterFunction(
+//    std::function<const ReturnType &(const T &)> getter)
+//{
+//    return [inner = std::move(getter)](const T &object) mutable {
+//        return variantFromValue(inner(object));
+//    };
+//}
+template<typename T, typename ReturnType>
+std::function<QVariant(const T &)> makeGetterFunction(std::function<ReturnType(const T &)> getter)
+{
+    return [inner = std::move(getter)](const T &object) mutable {
+        return variantFromValue(inner(object));
     };
 }
 
@@ -27,21 +48,15 @@ std::function<void(T &, const QVariant &)> makeUpdateFunction(ReturnType T::*met
     };
 }
 
-QByteArray convertUnderscoreToCamelCase(const char *str)
+template<typename T, typename ReturnType>
+std::function<void(T &, const QVariant &)> makeUpdateFunction(
+    std::function<void(T &, const ReturnType &)> setter)
 {
-    QString suppertStr(str);
-    QString result;
-    bool capNext = false;
-    for (auto c : suppertStr) {
-        if (c != '_') {
-            result.append(capNext ? c : c.toLower());
-            capNext = false;
-        } else {
-            capNext = true;
-        }
-    }
-    return result.toUtf8();
-} //where to store it
+    return [setter = std::move(setter)](T &object, const QVariant &variant) mutable {
+        setter(object, variant.value<ReturnType>());
+    };
+}
+
 } // namespace
 
 template<typename StructType, typename EnumData>
@@ -52,6 +67,8 @@ class CustomListModel : public AbstractListModelInvokableClass
      *  EnumData's instances used in this class should have SOME_ATTR_TO_GET syntax.
      *  Struct that this class will refer to should have someAttrToGet syntax.
      *  Otherwise this class wont be working properly.*/
+
+    void updateNames(EnumData role);
 
 protected:
     using TemplateType = StructType;
@@ -70,21 +87,45 @@ public:
     explicit CustomListModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-
     void setEntries(QVector<StructType> vector);
 
     void addEntry(StructType element);
 
-    QHash<int, QByteArray> roleNames() const override; //Q_META_ENUM
+    QHash<int, QByteArray> roleNames() const override;
 
     template<typename ReturnType>
     CustomListModel &addPart(EnumData role, ReturnType StructType::*attributeProperty)
     {
-        auto intenum = static_cast<int>(role);
-        auto attributeQMLName = convertUnderscoreToCamelCase(metaEnum.valueToKey(intenum));
+        updateNames(role);
         getterActivities.insert(role, makeGetterFunction(attributeProperty));
         updateActivities.insert(role, makeUpdateFunction(attributeProperty));
-        names.insert(intenum, attributeQMLName);
+        return *this;
+    }
+    template<typename ReturnType>
+    CustomListModel &addPart(EnumData role,
+                             std::function<ReturnType(const StructType &)> getter,
+                             std::function<void(StructType &, const ReturnType &)> setter)
+    {
+        updateNames(role);
+        getterActivities.insert(role, makeGetterFunction(std::move(getter)));
+        updateActivities.insert(role, makeUpdateFunction(std::move(setter)));
+        return *this;
+    }
+
+    //    template<typename ReturnType>
+    //    CustomListModel &addPart(EnumData role,
+    //                             std::function<const ReturnType &(const StructType &)> getter)
+    //    {
+    //        updateNames(role);
+    //        getterActivities.insert(role, makeGetterFunction(std::move(getter)));
+    //        return *this;
+    //    }
+
+    template<typename ReturnType>
+    CustomListModel &addPart(EnumData role, std::function<ReturnType(const StructType &)> getter)
+    {
+        updateNames(role);
+        getterActivities.insert(role, makeGetterFunction(std::move(getter)));
         return *this;
     }
 
@@ -97,7 +138,7 @@ public:
     template<typename ValueType>
     bool setData(int indexvalue, const ValueType &value, EnumData role)
     {
-        return setData(index(indexvalue), QVariant::fromValue(value), static_cast<int>(role));
+        return setData(index(indexvalue), variantFromValue(value), static_cast<int>(role));
     }
 
     bool removeRow(int row, const QModelIndex &parent);

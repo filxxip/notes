@@ -17,7 +17,7 @@ enum class Roles { PLACEHOLDER, VALUE, COLOR, PASSWORD_STATUS };
 
 enum class DialogRoles { IS_OK, IS_NO, IS_YES, CONTENT, TITLE, PATH, FONT_SIZE };
 
-enum class CalendarRoles { CONTENT, VALUE, VISIBILITY };
+enum class CalendarRoles { CONTENT, VALUE, OBJ };
 
 Q_ENUM_NS(Roles);
 

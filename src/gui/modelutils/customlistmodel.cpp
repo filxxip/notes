@@ -1,4 +1,23 @@
 #include "customlistmodel.h"
+#include <QTimer>
+
+namespace {
+QByteArray convertUnderscoreToCamelCase(const char *str)
+{
+    QString suppertStr(str);
+    QString result;
+    bool capNext = false;
+    for (auto c : suppertStr) {
+        if (c != '_') {
+            result.append(capNext ? c : c.toLower());
+            capNext = false;
+        } else {
+            capNext = true;
+        }
+    }
+    return result.toUtf8();
+} //where to store it
+} // namespace
 
 template<typename StructType, typename EnumData>
 CustomListModel<StructType, EnumData>::CustomListModel::CustomListModel(QObject *parent)
@@ -64,6 +83,14 @@ void CustomListModel<StructType, EnumData>::addEntry(StructType element)
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_data.append(std::move(element));
     endInsertRows();
+}
+
+template<typename StructType, typename EnumData>
+void CustomListModel<StructType, EnumData>::updateNames(EnumData role)
+{
+    auto intenum = static_cast<int>(role);
+    auto attributeQMLName = convertUnderscoreToCamelCase(metaEnum.valueToKey(intenum));
+    names.insert(intenum, std::move(attributeQMLName));
 }
 
 template<typename StructType, typename EnumData>
