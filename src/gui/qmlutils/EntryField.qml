@@ -15,6 +15,10 @@ FocusScope {
         }
     }
 
+    function clear() {
+        textInput.text = ""
+    }
+
     Rectangle {
         id: outerRect
         anchors.fill: parent

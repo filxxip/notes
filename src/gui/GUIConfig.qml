@@ -39,7 +39,7 @@ Item {
 
     QtObject {
         id: dialog
-        readonly property int width: 0.38 * window.width
+        readonly property int width: 0.5 * window.width
         readonly property int height: 0.38 * window.height
         readonly property var gradient: gradients.dialogBoxGradient
         readonly property int borderSize: 3

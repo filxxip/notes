@@ -38,6 +38,8 @@ public:
 
     inline operator QVariant() const { return QVariant::fromValue(get()); }
 
+    BaseData<T> &operator=(const T &obj);
+
     virtual const T &get() const = 0;
 
     virtual const QString &getName() const;
@@ -55,6 +57,8 @@ class DbData : public BaseData<T>
 public:
     DbData() = default;
 
+    using BaseData<T>::operator=;
+
     DbData(QString name);
 
     void set(T newvalue) override;
@@ -70,35 +74,14 @@ class ConstDbData : public BaseData<T>
 public:
     ConstDbData() = default;
 
+    using BaseData<T>::operator=;
+
     ConstDbData(QString name);
 
     void set(T newvalue) override;
 
     const T &get() const override;
 };
-
-class MyIntData : public QObject, public DbData<int>
-{
-    Q_OBJECT
-
-    Q_PROPERTY(int value READ get WRITE set NOTIFY settingValueSignal)
-
-public:
-    MyIntData(QString name)
-        : DbData(name)
-        , QObject()
-    {}
-
-    void set(int newvalue) override
-    {
-        DbData::set(newvalue);
-        emit settingValueSignal();
-    }
-
-signals:
-    void settingValueSignal();
-};
-
 
 template<typename T>
 void to_json(json &j, const BaseData<T> &p);

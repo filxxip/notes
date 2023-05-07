@@ -7,7 +7,9 @@ ListView {
     id: listview
     required property var configurationObject
     required property var entryModel
+    signal clearAll
     readonly property int singleComponentHeight: configurationObject.combinedHeight / count
+
     interactive: false
     spacing: configurationObject.listViewSpacing
     width: GUIConfig.userView.defaultEntryWidth
@@ -22,5 +24,6 @@ ListView {
         passwordStatus: model.passwordStatus
         activeFocusOnTab: true
         onTextChanged: model.value = entry.text
+        Component.onCompleted: clearAll.connect(entry.clear)
     }
 }

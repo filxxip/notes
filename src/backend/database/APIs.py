@@ -34,7 +34,7 @@ class MethodViewWithClassName(MethodView):
 
 class ItemAPI(MethodViewWithClassName):
     def _validate_index(self, index: int) -> bool:
-        return 0 < index <= db_session.query(self.className).count()
+        return index in (item.id for item in get_relevant_sorted_query(self.className).all())
 
     def _get_on_id(self, index: int) -> ProtocolDatabaseClass:
         if not self._validate_index(index):

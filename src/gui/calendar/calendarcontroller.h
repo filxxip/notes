@@ -58,6 +58,8 @@ public:
 
     void setMinMaxRange(int newMin, int newMax);
 
+    QDateTime getCurrentDateTime() const { return QDateTime(currentDate, QTime(0, 0, 0)); }
+
 signals:
     void resetGui();
 

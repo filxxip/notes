@@ -56,10 +56,12 @@ int main(int argc, char *argv[])
                                      0,
                                      "ModelStatuses",
                                      "");
-    auto ptr = std::make_shared<FileDataClientAdapter>(
-        std::make_shared<FileDataClient>()); //wszystko qpointer zwykly pointer i rodzic go usuwa
-    auto dialogController = new DialogController(ptr, &engine);
-    auto logController = new LogController(ptr, dialogController, &engine);
+    auto ptr = std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>());
+
+    auto ptr2 = std::make_shared<ServerDataClient>();
+
+    auto dialogController = new DialogController(ptr2, &engine);
+    auto logController = new LogController(ptr2, dialogController, &engine);
     engine.rootContext()->setContextProperty("logController", logController);
     engine.rootContext()->setContextProperty("dialogController", dialogController);
 
@@ -71,9 +73,13 @@ int main(int argc, char *argv[])
         std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
 
     auto servermanager = GuiDialogsManager(std::make_shared<ServerDataClient>());
-    auto el = servermanager.get();
+
+    for (int i = 1; i < 20; i++) {
+        servermanager.remove(i);
+    }
+    auto el = filemanager.get();
     for (auto &e : el.value()) {
-        filemanager.add(e);
+        servermanager.add(e);
     }
 #endif
 

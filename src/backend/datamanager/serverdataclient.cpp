@@ -65,12 +65,6 @@ void ServerDataClient::setAdditionalParameters(json parameters)
         }
         if (value.is_number_integer()) {
             additionalParams += QString("&%1=%2").arg(QString::fromStdString(key),
-                                                      QString::fromStdString(
-                                                          value.get<std::string>()));
-            continue;
-        }
-        if (value.is_number_integer()) {
-            additionalParams += QString("&%1=%2").arg(QString::fromStdString(key),
                                                       QString::number(value.get<int>()));
             continue;
         }

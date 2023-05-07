@@ -5,5 +5,9 @@
         <file>emailerror.png</file>
         <file>passandemail.png</file>
         <file>passerror.png</file>
+        <file>emptyfield.png</file>
+        <file>ghost.png</file>
+        <file>newuser.png</file>
+        <file>welcome.png</file>
     </qresource>
 </RCC>

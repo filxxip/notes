@@ -114,6 +114,13 @@ bool BaseData<T>::operator==(const T &data) const
 }
 
 template<typename T>
+BaseData<T> &BaseData<T>::operator=(const T &obj)
+{
+    this->set(obj);
+    return *this;
+}
+
+template<typename T>
 const QString &BaseData<T>::getName() const
 {
     return __name__;

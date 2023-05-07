@@ -20,14 +20,17 @@ class EntryController : public QObject
 protected:
     QPointer<DialogController> dialogController;
 
-    QPointer<UserViewListModel> model = new UserViewListModel(
-        this); //window controler kazdy musi miec pointer
+    QPointer<UserViewListModel> model = new UserViewListModel(this);
+
+    void emitSuccessDialogWithClear(int code);
 
 public:
     EntryController(QPointer<DialogController> dialogController_, QObject *obj = nullptr);
 
 signals:
     void confirm();
+
+    void clear();
 
     void operationSuccess();
 
@@ -37,11 +40,15 @@ private slots:
 
 class RegisterController : public EntryController
 {
+    using EnumStatus = ModelStatuses::PersonComponents;
+
     Q_OBJECT
 
     PeopleManager manager;
 
     QPointer<CalendarController> calendarController;
+
+    QString getPartOfPerson(EnumStatus componentEnum) const;
 
 public:
     RegisterController(QPointer<CalendarController> calendarController,

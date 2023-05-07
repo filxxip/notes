@@ -49,7 +49,6 @@ Rectangle {
                 width: outerRect.tumblerWidth
                 height: outerRect.height
                 delegate: delegateComponent
-                wrap: false
                 onCurrentIndexChanged: repeater.dateChanged()
             }
 

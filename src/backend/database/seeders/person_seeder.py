@@ -26,6 +26,5 @@ class PersonSeeder(Seeder):
             birthday = datetime.now() - timedelta(days=365 * random.randint(18, 65))
             person = Person(name=name, surname=surname, email=email, password=password, country=country,
                             birthday=birthday)
-            print(person.birthday)
             people.append(person)
         return people
