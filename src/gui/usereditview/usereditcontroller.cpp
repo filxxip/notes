@@ -37,7 +37,7 @@ void UserEditController::moveDataFromPersonToModel()
 
 void UserEditController::updatePersonData()
 {
-    //tam na klika updatuje ten model i emituje sygnal zeby sobie tutaj pozmieniac i posprawdzac
+    //tam na klika updatuje ten model i emituje sygnal zeby sobie tutaj pozmieniac i posprawdzac -> raczej to, tak jak w poprzednich onTextChanged : model.value = text, i jakby bedzie jeden nawrot danych ale mam nadzieje ze to nie zepsuje
     auto name = model->data(model->indexOf(EnumStatus::NAME), EntryRoles::VALUE);
     auto surname = model->data(model->indexOf(EnumStatus::SURNAME), EntryRoles::VALUE);
     auto country = model->data(model->indexOf(EnumStatus::COUNTRY), EntryRoles::VALUE);
