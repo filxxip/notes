@@ -115,6 +115,7 @@ qt_add_qml_module(appnotesdatabaseproject
 
         src/gui/qmlutils/CustomRadioButton.qml
 
+        src/gui/userview/ConfirmButton.qml
         src/gui/userview/LogView.qml
         src/gui/userview/LogViewEntryPart.qml
 

@@ -16,34 +16,40 @@ Column {
             spacing: GuiConfig.userView.columnSpacing
             LogViewEntryPart {
                 configurationObject: GUIConfig.userView.loginView
-                entryModel: logController.entryController.model
-                Component.onCompleted: logController.entryController.clear.connect(
-                                           clearAll)
+                controller: logController.controllers.loginController
             }
-            RowLayout {
-                width: GUIConfig.userView.defaultEntryWidth
-                height: GuiConfig.userView.accessButtonHeight
-                spacing: GuiConfig.userView.accessButtonSpacing
+            Column {
+                spacing: GUIConfig.userView.layoutSpacing
+                RowLayout {
+                    width: GUIConfig.userView.defaultEntryWidth
+                    height: GuiConfig.userView.accessButtonHeight
+                    spacing: GuiConfig.userView.accessButtonSpacing
 
-                ButtonText {
-                    Layout.fillWidth: true
-                    contentText: GuiConfig.userView.loginView.accessRegisterText
-                    onCustomReleased: logController.userViewType = ModelStatuses.UserViews.REGISTER
-                    height: parent.height
+                    ButtonText {
+                        Layout.fillWidth: true
+                        contentText: GuiConfig.userView.loginView.accessRegisterText
+                        onCustomReleased: logController.userViewType
+                                          = ModelStatuses.UserViews.REGISTER
+                        height: parent.height
+                    }
+                    ButtonText {
+                        contentText: GuiConfig.userView.loginView.showPasswordText
+                        Layout.fillWidth: true
+                        height: parent.height
+                        property var element: logController.controllers.loginController.model.get(
+                                                  1)
+                        onCustomClicked: element.update(
+                                             false,
+                                             ModelStatuses.Roles.PASSWORD_STATUS)
+
+                        onCustomReleased: element.update(
+                                              true,
+                                              ModelStatuses.Roles.PASSWORD_STATUS)
+                    }
                 }
-                ButtonText {
-                    contentText: GuiConfig.userView.loginView.showPasswordText
-                    Layout.fillWidth: true
-                    height: parent.height
-                    property var element: logController.entryController.model.get(
-                                              1)
-                    onCustomClicked: element.update(
-                                         false,
-                                         ModelStatuses.Roles.PASSWORD_STATUS)
-
-                    onCustomReleased: element.update(
-                                          true,
-                                          ModelStatuses.Roles.PASSWORD_STATUS)
+                ConfirmButton {
+                    configurationObject: GUIConfig.userView.loginView
+                    controller: logController.controllers.loginController
                 }
             }
         }
@@ -52,17 +58,15 @@ Column {
     //Component which is visible when register mode is on
     Component {
         id: registerComponent
-
         Column {
+            property var activeController: logController.controllers.registerController
             spacing: GuiConfig.userView.columnSpacing
             Column {
                 spacing: entries.spacing
                 LogViewEntryPart {
                     id: entries
                     configurationObject: GUIConfig.userView.registerView
-                    entryModel: logController.entryController.model
-                    Component.onCompleted: logController.entryController.clear.connect(
-                                               clearAll)
+                    controller: activeController
                 }
                 EntryField {
                     id: birthdayEntry
@@ -74,18 +78,19 @@ Column {
                     }
 
                     clickedSlot: foo
-                    placeholder: "Birthday: " + logController.calendarController.niceFormat
+                    placeholder: "Birthday: " + activeController.calendarController.niceFormat
                     customcolor: GUIConfig.colors.red
                     readOnly: true
                 }
 
                 CustomRadioButton {
-                    Component.onCompleted: console.log(
-                                               logController.controllers.registerController)
-                    combinedWidth: entries.width - 70
-                    combinedHeight: entries.singleComponentHeight
-                    controller: logController.controllers.registerController.radioButtonController
-                    spacing: 70
+                    combinedWidth: GUIConfig.userView.radioButton.combinedWidth
+                    combinedHeight: GUIConfig.userView.radioButton.combinedHeight
+                    textHeight: GUIConfig.userView.radioButton.textHeight
+                    controller: activeController.radioButtonController
+                    fontSize: GUIConfig.userView.radioButton.fontSize
+                    spacing: GUIConfig.userView.radioButton.spacing
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
             }
             ButtonText {
@@ -94,6 +99,10 @@ Column {
                 height: GuiConfig.userView.accessButtonHeight
                 onCustomReleased: logController.userViewType = ModelStatuses.UserViews.LOGIN
             }
+            ConfirmButton {
+                configurationObject: GUIConfig.userView.registerView
+                controller: logController.controllers.registerController
+            }
         }
     }
 
@@ -101,24 +110,27 @@ Column {
     Component {
         id: guestComponent
         Column {
-            spacing: GuiConfig.userView.columnSpacing
+            spacing: GUIConfig.userView.layoutSpacing
             LogViewEntryPart {
-                configurationObject: GUIConfig.userView.guestView //pomyslec o podaniu konkretnego modelu np guest, login itd
-                entryModel: logController.entryController.model
-                Component.onCompleted: logController.entryController.clear.connect(
-                                           clearAll)
+                configurationObject: GUIConfig.userView.guestView
+                controller: logController.controllers.guestController
+            }
+            ConfirmButton {
+                configurationObject: GUIConfig.userView.guestView
+                controller: logController.controllers.guestController
             }
         }
     }
 
     //main part of log view
-    spacing: 30
+    spacing: GUIConfig.userView.layoutSpacing
     anchors.centerIn: parent
     ButtonSwitcher {
         enabled: swipeView.currentIndex !== 0
         model: logController.switcherModel
         tabSelectorEnum: logController.userViewType
-        Component.onCompleted: switched.connect(logController.onSwitchedChanged)
+        Component.onCompleted: switched.connect(
+                                   newstatus => logController.userViewType = newstatus)
     }
 
     Rectangle {
@@ -141,9 +153,11 @@ Column {
                     DateChooser {
                         backgroundColor: GUIConfig.colors.transparent
                         height: GUIConfig.userView.dateChooser.height
-                        Component.onCompleted: logController.calendarController.resetGui.connect(
+                        property var activeComponent: logController.controllers.registerController
+
+                        Component.onCompleted: activeComponent.calendarController.resetGui.connect(
                                                    reset)
-                        controller: logController.calendarController
+                        controller: activeComponent.calendarController
                         itemNumber: GUIConfig.userView.dateChooser.itemNumber
                     }
 
@@ -165,30 +179,18 @@ Column {
                 ColumnLayout {
                     spacing: GUIConfig.userView.layoutSpacing
                     anchors.centerIn: itemLayout
+                    id: column
                     TitleBox {
                         title: GuiConfig.userView.userViewDetails[logController.userViewType].titleContent
                         width: GUIConfig.userView.defaultEntryWidth
                         height: GuiConfig.userView.titleHeight
                         Layout.alignment: Qt.AlignHCenter
                     }
-
                     Loader {
+                        id: loader
                         Layout.alignment: Qt.AlignHCenter
                         property var registermap: [registerComponent, loginComponent, guestComponent]
                         sourceComponent: registermap[logController.userViewType]
-                    }
-
-                    Rectangle {
-                        width: GUIConfig.userView.checkButtonWidth
-                        height: GUIConfig.userView.checkButtonHeight
-                        color: GuiConfig.colors.transparent
-                        Layout.alignment: Qt.AlignHCenter
-                        CustomButton {
-                            enabled: logController.activityPossible
-                            contentText: GuiConfig.userView.userViewDetails[logController.userViewType].checkContent
-                            anchors.fill: parent
-                            onClicked: logController.entryController.confirm()
-                        }
                     }
                 }
             }

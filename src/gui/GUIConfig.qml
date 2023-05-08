@@ -59,11 +59,11 @@ Item {
         id: userView
         readonly property var registerView: QtObject {
             readonly property string passwordCharakter: "*"
-            readonly property int combinedHeight: 0.4 * userView.height
+            readonly property int combinedHeight: 0.36 * userView.height
             readonly property string titleContent: "Register"
             readonly property string checkContent: "SIGN UP"
             readonly property string accessLoginText: "have account? Log in!"
-            readonly property int listViewSpacing: 10
+            readonly property int listViewSpacing: 8
         }
         readonly property var loginView: QtObject {
             readonly property int combinedHeight: 0.15 * userView.height
@@ -79,6 +79,13 @@ Item {
             readonly property string titleContent: "Guest"
             readonly property string checkContent: "CONFIRM"
             readonly property int listViewSpacing: 20
+        }
+        readonly property var radioButton: QtObject {
+            readonly property int combinedHeight: 20
+            readonly property int combinedWidth: 40
+            readonly property int textHeight: 15
+            readonly property int fontSize: 14
+            readonly property int spacing: 170
         }
 
         readonly property var userViewDetails: [registerView, loginView, guestView]

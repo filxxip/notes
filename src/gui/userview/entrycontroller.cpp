@@ -4,6 +4,9 @@
 #include "../cpputils/utils.h"
 
 namespace {
+constexpr const char *MALE = "male";
+constexpr const char *FEMALE = "female";
+
 constexpr const char *DOUBLE_EMAIL
     = "This is email is not unique in database or your data files. Check it and fix this issue.";
 
@@ -46,6 +49,11 @@ RegisterController::RegisterController(QPointer<CalendarController> calendarCont
                        {EnumStatus::EMAIL, "Email..."},
                        {EnumStatus::PASSWORD, "Password..."},
                        {EnumStatus::COUNTRY, "Country..."}});
+
+    connect(this, &RegisterController::clear, [this] {
+        calendarController->clear();
+        radioButtonController->setValue(0, true);
+    }); //ewentualnie wycczyszczenie reszty ale to dzieje sie automatycznie
 }
 
 QString RegisterController::getPartOfPerson(EnumStatus componentEnum) const
@@ -93,6 +101,7 @@ void RegisterController::onConfirmed()
     person.country = std::move(country);
     person.name = std::move(name);
     person.surname = std::move(surname);
+    person.gender = radioButtonController->getValue(0) ? MALE : FEMALE;
 
     manager.add(person);
 

@@ -5,15 +5,14 @@ import "../"
 
 Rectangle {
     id: item
-    Component.onCompleted: console.log(controller)
-
     width: combinedWidth + spacing * (controller.model.rowCount() - 1)
-    height: combinedHeight
+    height: combinedHeight + textHeight
     color: GUIConfig.colors.transparent
 
     required property var controller
-    required property var combinedWidth
-    required property var combinedHeight
+    required property int combinedWidth
+    required property int combinedHeight
+    required property int textHeight
 
     property int fontSize: 20
     property int spacing: 20
@@ -45,6 +44,7 @@ Rectangle {
         }
 
         Component.onCompleted: controller.assign.connect(onAssign)
+        Component.onDestruction: controller.assign.disconnect(onAssign)
 
         delegate: RadioDelegate {
             ButtonGroup.group: item.groups[model.group]
