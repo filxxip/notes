@@ -5,8 +5,14 @@ import "../qmlutils"
 
 ListView {
     id: listview
-    required property var configurationObject
-    required property var entryModel
+    property var configurationObject
+
+    //controller of type entryController
+    required property var controller
+
+    property var entryModel: controller.model
+    Component.onCompleted: controller.clear.connect(clearAll)
+
     signal clearAll
     readonly property int singleComponentHeight: configurationObject.combinedHeight / count
 

@@ -21,27 +21,29 @@
 #include "src/backend/datamanager/serverdataclient.h"
 #include "src/gui/calendar/calendarcontroller.h"
 #include "src/gui/customdialog/dialogcontroller.h"
+#include "src/gui/radiobutton/radiobuttoncontroller.h"
 #include "src/gui/userview/logcontroller.h"
 #include <cctype>
 #include <chrono>
 #include <memory>
 
 #define RUN_QML 1
-
 #define RUN_DATABASE 0
 
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
 #if RUN_DATABASE
-    auto filemanager = GuiDialogsManager(
+    auto filemanager = PeopleManager(
         std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
 
-    auto servermanager = GuiDialogsManager(std::make_shared<ServerDataClient>());
+    auto servermanager = PeopleManager(std::make_shared<ServerDataClient>());
 
-    for (int i = 1; i < 20; i++) {
-        servermanager.remove(i);
-    }
+    //    for (int i = 1; i < 100; i++) {
+    //        filemanager.remove(i);
+    //    }
+    auto x = servermanager.get(3);
+    x->gender = "aaa";
     auto el = filemanager.get();
     for (auto &e : el.value()) {
         servermanager.add(e);
@@ -70,14 +72,25 @@ int main(int argc, char *argv[])
     auto fileClient = std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>());
     auto serverClient = std::make_shared<ServerDataClient>();
 
-    auto ptr = serverClient;
+    auto ptr = fileClient;
 
     if (ptr->isValid()) {
         auto dialogController = new DialogController(ptr, &engine);
+        //        QPointer<CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>> listmodel
+        //            = new CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>(&engine);
+        auto entry1 = RadioButtonModel("text1", false, 1);
+        auto entry2 = RadioButtonModel("text2", true, 1);
+        auto entry3 = RadioButtonModel("text3", false, 2);
+        auto entry4 = RadioButtonModel("text4", false, 2);
+
+        //        listmodel->setEntries({entry1, entry2, entry3, entry4});
+
+        auto buttonController = new RadioButtonController({entry1, entry2, entry3, entry4}, &engine);
+
         auto logController = new LogController(ptr, dialogController, &engine);
         engine.rootContext()->setContextProperty("logController", logController);
         engine.rootContext()->setContextProperty("dialogController", dialogController);
-
+        engine.rootContext()->setContextProperty("buttonController", buttonController);
         engine.load(url);
 
         return app.exec();

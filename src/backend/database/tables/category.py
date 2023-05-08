@@ -2,7 +2,7 @@ from __future__ import annotations
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import DateTime, Integer, String
 from ..json_generator import auto_apply_jsonify_content
-from ..tables.base import Base
+from .base import Base
 from ..utils import set_conversion, convert_str_date_to_datetime
 from ..constants import tables_names
 

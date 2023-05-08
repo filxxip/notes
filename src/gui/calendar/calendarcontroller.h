@@ -54,9 +54,9 @@ class CalendarController : public QObject
 public:
     CalendarController(QObject *obj = nullptr);
 
-    void clear();
-
     void setMinMaxRange(int newMin, int newMax);
+
+    void changeDate(int year, int month, int day);
 
     QDateTime getCurrentDateTime() const { return QDateTime(currentDate, QTime(0, 0, 0)); }
 
@@ -66,6 +66,10 @@ signals:
     void currentDateChanged(int day, int month, int year);
 
     void niceFormatChanged(QString content);
+
+public slots:
+
+    void clear();
 
 private slots:
 

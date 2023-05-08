@@ -11,4 +11,5 @@ struct Person
     DateData birthday{"birthday"};
     StrData email{"email"};
     StrData password{"password"};
+    StrData gender{"gender"};
 };

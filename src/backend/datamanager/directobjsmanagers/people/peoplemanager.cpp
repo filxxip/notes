@@ -16,7 +16,8 @@ Person PeopleManager::generateInstance(const json &genson) const
                person.birthday,
                person.country,
                person.email,
-               person.password);
+               person.password,
+               person.gender);
     return person;
 }
 
@@ -28,7 +29,8 @@ void PeopleManager::update(const Person &object)
                  object.country,
                  object.name,
                  object.email,
-                 object.password);
+                 object.password,
+                 object.gender);
 }
 
 void PeopleManager::add(const Person &object)
@@ -38,5 +40,6 @@ void PeopleManager::add(const Person &object)
               object.country,
               object.name,
               object.email,
-              object.password);
+              object.password,
+              object.gender);
 }

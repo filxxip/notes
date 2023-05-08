@@ -32,6 +32,7 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/models/switchermodel.h
     src/gui/models/userviewlistmodel.cpp
     src/gui/models/userviewlistmodel.h
+    src/gui/models/radiobuttonmodel.h
 
     src/gui/modelutils/adaptermodel.cpp
     src/gui/modelutils/adaptermodel.h
@@ -48,8 +49,24 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/userview/entrycontroller.h
     src/gui/userview/entrycontroller.cpp
 
+    src/gui/userview/specificcontrollers/guestcontroller.cpp
+    src/gui/userview/specificcontrollers/guestcontroller.h
+    src/gui/userview/specificcontrollers/logincontroller.cpp
+    src/gui/userview/specificcontrollers/logincontroller.h
+    src/gui/userview/specificcontrollers/registercontroller.cpp
+    src/gui/userview/specificcontrollers/registercontroller.h
+
+    src/gui/usereditview/usereditcontroller.cpp
+    src/gui/usereditview/usereditcontroller.h
+
     src/gui/calendar/calendarcontroller.h
     src/gui/calendar/calendarcontroller.cpp
+
+    src/gui/radiobutton/radiobuttoncontroller.cpp
+    src/gui/radiobutton/radiobuttoncontroller.h
+
+    src/gui/cpputils/utils.cpp
+    src/gui/cpputils/utils.h
 
     src/backend/datamanager/dataclient.h
 
@@ -96,15 +113,19 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/customdialog/CustomDialog.qml
         src/gui/calendar/DateChooser.qml
 
-
         src/gui/qmlutils/ButtonSwitcher.qml
         src/gui/qmlutils/ButtonText.qml
         src/gui/qmlutils/CustomButton.qml
         src/gui/qmlutils/EntryField.qml
         src/gui/qmlutils/TitleBox.qml
 
+        src/gui/radiobutton/CustomRadioButton.qml
+
+        src/gui/userview/ConfirmButton.qml
         src/gui/userview/LogView.qml
         src/gui/userview/LogViewEntryPart.qml
+
+        src/gui/usereditview/UserEditView.qml
 
         src/gui/GUIConfig.qml
         src/gui/qmldir
