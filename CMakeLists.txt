@@ -49,6 +49,13 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/userview/entrycontroller.h
     src/gui/userview/entrycontroller.cpp
 
+    src/gui/userview/specificcontrollers/guestcontroller.cpp
+    src/gui/userview/specificcontrollers/guestcontroller.h
+    src/gui/userview/specificcontrollers/logincontroller.cpp
+    src/gui/userview/specificcontrollers/logincontroller.h
+    src/gui/userview/specificcontrollers/registercontroller.cpp
+    src/gui/userview/specificcontrollers/registercontroller.h
+
     src/gui/usereditview/usereditcontroller.cpp
     src/gui/usereditview/usereditcontroller.h
 
@@ -105,7 +112,6 @@ qt_add_qml_module(appnotesdatabaseproject
         Main.qml
         src/gui/customdialog/CustomDialog.qml
         src/gui/calendar/DateChooser.qml
-
 
         src/gui/qmlutils/ButtonSwitcher.qml
         src/gui/qmlutils/ButtonText.qml

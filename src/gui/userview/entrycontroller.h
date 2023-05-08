@@ -42,51 +42,51 @@ private slots:
     virtual void onConfirmed() = 0;
 };
 
-class RegisterController : public EntryController
-{
-    Q_OBJECT
-    Q_PROPERTY(int someval MEMBER val CONSTANT)
-    Q_PROPERTY(RadioButtonController *radioButtonController MEMBER radioButtonController CONSTANT)
-    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
-    int val = 10;
-    PeopleManager manager;
+//class RegisterController : public EntryController
+//{
+//    Q_OBJECT
+//    Q_PROPERTY(int someval MEMBER val CONSTANT)
+//    Q_PROPERTY(RadioButtonController *radioButtonController MEMBER radioButtonController CONSTANT)
+//    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
+//    int val = 10;
+//    PeopleManager manager;
 
-    QPointer<CalendarController> calendarController;
-    QPointer<RadioButtonController> radioButtonController;
+//    QPointer<CalendarController> calendarController;
+//    QPointer<RadioButtonController> radioButtonController;
 
-    QString getPartOfPerson(EnumStatus componentEnum) const;
+//    QString getPartOfPerson(EnumStatus componentEnum) const;
 
-public:
-    RegisterController(QPointer<CalendarController> calendarController,
-                       std::shared_ptr<DataClient> dataclient_,
-                       QPointer<DialogController> dialogController_,
-                       QObject *obj = nullptr);
+//public:
+//    RegisterController(QPointer<CalendarController> calendarController,
+//                       std::shared_ptr<DataClient> dataclient_,
+//                       QPointer<DialogController> dialogController_,
+//                       QObject *obj = nullptr);
 
-public slots:
-    void onConfirmed() override;
-};
+//public slots:
+//    void onConfirmed() override;
+//};
 
-class LoginController : public EntryController
-{
-    Q_OBJECT
+//class LoginController : public EntryController
+//{
+//    Q_OBJECT
 
-    PeopleManager manager; //shared pointer pozniej, ktory bedzie trzymany przez glowny controller
+//    PeopleManager manager; //shared pointer pozniej, ktory bedzie trzymany przez glowny controller
 
-public:
-    LoginController(std::shared_ptr<DataClient> dataclient_,
-                    QPointer<DialogController> dialogController_,
-                    QObject *obj = nullptr);
+//public:
+//    LoginController(std::shared_ptr<DataClient> dataclient_,
+//                    QPointer<DialogController> dialogController_,
+//                    QObject *obj = nullptr);
 
-public slots:
-    void onConfirmed() override;
-};
+//public slots:
+//    void onConfirmed() override;
+//};
 
-class GuestController : public EntryController
-{
-    Q_OBJECT
-public:
-    GuestController(QPointer<DialogController> dialogController_, QObject *obj = nullptr);
+//class GuestController : public EntryController
+//{
+//    Q_OBJECT
+//public:
+//    GuestController(QPointer<DialogController> dialogController_, QObject *obj = nullptr);
 
-public slots:
-    void onConfirmed() override;
-};
+//public slots:
+//    void onConfirmed() override;
+//};

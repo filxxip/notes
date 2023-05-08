@@ -1,4 +1,7 @@
 #include "logcontroller.h"
+#include "specificcontrollers/guestcontroller.h"
+#include "specificcontrollers/logincontroller.h"
+#include "specificcontrollers/registercontroller.h"
 #include <utility>
 
 namespace {
