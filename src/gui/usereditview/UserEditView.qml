@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import "../qmlutils"
 
+//to do
 Rectangle {
     ListView {
         id: listview
@@ -15,8 +16,6 @@ Rectangle {
         implicitHeight: contentHeight
         model: entryModel
         delegate: Row {
-
-
 
             EntryField {
                 id: entry

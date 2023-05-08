@@ -36,7 +36,6 @@ LogController::LogController(std::shared_ptr<DataClient> dataclient_,
     switcherModel->addEntry({"register", EnumStatus::REGISTER});
     switcherModel->addEntry({"log as guest", EnumStatus::GUEST});
     connect(this, &LogController::userViewChanged, [this] {
-        qDebug() << "xxsdasd";
         emit controllers[EnumStatus::REGISTER]->clear();
     });
 }

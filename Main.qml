@@ -45,12 +45,6 @@ Window {
     //        combinedHeight: 100
     //        spacing: 40
     //    }
-    Button {
-        width: 100
-        height: 50
-        text: "click"
-        onClicked: buttonController.setValue(0, true)
-    }
 
     //    ListView {
     //        orientation: Qt.Horizontal

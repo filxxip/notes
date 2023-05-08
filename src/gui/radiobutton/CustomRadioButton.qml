@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 import "../"
+import "../qmlutils"
 
 Rectangle {
     id: item
@@ -18,6 +19,7 @@ Rectangle {
     property int spacing: 20
     ButtonGroup {
         id: group
+        exclusive: false
     }
     ButtonGroup {
         id: group1

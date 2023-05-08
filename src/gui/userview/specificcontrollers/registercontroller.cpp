@@ -25,7 +25,7 @@ RegisterController::RegisterController(QPointer<CalendarController> calendarCont
     , calendarController(calendarController_)
     , manager(dataclient_)
 {
-    radioButtonController = new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 0),
+    radioButtonController = new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 1),
                                                        RadioButtonModel(FEMALE_TEXT_BUTTON,
                                                                         false,
                                                                         1)},
