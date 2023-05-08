@@ -1,6 +1,7 @@
 #include "entrycontroller.h"
 #include <QRegularExpression>
 #include <QStringLiteral>
+#include "../cpputils/utils.h"
 
 namespace {
 constexpr const char *DOUBLE_EMAIL
@@ -36,6 +37,10 @@ RegisterController::RegisterController(QPointer<CalendarController> calendarCont
     , calendarController(calendarController_)
     , manager(dataclient_)
 {
+    radioButtonController = new RadioButtonController({RadioButtonModel("male", true, 1),
+                                                       RadioButtonModel("female", false, 1)},
+                                                      this);
+
     model->setEntries({{EnumStatus::NAME, "Name..."},
                        {EnumStatus::SURNAME, "Surname..."},
                        {EnumStatus::EMAIL, "Email..."},
@@ -59,7 +64,7 @@ void RegisterController::onConfirmed()
 
     auto temporaryStruct = {&password, &email, &country, &name, &surname};
 
-    if (Validators::emptyFieldsValidator(temporaryStruct)) {
+    if (!Validators::fieldsValidator(temporaryStruct)) {
         dialogController->showDialog(DialogCodes::UserViews::INVALID_FIELDS);
         return;
     }
@@ -104,8 +109,7 @@ LoginController::LoginController(std::shared_ptr<DataClient> dataclient_,
     : EntryController(dialogController_, obj)
     , manager(dataclient_)
 {
-    model->setEntries({{ModelStatuses::PersonComponents::EMAIL, "Login..."},
-                       {ModelStatuses::PersonComponents::PASSWORD, "Password..."}});
+    model->setEntries({{EnumStatus::EMAIL, "Login..."}, {EnumStatus::PASSWORD, "Password..."}});
     model->setData(1, true, ModelStatuses::Roles::PASSWORD_STATUS);
 }
 
@@ -131,7 +135,7 @@ void LoginController::onConfirmed()
 GuestController::GuestController(QPointer<DialogController> dialogController_, QObject *obj)
     : EntryController(dialogController_, obj)
 {
-    model->setEntries({{ModelStatuses::PersonComponents::NAME, "Temporary name..."}});
+    model->setEntries({{EnumStatus::NAME, "Temporary name..."}});
 }
 
 void GuestController::onConfirmed()

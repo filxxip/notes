@@ -1,4 +1,5 @@
 #include "logcontroller.h"
+#include <utility>
 
 LogController::LogController(std::shared_ptr<DataClient> dataclient_,
                              QPointer<DialogController> dialogController_,
@@ -9,7 +10,11 @@ LogController::LogController(std::shared_ptr<DataClient> dataclient_,
                     new RegisterController(calendarController, dataclient_, dialogController_, this)},
                    {EnumStatus::LOGIN, new LoginController(dataclient_, dialogController_, this)},
                    {EnumStatus::GUEST, new GuestController(dialogController_, this)}};
-
+    for (const auto &[enumType, name] : {std::make_pair(EnumStatus::REGISTER, "registerController"),
+                                         std::make_pair(EnumStatus::GUEST, "guestController"),
+                                         std::make_pair(EnumStatus::LOGIN, "loginController")}) {
+        ownerData->insert(name, QVariant::fromValue(controllers[enumType].data()));
+    }
     switcherModel = FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
                         .add(ModelStatuses::UserViewsRoles::TEXT, &SwitcherModel<EnumStatus>::text)
                         .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type)

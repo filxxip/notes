@@ -9,23 +9,22 @@ const QRegularExpression emailRegex(".*@.*\\.com");
 
 namespace Validators {
 
-template<typename PointersContainer>
-void emptyFieldsValidator(PointersContainer container)
+bool fieldsValidator(std::initializer_list<QString *> container)
 {
-    return std::any_of(std::begin(container), std::end(container), [](const auto data) {
+    return std::none_of(std::begin(container), std::end(container), [](const auto data) {
         return data->isEmpty();
     });
 }
 
-void passwordValidator(const QString &password)
+bool passwordValidator(const QString &password)
 {
-    return std::none_of(password.begin(), password.end(), [](const QChar &ch) {
+    return std::any_of(password.begin(), password.end(), [](const QChar &ch) {
         return ch.isUpper();
     });
 }
 
-void emailValidator(const QString &email)
+bool emailValidator(const QString &email)
 {
-    return !emailRegex.match(email).hasMatch();
+    return emailRegex.match(email).hasMatch();
 }
 } // namespace Validators

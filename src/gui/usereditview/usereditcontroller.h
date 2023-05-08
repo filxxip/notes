@@ -13,6 +13,9 @@ class UserEditController : public QObject
 
     Q_OBJECT
 
+    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
+    Q_PROPERTY(UserViewListModel *userViewModel MEMBER model CONSTANT)
+
     Person person;
     QPointer<UserViewListModel> model = new UserViewListModel(this);
     QPointer<DialogController> dialogController;
@@ -26,6 +29,7 @@ class UserEditController : public QObject
 
 public slots:
     void setNewPerson(Person person);
+
     void updatePersonData();
 
 signals:

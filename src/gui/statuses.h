@@ -11,15 +11,26 @@ enum class UserViews { REGISTER, LOGIN, GUEST };
 
 enum class UserViewsRoles { TEXT, TYPE };
 
-enum class PersonComponents { EMAIL, PASSWORD, NAME, SURNAME, BIRTHDAY, COUNTRY };
+enum class PersonComponents {
+    EMAIL,
+    PASSWORD,
+    NAME,
+    SURNAME,
+    BIRTHDAY,
+    COUNTRY,
+};
 
 enum class Roles { PLACEHOLDER, VALUE, COLOR, PASSWORD_STATUS };
 
-enum class DialogRoles { IS_OK, IS_NO, IS_YES, CONTENT, TITLE, PATH, FONT_SIZE };
+enum class DialogRoles { IS_OK, IS_NO, IS_YES, CONTENT, TITLE, PATH, FONT_SIZE, ID };
 
 enum class CalendarRoles { CONTENT, VALUE, OBJ };
 
+enum class RadioButtonRoles { TEXT, VALUE, GROUP };
+
 Q_ENUM_NS(Roles);
+
+Q_ENUM_NS(RadioButtonRoles);
 
 Q_ENUM_NS(UserViewsRoles);
 

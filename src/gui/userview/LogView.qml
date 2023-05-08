@@ -78,6 +78,15 @@ Column {
                     customcolor: GUIConfig.colors.red
                     readOnly: true
                 }
+
+                CustomRadioButton {
+                    Component.onCompleted: console.log(
+                                               logController.controllers.registerController)
+                    combinedWidth: entries.width - 70
+                    combinedHeight: entries.singleComponentHeight
+                    controller: logController.controllers.registerController.radioButtonController
+                    spacing: 70
+                }
             }
             ButtonText {
                 contentText: GuiConfig.userView.registerView.accessLoginText

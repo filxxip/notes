@@ -32,6 +32,7 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/models/switchermodel.h
     src/gui/models/userviewlistmodel.cpp
     src/gui/models/userviewlistmodel.h
+    src/gui/models/radiobuttonmodel.h
 
     src/gui/modelutils/adaptermodel.cpp
     src/gui/modelutils/adaptermodel.h
@@ -53,6 +54,9 @@ qt_add_executable(appnotesdatabaseproject
 
     src/gui/calendar/calendarcontroller.h
     src/gui/calendar/calendarcontroller.cpp
+
+    src/gui/radiobutton/radiobuttoncontroller.cpp
+    src/gui/radiobutton/radiobuttoncontroller.h
 
     src/gui/cpputils/utils.cpp
     src/gui/cpputils/utils.h
@@ -108,6 +112,8 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/qmlutils/CustomButton.qml
         src/gui/qmlutils/EntryField.qml
         src/gui/qmlutils/TitleBox.qml
+
+        src/gui/qmlutils/CustomRadioButton.qml
 
         src/gui/userview/LogView.qml
         src/gui/userview/LogViewEntryPart.qml

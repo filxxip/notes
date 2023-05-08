@@ -1,5 +1,6 @@
 #include "dialogcontroller.h"
 #include <QMessageBox>
+#include "../cpputils/utils.h"
 
 namespace {
 constexpr const char *INVALID_ACCESS = "Incorrect data accesss!";
@@ -19,6 +20,7 @@ DialogController::DialogController(std::shared_ptr<DataClient> dataClient, QObje
                       .add(Status::TITLE, &GuiDialog::title)
                       .add(Status::PATH, &GuiDialog ::path)
                       .add(Status::FONT_SIZE, &GuiDialog::fontSize)
+                      .add(Status::ID, &GuiDialog::id)
                       .build();
     auto values = manager.get();
     if (values.has_value()) {
@@ -63,13 +65,17 @@ void DialogController::onRejected()
 
 bool DialogController::showDialog(int code)
 {
-    if (code > 0 && code <= dialogModel->rowCount()) {
-        currentIndex = code - 1;
+    auto newPotentialIndex = DatabaseUtilsFunctions::convertCodeToIndex(code,
+                                                                        this->dialogModel,
+                                                                        Status::ID,
+                                                                        ACCESS_TO_DIALOG_ERROR.arg(
+                                                                            QString::number(code)));
+    if (newPotentialIndex.has_value()) {
+        currentIndex = newPotentialIndex.value();
         emit indexChanged(currentIndex);
         setVisibility(true);
         return true;
     }
-    qDebug() << ACCESS_TO_DIALOG_ERROR.arg(QString::number(code));
     return false;
 }
 

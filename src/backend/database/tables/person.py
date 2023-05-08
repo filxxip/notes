@@ -22,6 +22,7 @@ class Person(Base):
     password: Mapped[str] = mapped_column(String(50))
     country: Mapped[str] = mapped_column(String(50))
     birthday: Mapped[str] = mapped_column(DateTime())
+    gender : Mapped[str] = mapped_column(String(30))
 
     @hybrid_property
     def age(self):

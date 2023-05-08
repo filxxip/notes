@@ -122,6 +122,8 @@ Item {
         readonly property color purple: "#ac28ed"
         readonly property color darkRed: "#5e0515"
         readonly property color backgroundGreen: "#376945"
+        readonly property color nearlyWhite: "#aebbd1"
+        readonly property color lightOrange: "#ee6c4d"
     }
 
     QtObject {

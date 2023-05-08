@@ -1,9 +1,8 @@
 from __future__ import annotations
-from dataclasses import dataclass
 from sqlalchemy import Text
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.backend.database.tables.base import Base
+from .base import Base
 
 
 class Schemas(Base):

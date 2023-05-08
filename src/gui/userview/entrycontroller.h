@@ -6,10 +6,12 @@
 #include "../../backend/datamanager/dataclient.h"
 #include "../../backend/datamanager/directobjsmanagers/people/peoplemanager.h"
 #include "../calendar/calendarcontroller.h"
+#include "../cpputils/utils.h"
 #include "../customdialog/dialogcontroller.h"
 #include "../models/switchermodel.h"
 #include "../models/userviewlistmodel.h"
 #include "../modelutils/listmodelbuilder.h"
+#include "../radiobutton/radiobuttoncontroller.h"
 #include "../statuses.h"
 
 class EntryController : public QObject
@@ -18,6 +20,8 @@ class EntryController : public QObject
     Q_PROPERTY(UserViewListModel *model MEMBER model CONSTANT)
 
 protected:
+    using EnumStatus = ModelStatuses::PersonComponents;
+
     QPointer<DialogController> dialogController;
 
     QPointer<UserViewListModel> model = new UserViewListModel(this);
@@ -40,13 +44,15 @@ private slots:
 
 class RegisterController : public EntryController
 {
-    using EnumStatus = ModelStatuses::PersonComponents;
-
     Q_OBJECT
-
+    Q_PROPERTY(int someval MEMBER val CONSTANT)
+    Q_PROPERTY(RadioButtonController *radioButtonController MEMBER radioButtonController CONSTANT)
+    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
+    int val = 10;
     PeopleManager manager;
 
     QPointer<CalendarController> calendarController;
+    QPointer<RadioButtonController> radioButtonController;
 
     QString getPartOfPerson(EnumStatus componentEnum) const;
 

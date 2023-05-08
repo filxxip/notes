@@ -1,8 +1,7 @@
 #include "usereditcontroller.h"
 #include "../cpputils/utils.h"
 
-UserEditController::UserEditController(QPointer<DialogController> dialogController_,
-                                       QObject *obj = nullptr)
+UserEditController::UserEditController(QPointer<DialogController> dialogController_, QObject *obj)
     : QObject(obj)
     , dialogController(dialogController_)
 {
@@ -38,16 +37,18 @@ void UserEditController::moveDataFromPersonToModel()
 void UserEditController::updatePersonData()
 {
     //tam na klika updatuje ten model i emituje sygnal zeby sobie tutaj pozmieniac i posprawdzac -> raczej to, tak jak w poprzednich onTextChanged : model.value = text, i jakby bedzie jeden nawrot danych ale mam nadzieje ze to nie zepsuje
-    auto name = model->data(model->indexOf(EnumStatus::NAME), EntryRoles::VALUE);
-    auto surname = model->data(model->indexOf(EnumStatus::SURNAME), EntryRoles::VALUE);
-    auto country = model->data(model->indexOf(EnumStatus::COUNTRY), EntryRoles::VALUE);
-    auto password
-        = model->data(model->indexOf(EnumStatus::COUNTRY),
-                      EntryRoles::VALUE); //w gui bedzie non stop zmieniany model albo to co wyzej
+    auto name = model->data(model->indexOf(EnumStatus::NAME), EntryRoles::VALUE).value<QString>();
+    auto surname = model->data(model->indexOf(EnumStatus::SURNAME), EntryRoles::VALUE)
+                       .value<QString>();
+    auto country = model->data(model->indexOf(EnumStatus::COUNTRY), EntryRoles::VALUE)
+                       .value<QString>();
+    auto password = model->data(model->indexOf(EnumStatus::COUNTRY),
+                                EntryRoles::VALUE)
+                        .value<QString>(); //w gui bedzie non stop zmieniany model albo to co wyzej
 
     auto container = {&password, &name, &surname, &country};
 
-    if (!Validators::emptyFieldsValidator(container)) {
+    if (!Validators::fieldsValidator(container)) {
         dialogController->showDialog(DialogCodes::UserViews::INVALID_UPDATED_FIELDS);
         //        moveDataFromPersonToModel();
         //        emit resetData(); //sygnal lapany z gui i tam pobieram wtedy zmieniam z uzyciem po prostu modela
