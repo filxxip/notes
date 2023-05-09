@@ -36,7 +36,7 @@ signals:
 
     void clear();
 
-    void operationSuccess(Person person);
+    void changingViewOperationSuccess(Person person);
 
 private slots:
     virtual void onConfirmed() = 0;

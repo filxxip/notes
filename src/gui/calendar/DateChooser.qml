@@ -5,20 +5,30 @@ import "../"
 
 Rectangle {
     id: outerRect
-    property int tumblerWidth: GUIConfig.dateChooser.basicTumblerWidth
+    //    property int tumblerWidth: GUIConfig.dateChooser.basicTumblerWidth
     property int fontSize: GUIConfig.dateChooser.basicdFontSize
     required property var controller
     property int itemNumber: GUIConfig.dateChooser.basicItemNumber
     property color backgroundColor: GUIConfig.colors.grey
-    signal reset
-    onReset: {
-        repeater.itemAt(0).currentIndex = 0
-        repeater.itemAt(1).currentIndex = 0
-        repeater.itemAt(2).currentIndex = 0
+
+    //    signal setDate(int dayIndex, int monthIndex, int yearIndex)
+    function setDate(dayIndex, monthIndex, yearIndex) {
+        console.log("hhh")
+        repeater.itemAt(0).currentIndex = dayIndex
+        repeater.itemAt(1).currentIndex = monthIndex
+        repeater.itemAt(2).currentIndex = yearIndex
     }
 
-    height: GUIConfig.dateChooser.basicHeight
-    width: tumblerWidth * 3
+    Component.onCompleted: {
+        controller.uploadNewDate.connect(setDate)
+        controller.assignCurrent()
+    }
+    Component.onDestruction: {
+        controller.uploadNewDate.disconnect(setDate)
+    }
+
+    //    height: GUIConfig.dateChooser.basicHeight
+    //    width: tumblerWidth * 3
     color: backgroundColor
 
     Component {
@@ -46,7 +56,7 @@ Rectangle {
                 id: tumbler
                 visibleItemCount: outerRect.itemNumber
                 model: modelData
-                width: outerRect.tumblerWidth
+                width: outerRect.width / repeater.model.length
                 height: outerRect.height
                 delegate: delegateComponent
                 onCurrentIndexChanged: repeater.dateChanged()

@@ -103,6 +103,7 @@ Item {
         readonly property int accessButtonHeight: 20
         readonly property int accessButtonSpacing: 20
         readonly property int radiusOfMainRectangle: 10
+        readonly property int entryFontSize: 16
 
         readonly property var dateChooser: QtObject {
             readonly property int spacing: 40
@@ -145,6 +146,18 @@ Item {
             GradientStop {
                 position: 1
                 color: "#17486d"
+            }
+        }
+        readonly property var labelEntryGradient: Gradient {
+            orientation: Qt.Horizontal
+            GradientStop {
+                position: 0
+                color: "#ed8179"
+            }
+
+            GradientStop {
+                position: 1
+                color: "red"
             }
         }
         readonly property var enabledButtonGradient: Gradient {

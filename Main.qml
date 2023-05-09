@@ -11,6 +11,7 @@ import "src/gui/customdialog"
 import "src/gui/userview"
 import "src/gui/qmlutils"
 import "src/gui/calendar"
+import "src/gui/usereditview"
 
 Window {
     Rectangle {
@@ -37,7 +38,9 @@ Window {
     //            interactive: false
 
     //            Item {
-    LogView {}
+    UserEditView {
+        anchors.fill: parent
+    }
 
     //    CustomRadioButton {
     //        controller: buttonController

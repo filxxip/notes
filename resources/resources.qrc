@@ -9,5 +9,6 @@
         <file>ghost.png</file>
         <file>newuser.png</file>
         <file>welcome.png</file>
+        <file>left-arrow.png</file>
     </qresource>
 </RCC>

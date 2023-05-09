@@ -2,19 +2,29 @@
 
 #include "../entrycontroller.h"
 
-class RegisterController : public EntryController
+class UserConfigController : public EntryController
 {
     Q_OBJECT
-    Q_PROPERTY(int someval MEMBER val CONSTANT)
     Q_PROPERTY(RadioButtonController *radioButtonController MEMBER radioButtonController CONSTANT)
     Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
-    int val = 10;
-    PeopleManager manager;
 
+protected:
     QPointer<CalendarController> calendarController;
     QPointer<RadioButtonController> radioButtonController;
 
     QString getPartOfPerson(EnumStatus componentEnum) const;
+
+public:
+    UserConfigController(QPointer<CalendarController> calendarController,
+                         QPointer<DialogController> dialogController_,
+                         QObject *obj = nullptr);
+};
+
+class RegisterController : public UserConfigController
+{
+    Q_OBJECT
+
+    PeopleManager manager;
 
 public:
     RegisterController(QPointer<CalendarController> calendarController,

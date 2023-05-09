@@ -126,6 +126,7 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/userview/LogViewEntryPart.qml
 
         src/gui/usereditview/UserEditView.qml
+        src/gui/usereditview/EntryLabel.qml
 
         src/gui/GUIConfig.qml
         src/gui/qmldir

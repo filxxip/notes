@@ -15,27 +15,22 @@ constexpr const char *MALE_TEXT_BUTTON = "male";
 
 const auto PERSON_CREATED = QStringLiteral("New user : %1 has just been added to database.");
 
+//constexpr const char *DOUBLE_EMAIL
+//    = "This is email will not be unique in database or your data files. Check it and fix this issue.";
+
 } // namespace
 
-RegisterController::RegisterController(QPointer<CalendarController> calendarController_,
-                                       std::shared_ptr<DataClient> dataclient_,
-                                       QPointer<DialogController> dialogController_,
-                                       QObject *obj)
+UserConfigController::UserConfigController(QPointer<CalendarController> calendarController_,
+                                           QPointer<DialogController> dialogController_,
+                                           QObject *obj)
     : EntryController(dialogController_, obj)
     , calendarController(calendarController_)
-    , manager(dataclient_)
 {
     radioButtonController = new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 1),
                                                        RadioButtonModel(FEMALE_TEXT_BUTTON,
                                                                         false,
                                                                         1)},
                                                       this);
-
-    model->setEntries({{EnumStatus::NAME, NAME_PLACEHOLDER},
-                       {EnumStatus::SURNAME, SURNAME_PLACEHOLDER},
-                       {EnumStatus::EMAIL, EMAIL_PLACEHOLDER},
-                       {EnumStatus::PASSWORD, PASSWORD_PLACEHOLDER},
-                       {EnumStatus::COUNTRY, COUNTRY_PLACEHOLDER}});
 
     connect(this,
             &RegisterController::clear,
@@ -45,10 +40,24 @@ RegisterController::RegisterController(QPointer<CalendarController> calendarCont
             });
 }
 
-QString RegisterController::getPartOfPerson(EnumStatus componentEnum) const
+QString UserConfigController::getPartOfPerson(EnumStatus componentEnum) const
 {
     auto index = model->indexOf(componentEnum);
     return model->data(index, ModelStatuses::Roles::VALUE).value<QString>();
+}
+
+RegisterController::RegisterController(QPointer<CalendarController> calendarController,
+                                       std::shared_ptr<DataClient> dataclient_,
+                                       QPointer<DialogController> dialogController_,
+                                       QObject *obj)
+    : UserConfigController(calendarController, dialogController_, obj)
+    , manager(dataclient_)
+{
+    model->setEntries({{EnumStatus::NAME, NAME_PLACEHOLDER},
+                       {EnumStatus::SURNAME, SURNAME_PLACEHOLDER},
+                       {EnumStatus::EMAIL, EMAIL_PLACEHOLDER},
+                       {EnumStatus::PASSWORD, PASSWORD_PLACEHOLDER},
+                       {EnumStatus::COUNTRY, COUNTRY_PLACEHOLDER}});
 }
 
 void RegisterController::onConfirmed()
@@ -68,6 +77,12 @@ void RegisterController::onConfirmed()
 
     auto hasNoEmailMatches = !Validators::emailValidator(email);
     auto hasNoUppercase = !Validators::passwordValidator(password);
+
+    auto personWithGiveEmail = manager.getFiltered({{"email", email.toStdString()}});
+    if (personWithGiveEmail.has_value() && personWithGiveEmail->size() == 1) {
+        //        qDebug() << DOUBLE_EMAIL; //dac jakis dialog
+        return;
+    }
 
     if (hasNoUppercase && hasNoEmailMatches) {
         dialogController->showDialog(DialogCodes::UserViews::INVALID_REGISTER_PASSWORD_AND_EMAIL);

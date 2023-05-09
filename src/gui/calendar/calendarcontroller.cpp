@@ -45,43 +45,37 @@ QString CalendarController::getNiceDateFormat() const
         .arg(monthModel->data(currentDate.month() - 1, EnumStatus::CONTENT).toString())
         .arg(currentDate.year());
 }
-
+//directly from cpp
 void CalendarController::changeDate(int year, int month, int day)
 {
-    emit currentDateChanged(day - 1, month - 1, year - minimumYear);
+    onCurrentDateChanged(day - 1, month - 1, year - minimumYear);
+    qDebug() << "hejka";
+    emit uploadNewDate(day - 1, month - 1, year - minimumYear);
+}
+
+void CalendarController::assignCurrent()
+{
+    qDebug() << currentDate.year();
+    changeDate(currentDate.year(), currentDate.month(), currentDate.day());
 }
 
 void CalendarController::clear()
 {
-    emit resetGui();
-    currentDate = QDate(minimumYear, 1, 1);
+    changeDate(minimumYear, 1, 1);
 }
 
-void CalendarController::setMinMaxRange(int newMin, int newMax)
-{
-    minimumYear = newMin;
-    maximumYear = newMax;
-}
+//void CalendarController::setMinMaxRange(int newMin, int newMax)
+//{
+//    minimumYear = newMin;
+//    maximumYear = newMax;
+//}
 
+//directly from gui
 void CalendarController::onCurrentDateChanged(int dayIndexDelta,
                                               int monthIndexDelta,
                                               int yearIndexDelta)
 {
-    auto day = dayIndexDelta + 1;
-    auto month = monthIndexDelta + 1;
-    auto year = yearIndexDelta + minimumYear;
-
-    int begin = QDate(year, month, 1).daysInMonth();
-
-    if (begin < dayModel->rowCount()) {
-        dayModel->removeRows(begin, dayModel->rowCount() - begin);
-    }
-
-    for (int i = dayModel->rowCount() + 1; i <= begin; i++) {
-        dayModel->addEntry({i, QString::number(i)});
-    }
-
-    currentDate = QDate(year, month, qMin(day, dayModel->rowCount()));
+    setNewDate(dayIndexDelta, monthIndexDelta, yearIndexDelta);
 
     emit niceFormatChanged(getNiceDateFormat());
 }
