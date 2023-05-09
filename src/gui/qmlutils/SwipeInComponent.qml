@@ -3,86 +3,73 @@ import QtQuick.Controls 2.15
 import "../"
 
 Popup {
-    property int startXPosition
-    property int startYPosition
-
-    property int endXPosition
-    property int endYPosition
-
-    property var innerComponent
-
-    property int duration: 1000
-
-    property int w: 270
-
-    property bool isActive: false
-
+    id: popup
+    required property var customContentItem
+    property int leftButtonPadding: GUIConfig.swipeIn.defaultPadding
+    property int duration: GUIConfig.swipeIn.defaultDuration
+    property color innerColor
     enter: Transition {
         NumberAnimation {
-            property: "x"
+            property: GUIConfig.swipeIn.widthProperty
             from: 0
-            to: 270
-            duration: rectangle.duration
+            to: internal.basicWidth
+            duration: popup.duration
         }
     }
     exit: Transition {
         NumberAnimation {
-            property: "x"
-            from: 270
+            property: GUIConfig.swipeIn.widthProperty
+            from: popup.width
             to: 0
-            duration: rectangle.duration
+            duration: popup.duration * popup.width / internal.basicWidth
         }
     }
+    clip: true
+    modal: true
+    focus: true
+    QtObject {
+        id: internal
+        property int basicWidth
+    }
 
-    //    onIsActiveChanged: datePathAnimation.running = true
-    id: rectangle
-    x: 100
-    y: 100
-    width: 100
-    height: height
-    //    radius: 10
-    //    color: GUIConfig.colors.grey
-    Component.onCompleted: width += 20
+    Component.onCompleted: internal.basicWidth = width
     contentItem: Rectangle {
-        color: GUIConfig.colors.grey
-        radius: 10
+        Rectangle {
+            anchors.left: mainRect.left
+            width: mainRect.radius
+            anchors.top: mainRect.top
+            anchors.bottom: mainRect.bottom
+            color: mainRect.color
+        }
 
-        //        PathAnimation {
-        //            id: datePathAnimation
-        //            target: rectangle
-        //            duration: rectangle.duration
-        //            path: Path {
-        //                id: myPath
-        //                startX: rectangle.x
-        //                startY: rectangle.y
-        //                PathLine {
-        //                    x: isActive ? endXPosition : startXPosition
-        //                    y: isActive ? endYPosition : startYPosition
-        //                }
-        //            }
-        //        }
+        id: mainRect
+        radius: GUIConfig.swipeIn.radius
+        color: innerColor
         anchors.fill: parent
-        Row {
-            anchors.fill: parent
-
-            //            Loader {
-            //                sourceComponent: innerComponent
-            //            }
-            Button {
-                height: rectangle.height
-                width: 20
-                onReleased: rectangle.close()
-                //                enabled: !datePathAnimation.running
-                Image {
-                    anchors.fill: parent
-                    source: "qrc:/resources/left-arrow.png"
-                    fillMode: Image.PreserveAspectFit
-                }
-                background: Rectangle {
-                    anchors.fill: parent
-                    color: GUIConfig.colors.transparent
-                }
+        Loader {
+            anchors.right: button.left
+            sourceComponent: popup.customContentItem
+            anchors.rightMargin: popup.leftButtonPadding
+        }
+        Button {
+            id: button
+            height: parent.height
+            width: GUIConfig.swipeIn.buttonWidth
+            anchors.right: parent.right
+            onReleased: popup.close()
+            Image {
+                anchors.fill: parent
+                source: GUIConfig.swipeIn.buttonImage
+                fillMode: Image.PreserveAspectFit
+            }
+            background: Rectangle {
+                anchors.fill: parent
+                color: innerColor
+                radius: GUIConfig.swipeIn.radius
             }
         }
+    }
+    background: Rectangle {
+        color: GUIConfig.colors.transparent
     }
 }

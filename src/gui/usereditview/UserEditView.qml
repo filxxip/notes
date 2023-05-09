@@ -6,29 +6,25 @@ import QtQuick.Controls 2.15
 import QtQuick.Shapes 1.15
 import "../calendar"
 
-//to do
 Rectangle {
     Column {
-        spacing: listview.spacing + 30
+        spacing: GUIConfig.userEditView.outerColumnSpacing
         Column {
-            spacing: listview.spacing
-            enabled: !swiper.opened //cos nie dziala
-
+            spacing: GUIConfig.userEditView.listviewSpacing
             ListView {
                 id: listview
-                property var configurationObject: GUIConfig.userView.registerView
                 readonly property var entryModel: userEditController.model
                 signal clearAll
-                readonly property int singleComponentHeight: configurationObject.combinedHeight
-                                                             / count
+                //todo sygnal clear
+                readonly property int singleComponentHeight: GUIConfig.userEditView.combinedListViewHeight / count
 
                 interactive: false
-                spacing: configurationObject.listViewSpacing
-                width: GUIConfig.userView.defaultEntryWidth
+                spacing: GUIConfig.userEditView.listviewSpacing
+                width: GUIConfig.userEditView.defaultEntryWidth
                 implicitHeight: contentHeight
                 model: entryModel
                 delegate: Row {
-                    spacing: -5
+                    spacing: GUIConfig.userEditView.birthdayRowSpacing
                     property alias clickedSlot: entry.clickedSlot
                     EntryLabel {
                         contentText: model.placeholder
@@ -40,7 +36,7 @@ Rectangle {
                         width: listview.width
                         height: listview.singleComponentHeight
                         customcolor: model.color
-                        onTextChanged: model.value = entry.text //?
+                        onTextChanged: model.value = entry.text
 
                         function setModelValue() {
                             setText(model.value)
@@ -54,50 +50,39 @@ Rectangle {
                                                      setModelValue)
                     }
                 }
-                Component.onCompleted: console.log("xx")
             }
             Component {
                 id: innerSwiperMessage
-                Label {
+                Text {
+                    text: GUIConfig.userEditView.disabledEmailMessage
+                    leftPadding: GUIConfig.userEditView.messagePadding
+                    font.pixelSize: GUIConfig.userView.entryFontSize
                     height: listview.singleComponentHeight
-                    width: 250
-                    //                    color: GUIConfig.colors.grey
-                    verticalAlignment: Label.AlignVCenter
-
-                    Text {
-                        anchors.fill: parent
-                        text: "Changing email disabled"
-                        anchors.leftMargin: 25
-                        font.pixelSize: GUIConfig.userView.entryFontSize
-                        verticalAlignment: parent.verticalAlignment
-                    }
+                    width: GUIConfig.userEditView.messageWidth
+                    verticalAlignment: Text.AlignVCenter
                 }
+                //jakie oczekiwane zarobki, od kiedy praca, jaki wymiar, wakacje a nie wakacje,
+                //dlaczego bcf, co cie interesuje z programowania, wlasne propjekty, doswiadczenie, hobby po angielsku, projekt
             }
+            //            }
             SwipeInComponent {
                 id: swiperMessage
-                //                color: "yellow"
-                innerComponent: innerSwiperMessage
-                //                duration: 400
-                //                startXPosition: 0
-                //                width: 270
-                //                endXPosition: -10
-
-                //                Component.onCompleted: {
-                //                    height = listview.itemAtIndex(0).height
-                //                    startYPosition = listview.itemAtIndex(0).y
-                //                    endYPosition = listview.itemAtIndex(0).y
-                //                }
-                //                startYPosition: birthdayRow.y + 0.5 * birthdayRow.height - 0.5 * height
-                //                endYPosition: startYPosition
-                //                height: 40
+                innerColor: GUIConfig.colors.grey
+                width: GUIConfig.userEditView.swipeInComponentWidth
+                duration: GUIConfig.userEditView.messageSwipeDuration
+                customContentItem: innerSwiperMessage
+                x: GUIConfig.userEditView.messageSwipeX
+                height: listview.singleComponentHeight
+                Component.onCompleted: y = listview.itemAtIndex(0).y
             }
             Component.onCompleted: listview.itemAtIndex(
-                                       0).clickedSlot = (() => swiperMessage.isActive = true)
+                                       0).clickedSlot = (() => swiperMessage.open(
+                                                             ))
             Row {
                 id: birthdayRow
-                spacing: -5
+                spacing: GUIConfig.userEditView.birthdayRowSpacing
                 EntryLabel {
-                    contentText: "Birthday"
+                    contentText: GUIConfig.userEditView.birthdayContentText
                     height: birthdayEntry.height
                 }
                 EntryField {
@@ -105,6 +90,7 @@ Rectangle {
                     width: listview.width
                     height: listview.singleComponentHeight
                     clickedSlot: () => swiper.open()
+
                     placeholder: userEditController.calendarController.niceFormat
                     customcolor: GUIConfig.colors.red
                     readOnly: true
@@ -124,92 +110,39 @@ Rectangle {
 
         Row {
             anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 100
+            spacing: GUIConfig.userEditView.buttonSpacing
             CustomButton {
-                width: 130
-                height: 40
+                width: GUIConfig.userEditView.buttonWidth
+                height: GUIConfig.userEditView.buttonHeight
                 onReleased: userEditController.moveDataFromPersonToModel()
-                contentText: "RESET"
+                contentText: GUIConfig.userEditView.resetContentText
             }
             CustomButton {
-                width: 130
-                height: 40
+                width: GUIConfig.userEditView.buttonWidth
+                height: GUIConfig.userEditView.buttonHeight
                 onReleased: userEditController.confirm()
-                contentText: "SAVE"
+                contentText: GUIConfig.userEditView.saveContentText
             }
         }
     }
     Component {
         id: mycomponent
         DateChooser {
-            fontSize: 17
-            width: 300
-            height: 100
+            fontSize: GUIConfig.userEditView.dateChooserFontSize
+            width: GUIConfig.userEditView.dateChooserWidth
+            height: GUIConfig.userEditView.dateChooserHeight
             controller: userEditController.calendarController
-            itemNumber: 3
+            itemNumber: GUIConfig.userEditView.dateChooserItemsNumber
         }
     }
 
     SwipeInComponent {
         id: swiper
-        innerComponent: mycomponent
-        duration: 1000
-        startXPosition: 100
-        width: 320
-        height: 100
-        endXPosition: 300
-        startYPosition: birthdayRow.y + 0.5 * birthdayRow.height - 0.5 * height
-        endYPosition: startYPosition
+        innerColor: GUIConfig.colors.grey
+        width: GUIConfig.userEditView.swipeInComponentWidth
+        height: GUIConfig.userEditView.swipeInDateHeight
+        customContentItem: mycomponent
+        x: GUIConfig.userEditView.dateSwipeX
+        y: birthdayRow.y + 0.5 * birthdayRow.height - 0.5 * height
     }
-
-    //    property bool dateActive: false
-    //    onDateActiveChanged: datePathAnimation.running = true
-    //    PathAnimation {
-    //        id: datePathAnimation
-    //        target: dateChooser
-    //        duration: 1000
-    //        path: Path {
-    //            id: myPath
-    //            startX: dateChooser.x
-    //            startY: dateChooser.y
-    //            PathLine {
-    //                x: dateActive ? -10 : -dateChooser.width //i dont know why sometimes really fast
-    //                y: dateChooser.y
-    //            }
-    //        }
-    //    }
-    //    Rectangle {
-    //        id: dateChooser
-    //        x: -width
-    //        y: birthdayRow.y + 0.5 * birthdayRow.height - 0.5 * height
-    //        width: 320
-    //        height: 100
-    //        radius: 10
-    //        color: GUIConfig.colors.grey
-    //        Row {
-    //            anchors.fill: parent
-    //            DateChooser {
-    //                fontSize: 17
-    //                width: 300
-    //                height: 100
-    //                controller: userEditController.calendarController
-    //                itemNumber: 3
-    //            }
-    //            Button {
-    //                height: 100
-    //                width: 20
-    //                onReleased: dateActive = false
-    //                enabled: !datePathAnimation.running
-    //                Image {
-    //                    anchors.fill: parent
-    //                    source: "qrc:/resources/left-arrow.png"
-    //                    fillMode: Image.PreserveAspectFit
-    //                }
-    //                background: Rectangle {
-    //                    anchors.fill: parent
-    //                    color: GUIConfig.colors.transparent
-    //                }
-    //            }
-    //        }
-    //    }
 }
