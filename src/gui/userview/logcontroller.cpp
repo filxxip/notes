@@ -35,7 +35,16 @@ LogController::LogController(std::shared_ptr<DataClient> dataclient_,
     switcherModel->addEntry({"login", EnumStatus::LOGIN});
     switcherModel->addEntry({"register", EnumStatus::REGISTER});
     switcherModel->addEntry({"log as guest", EnumStatus::GUEST});
-    connect(this, &LogController::userViewChanged, [this] {
-        emit controllers[EnumStatus::REGISTER]->clear();
-    });
+}
+
+LogController::EnumStatus LogController::getUserView() const
+{
+    return m_userView;
+}
+
+void LogController::setUserView(EnumStatus newView)
+{
+    emit controllers[m_userView]->clear();
+    m_userView = newView;
+    emit userViewChanged();
 }

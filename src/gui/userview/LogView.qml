@@ -74,11 +74,7 @@ Column {
                     width: entries.width
                     height: entries.singleComponentHeight
                     activeFocusOnTab: true
-                    function foo() {
-                        swipeView.currentIndex = 0
-                    }
-
-                    clickedSlot: foo
+                    clickedSlot: () => swipeView.currentIndex = 0
                     placeholder: "Birthday: " + activeController.calendarController.niceFormat
                     customcolor: GUIConfig.colors.red
                     readOnly: true

@@ -23,7 +23,7 @@ class LogController : public QObject
 
     Q_PROPERTY(QQmlPropertyMap *controllers MEMBER ownerData CONSTANT)
 
-    Q_PROPERTY(EnumStatus userViewType MEMBER m_userView NOTIFY userViewChanged)
+    Q_PROPERTY(EnumStatus userViewType READ getUserView WRITE setUserView NOTIFY userViewChanged)
 
     Q_PROPERTY(UserSwitcherModel *switcherModel MEMBER switcherModel CONSTANT)
 
@@ -41,6 +41,10 @@ private:
     QQmlPropertyMap *ownerData = new QQmlPropertyMap(this);
 
     QPointer<UserSwitcherModel> switcherModel;
+
+    EnumStatus getUserView() const;
+
+    void setUserView(EnumStatus newView);
 
 signals:
     void userViewChanged();

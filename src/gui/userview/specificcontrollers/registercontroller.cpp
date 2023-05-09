@@ -37,10 +37,12 @@ RegisterController::RegisterController(QPointer<CalendarController> calendarCont
                        {EnumStatus::PASSWORD, PASSWORD_PLACEHOLDER},
                        {EnumStatus::COUNTRY, COUNTRY_PLACEHOLDER}});
 
-    connect(this, &RegisterController::clear, [this] {
-        calendarController->clear();
-        radioButtonController->setValue(0, true);
-    }); //ewentualnie wycczyszczenie reszty ale to dzieje sie automatycznie
+    connect(this,
+            &RegisterController::clear,
+            [this] { //from level of qml also entries are cleared, they react on clear signal
+                calendarController->clear();
+                radioButtonController->setValue(0, true);
+            });
 }
 
 QString RegisterController::getPartOfPerson(EnumStatus componentEnum) const
