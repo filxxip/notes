@@ -20,7 +20,7 @@ public:
                          QObject *obj = nullptr);
 };
 
-class RegisterController : public UserConfigController
+class RegisterController final : public UserConfigController
 {
     Q_OBJECT
 

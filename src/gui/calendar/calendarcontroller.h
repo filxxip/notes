@@ -52,24 +52,7 @@ class CalendarController : public QObject
     QString getNiceDateFormat() const;
 
 private:
-    void setNewDate(int dayIndexDelta, int monthIndexDelta, int yearIndexDelta)
-    {
-        auto day = dayIndexDelta + 1;
-        auto month = monthIndexDelta + 1;
-        auto year = yearIndexDelta + minimumYear;
-
-        int begin = QDate(year, month, 1).daysInMonth();
-
-        if (begin < dayModel->rowCount()) {
-            dayModel->removeRows(begin, dayModel->rowCount() - begin);
-        }
-
-        for (int i = dayModel->rowCount() + 1; i <= begin; i++) {
-            dayModel->addEntry({i, QString::number(i)});
-        }
-
-        currentDate = QDate(year, month, qMin(day, dayModel->rowCount()));
-    }
+    void setNewDate(int dayIndexDelta, int monthIndexDelta, int yearIndexDelta);
 
 public:
     CalendarController(QObject *obj = nullptr);

@@ -113,6 +113,8 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/customdialog/CustomDialog.qml
         src/gui/calendar/DateChooser.qml
 
+        src/gui/qmlutils/SwipeInComponent.qml
+
         src/gui/qmlutils/ButtonSwitcher.qml
         src/gui/qmlutils/ButtonText.qml
         src/gui/qmlutils/CustomButton.qml

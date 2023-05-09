@@ -5,15 +5,12 @@ import "../"
 
 Rectangle {
     id: outerRect
-    //    property int tumblerWidth: GUIConfig.dateChooser.basicTumblerWidth
     property int fontSize: GUIConfig.dateChooser.basicdFontSize
     required property var controller
     property int itemNumber: GUIConfig.dateChooser.basicItemNumber
     property color backgroundColor: GUIConfig.colors.grey
 
-    //    signal setDate(int dayIndex, int monthIndex, int yearIndex)
     function setDate(dayIndex, monthIndex, yearIndex) {
-        console.log("hhh")
         repeater.itemAt(0).currentIndex = dayIndex
         repeater.itemAt(1).currentIndex = monthIndex
         repeater.itemAt(2).currentIndex = yearIndex
@@ -27,8 +24,6 @@ Rectangle {
         controller.uploadNewDate.disconnect(setDate)
     }
 
-    //    height: GUIConfig.dateChooser.basicHeight
-    //    width: tumblerWidth * 3
     color: backgroundColor
 
     Component {

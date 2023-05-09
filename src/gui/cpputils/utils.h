@@ -1,7 +1,12 @@
 #pragma once
 #include <QString>
+#include "../../backend/datamanager/directobjsmanagers/overallmanager.h"
 #include "../modelutils/customlistmodel.h"
 #include <initializer_list>
+
+namespace Messages {
+constexpr const char *INVALID_KEYWORD = "Keyword passed as parameter is invalid.";
+}
 
 namespace Validators {
 
@@ -34,3 +39,20 @@ std::optional<int> convertCodeToIndex(int code,
 }
 
 } // namespace DatabaseUtilsFunctions
+
+namespace DatabaseSupportMethods {
+
+template<typename Value, typename DataObject>
+std::optional<int> getElementsWithGivenValue(const OverallManager<DataObject> &manager,
+                                             const std::string &keyword,
+                                             Value value)
+{
+    auto searchedElements = manager.getFiltered({{keyword, value}});
+    if (searchedElements.has_value()) {
+        return searchedElements->size();
+    }
+    qDebug() << Messages::INVALID_KEYWORD;
+    return std::nullopt;
+}
+
+} // namespace DatabaseSupportMethods

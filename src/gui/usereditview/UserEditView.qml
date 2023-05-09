@@ -12,7 +12,8 @@ Rectangle {
         spacing: listview.spacing + 30
         Column {
             spacing: listview.spacing
-            enabled: !dateActive //cos nie dziala
+            enabled: !swiper.opened //cos nie dziala
+
             ListView {
                 id: listview
                 property var configurationObject: GUIConfig.userView.registerView
@@ -28,6 +29,7 @@ Rectangle {
                 model: entryModel
                 delegate: Row {
                     spacing: -5
+                    property alias clickedSlot: entry.clickedSlot
                     EntryLabel {
                         contentText: model.placeholder
                         height: entry.height
@@ -52,7 +54,45 @@ Rectangle {
                                                      setModelValue)
                     }
                 }
+                Component.onCompleted: console.log("xx")
             }
+            Component {
+                id: innerSwiperMessage
+                Label {
+                    height: listview.singleComponentHeight
+                    width: 250
+                    //                    color: GUIConfig.colors.grey
+                    verticalAlignment: Label.AlignVCenter
+
+                    Text {
+                        anchors.fill: parent
+                        text: "Changing email disabled"
+                        anchors.leftMargin: 25
+                        font.pixelSize: GUIConfig.userView.entryFontSize
+                        verticalAlignment: parent.verticalAlignment
+                    }
+                }
+            }
+            SwipeInComponent {
+                id: swiperMessage
+                //                color: "yellow"
+                innerComponent: innerSwiperMessage
+                //                duration: 400
+                //                startXPosition: 0
+                //                width: 270
+                //                endXPosition: -10
+
+                //                Component.onCompleted: {
+                //                    height = listview.itemAtIndex(0).height
+                //                    startYPosition = listview.itemAtIndex(0).y
+                //                    endYPosition = listview.itemAtIndex(0).y
+                //                }
+                //                startYPosition: birthdayRow.y + 0.5 * birthdayRow.height - 0.5 * height
+                //                endYPosition: startYPosition
+                //                height: 40
+            }
+            Component.onCompleted: listview.itemAtIndex(
+                                       0).clickedSlot = (() => swiperMessage.isActive = true)
             Row {
                 id: birthdayRow
                 spacing: -5
@@ -64,7 +104,7 @@ Rectangle {
                     id: birthdayEntry
                     width: listview.width
                     height: listview.singleComponentHeight
-                    clickedSlot: () => dateActive = true
+                    clickedSlot: () => swiper.open()
                     placeholder: userEditController.calendarController.niceFormat
                     customcolor: GUIConfig.colors.red
                     readOnly: true
@@ -94,62 +134,82 @@ Rectangle {
             CustomButton {
                 width: 130
                 height: 40
-                onReleased: console.log("2")
+                onReleased: userEditController.confirm()
                 contentText: "SAVE"
             }
         }
     }
-    property bool dateActive: false
-    onDateActiveChanged: datePathAnimation.running = true
-    PathAnimation {
-        id: datePathAnimation
-        target: dateChooser
-        duration: 1000
-        path: Path {
-            id: myPath
-            startX: dateChooser.x
-            startY: dateChooser.y
-            PathLine {
-                x: dateActive ? -10 : -dateChooser.width //i dont know why sometimes really fast
-                y: dateChooser.y
-            }
+    Component {
+        id: mycomponent
+        DateChooser {
+            fontSize: 17
+            width: 300
+            height: 100
+            controller: userEditController.calendarController
+            itemNumber: 3
         }
     }
-    Rectangle {
-        id: dateChooser
-        x: -width
-        y: birthdayRow.y + 0.5 * birthdayRow.height - 0.5 * height
+
+    SwipeInComponent {
+        id: swiper
+        innerComponent: mycomponent
+        duration: 1000
+        startXPosition: 100
         width: 320
         height: 100
-        radius: 10
-        color: GUIConfig.colors.grey
-        Row {
-            anchors.fill: parent
-            DateChooser {
-                fontSize: 17
-                width: 300
-                height: 100
-                //                Component.onCompleted: userEditController.calendarController.resetGui.connect(
-                //                                           //w logview tez chyba active contrller do wyrzucenia
-                //                                           reset)
-                controller: userEditController.calendarController
-                itemNumber: 3
-            }
-            Button {
-                height: 100
-                width: 20
-                onReleased: dateActive = false
-                enabled: !datePathAnimation.running
-                Image {
-                    anchors.fill: parent
-                    source: "qrc:/resources/left-arrow.png"
-                    fillMode: Image.PreserveAspectFit
-                }
-                background: Rectangle {
-                    anchors.fill: parent
-                    color: GUIConfig.colors.transparent
-                }
-            }
-        }
+        endXPosition: 300
+        startYPosition: birthdayRow.y + 0.5 * birthdayRow.height - 0.5 * height
+        endYPosition: startYPosition
     }
+
+    //    property bool dateActive: false
+    //    onDateActiveChanged: datePathAnimation.running = true
+    //    PathAnimation {
+    //        id: datePathAnimation
+    //        target: dateChooser
+    //        duration: 1000
+    //        path: Path {
+    //            id: myPath
+    //            startX: dateChooser.x
+    //            startY: dateChooser.y
+    //            PathLine {
+    //                x: dateActive ? -10 : -dateChooser.width //i dont know why sometimes really fast
+    //                y: dateChooser.y
+    //            }
+    //        }
+    //    }
+    //    Rectangle {
+    //        id: dateChooser
+    //        x: -width
+    //        y: birthdayRow.y + 0.5 * birthdayRow.height - 0.5 * height
+    //        width: 320
+    //        height: 100
+    //        radius: 10
+    //        color: GUIConfig.colors.grey
+    //        Row {
+    //            anchors.fill: parent
+    //            DateChooser {
+    //                fontSize: 17
+    //                width: 300
+    //                height: 100
+    //                controller: userEditController.calendarController
+    //                itemNumber: 3
+    //            }
+    //            Button {
+    //                height: 100
+    //                width: 20
+    //                onReleased: dateActive = false
+    //                enabled: !datePathAnimation.running
+    //                Image {
+    //                    anchors.fill: parent
+    //                    source: "qrc:/resources/left-arrow.png"
+    //                    fillMode: Image.PreserveAspectFit
+    //                }
+    //                background: Rectangle {
+    //                    anchors.fill: parent
+    //                    color: GUIConfig.colors.transparent
+    //                }
+    //            }
+    //        }
+    //    }
 }

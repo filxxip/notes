@@ -151,11 +151,7 @@ Column {
                         width: GUIConfig.dateChooser.basicTumblerWidth * 3
                         backgroundColor: GUIConfig.colors.transparent
                         height: GUIConfig.userView.dateChooser.height
-
-                        //                        property var activeComponent: logController.controllers.registerController
-                        //                        Component.onCompleted: activeComponent.calendarController.resetGui.connect(
-                        //                                                   reset)
-                        controller: calendarController
+                        controller: logController.controllers.registerController.calendarController
                         itemNumber: GUIConfig.userView.dateChooser.itemNumber
                     }
 

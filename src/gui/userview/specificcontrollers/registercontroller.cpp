@@ -53,10 +53,10 @@ RegisterController::RegisterController(QPointer<CalendarController> calendarCont
     : UserConfigController(calendarController, dialogController_, obj)
     , manager(dataclient_)
 {
-    model->setEntries({{EnumStatus::NAME, NAME_PLACEHOLDER},
-                       {EnumStatus::SURNAME, SURNAME_PLACEHOLDER},
-                       {EnumStatus::EMAIL, EMAIL_PLACEHOLDER},
+    model->setEntries({{EnumStatus::EMAIL, EMAIL_PLACEHOLDER},
                        {EnumStatus::PASSWORD, PASSWORD_PLACEHOLDER},
+                       {EnumStatus::NAME, NAME_PLACEHOLDER},
+                       {EnumStatus::SURNAME, SURNAME_PLACEHOLDER},
                        {EnumStatus::COUNTRY, COUNTRY_PLACEHOLDER}});
 }
 
@@ -78,10 +78,13 @@ void RegisterController::onConfirmed()
     auto hasNoEmailMatches = !Validators::emailValidator(email);
     auto hasNoUppercase = !Validators::passwordValidator(password);
 
-    auto personWithGiveEmail = manager.getFiltered({{"email", email.toStdString()}});
-    if (personWithGiveEmail.has_value() && personWithGiveEmail->size() == 1) {
-        //        qDebug() << DOUBLE_EMAIL; //dac jakis dialog
+    auto elementsNumber = DatabaseSupportMethods::getElementsWithGivenValue(manager,
+                                                                            "email",
+                                                                            name.toStdString());
+    if (!elementsNumber.has_value()) {
         return;
+    }
+    if (elementsNumber.value() != 0) {
     }
 
     if (hasNoUppercase && hasNoEmailMatches) {

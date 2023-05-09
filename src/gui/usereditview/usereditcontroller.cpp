@@ -16,10 +16,10 @@ UserEditController::UserEditController(QPointer<CalendarController> calendarCont
                                        QObject *obj)
     : UserConfigController(calendarController, dialogController_, obj)
 {
-    model->setEntries({{EnumStatus::NAME, NAME},
-                       {EnumStatus::SURNAME, SURNAME},
-                       {EnumStatus::EMAIL, EMAIL},
+    model->setEntries({{EnumStatus::EMAIL, EMAIL},
                        {EnumStatus::PASSWORD, PASSWORD},
+                       {EnumStatus::NAME, NAME},
+                       {EnumStatus::SURNAME, SURNAME},
                        {EnumStatus::COUNTRY, COUNTRY}});
 
     connect(this, &EntryController::confirm, [this] { emit updatePersonData(person); });

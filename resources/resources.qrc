@@ -10,5 +10,6 @@
         <file>newuser.png</file>
         <file>welcome.png</file>
         <file>left-arrow.png</file>
+        <file>emailinuse.png</file>
     </qresource>
 </RCC>

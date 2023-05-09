@@ -27,4 +27,5 @@ bool emailValidator(const QString &email)
 {
     return emailRegex.match(email).hasMatch();
 }
+
 } // namespace Validators
