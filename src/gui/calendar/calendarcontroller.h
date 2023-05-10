@@ -51,25 +51,29 @@ class CalendarController : public QObject
 
     QString getNiceDateFormat() const;
 
+private:
+    void setNewDate(int dayIndexDelta, int monthIndexDelta, int yearIndexDelta);
+
 public:
     CalendarController(QObject *obj = nullptr);
 
-    void setMinMaxRange(int newMin, int newMax);
+    //    void setMinMaxRange(int newMin, int newMax);
 
     void changeDate(int year, int month, int day);
 
     QDateTime getCurrentDateTime() const { return QDateTime(currentDate, QTime(0, 0, 0)); }
 
 signals:
-    void resetGui();
-
     void currentDateChanged(int day, int month, int year);
+
+    void uploadNewDate(int day, int month, int year);
 
     void niceFormatChanged(QString content);
 
-public slots:
+public:
+    Q_INVOKABLE void clear();
 
-    void clear();
+    Q_INVOKABLE void assignCurrent();
 
 private slots:
 

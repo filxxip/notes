@@ -1,81 +1,122 @@
 #include "usereditcontroller.h"
+#include <QTime>
 #include "../cpputils/utils.h"
 
-//to do
-UserEditController::UserEditController(QPointer<DialogController> dialogController_, QObject *obj)
-    : QObject(obj)
-    , dialogController(dialogController_)
-{
-    model->setEntries({{EnumStatus::NAME, "Name"},
-                       {EnumStatus::SURNAME, "Surname"},
-                       {EnumStatus::EMAIL, "Email"},
-                       {EnumStatus::PASSWORD, "Password"},
-                       {EnumStatus::COUNTRY, "Country"}});
+namespace {
+constexpr const char *NAME = "Name";
+constexpr const char *SURNAME = "Surname";
+constexpr const char *EMAIL = "Email";
+constexpr const char *PASSWORD = "Password";
+constexpr const char *COUNTRY = "Country";
+} // namespace
 
-    connect(this, &UserEditController::confirm, [this] { emit updatePersonData(person); });
-    connect(this, &UserEditController::remove, [this] {
-        emit clear();
-        emit removePersonData(person.id.get());
-    });
+//to do
+UserEditController::UserEditController(QPointer<CalendarController> calendarController,
+                                       QPointer<DialogController> dialogController_,
+                                       QObject *obj)
+    : UserConfigController(calendarController, dialogController_, obj)
+{
+    model->setEntries({{EnumStatus::EMAIL, EMAIL},
+                       {EnumStatus::PASSWORD, PASSWORD},
+                       {EnumStatus::NAME, NAME},
+                       {EnumStatus::SURNAME, SURNAME},
+                       {EnumStatus::COUNTRY, COUNTRY}});
+
+    connect(this, &EntryController::confirm, [this] { emit updatePersonData(person.value()); });
+    connect(this, &UserEditController::remove, this, &UserEditController::onRemove);
+    connect(this,
+            &UserEditController::logout,
+            this,
+            &UserEditController::onLogout); //disconnect do tego pozniej
+    Person person;
+    person.name = "Filip";
+    person.surname = "Poltoraczyk";
+    person.birthday = QDateTime(QDate(1999, 1, 1), QTime(1, 1, 1));
+    person.country = "Polska";
+    person.gender.setByCode(1);
+    person.password = "Pass";
+    person.email = "mail";
+    person.id = 10;
+    setNewPerson(std::move(person));
 }
 
-//na przycisk confirm lacze w gui sygnal z updatepersondata, na przycisk reset updates wysylam sygnal do gui i jakos odpalam move data from person to model a nastepnie wysylam sygnal reset data ktory w gui jest polaczony
-// z funkcjami ktory z modelu przy uzyciu get wlasnego poprawne stare dane i je wrzuca do entryfieldow, tam chyba stworze sygnal set text i bedizie cos takiego settext(model.value)
 void UserEditController::moveDataFromPersonToModel()
 {
-    model->setData(model->indexOf(EnumStatus::NAME), person.name.get(), EntryRoles::VALUE);
-    model->setData(model->indexOf(EnumStatus::SURNAME), person.surname.get(), EntryRoles::VALUE);
-    model->setData(model->indexOf(EnumStatus::COUNTRY), person.country.get(), EntryRoles::VALUE);
-    model->setData(model->indexOf(EnumStatus::PASSWORD), person.password.get(), EntryRoles::VALUE);
-    model->setData(model->indexOf(EnumStatus::EMAIL), person.email.get(), EntryRoles::VALUE);
+    model->setData(model->indexOf(EnumStatus::NAME), person->name.get(), EntryRoles::VALUE);
+    model->setData(model->indexOf(EnumStatus::SURNAME), person->surname.get(), EntryRoles::VALUE);
+    model->setData(model->indexOf(EnumStatus::COUNTRY), person->country.get(), EntryRoles::VALUE);
+    model->setData(model->indexOf(EnumStatus::PASSWORD), person->password.get(), EntryRoles::VALUE);
+    model->setData(model->indexOf(EnumStatus::EMAIL), person->email.get(), EntryRoles::VALUE);
 
-    auto birthday = person.birthday.get().date();
+    auto birthday = person->birthday.get().date();
     calendarController->changeDate(birthday.year(), birthday.month(), birthday.day());
+
+    radioButtonController->setValue(person->gender.getByCode(), true);
 
     emit resetData();
 }
 
-void UserEditController::updatePersonData()
+void UserEditController::onRemove()
 {
-    //tam na klika updatuje ten model i emituje sygnal zeby sobie tutaj pozmieniac i posprawdzac -> raczej to, tak jak w poprzednich onTextChanged : model.value = text, i jakby bedzie jeden nawrot danych ale mam nadzieje ze to nie zepsuje
-    auto name = model->data(model->indexOf(EnumStatus::NAME), EntryRoles::VALUE).value<QString>();
-    auto surname = model->data(model->indexOf(EnumStatus::SURNAME), EntryRoles::VALUE)
-                       .value<QString>();
-    auto country = model->data(model->indexOf(EnumStatus::COUNTRY), EntryRoles::VALUE)
-                       .value<QString>();
-    auto password = model->data(model->indexOf(EnumStatus::COUNTRY),
-                                EntryRoles::VALUE)
-                        .value<QString>(); //w gui bedzie non stop zmieniany model albo to co wyzej
+    dialogController->showDialog(DialogCodes::UserViews::CHECK_ACCOUNT_REMOVE);
+    dialogController->applyConnection(
+        [this](auto status) {
+            if (status == DialogController::ActivityStatus::ACCEPT) {
+                dialogController->showDialog(DialogCodes::UserViews::ACCOUNT_REMOVE_INFORMATION);
+                emit clear();
+                emit removePersonData(person->id.get());
+                person.reset();
+            }
+        },
+        true);
+}
 
+void UserEditController::onConfirmed()
+{
+    auto name = getPartOfPerson(EnumStatus::NAME);
+    auto surname = getPartOfPerson(EnumStatus::SURNAME);
+    auto country = getPartOfPerson(EnumStatus::COUNTRY);
+    auto password = getPartOfPerson(EnumStatus::PASSWORD);
     auto container = {&password, &name, &surname, &country};
 
     if (!Validators::fieldsValidator(container)) {
         dialogController->showDialog(DialogCodes::UserViews::INVALID_UPDATED_FIELDS);
-        //        moveDataFromPersonToModel();
-        //        emit resetData(); //sygnal lapany z gui i tam pobieram wtedy zmieniam z uzyciem po prostu modela
         return;
     }
 
     if (!Validators::passwordValidator(password)) {
         dialogController->showDialog(DialogCodes::UserViews::INVALID_UPDATED_PASSWORD);
-        //        moveDataFromPersonToModel();
-        //        emit resetData();
         return;
     }
+    person->name = std::move(name);
+    person->password = std::move(password);
+    person->surname = std::move(surname);
+    person->country = std::move(country);
+    person->birthday = calendarController->getCurrentDateTime();
+    person->gender.setByCode(radioButtonController->getValue(0) ? 0 : 1);
 
-    person.name = std::move(name);
-    person.password = std::move(password);
-    person.surname = std::move(surname);
-    person.country = std::move(country);
-    person.birthday = calendarController->getCurrentDateTime();
+    moveDataFromPersonToModel();
 
-    //    emit updatePersonData(person);//jakis fajny dialog by mozna dodac ze sie udalo
+    dialogController->showDialog(DialogCodes::UserViews::UPDATES_PERSOS_SUCCESS);
+
+    emit updatePersonData(person.value());
 }
 
-void UserEditController::setNewPerson(
-    Person person) //w gui cos w stylu on resetdata to pobieram z modelu
+void UserEditController::setNewPerson(Person person)
 {
     this->person = person;
 
     moveDataFromPersonToModel();
+}
+
+void UserEditController::onLogout()
+{
+    dialogController->showDialog(DialogCodes::UserViews::LOGOUT);
+    dialogController->applyConnection([this](auto status) {
+        if (status == DialogController::ActivityStatus::ACCEPT) {
+            emit changingViewOperationSuccess(person.value());
+            clear();
+            person.reset();
+        }
+    });
 }

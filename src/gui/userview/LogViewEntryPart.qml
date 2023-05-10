@@ -11,9 +11,6 @@ ListView {
     required property var controller
 
     property var entryModel: controller.model
-    Component.onCompleted: controller.clear.connect(clearAll)
-
-    signal clearAll
     readonly property int singleComponentHeight: configurationObject.combinedHeight / count
 
     interactive: false
@@ -30,6 +27,8 @@ ListView {
         passwordStatus: model.passwordStatus
         activeFocusOnTab: true
         onTextChanged: model.value = entry.text
-        Component.onCompleted: clearAll.connect(entry.clear)
+        Component.onCompleted: controller.clear.connect.connect(entry.clear)
+        Component.onDestruction: controller.clear.connect.disconnect(
+                                     entry.clear)
     }
 }

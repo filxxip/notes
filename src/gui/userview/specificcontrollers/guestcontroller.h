@@ -4,7 +4,7 @@
 #include "../../customdialog/dialogcontroller.h"
 #include "../entrycontroller.h"
 
-class GuestController : public EntryController
+class GuestController final : public EntryController
 {
     Q_OBJECT
 public:

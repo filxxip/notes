@@ -21,13 +21,18 @@ void LoginController::onConfirmed()
 {
     auto name = model->data(0, ModelStatuses::Roles::VALUE).toString();
     auto password = model->data(1, ModelStatuses::Roles::VALUE).toString();
+
     auto personWithGiveEmail = manager.getFiltered({{"email", name.toStdString()}});
-    if (personWithGiveEmail.has_value() && personWithGiveEmail->size() > 1) {
+
+    if (!personWithGiveEmail.has_value()) {
+        qDebug() << Messages::INVALID_KEYWORD;
+        return;
+    }
+    if (personWithGiveEmail->size() > 1) {
         qDebug() << DOUBLE_EMAIL;
         return;
     }
-
-    if (personWithGiveEmail->size() == 1 && personWithGiveEmail->at(0).password == password) {
+    if (personWithGiveEmail->at(0).password == password) {
         emitSuccessDialogWithClear(DialogCodes::UserViews::LOGIN_PERSON_SUCCESS,
                                    personWithGiveEmail->at(0));
     } else {

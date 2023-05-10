@@ -1,54 +1,28 @@
 #include "registercontroller.h"
 
 namespace {
-constexpr const char *MALE_DATABASE_CODE = "male";
-constexpr const char *FEMALE_DATABASE_CODE = "female";
-
 constexpr const char *NAME_PLACEHOLDER = "Name...";
 constexpr const char *SURNAME_PLACEHOLDER = "Surname...";
 constexpr const char *EMAIL_PLACEHOLDER = "Email...";
 constexpr const char *PASSWORD_PLACEHOLDER = "Password...";
 constexpr const char *COUNTRY_PLACEHOLDER = "Country...";
 
-constexpr const char *FEMALE_TEXT_BUTTON = "female";
-constexpr const char *MALE_TEXT_BUTTON = "male";
-
 const auto PERSON_CREATED = QStringLiteral("New user : %1 has just been added to database.");
 
 } // namespace
 
-RegisterController::RegisterController(QPointer<CalendarController> calendarController_,
+RegisterController::RegisterController(QPointer<CalendarController> calendarController,
                                        std::shared_ptr<DataClient> dataclient_,
                                        QPointer<DialogController> dialogController_,
                                        QObject *obj)
-    : EntryController(dialogController_, obj)
-    , calendarController(calendarController_)
+    : UserConfigController(calendarController, dialogController_, obj)
     , manager(dataclient_)
 {
-    radioButtonController = new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 1),
-                                                       RadioButtonModel(FEMALE_TEXT_BUTTON,
-                                                                        false,
-                                                                        1)},
-                                                      this);
-
-    model->setEntries({{EnumStatus::NAME, NAME_PLACEHOLDER},
-                       {EnumStatus::SURNAME, SURNAME_PLACEHOLDER},
-                       {EnumStatus::EMAIL, EMAIL_PLACEHOLDER},
+    model->setEntries({{EnumStatus::EMAIL, EMAIL_PLACEHOLDER},
                        {EnumStatus::PASSWORD, PASSWORD_PLACEHOLDER},
+                       {EnumStatus::NAME, NAME_PLACEHOLDER},
+                       {EnumStatus::SURNAME, SURNAME_PLACEHOLDER},
                        {EnumStatus::COUNTRY, COUNTRY_PLACEHOLDER}});
-
-    connect(this,
-            &RegisterController::clear,
-            [this] { //from level of qml also entries are cleared, they react on clear signal
-                calendarController->clear();
-                radioButtonController->setValue(0, true);
-            });
-}
-
-QString RegisterController::getPartOfPerson(EnumStatus componentEnum) const
-{
-    auto index = model->indexOf(componentEnum);
-    return model->data(index, ModelStatuses::Roles::VALUE).value<QString>();
 }
 
 void RegisterController::onConfirmed()
@@ -68,6 +42,17 @@ void RegisterController::onConfirmed()
 
     auto hasNoEmailMatches = !Validators::emailValidator(email);
     auto hasNoUppercase = !Validators::passwordValidator(password);
+
+    auto elementsNumber = DatabaseSupportMethods::getElementsWithGivenValue(manager,
+                                                                            "email",
+                                                                            name.toStdString());
+    if (!elementsNumber.has_value()) {
+        return;
+    }
+    if (elementsNumber.value() != 0) {
+        dialogController->showDialog(DialogCodes::UserViews::EMAIL_IN_USE);
+        return;
+    }
 
     if (hasNoUppercase && hasNoEmailMatches) {
         dialogController->showDialog(DialogCodes::UserViews::INVALID_REGISTER_PASSWORD_AND_EMAIL);
@@ -90,7 +75,7 @@ void RegisterController::onConfirmed()
     person.country = std::move(country);
     person.name = std::move(name);
     person.surname = std::move(surname);
-    person.gender = radioButtonController->getValue(0) ? MALE_DATABASE_CODE : FEMALE_DATABASE_CODE;
+    person.gender.setByCode(radioButtonController->getValue(0) ? 0 : 1);
 
     manager.add(person);
 

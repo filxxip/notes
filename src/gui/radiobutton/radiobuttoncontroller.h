@@ -6,6 +6,7 @@
 #include "../modelutils/customlistmodel.h"
 #include "../modelutils/listmodelbuilder.h"
 #include "../statuses.h"
+#include <map>
 
 class RadioButtonController : public QObject
 {
@@ -18,10 +19,11 @@ class RadioButtonController : public QObject
 
     QPointer<Model> model;
 
+    std::map<int, QString> codesMap;
+
 public:
     RadioButtonController(QVector<RadioButtonModel> modelElements, QObject *parent);
 
-public:
     void setValue(int index, bool value);
 
     bool getValue(int index) const;

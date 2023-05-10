@@ -194,4 +194,58 @@ const T &ConstDbData<T>::get() const
     throw UndefinedDataException("Undefined parameter: " + this->__name__.toStdString());
 }
 
+template<typename T>
+CodedDbData<T>::CodedDbData(QString name, std::map<int, T> codeMap_)
+    : DbData<T>(std::move(name))
+    , codeMap(codeMap_)
+{}
+
+template<typename T>
+std::optional<int> CodedDbData<T>::getCodeByValue(const T &codedValue) const
+{
+    auto itrValue = std::find_if(std::begin(codeMap),
+                                 std::end(codeMap),
+                                 [&codedValue](const auto &pair) {
+                                     return pair.second == codedValue;
+                                 });
+    if (itrValue != codeMap.end()) {
+        return itrValue->first;
+    }
+    return std::nullopt;
+}
+
+template<typename T>
+void CodedDbData<T>::set(T newvalue)
+{
+    if (getCodeByValue(newvalue).has_value()) {
+        DbData<T>::set(std::move(newvalue));
+        return;
+    }
+
+    throw UndefinedDataException("This value from get() method is not valid");
+}
+
+template<typename T>
+int CodedDbData<T>::getByCode() const
+{
+    auto val = getCodeByValue(get());
+    if (val.has_value()) {
+        return val.value();
+    }
+    throw UndefinedDataException("This value from get() method is not valid");
+}
+
+template<typename T>
+void CodedDbData<T>::setByCode(int value)
+{
+    if (std::find_if(std::begin(codeMap),
+                     std::end(codeMap),
+                     [value](const auto &pair) { return pair.first == value; })
+        != std::end(codeMap)) {
+        set(codeMap[value]);
+        return;
+    }
+    throw UndefinedDataException("This code is not valid : " + std::to_string(value));
+}
+
 #include "utils/basicdatabasedataregister.h"

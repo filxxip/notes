@@ -23,10 +23,50 @@ Item {
 
     readonly property alias window: window
 
+    readonly property alias swipeIn: swipeIn
+
+    readonly property alias userEditView: userEditView
+
     QtObject {
         id: window
         readonly property int width: 800
         readonly property int height: 640
+    }
+
+    QtObject {
+        id: userEditView
+
+        readonly property int combinedListViewHeight: 200
+        readonly property int outerColumnSpacing: 25
+
+        readonly property int listviewSpacing: 8
+        readonly property int defaultEntryWidth: 300
+        readonly property string disabledEmailMessage: "Changing email disabled"
+
+        readonly property int messagePadding: 20
+        readonly property int messageWidth: 300
+        readonly property int swipeInComponentWidth: 320
+        readonly property int messageSwipeDuration: 300
+        readonly property int messageSwipeX: 0
+
+        readonly property int birthdayRowSpacing: -5
+        readonly property string birthdayContentText: "Birthday"
+
+        readonly property string resetContentText: "RESET"
+        readonly property string saveContentText: "SAVE"
+
+        readonly property int buttonWidth: 130
+        readonly property int buttonHeight: 40
+        readonly property int buttonSpacing: 100
+
+        readonly property int dateChooserFontSize: 17
+        readonly property int dateChooserWidth: 300
+        readonly property int dateChooserHeight: 100
+        readonly property int dateChooserItemsNumber: 3
+        readonly property int dateSwipeDuration: 500
+
+        readonly property int swipeInDateHeight: 100
+        readonly property int dateSwipeX: 0
     }
 
     QtObject {
@@ -85,7 +125,7 @@ Item {
             readonly property int combinedWidth: 40
             readonly property int textHeight: 15
             readonly property int fontSize: 14
-            readonly property int spacing: 170
+            readonly property int spacing: 170 //przerzucic tego radio button do wyzszego scopa bo zarowno edit view korzysta jak i ten
         }
 
         readonly property var userViewDetails: [registerView, loginView, guestView]
@@ -103,6 +143,7 @@ Item {
         readonly property int accessButtonHeight: 20
         readonly property int accessButtonSpacing: 20
         readonly property int radiusOfMainRectangle: 10
+        readonly property int entryFontSize: 16
 
         readonly property var dateChooser: QtObject {
             readonly property int spacing: 40
@@ -147,6 +188,18 @@ Item {
                 color: "#17486d"
             }
         }
+        readonly property var labelEntryGradient: Gradient {
+            orientation: Qt.Horizontal
+            GradientStop {
+                position: 0
+                color: "#ed8179"
+            }
+
+            GradientStop {
+                position: 1
+                color: "red"
+            }
+        }
         readonly property var enabledButtonGradient: Gradient {
             GradientStop {
                 position: 0
@@ -170,6 +223,16 @@ Item {
                 color: "#f22213"
             }
         }
+    }
+    QtObject {
+        id: swipeIn
+
+        readonly property string widthProperty: "width"
+        readonly property int radius: 10
+        readonly property int defaultPadding: 0
+        readonly property int defaultDuration: 1000
+        readonly property int buttonWidth: 20
+        readonly property string buttonImage: "qrc:/resources/left-arrow.png" //pozniej osobny qtobject
     }
 
     QtObject {

@@ -2,7 +2,7 @@
 
 #include "../entrycontroller.h"
 
-class LoginController : public EntryController
+class LoginController final : public EntryController
 {
     Q_OBJECT
 

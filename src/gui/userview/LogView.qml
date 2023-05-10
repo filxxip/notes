@@ -148,13 +148,10 @@ Column {
                     anchors.centerIn: itemColumn
                     spacing: GUIConfig.userView.dateChooser.spacing
                     DateChooser {
+                        width: GUIConfig.dateChooser.basicTumblerWidth * 3
                         backgroundColor: GUIConfig.colors.transparent
                         height: GUIConfig.userView.dateChooser.height
-                        property var activeComponent: logController.controllers.registerController
-
-                        Component.onCompleted: activeComponent.calendarController.resetGui.connect(
-                                                   reset)
-                        controller: activeComponent.calendarController
+                        controller: logController.controllers.registerController.calendarController
                         itemNumber: GUIConfig.userView.dateChooser.itemNumber
                     }
 

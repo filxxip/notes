@@ -11,6 +11,7 @@ import "src/gui/customdialog"
 import "src/gui/userview"
 import "src/gui/qmlutils"
 import "src/gui/calendar"
+import "src/gui/usereditview"
 
 Window {
     Rectangle {
@@ -37,7 +38,58 @@ Window {
     //            interactive: false
 
     //            Item {
-    LogView {}
+    UserProfileView {
+        id: userEditView
+        //        anchors.left: outerRectangle.left
+        anchors.centerIn: parent
+        anchors.fill: parent
+    }
+    //    Popup {
+    //        x: 400
+
+    //        y: 400
+    //        enter: Transition {
+    //            NumberAnimation {
+    //                property: "width"
+    //                from: 0
+    //                to: 300
+    //                duration: 600
+    //            }
+    //            //            NumberAnimation {
+    //            //                property: "x"
+    //            //                from: popp.x + popp.width
+    //            //                to: popp.x + 0.5 * popp.width
+    //            //                duration: 600
+    //            //            }
+    //        }
+    //        exit: Transition {
+    //            NumberAnimation {
+    //                property: "width"
+    //                from: popp.width
+    //                to: 0
+    //                duration: 600
+    //            }
+    //        }
+    //        clip: true
+    //        contentItem: Rectangle {
+    //            color: "red"
+    //            Rectangle {
+    //                width: 50
+    //                height: 50
+    //                anchors.right: parent.right
+    //                color: "black"
+    //            }
+
+    //            width: 300
+    //            height: 300
+    //        }
+    //        id: popp
+    //        width: 300
+    //        height: 300
+    //        //        background: Rectangle {
+    //        //            color: "transparent"
+    //        //        }
+    //    }
 
     //    CustomRadioButton {
     //        controller: buttonController

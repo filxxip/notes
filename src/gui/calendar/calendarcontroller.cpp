@@ -38,34 +38,7 @@ CalendarController::CalendarController(QObject *obj)
                      &CalendarController::onCurrentDateChanged);
 }
 
-QString CalendarController::getNiceDateFormat() const
-{
-    return QString("%1 %2 %3")
-        .arg(currentDate.day())
-        .arg(monthModel->data(currentDate.month() - 1, EnumStatus::CONTENT).toString())
-        .arg(currentDate.year());
-}
-
-void CalendarController::changeDate(int year, int month, int day)
-{
-    emit currentDateChanged(day - 1, month - 1, year - minimumYear);
-}
-
-void CalendarController::clear()
-{
-    emit resetGui();
-    currentDate = QDate(minimumYear, 1, 1);
-}
-
-void CalendarController::setMinMaxRange(int newMin, int newMax)
-{
-    minimumYear = newMin;
-    maximumYear = newMax;
-}
-
-void CalendarController::onCurrentDateChanged(int dayIndexDelta,
-                                              int monthIndexDelta,
-                                              int yearIndexDelta)
+void CalendarController::setNewDate(int dayIndexDelta, int monthIndexDelta, int yearIndexDelta)
 {
     auto day = dayIndexDelta + 1;
     auto month = monthIndexDelta + 1;
@@ -82,6 +55,38 @@ void CalendarController::onCurrentDateChanged(int dayIndexDelta,
     }
 
     currentDate = QDate(year, month, qMin(day, dayModel->rowCount()));
+}
+
+QString CalendarController::getNiceDateFormat() const
+{
+    return QString("%1 %2 %3")
+        .arg(currentDate.day())
+        .arg(monthModel->data(currentDate.month() - 1, EnumStatus::CONTENT).toString())
+        .arg(currentDate.year());
+}
+//directly from cpp
+void CalendarController::changeDate(int year, int month, int day)
+{
+    onCurrentDateChanged(day - 1, month - 1, year - minimumYear);
+    emit uploadNewDate(day - 1, month - 1, year - minimumYear);
+}
+
+void CalendarController::assignCurrent()
+{
+    changeDate(currentDate.year(), currentDate.month(), currentDate.day());
+}
+
+void CalendarController::clear()
+{
+    changeDate(minimumYear, 1, 1);
+}
+
+//directly from gui
+void CalendarController::onCurrentDateChanged(int dayIndexDelta,
+                                              int monthIndexDelta,
+                                              int yearIndexDelta)
+{
+    setNewDate(dayIndexDelta, monthIndexDelta, yearIndexDelta);
 
     emit niceFormatChanged(getNiceDateFormat());
 }

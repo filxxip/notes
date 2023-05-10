@@ -15,6 +15,6 @@ void EntryController::emitSuccessDialogWithClear(int code, Person person)
     emit clear();
     dialogController->showDialog(code);
     dialogController->applyConnection([this, person = std::move(person)](auto status) mutable {
-        emit operationSuccess(std::move(person));
+        emit changingViewOperationSuccess(std::move(person));
     });
 }

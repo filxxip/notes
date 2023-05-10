@@ -84,6 +84,29 @@ public:
 };
 
 template<typename T>
+class CodedDbData : public DbData<T>
+{
+    std::map<int, T> codeMap;
+
+    std::optional<int> getCodeByValue(const T &codedValue) const;
+
+public:
+    CodedDbData() = default;
+
+    using DbData<T>::operator=;
+
+    CodedDbData(QString name, std::map<int, T> codeMap_);
+
+    void set(T newvalue) override;
+
+    using DbData<T>::get;
+
+    int getByCode() const;
+
+    void setByCode(int value);
+};
+
+template<typename T>
 void to_json(json &j, const BaseData<T> &p);
 
 template<typename T>
@@ -98,3 +121,8 @@ using ConstIntData = ConstDbData<int>;
 using ConstStrData = ConstDbData<QString>;
 using ConstDateData = ConstDbData<QDateTime>;
 using ConstBoolData = ConstDbData<bool>;
+
+using CodedIntData = CodedDbData<int>;
+using CodedStrData = CodedDbData<QString>;
+using CodedDateData = CodedDbData<QDateTime>;
+using CodedBoolData = CodedDbData<bool>;

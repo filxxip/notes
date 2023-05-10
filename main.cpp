@@ -22,6 +22,7 @@
 #include "src/gui/calendar/calendarcontroller.h"
 #include "src/gui/customdialog/dialogcontroller.h"
 #include "src/gui/radiobutton/radiobuttoncontroller.h"
+#include "src/gui/usereditview/usereditcontroller.h"
 #include "src/gui/userview/logcontroller.h"
 #include <cctype>
 #include <chrono>
@@ -86,11 +87,15 @@ int main(int argc, char *argv[])
         //        listmodel->setEntries({entry1, entry2, entry3, entry4});
 
         auto buttonController = new RadioButtonController({entry1, entry2, entry3, entry4}, &engine);
+        auto userViewController = new UserEditController(new CalendarController(&engine),
+                                                         dialogController,
+                                                         &engine);
 
         auto logController = new LogController(ptr, dialogController, &engine);
         engine.rootContext()->setContextProperty("logController", logController);
         engine.rootContext()->setContextProperty("dialogController", dialogController);
         engine.rootContext()->setContextProperty("buttonController", buttonController);
+        engine.rootContext()->setContextProperty("userEditController", userViewController);
         engine.load(url);
 
         return app.exec();

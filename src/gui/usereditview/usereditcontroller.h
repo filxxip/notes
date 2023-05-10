@@ -4,47 +4,43 @@
 #include "../calendar/calendarcontroller.h"
 #include "../customdialog/dialogcontroller.h"
 #include "../models/userviewlistmodel.h"
+#include "../radiobutton/radiobuttoncontroller.h"
 #include "../statuses.h"
+#include "../userview/entrycontroller.h"
+#include "../userview/specificcontrollers/registercontroller.h"
 
-//to do
-class UserEditController : public QObject
+class UserEditController : public UserConfigController
 {
-    using EnumStatus = ModelStatuses::PersonComponents;
+    Q_OBJECT
     using EntryRoles = ModelStatuses::Roles;
 
-    Q_OBJECT
+    std::optional<Person> person;
 
-    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
-    Q_PROPERTY(UserViewListModel *userViewModel MEMBER model CONSTANT)
+public:
+    UserEditController(QPointer<CalendarController> calendarController,
+                       QPointer<DialogController> dialogController_,
+                       QObject *obj = nullptr);
 
-    Person person;
-    QPointer<UserViewListModel> model = new UserViewListModel(this);
-    QPointer<DialogController> dialogController;
-    QPointer<CalendarController> calendarController = new CalendarController(this);
+    Q_INVOKABLE void moveDataFromPersonToModel();
 
-    UserEditController(QPointer<DialogController> dialogController_, QObject *obj = nullptr);
-
-    void moveDataFromPersonToModel();
-
-    void reset();
+private slots:
+    void onRemove();
 
 public slots:
     void setNewPerson(Person person);
 
-    void updatePersonData();
+    void onConfirmed() override;
+
+    void onLogout();
 
 signals:
-    void updatePersonData(const Person &person);
-
-    void removePersonData(int id); //signals taken from upper controller
-
-    void clear();
-
     void resetData();
 
-    void confirm();
+    void updatePersonData(const Person &person);
 
     void remove();
 
-    //wyemitowac sygnal zeby sobie pobral z data jakas dana
+    void logout();
+
+    void removePersonData(int id);
 };

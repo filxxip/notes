@@ -1,20 +1,12 @@
 #pragma once
 
-#include "../entrycontroller.h"
+#include "../userconfigcontroller.h"
 
-class RegisterController : public EntryController
+class RegisterController final : public UserConfigController
 {
     Q_OBJECT
-    Q_PROPERTY(int someval MEMBER val CONSTANT)
-    Q_PROPERTY(RadioButtonController *radioButtonController MEMBER radioButtonController CONSTANT)
-    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
-    int val = 10;
+
     PeopleManager manager;
-
-    QPointer<CalendarController> calendarController;
-    QPointer<RadioButtonController> radioButtonController;
-
-    QString getPartOfPerson(EnumStatus componentEnum) const;
 
 public:
     RegisterController(QPointer<CalendarController> calendarController,

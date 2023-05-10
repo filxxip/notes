@@ -79,14 +79,15 @@ bool DialogController::showDialog(int code)
     return false;
 }
 
-void DialogController::applyConnection(std::function<void(ActivityStatus status)> method)
+void DialogController::applyConnection(std::function<void(ActivityStatus status)> method,
+                                       bool afterCurrentConnection)
 {
-    auto connection = new QMetaObject::Connection; //dodac metode na visibility
-    *connection = connect(this,
-                          &DialogController::activity,
-                          [this, method = std::move(method), connection](ActivityStatus status) {
-                              disconnect(*connection);
-                              delete connection;
-                              method(status);
-                          });
+    connect(
+        this,
+        &DialogController::activity,
+        this,
+        [this, method = std::move(method)](ActivityStatus status) { method(status); },
+        static_cast<Qt::ConnectionType>(
+            (afterCurrentConnection ? Qt::QueuedConnection : Qt::AutoConnection)
+            | Qt::SingleShotConnection)); //same as 258
 }
