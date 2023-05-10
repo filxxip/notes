@@ -48,6 +48,8 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/userview/logcontroller.h
     src/gui/userview/entrycontroller.h
     src/gui/userview/entrycontroller.cpp
+    src/gui/userview/userconfigcontroller.cpp
+    src/gui/userview/userconfigcontroller.h
 
     src/gui/userview/specificcontrollers/guestcontroller.cpp
     src/gui/userview/specificcontrollers/guestcontroller.h
@@ -129,6 +131,8 @@ qt_add_qml_module(appnotesdatabaseproject
 
         src/gui/usereditview/UserEditView.qml
         src/gui/usereditview/EntryLabel.qml
+        src/gui/usereditview/UserProfileView.qml
+        src/gui/usereditview/ButtonWithImage.qml
 
         src/gui/GUIConfig.qml
         src/gui/qmldir

@@ -1,50 +1,15 @@
 #include "registercontroller.h"
 
 namespace {
-constexpr const char *MALE_DATABASE_CODE = "male";
-constexpr const char *FEMALE_DATABASE_CODE = "female";
-
 constexpr const char *NAME_PLACEHOLDER = "Name...";
 constexpr const char *SURNAME_PLACEHOLDER = "Surname...";
 constexpr const char *EMAIL_PLACEHOLDER = "Email...";
 constexpr const char *PASSWORD_PLACEHOLDER = "Password...";
 constexpr const char *COUNTRY_PLACEHOLDER = "Country...";
 
-constexpr const char *FEMALE_TEXT_BUTTON = "female";
-constexpr const char *MALE_TEXT_BUTTON = "male";
-
 const auto PERSON_CREATED = QStringLiteral("New user : %1 has just been added to database.");
 
-//constexpr const char *DOUBLE_EMAIL
-//    = "This is email will not be unique in database or your data files. Check it and fix this issue.";
-
 } // namespace
-
-UserConfigController::UserConfigController(QPointer<CalendarController> calendarController_,
-                                           QPointer<DialogController> dialogController_,
-                                           QObject *obj)
-    : EntryController(dialogController_, obj)
-    , calendarController(calendarController_)
-{
-    radioButtonController = new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 1),
-                                                       RadioButtonModel(FEMALE_TEXT_BUTTON,
-                                                                        false,
-                                                                        1)},
-                                                      this);
-
-    connect(this,
-            &RegisterController::clear,
-            [this] { //from level of qml also entries are cleared, they react on clear signal
-                calendarController->clear();
-                radioButtonController->setValue(0, true);
-            });
-}
-
-QString UserConfigController::getPartOfPerson(EnumStatus componentEnum) const
-{
-    auto index = model->indexOf(componentEnum);
-    return model->data(index, ModelStatuses::Roles::VALUE).value<QString>();
-}
 
 RegisterController::RegisterController(QPointer<CalendarController> calendarController,
                                        std::shared_ptr<DataClient> dataclient_,
@@ -85,6 +50,8 @@ void RegisterController::onConfirmed()
         return;
     }
     if (elementsNumber.value() != 0) {
+        dialogController->showDialog(DialogCodes::UserViews::EMAIL_IN_USE);
+        return;
     }
 
     if (hasNoUppercase && hasNoEmailMatches) {
@@ -108,7 +75,7 @@ void RegisterController::onConfirmed()
     person.country = std::move(country);
     person.name = std::move(name);
     person.surname = std::move(surname);
-    person.gender = radioButtonController->getValue(0) ? MALE_DATABASE_CODE : FEMALE_DATABASE_CODE;
+    person.gender.setByCode(radioButtonController->getValue(0) ? 0 : 1);
 
     manager.add(person);
 

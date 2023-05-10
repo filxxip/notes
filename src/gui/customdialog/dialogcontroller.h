@@ -28,7 +28,12 @@ constexpr int REGISTER_GUEST_SUCCESS = 8;
 constexpr int LOGIN_PERSON_SUCCESS = 9;
 constexpr int INVALID_UPDATED_PASSWORD = 10;
 constexpr int INVALID_UPDATED_FIELDS = 11;
-}
+constexpr int EMAIL_IN_USE = 12;
+constexpr int UPDATES_PERSOS_SUCCESS = 13;
+constexpr int CHECK_ACCOUNT_REMOVE = 14;
+constexpr int ACCOUNT_REMOVE_INFORMATION = 15;
+constexpr int LOGOUT = 16;
+} // namespace UserViews
 
 } // namespace DialogCodes
 
@@ -78,5 +83,6 @@ signals:
     void activity(ActivityStatus status);
 
 public:
-    void applyConnection(std::function<void(ActivityStatus status)> method);
+    void applyConnection(std::function<void(ActivityStatus status)> method,
+                         bool afterCurrentConnection = false);
 };

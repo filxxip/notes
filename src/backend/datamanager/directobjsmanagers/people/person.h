@@ -1,5 +1,6 @@
 #pragma once
 #include <QObject>
+#include "../../../../gui/cpputils/utils.h"
 #include "../basicdatabasedata.h"
 
 struct Person
@@ -11,5 +12,5 @@ struct Person
     DateData birthday{"birthday"};
     StrData email{"email"};
     StrData password{"password"};
-    StrData gender{"gender"};
+    CodedStrData gender{"gender", {{0, DatabaseCodes::MALE}, {1, DatabaseCodes::FEMALE}}};
 };

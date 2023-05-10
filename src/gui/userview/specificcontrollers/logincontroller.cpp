@@ -21,12 +21,9 @@ void LoginController::onConfirmed()
 {
     auto name = model->data(0, ModelStatuses::Roles::VALUE).toString();
     auto password = model->data(1, ModelStatuses::Roles::VALUE).toString();
-    //    auto personWithGiveEmail = manager.getFiltered({{"email", name.toStdString()}});
-    //    if (personWithGiveEmail.has_value() && personWithGiveEmail->size() > 1) {
-    //        qDebug() << DOUBLE_EMAIL;
-    //        return;
-    //    }
+
     auto personWithGiveEmail = manager.getFiltered({{"email", name.toStdString()}});
+
     if (!personWithGiveEmail.has_value()) {
         qDebug() << Messages::INVALID_KEYWORD;
         return;

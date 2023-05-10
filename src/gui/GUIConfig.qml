@@ -36,8 +36,8 @@ Item {
     QtObject {
         id: userEditView
 
-        readonly property int combinedListViewHeight : 200
-        readonly property int outerColumnSpacing : 25
+        readonly property int combinedListViewHeight: 200
+        readonly property int outerColumnSpacing: 25
 
         readonly property int listviewSpacing: 8
         readonly property int defaultEntryWidth: 300
@@ -63,12 +63,10 @@ Item {
         readonly property int dateChooserWidth: 300
         readonly property int dateChooserHeight: 100
         readonly property int dateChooserItemsNumber: 3
+        readonly property int dateSwipeDuration: 500
 
-        readonly property int swipeInDateHeight : 100
+        readonly property int swipeInDateHeight: 100
         readonly property int dateSwipeX: 0
-
-
-
     }
 
     QtObject {

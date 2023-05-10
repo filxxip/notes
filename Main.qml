@@ -38,7 +38,10 @@ Window {
     //            interactive: false
 
     //            Item {
-    UserEditView {
+    UserProfileView {
+        id: userEditView
+        //        anchors.left: outerRectangle.left
+        anchors.centerIn: parent
         anchors.fill: parent
     }
     //    Popup {

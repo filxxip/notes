@@ -6,15 +6,21 @@ import QtQuick.Controls 2.15
 import QtQuick.Shapes 1.15
 import "../calendar"
 
-Rectangle {
+Item {
+    id: mainRectangle
+    height: 400
+    width: 400
     Column {
+        id: innerRectangle
+        anchors.left: mainRectangle.left
         spacing: GUIConfig.userEditView.outerColumnSpacing
         Column {
+            //            anchors.fill: innerRectangle
             spacing: GUIConfig.userEditView.listviewSpacing
             ListView {
                 id: listview
                 readonly property var entryModel: userEditController.model
-                signal clearAll
+                //                signal clearAll
                 //todo sygnal clear
                 readonly property int singleComponentHeight: GUIConfig.userEditView.combinedListViewHeight / count
 
@@ -45,9 +51,13 @@ Rectangle {
                         Component.onCompleted: {
                             setModelValue()
                             userEditController.resetData.connect(setModelValue)
+                            userEditController.clear.connect(entry.clear)
                         }
-                        Component.onDestruction: userEditController.resetData.disconnect(
-                                                     setModelValue)
+                        Component.onDestruction: {
+                            userEditController.resetData.disconnect(
+                                        setModelValue)
+                            userEditController.clear.disconnect(entry.clear)
+                        }
                     }
                 }
             }
@@ -61,10 +71,7 @@ Rectangle {
                     width: GUIConfig.userEditView.messageWidth
                     verticalAlignment: Text.AlignVCenter
                 }
-                //jakie oczekiwane zarobki, od kiedy praca, jaki wymiar, wakacje a nie wakacje,
-                //dlaczego bcf, co cie interesuje z programowania, wlasne propjekty, doswiadczenie, hobby po angielsku, projekt
             }
-            //            }
             SwipeInComponent {
                 id: swiperMessage
                 innerColor: GUIConfig.colors.grey
@@ -142,6 +149,7 @@ Rectangle {
         width: GUIConfig.userEditView.swipeInComponentWidth
         height: GUIConfig.userEditView.swipeInDateHeight
         customContentItem: mycomponent
+        duration: GUIConfig.userEditView.dateSwipeDuration
         x: GUIConfig.userEditView.dateSwipeX
         y: birthdayRow.y + 0.5 * birthdayRow.height - 0.5 * height
     }

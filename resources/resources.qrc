@@ -11,5 +11,11 @@
         <file>welcome.png</file>
         <file>left-arrow.png</file>
         <file>emailinuse.png</file>
+        <file>logout.png</file>
+        <file>removeaccount.png</file>
+        <file>question.png</file>
+        <file>resources.qrc</file>
+        <file>sad.png</file>
+        <file>updateperson.png</file>
     </qresource>
 </RCC>

@@ -8,6 +8,11 @@ namespace Messages {
 constexpr const char *INVALID_KEYWORD = "Keyword passed as parameter is invalid.";
 }
 
+namespace DatabaseCodes {
+constexpr const char *MALE = "male";
+constexpr const char *FEMALE = "female";
+} // namespace DatabaseCodes
+
 namespace Validators {
 
 bool fieldsValidator(std::initializer_list<QString *> container);
