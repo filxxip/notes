@@ -11,14 +11,7 @@ enum class UserViews { REGISTER, LOGIN, GUEST };
 
 enum class UserViewsRoles { TEXT, TYPE };
 
-enum class PersonComponents {
-    EMAIL,
-    PASSWORD,
-    NAME,
-    SURNAME,
-    BIRTHDAY,
-    COUNTRY,
-};
+enum class PersonComponents { EMAIL, PASSWORD, NAME, SURNAME, BIRTHDAY, COUNTRY, CREATED };
 
 enum class Roles { PLACEHOLDER, VALUE, COLOR, PASSWORD_STATUS };
 

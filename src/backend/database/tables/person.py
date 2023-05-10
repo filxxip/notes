@@ -11,7 +11,7 @@ from ..utils import set_conversion, convert_str_date_to_datetime
 from ..constants import tables_names
 
 @auto_apply_jsonify_content
-@set_conversion(birthday=convert_str_date_to_datetime)
+@set_conversion(birthday=convert_str_date_to_datetime, created =convert_str_date_to_datetime)
 class Person(Base):
     __tablename__ = tables_names.peopleName
     id: Mapped[int] = mapped_column(
@@ -23,6 +23,7 @@ class Person(Base):
     country: Mapped[str] = mapped_column(String(50))
     birthday: Mapped[str] = mapped_column(DateTime())
     gender : Mapped[str] = mapped_column(String(30))
+    created: Mapped[str] = mapped_column(DateTime())
 
     @hybrid_property
     def age(self):

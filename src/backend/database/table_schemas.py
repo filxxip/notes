@@ -7,6 +7,7 @@ people_schema = {
         "password": {"type": "string"},
         "country": {"type": "string"},
         "birthday": {"type": "string"},
+        "created": {"type": "string"},
         "gender" : {"enum":["male", "female"]}
     },
     "additionalProperties": False

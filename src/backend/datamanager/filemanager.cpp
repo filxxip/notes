@@ -55,6 +55,7 @@ bool FileManager::removeFile(const Path &path) const
     auto file = getFile(path);
     if (!file.has_value() || !file->open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "Cannot write data to file";
+        return false;
     }
     return file->remove();
 }

@@ -13,19 +13,6 @@
 namespace {
 constexpr int DEFAULT_MAXIMUM_YEAR = 2022;
 constexpr int DEFAULT_MINIMUM_YEAR = 1960;
-const QVector<QString> monthsNames = {"January",
-                                      "February",
-                                      "March",
-                                      "April",
-                                      "May",
-                                      "June",
-                                      "July",
-                                      "August",
-                                      "September",
-                                      "October",
-                                      "November",
-                                      "December"};
-
 } // namespace
 
 class CalendarController : public QObject

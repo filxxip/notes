@@ -10,6 +10,7 @@ struct Person
     StrData surname{"surname"};
     StrData country{"country"};
     DateData birthday{"birthday"};
+    DateData created{"created"};
     StrData email{"email"};
     StrData password{"password"};
     CodedStrData gender{"gender", {{0, DatabaseCodes::MALE}, {1, DatabaseCodes::FEMALE}}};

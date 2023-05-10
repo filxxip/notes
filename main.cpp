@@ -41,14 +41,12 @@ int main(int argc, char *argv[])
 
     auto servermanager = PeopleManager(std::make_shared<ServerDataClient>());
 
-    //    for (int i = 1; i < 100; i++) {
+    //    for (int i = 1; i < 200; i++) {
     //        filemanager.remove(i);
     //    }
-    auto x = servermanager.get(3);
-    x->gender = "aaa";
-    auto el = filemanager.get();
+    auto el = servermanager.get();
     for (auto &e : el.value()) {
-        servermanager.add(e);
+        filemanager.add(e);
     }
 #endif
 

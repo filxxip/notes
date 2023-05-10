@@ -61,3 +61,20 @@ std::optional<int> getElementsWithGivenValue(const OverallManager<DataObject> &m
 }
 
 } // namespace DatabaseSupportMethods
+
+namespace DateStringAlternatives {
+const QVector<QString> monthsNames = {"January",
+                                      "February",
+                                      "March",
+                                      "April",
+                                      "May",
+                                      "June",
+                                      "July",
+                                      "August",
+                                      "September",
+                                      "October",
+                                      "November",
+                                      "December"};
+
+QString convertToStringFormat(const QDate &date);
+} // namespace DateStringAlternatives

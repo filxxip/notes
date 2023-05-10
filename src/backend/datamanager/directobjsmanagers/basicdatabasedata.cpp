@@ -217,6 +217,7 @@ std::optional<int> CodedDbData<T>::getCodeByValue(const T &codedValue) const
 template<typename T>
 void CodedDbData<T>::set(T newvalue)
 {
+    qDebug() << newvalue;
     if (getCodeByValue(newvalue).has_value()) {
         DbData<T>::set(std::move(newvalue));
         return;

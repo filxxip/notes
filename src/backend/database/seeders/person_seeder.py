@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from .seeder_base import Seeder
 from src.backend.database.tables import Base, Person
 
+
+
 from ..utils import convert_datetime_to_str
 
 
@@ -24,7 +26,8 @@ class PersonSeeder(Seeder):
             country = random.choice(countries)
             birthday = convert_datetime_to_str(datetime.now() - timedelta(days=365 * random.randint(18, 65)))
             birthday = datetime.now() - timedelta(days=365 * random.randint(18, 65))
+            creation = datetime.now()
             person = Person(name=name, surname=surname, email=email, password=password, country=country,
-                            birthday=birthday, gender = random.choice(["male", "female"]))
+                            birthday=birthday, gender = random.choice(["male", "female"]), created =creation )
             people.append(person)
         return people

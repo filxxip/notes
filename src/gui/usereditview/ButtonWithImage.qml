@@ -25,11 +25,13 @@ Item {
         LayoutMirroring.enabled: true
         spacing: 10
         Image {
+            id: img
             height: row.height - 2 * row.anchors.margins
             source: imagePath
             fillMode: Image.PreserveAspectFit
         }
         CustomButton {
+            width: item.width - img.width - 20
             height: row.height - 2 * row.anchors.margins
             contentText: buttonText
             onReleased: item.clickedSignal()

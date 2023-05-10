@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <QRegularExpression>
+#include <QStringLiteral>
 
 namespace {
 
@@ -29,3 +30,14 @@ bool emailValidator(const QString &email)
 }
 
 } // namespace Validators
+
+namespace DateStringAlternatives {
+QString convertToStringFormat(const QDate &date)
+{
+    return QStringLiteral("%1 %2 %3")
+        .arg(QString::number(date.day()),
+             DateStringAlternatives::monthsNames[date.month() - 1],
+             QString::number(date.year()));
+}
+
+} // namespace DateStringAlternatives

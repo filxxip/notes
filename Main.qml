@@ -49,6 +49,8 @@ Window {
         text: clockController.clock.second
     }
 
+
+
     //    Popup {
     //        x: 400
 

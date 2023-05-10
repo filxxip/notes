@@ -1,7 +1,7 @@
 #pragma once
 #include <QObject>
 #include "../../backend/datamanager/directobjsmanagers/people/person.h"
-#include "../calendar/calendarcontroller.h"
+#include "../cpputils/utils.h"
 #include "../customdialog/dialogcontroller.h"
 #include "../models/userviewlistmodel.h"
 #include "../radiobutton/radiobuttoncontroller.h"

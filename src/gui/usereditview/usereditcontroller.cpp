@@ -8,6 +8,7 @@ constexpr const char *SURNAME = "Surname";
 constexpr const char *EMAIL = "Email";
 constexpr const char *PASSWORD = "Password";
 constexpr const char *COUNTRY = "Country";
+constexpr const char *CREATED = "Created Date";
 } // namespace
 
 //to do
@@ -16,7 +17,8 @@ UserEditController::UserEditController(QPointer<CalendarController> calendarCont
                                        QObject *obj)
     : UserConfigController(calendarController, dialogController_, obj)
 {
-    model->setEntries({{EnumStatus::EMAIL, EMAIL},
+    model->setEntries({{EnumStatus::CREATED, CREATED},
+                       {EnumStatus::EMAIL, EMAIL},
                        {EnumStatus::PASSWORD, PASSWORD},
                        {EnumStatus::NAME, NAME},
                        {EnumStatus::SURNAME, SURNAME},
@@ -32,6 +34,7 @@ UserEditController::UserEditController(QPointer<CalendarController> calendarCont
     person.name = "Filip";
     person.surname = "Poltoraczyk";
     person.birthday = QDateTime(QDate(1999, 1, 1), QTime(1, 1, 1));
+    person.created = QDateTime().currentDateTime();
     person.country = "Polska";
     person.gender.setByCode(1);
     person.password = "Pass";
@@ -47,6 +50,9 @@ void UserEditController::moveDataFromPersonToModel()
     model->setData(model->indexOf(EnumStatus::COUNTRY), person->country.get(), EntryRoles::VALUE);
     model->setData(model->indexOf(EnumStatus::PASSWORD), person->password.get(), EntryRoles::VALUE);
     model->setData(model->indexOf(EnumStatus::EMAIL), person->email.get(), EntryRoles::VALUE);
+    model->setData(model->indexOf(EnumStatus::CREATED),
+                   DateStringAlternatives::convertToStringFormat(person->created.get().date()),
+                   EntryRoles::VALUE);
 
     auto birthday = person->birthday.get().date();
     calendarController->changeDate(birthday.year(), birthday.month(), birthday.day());

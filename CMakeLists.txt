@@ -117,6 +117,8 @@ qt_add_qml_module(appnotesdatabaseproject
         Main.qml
         src/gui/customdialog/CustomDialog.qml
         src/gui/calendar/DateChooser.qml
+        src/gui/calendar/Clock.qml
+        src/gui/calendar/TumblerComponent.qml
 
         src/gui/qmlutils/SwipeInComponent.qml
 

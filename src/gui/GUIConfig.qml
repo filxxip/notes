@@ -41,7 +41,7 @@ Item {
 
         readonly property int listviewSpacing: 8
         readonly property int defaultEntryWidth: 300
-        readonly property string disabledEmailMessage: "Changing email disabled"
+        readonly property string disabledProperty: "Changing this property disabled"
 
         readonly property int messagePadding: 20
         readonly property int messageWidth: 300

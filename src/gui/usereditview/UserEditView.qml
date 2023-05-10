@@ -15,13 +15,10 @@ Item {
         anchors.left: mainRectangle.left
         spacing: GUIConfig.userEditView.outerColumnSpacing
         Column {
-            //            anchors.fill: innerRectangle
             spacing: GUIConfig.userEditView.listviewSpacing
             ListView {
                 id: listview
                 readonly property var entryModel: userEditController.model
-                //                signal clearAll
-                //todo sygnal clear
                 readonly property int singleComponentHeight: GUIConfig.userEditView.combinedListViewHeight / count
 
                 interactive: false
@@ -64,7 +61,7 @@ Item {
             Component {
                 id: innerSwiperMessage
                 Text {
-                    text: GUIConfig.userEditView.disabledEmailMessage
+                    text: GUIConfig.userEditView.disabledProperty
                     leftPadding: GUIConfig.userEditView.messagePadding
                     font.pixelSize: GUIConfig.userView.entryFontSize
                     height: listview.singleComponentHeight
@@ -73,6 +70,9 @@ Item {
                 }
             }
             SwipeInComponent {
+                property int clickedElement: 0
+                readonly property var element: listview.itemAtIndex(
+                                                   clickedElement)
                 id: swiperMessage
                 innerColor: GUIConfig.colors.grey
                 width: GUIConfig.userEditView.swipeInComponentWidth
@@ -80,11 +80,18 @@ Item {
                 customContentItem: innerSwiperMessage
                 x: GUIConfig.userEditView.messageSwipeX
                 height: listview.singleComponentHeight
-                Component.onCompleted: y = listview.itemAtIndex(0).y
+                y: element ? element.y : 0
             }
-            Component.onCompleted: listview.itemAtIndex(
-                                       0).clickedSlot = (() => swiperMessage.open(
-                                                             ))
+            Component.onCompleted: {
+                listview.itemAtIndex(0).clickedSlot = (() => {
+                                                           swiperMessage.clickedElement = 0
+                                                           swiperMessage.open()
+                                                       })
+                listview.itemAtIndex(1).clickedSlot = (() => {
+                                                           swiperMessage.clickedElement = 1
+                                                           swiperMessage.open()
+                                                       })
+            }
             Row {
                 id: birthdayRow
                 spacing: GUIConfig.userEditView.birthdayRowSpacing

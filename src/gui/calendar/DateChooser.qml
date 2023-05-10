@@ -26,20 +26,6 @@ Rectangle {
 
     color: backgroundColor
 
-    Component {
-        id: delegateComponent
-        Label {
-            text: model.content
-            readonly property real absdisplacement: Math.abs(
-                                                        Tumbler.displacement)
-            opacity: 1.0 - absdisplacement / (Tumbler.tumbler.visibleItemCount / 2)
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pixelSize: outerRect.fontSize
-            color: absdisplacement < 0.5 ? GUIConfig.colors.red : GUIConfig.colors.black
-        }
-    }
-
     Row {
         anchors.fill: parent
         id: row
@@ -53,7 +39,11 @@ Rectangle {
                 model: modelData
                 width: outerRect.width / repeater.model.length
                 height: outerRect.height
-                delegate: delegateComponent
+                delegate: TumblerComponent {
+                    text: model.content
+                    font.pixelSize: outerRect.fontSize
+                }
+
                 onCurrentIndexChanged: repeater.dateChanged()
             }
 

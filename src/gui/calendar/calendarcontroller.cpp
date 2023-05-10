@@ -1,5 +1,6 @@
 #include "calendarcontroller.h"
 #include <QTimer>
+#include "clockcontroller.h"
 
 CalendarController::CalendarController(QObject *obj)
     : QObject(obj)
@@ -21,7 +22,7 @@ CalendarController::CalendarController(QObject *obj)
 
     QVector<CalendarModel> months;
     for (int i = 0; i < 12; i++) {
-        months.append({i + 1, monthsNames[i]});
+        months.append({i + 1, DateStringAlternatives::monthsNames[i]});
     }
 
     monthModel->setEntries(std::move(months));
