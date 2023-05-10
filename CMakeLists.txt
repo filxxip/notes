@@ -64,6 +64,9 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/calendar/calendarcontroller.h
     src/gui/calendar/calendarcontroller.cpp
 
+    src/gui/calendar/clockcontroller.cpp
+    src/gui/calendar/clockcontroller.h
+
     src/gui/radiobutton/radiobuttoncontroller.cpp
     src/gui/radiobutton/radiobuttoncontroller.h
 

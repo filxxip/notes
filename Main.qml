@@ -44,6 +44,11 @@ Window {
         anchors.centerIn: parent
         anchors.fill: parent
     }
+
+    Label {
+        text: clockController.clock.second
+    }
+
     //    Popup {
     //        x: 400
 

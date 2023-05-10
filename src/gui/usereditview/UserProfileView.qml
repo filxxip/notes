@@ -34,5 +34,13 @@ Rectangle {
             imagePath: "qrc:/resources/logout.png"
             onClickedSignal: userEditController.logout()
         }
+        ButtonWithImage {
+            anchors.right: column.right
+            width: 125
+            height: 50
+            buttonText: "Settings"
+            imagePath: "qrc:/resources/settings.png"
+            onClickedSignal: console.log("settings")
+        }
     }
 }

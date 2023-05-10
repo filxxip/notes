@@ -20,6 +20,7 @@
 #include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/backend/datamanager/serverdataclient.h"
 #include "src/gui/calendar/calendarcontroller.h"
+#include "src/gui/calendar/clockcontroller.h"
 #include "src/gui/customdialog/dialogcontroller.h"
 #include "src/gui/radiobutton/radiobuttoncontroller.h"
 #include "src/gui/usereditview/usereditcontroller.h"
@@ -76,6 +77,8 @@ int main(int argc, char *argv[])
     auto ptr = fileClient;
 
     if (ptr->isValid()) {
+        auto clockController = new ClockController(&engine);
+
         auto dialogController = new DialogController(ptr, &engine);
         //        QPointer<CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>> listmodel
         //            = new CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>(&engine);
@@ -96,6 +99,8 @@ int main(int argc, char *argv[])
         engine.rootContext()->setContextProperty("dialogController", dialogController);
         engine.rootContext()->setContextProperty("buttonController", buttonController);
         engine.rootContext()->setContextProperty("userEditController", userViewController);
+        engine.rootContext()->setContextProperty("clockController", clockController);
+
         engine.load(url);
 
         return app.exec();

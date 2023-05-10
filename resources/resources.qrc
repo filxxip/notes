@@ -17,5 +17,6 @@
         <file>resources.qrc</file>
         <file>sad.png</file>
         <file>updateperson.png</file>
+        <file>settings.png</file>
     </qresource>
 </RCC>
