@@ -126,8 +126,12 @@ Column {
         enabled: swipeView.currentIndex !== 0
         model: logController.switcherModel
         tabSelectorEnum: logController.userViewType
-        Component.onCompleted: switched.connect(
-                                   newstatus => logController.userViewType = newstatus)
+        Component.onCompleted: {
+            switched.connect(
+                        newstatus => logController.userViewType = newstatus)
+            console.log(y)
+            console.log(height)
+        }
     }
 
     Rectangle {
@@ -151,7 +155,7 @@ Column {
                         width: GUIConfig.dateChooser.basicTumblerWidth * 3
                         backgroundColor: GUIConfig.colors.transparent
                         height: GUIConfig.userView.dateChooser.height
-                        controller: logController.controllers.registerController.calendarController
+                        controller: calendarController
                         itemNumber: GUIConfig.userView.dateChooser.itemNumber
                     }
 

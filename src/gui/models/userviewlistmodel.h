@@ -3,7 +3,7 @@
 #include "../modelutils/customlistmodel.h"
 #include "entryfieldmodel.h"
 
-class UserViewListModel : public CustomListModel<EntryFieldModel, ModelStatuses::Roles>
+class UserViewListModel final : public CustomListModel<EntryFieldModel, ModelStatuses::Roles>
 {
 public:
     UserViewListModel(QObject *parent = nullptr);

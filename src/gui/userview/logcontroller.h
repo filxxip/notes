@@ -29,14 +29,14 @@ class LogController : public QObject
 
     Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
 public:
-    LogController(std::shared_ptr<DataClient> dataclient_,
+    LogController(std::shared_ptr<PeopleManager> peopleManager,
+                  QPointer<CalendarController> calendarController_,
                   QPointer<DialogController> dialogController_,
                   QObject *obj = nullptr);
 
 private:
     EnumStatus m_userView = EnumStatus::LOGIN;
-    QPointer<CalendarController> calendarController = new CalendarController(
-        this); //w ogolnym controlerze
+    QPointer<CalendarController> calendarController;
 
     QHash<EnumStatus, QPointer<EntryController>> controllers;
     QQmlPropertyMap *ownerData = new QQmlPropertyMap(this);

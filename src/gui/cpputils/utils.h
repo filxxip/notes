@@ -45,22 +45,23 @@ std::optional<int> convertCodeToIndex(int code,
 
 } // namespace DatabaseUtilsFunctions
 
-namespace DatabaseSupportMethods {
+//namespace DatabaseSupportMethods {
 
-template<typename Value, typename DataObject>
-std::optional<int> getElementsWithGivenValue(const OverallManager<DataObject> &manager,
-                                             const std::string &keyword,
-                                             Value value)
-{
-    auto searchedElements = manager.getFiltered({{keyword, value}});
-    if (searchedElements.has_value()) {
-        return searchedElements->size();
-    }
-    qDebug() << Messages::INVALID_KEYWORD;
-    return std::nullopt;
-}
+//template<typename Value, typename DataObject>
+//std::optional<int> getElementsWithGivenValue(
+//    const std::shared_ptr<OverallManager<DataObject>> &manager,
+//    const std::string &keyword,
+//    Value value)
+//{
+//    auto searchedElements = manager->getFiltered({{keyword, value}});
+//    if (searchedElements.has_value()) {
+//        return searchedElements->size();
+//    }
+//    qDebug() << Messages::INVALID_KEYWORD;
+//    return std::nullopt;
+//}
 
-} // namespace DatabaseSupportMethods
+//} // namespace DatabaseSupportMethods
 
 namespace DateStringAlternatives {
 const QVector<QString> monthsNames = {"January",

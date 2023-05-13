@@ -38,7 +38,7 @@ constexpr int CLOSE_APP = 17;
 
 } // namespace DialogCodes
 
-class DialogController : public QObject
+class DialogController final : public QObject
 {
     Q_OBJECT
 

@@ -77,37 +77,39 @@ int main(int argc, char *argv[])
     auto ptr = fileClient;
 
     if (ptr->isValid()) {
-        auto dialogController = new DialogController(ptr, &engine);
-        auto mainController = new MainController(dialogController, &engine);
+        //        auto dialogController = new DialogController(ptr, &engine);
+        auto mainController = new MainController(ptr, &engine);
 
-        auto clockController = new ClockController(&engine);
+        //        auto clockController = new ClockController(&engine);
 
-        //        QPointer<CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>> listmodel
-        //            = new CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>(&engine);
-        auto entry1 = RadioButtonModel("text1", false, 1);
-        auto entry2 = RadioButtonModel("text2", true, 1);
-        auto entry3 = RadioButtonModel("text3", false, 2);
-        auto entry4 = RadioButtonModel("text4", false, 2);
+        //        //        QPointer<CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>> listmodel
+        //        //            = new CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>(&engine);
+        //        auto entry1 = RadioButtonModel("text1", false, 1);
+        //        auto entry2 = RadioButtonModel("text2", true, 1);
+        //        auto entry3 = RadioButtonModel("text3", false, 2);
+        //        auto entry4 = RadioButtonModel("text4", false, 2);
 
         //        listmodel->setEntries({entry1, entry2, entry3, entry4});
 
-        auto buttonController = new RadioButtonController({entry1, entry2, entry3, entry4}, &engine);
-        auto userViewController = new UserEditController(new CalendarController(&engine),
-                                                         dialogController,
-                                                         &engine);
+        //        auto buttonController = new RadioButtonController({entry1, entry2, entry3, entry4}, &engine);
+        //        auto userViewController = new UserEditController(new CalendarController(&engine),
+        //                                                         dialogController,
+        //                                                         &engine);
 
-        auto logController = new LogController(ptr, dialogController, &engine);
+        //        auto logController = new LogController(ptr, dialogController, &engine);
 
-        auto mainUserController = new MainUserController(&engine);
+        //        auto mainUserController = new MainUserController(&engine);
 
         engine.rootContext()->setContextProperty("mainController", mainController);
-        engine.rootContext()->setContextProperty("logController", logController);
+        mainController->registerControllers(engine.rootContext());
+        /*     engine.rootContext()->setContextProperty("logController", logController);
 
         engine.rootContext()->setContextProperty("dialogController", dialogController);
         engine.rootContext()->setContextProperty("buttonController", buttonController);
         engine.rootContext()->setContextProperty("userEditController", userViewController);
         engine.rootContext()->setContextProperty("clockController", clockController);
-        engine.rootContext()->setContextProperty("mainUserController", mainUserController);
+        engine.rootContext()->setContextProperty("mainUserController", mainUserController)*/
+        ;
 
         engine.load(url);
 

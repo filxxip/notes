@@ -18,7 +18,7 @@ Item {
             spacing: GUIConfig.userEditView.listviewSpacing
             ListView {
                 id: listview
-                readonly property var entryModel: userEditController.model
+                readonly property var entryModel: mainUserController.userEditController.model
                 readonly property int singleComponentHeight: GUIConfig.userEditView.combinedListViewHeight / count
 
                 interactive: false
@@ -47,13 +47,16 @@ Item {
 
                         Component.onCompleted: {
                             setModelValue()
-                            userEditController.resetData.connect(setModelValue)
-                            userEditController.clear.connect(entry.clear)
+                            mainUserController.userEditController.resetData.connect(
+                                        setModelValue)
+                            mainUserController.userEditController.clear.connect(
+                                        entry.clear)
                         }
                         Component.onDestruction: {
-                            userEditController.resetData.disconnect(
+                            mainUserController.userEditController.resetData.disconnect(
                                         setModelValue)
-                            userEditController.clear.disconnect(entry.clear)
+                            mainUserController.userEditController.clear.disconnect(
+                                        entry.clear)
                         }
                     }
                 }
@@ -105,7 +108,7 @@ Item {
                     height: listview.singleComponentHeight
                     clickedSlot: () => swiper.open()
 
-                    placeholder: userEditController.calendarController.niceFormat
+                    placeholder: calendarController.niceFormat
                     customcolor: GUIConfig.colors.red
                     readOnly: true
                 }
@@ -115,7 +118,7 @@ Item {
                 combinedWidth: GUIConfig.userView.radioButton.combinedWidth
                 combinedHeight: GUIConfig.userView.radioButton.combinedHeight
                 textHeight: GUIConfig.userView.radioButton.textHeight
-                controller: userEditController.radioButtonController
+                controller: mainUserController.userEditController.radioButtonController
                 fontSize: GUIConfig.userView.radioButton.fontSize
                 spacing: GUIConfig.userView.radioButton.spacing
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -145,7 +148,7 @@ Item {
             fontSize: GUIConfig.userEditView.dateChooserFontSize
             width: GUIConfig.userEditView.dateChooserWidth
             height: GUIConfig.userEditView.dateChooserHeight
-            controller: userEditController.calendarController
+            controller: calendarController
             itemNumber: GUIConfig.userEditView.dateChooserItemsNumber
         }
     }

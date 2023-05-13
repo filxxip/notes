@@ -21,7 +21,7 @@ enum class CalendarRoles { CONTENT, VALUE, OBJ };
 
 enum class RadioButtonRoles { TEXT, VALUE, GROUP };
 
-enum class InnerUserEditViews { EDIT };
+enum class InnerUserEditViews { EDIT, NOTEBOOK };
 
 Q_ENUM_NS(InnerUserEditViews);
 

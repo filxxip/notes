@@ -11,6 +11,6 @@ template class CustomListModel<GuiDialog, ModelStatuses::DialogRoles>;
 template class CustomListModel<SwitcherModel<ModelStatuses::UserViews>,
                                ModelStatuses::UserViewsRoles>;
 template class CustomListModel<SwitcherModel<ModelStatuses::InnerUserEditViews>,
-                               ModelStatuses::InnerUserEditViews>;
+                               ModelStatuses::UserViewsRoles>;
 template class CustomListModel<CalendarModel, ModelStatuses::CalendarRoles>;
 template class CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>;

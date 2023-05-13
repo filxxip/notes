@@ -6,11 +6,11 @@ class RegisterController final : public UserConfigController
 {
     Q_OBJECT
 
-    PeopleManager manager;
+    std::shared_ptr<PeopleManager> manager;
 
 public:
     RegisterController(QPointer<CalendarController> calendarController,
-                       std::shared_ptr<DataClient> dataclient_,
+                       std::shared_ptr<PeopleManager> peopleManager,
                        QPointer<DialogController> dialogController_,
                        QObject *obj = nullptr);
 

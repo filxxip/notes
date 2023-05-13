@@ -8,7 +8,7 @@
 #include "../statuses.h"
 #include <map>
 
-class RadioButtonController : public QObject
+class RadioButtonController final : public QObject
 {
     using EnumStatus = ModelStatuses::RadioButtonRoles;
     using Model = CustomListModel<RadioButtonModel, EnumStatus>;

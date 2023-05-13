@@ -8,17 +8,24 @@ namespace {
 constexpr const char *REGISTER_CONTROLLER_NAME = "registerController";
 constexpr const char *LOGIN_CONTROLLER_NAME = "loginController";
 constexpr const char *GUEST_CONTROLLER_NAME = "guestController";
+
+constexpr char LOGIN_TEXT[] = "login";
+constexpr char REGISTER_TEXT[] = "register";
+constexpr char GUEST_TEXT[] = "log as guest";
 } // namespace
 
-LogController::LogController(std::shared_ptr<DataClient> dataclient_,
+LogController::LogController(std::shared_ptr<PeopleManager> peopleManager,
+                             QPointer<CalendarController> calendarController_,
                              QPointer<DialogController> dialogController_,
                              QObject *obj)
     : QObject(obj)
+    , calendarController(calendarController_)
 {
-    controllers = {{EnumStatus::REGISTER,
-                    new RegisterController(calendarController, dataclient_, dialogController_, this)},
-                   {EnumStatus::LOGIN, new LoginController(dataclient_, dialogController_, this)},
-                   {EnumStatus::GUEST, new GuestController(dialogController_, this)}};
+    controllers
+        = {{EnumStatus::REGISTER,
+            new RegisterController(calendarController, peopleManager, dialogController_, this)},
+           {EnumStatus::LOGIN, new LoginController(peopleManager, dialogController_, this)},
+           {EnumStatus::GUEST, new GuestController(dialogController_, this)}};
 
     for (const auto &[enumType, name] :
          {std::make_pair(EnumStatus::REGISTER, REGISTER_CONTROLLER_NAME),
@@ -32,9 +39,9 @@ LogController::LogController(std::shared_ptr<DataClient> dataclient_,
                         .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type)
                         .build();
 
-    switcherModel->addEntry({"login", EnumStatus::LOGIN});
-    switcherModel->addEntry({"register", EnumStatus::REGISTER});
-    switcherModel->addEntry({"log as guest", EnumStatus::GUEST});
+    switcherModel->addEntry({LOGIN_TEXT, EnumStatus::LOGIN});
+    switcherModel->addEntry({REGISTER_TEXT, EnumStatus::REGISTER});
+    switcherModel->addEntry({GUEST_TEXT, EnumStatus::GUEST});
 }
 
 LogController::EnumStatus LogController::getUserView() const

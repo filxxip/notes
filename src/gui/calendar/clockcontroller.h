@@ -7,7 +7,7 @@
 #include <QTimer>
 #include "../cpputils/utils.h"
 
-class ClockController : public QObject
+class ClockController final : public QObject
 {
     Q_OBJECT
 

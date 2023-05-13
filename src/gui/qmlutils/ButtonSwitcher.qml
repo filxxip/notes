@@ -15,21 +15,27 @@ TabBar {
     signal switched(int enumCode)
     currentIndex: tabSelectorEnum
     anchors.horizontalCenter: parent.horizontalCenter
-
-    Repeater {
-        id: repeater
-        model: tabbar.model
-        TabButton {
-            text: model.text
-            width: tabbar.combinedWidth / repeater.count
-            height: tabbar.elementHeight
-            background: Rectangle {
-                property color currentBasicColor: tabbar.currentIndex === model.type ? GUIConfig.switchbutton.enableColor : GUIConfig.switchbutton.disableColor
-                color: tabbar.enabled ? currentBasicColor : currentBasicColor.lighter()
-                anchors.fill: parent
-                radius: GUIConfig.switchbutton.radius
+    height: elementHeight
+    contentItem: Row {
+        anchors.fill: parent
+        Repeater {
+            id: repeater
+            model: tabbar.model
+            Component.onCompleted: console.log(y)
+            TabButton {
+                text: model.text
+                width: tabbar.combinedWidth / repeater.count
+                height: tabbar.elementHeight
+                anchors.top: repeater.top
+                Component.onCompleted: console.log(y)
+                background: Rectangle {
+                    property color currentBasicColor: tabbar.currentIndex === model.type ? GUIConfig.switchbutton.enableColor : GUIConfig.switchbutton.disableColor
+                    color: tabbar.enabled ? currentBasicColor : currentBasicColor.lighter()
+                    anchors.fill: parent
+                    radius: GUIConfig.switchbutton.radius
+                }
+                onReleased: tabbar.switched(model.type)
             }
-            onReleased: tabbar.switched(model.type)
         }
     }
 }

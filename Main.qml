@@ -44,6 +44,7 @@ Window {
     //        anchors.centerIn: parent
     //        anchors.fill: parent
     //    }
+    //    }
     LogView {}
 
     //    Popup {

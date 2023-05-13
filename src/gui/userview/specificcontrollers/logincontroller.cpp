@@ -7,11 +7,11 @@ constexpr const char *DOUBLE_EMAIL
 
 } // namespace
 
-LoginController::LoginController(std::shared_ptr<DataClient> dataclient_,
+LoginController::LoginController(std::shared_ptr<PeopleManager> peopleManager,
                                  QPointer<DialogController> dialogController_,
                                  QObject *obj)
     : EntryController(dialogController_, obj)
-    , manager(dataclient_)
+    , manager(peopleManager)
 {
     model->setEntries({{EnumStatus::EMAIL, "Login..."}, {EnumStatus::PASSWORD, "Password..."}});
     model->setData(1, true, ModelStatuses::Roles::PASSWORD_STATUS);
@@ -22,7 +22,7 @@ void LoginController::onConfirmed()
     auto name = model->data(0, ModelStatuses::Roles::VALUE).toString();
     auto password = model->data(1, ModelStatuses::Roles::VALUE).toString();
 
-    auto personWithGiveEmail = manager.getFiltered({{"email", name.toStdString()}});
+    auto personWithGiveEmail = manager->getFiltered({{"email", name.toStdString()}});
 
     if (!personWithGiveEmail.has_value()) {
         qDebug() << Messages::INVALID_KEYWORD;

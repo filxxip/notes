@@ -6,10 +6,10 @@ class LoginController final : public EntryController
 {
     Q_OBJECT
 
-    PeopleManager manager; //shared pointer pozniej, ktory bedzie trzymany przez glowny controller
+    std::shared_ptr<PeopleManager> manager;
 
 public:
-    LoginController(std::shared_ptr<DataClient> dataclient_,
+    LoginController(std::shared_ptr<PeopleManager> peopleManager,
                     QPointer<DialogController> dialogController_,
                     QObject *obj = nullptr);
 

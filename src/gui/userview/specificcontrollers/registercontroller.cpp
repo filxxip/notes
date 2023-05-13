@@ -12,11 +12,11 @@ const auto PERSON_CREATED = QStringLiteral("New user : %1 has just been added to
 } // namespace
 
 RegisterController::RegisterController(QPointer<CalendarController> calendarController,
-                                       std::shared_ptr<DataClient> dataclient_,
+                                       std::shared_ptr<PeopleManager> peopleManager,
                                        QPointer<DialogController> dialogController_,
                                        QObject *obj)
     : UserConfigController(calendarController, dialogController_, obj)
-    , manager(dataclient_)
+    , manager(peopleManager)
 {
     model->setEntries({{EnumStatus::EMAIL, EMAIL_PLACEHOLDER},
                        {EnumStatus::PASSWORD, PASSWORD_PLACEHOLDER},
@@ -43,13 +43,14 @@ void RegisterController::onConfirmed()
     auto hasNoEmailMatches = !Validators::emailValidator(email);
     auto hasNoUppercase = !Validators::passwordValidator(password);
 
-    auto elementsNumber = DatabaseSupportMethods::getElementsWithGivenValue(manager,
-                                                                            "email",
-                                                                            name.toStdString());
-    if (!elementsNumber.has_value()) {
+    auto searchedElements = manager->getFiltered({{"email", name.toStdString()}});
+
+    if (!searchedElements.has_value()) {
+        qDebug() << Messages::INVALID_KEYWORD;
         return;
     }
-    if (elementsNumber.value() != 0) {
+
+    if (searchedElements->size() != 0) {
         dialogController->showDialog(DialogCodes::UserViews::EMAIL_IN_USE);
         return;
     }
@@ -77,7 +78,7 @@ void RegisterController::onConfirmed()
     person.surname = std::move(surname);
     person.gender.setByCode(radioButtonController->getValue(0) ? 0 : 1);
 
-    manager.add(person);
+    manager->add(person);
 
     qDebug() << PERSON_CREATED.arg(person.email.get());
 

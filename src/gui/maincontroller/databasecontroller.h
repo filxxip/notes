@@ -18,10 +18,12 @@ public:
         : dataClient(dataClient_)
     {}
 
-    std::shared_ptr<PeopleManager> peopleManager = std::make_shared(dataClient);
-    std::shared_ptr<CategoriesManager> categoriesManager = std::make_shared(dataClient);
-    std::shared_ptr<NotesManager> notesManager = std::make_shared(dataClient);
-    std::shared_ptr<GuiDialogsManager> dialogsManager = std::make_shared(dataClient);
+    std::shared_ptr<PeopleManager> peopleManager = std::make_shared<PeopleManager>(dataClient);
+    std::shared_ptr<CategoriesManager> categoriesManager = std::make_shared<CategoriesManager>(
+        dataClient);
+    std::shared_ptr<NotesManager> notesManager = std::make_shared<NotesManager>(dataClient);
+    std::shared_ptr<GuiDialogsManager> dialogsManager = std::make_shared<GuiDialogsManager>(
+        dataClient);
 };
 
 //metoda zbiorowa add update ew to mozna jakos przy uzyciu constexpr i decltype(auto)
