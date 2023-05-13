@@ -5,16 +5,15 @@
 
 namespace {
 
-//Q_NAMESPACE
+constexpr char NOT_SUPPORTED_MESSAGE[] = "This type is not supported";
 
-//enum class Operation { GET, POST, DELETE };
-
-//Q_ENUM_NS(Operation);
+const auto DATE_TIME_SYNTAX = QStringLiteral("%1-%2-%3-%4-%5-%6");
+const auto ADDED_PARMS_SYNTAX = QStringLiteral("&%1=%2");
 
 template<typename T>
 QString codeTypeToQString(const T &object)
 {
-    throw UndefinedDataException("This type is not supported");
+    throw UndefinedDataException(NOT_SUPPORTED_MESSAGE);
 }
 
 template<>
@@ -22,8 +21,7 @@ QString codeTypeToQString<QDateTime>(const QDateTime &object)
 {
     auto date = object.date();
     auto time = object.time();
-    return QString("%1-%2-%3-%4-%5-%6")
-        .arg(date.year())
+    return DATE_TIME_SYNTAX.arg(date.year())
         .arg(date.month())
         .arg(date.day())
         .arg(time.hour())
@@ -59,7 +57,7 @@ QString codeTypeToQString<json>(const json &object)
         return codeTypeToQString<std::string>(object.get<std::string>());
     }
     }
-    throw UndefinedDataException("This type is not supported"); //nie dziala dla dat niestety
+    throw UndefinedDataException(NOT_SUPPORTED_MESSAGE); //nie dziala dla dat niestety
 }
 } // namespace
 
@@ -67,28 +65,28 @@ void ServerDataClient::setAdditionalParameters(json parameters)
 {
     for (const auto &[key, value] : parameters.items()) {
         if (value.is_boolean()) {
-            additionalParams += QString("&%1=%2").arg(QString::fromStdString(key),
-                                                      value.get<bool>() ? "true" : "false");
+            additionalParams += ADDED_PARMS_SYNTAX.arg(QString::fromStdString(key),
+                                                       value.get<bool>() ? "true" : "false");
             continue;
         }
         if (value.is_number_integer()) {
-            additionalParams += QString("&%1=%2").arg(QString::fromStdString(key),
-                                                      QString::number(value.get<int>()));
+            additionalParams += ADDED_PARMS_SYNTAX.arg(QString::fromStdString(key),
+                                                       QString::number(value.get<int>()));
             continue;
         }
         if (value.is_string()) {
-            additionalParams += QString("&%1=%2").arg(QString::fromStdString(key),
-                                                      QString::fromStdString(
-                                                          value.get<std::string>()));
+            additionalParams += ADDED_PARMS_SYNTAX.arg(QString::fromStdString(key),
+                                                       QString::fromStdString(
+                                                           value.get<std::string>()));
             continue;
         }
     }
 }
 
-void ServerDataClient::initRequest(const Path &url, std::string mode) const
+void ServerDataClient::initRequest(const Path &url, QString mode) const
 {
     request.setOpt<curlpp::options::Url>(url.getFullPath().toStdString());
-    request.setOpt<curlpp::options::CustomRequest>(mode);
+    request.setOpt<curlpp::options::CustomRequest>(mode.toStdString());
 }
 
 void ServerDataClient::performRequest() const
@@ -105,26 +103,24 @@ void ServerDataClient::addParamsToRequest() const
 
 void ServerDataClient::update(const Path &url)
 {
-    initRequest(url, "PATCH");
+    initRequest(url, QVariant::fromValue(Operations::DatabaseOperation::PATCH).toString());
     addParamsToRequest();
     performRequest();
 }
 void ServerDataClient::remove(const Path &url)
 {
-    initRequest(url, "DELETE");
+    initRequest(url, QVariant::fromValue(Operations::DatabaseOperation::DELETE).toString());
     performRequest();
 }
 void ServerDataClient::add(const Path &url)
 {
-    initRequest(url, "POST"); // @todo QVariant::fromValue(Operation::POST).toString()
+    initRequest(url, QVariant::fromValue(Operations::DatabaseOperation::POST).toString());
     addParamsToRequest();
     performRequest();
 }
 std::optional<json> ServerDataClient::get(const Path &url) const
 {
-    initRequest(
-        url,
-        "GET"); //tu cos dziwnego z tym Get, wiem ze nie musi go byc ale dajac post np nie ma to znaczenia
+    initRequest(url, QVariant::fromValue(Operations::DatabaseOperation::GET).toString());
     std::stringstream response;
     curlpp::options::WriteStream writeStream(&response);
     request.setOpt(writeStream);
@@ -140,7 +136,7 @@ std::optional<json> ServerDataClient::getGroup(const Path &path) const
 void ServerDataClient::setGroupFilter(const json &genson)
 {
     QString separator = groupFilterString.isEmpty() ? "?" : "&";
-    for (auto it = genson.begin(); it != genson.end(); ++it) { // @todo std::begin(), std::end()
+    for (auto it = std::begin(genson); it != std::end(genson); ++it) {
         groupFilterString += separator + codeTypeToQString(it.key()) + "="
                              + codeTypeToQString(it.value());
     }

@@ -1,5 +1,6 @@
 #pragma once
 #include <QDir>
+#include <QObject>
 #include <QString>
 #include "dataclient.h"
 #include <curl/curl.h>
@@ -7,9 +8,17 @@
 #include <curlpp/Options.hpp>
 #include <curlpp/cURLpp.hpp>
 #include <nlohmann/json.hpp>
-namespace {
+
 using json = nlohmann::json;
-}
+
+namespace Operations {
+Q_NAMESPACE
+
+enum class DatabaseOperation { GET, PATCH, DELETE, POST };
+
+Q_ENUM_NS(DatabaseOperation);
+
+} // namespace Operations
 
 class ServerDataClient final : public DataClient
 {
@@ -19,7 +28,7 @@ class ServerDataClient final : public DataClient
 
     mutable curlpp::Easy request;
 
-    void initRequest(const Path &url, std::string mode) const;
+    void initRequest(const Path &url, QString mode) const;
 
     void performRequest() const;
 

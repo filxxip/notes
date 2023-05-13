@@ -2,18 +2,23 @@
 #include <QTimer>
 #include "clockcontroller.h"
 
+namespace {
+using EnumStatus = ModelStatuses::CalendarRoles;
+QPointer<CustomListModel<CalendarModel, EnumStatus>> generateCalendarModel(QObject *parent = nullptr)
+{
+    return FastModelBuilder<CalendarModel, ModelStatuses::CalendarRoles>(parent)
+        .add(EnumStatus::VALUE, &CalendarModel::value)
+        .add(EnumStatus::CONTENT, &CalendarModel::content)
+        .build();
+}
+} // namespace
+
 CalendarController::CalendarController(QObject *obj)
     : QObject(obj)
+    , dayModel(generateCalendarModel(this))
+    , monthModel(generateCalendarModel(this))
+    , yearModel(generateCalendarModel(this))
 {
-    auto initializeModel = [this](QPointer<CalendarListModel> &model) {
-        model = FastModelBuilder<CalendarModel, EnumStatus>(this)
-                    .add(EnumStatus::VALUE, &CalendarModel::value)
-                    .add(EnumStatus::CONTENT, &CalendarModel::content)
-                    .build();
-    }; // @todo In anon namespace void initializeModel(QObject *parent)
-    initializeModel(dayModel);
-    initializeModel(monthModel);
-    initializeModel(yearModel);
     QVector<CalendarModel> days;
     for (int i = 1; i < 32; i++) {
         days.push_back({i, QString::number(i)});
@@ -60,10 +65,7 @@ void CalendarController::setNewDate(int dayIndexDelta, int monthIndexDelta, int 
 
 QString CalendarController::getNiceDateFormat() const
 {
-    return QString("%1 %2 %3") // @todo auto NICE_DATE_FORMAT = QStringLiteral("%1 %2 %3");
-        .arg(currentDate.day())
-        .arg(monthModel->data(currentDate.month() - 1, EnumStatus::CONTENT).toString())
-        .arg(currentDate.year());
+    return DateStringAlternatives::convertToStringFormat(currentDate);
 }
 //directly from cpp
 void CalendarController::changeDate(int year, int month, int day)

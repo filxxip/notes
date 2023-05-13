@@ -9,13 +9,13 @@ void FileDataClient::setAdditionalParameters(json parameters)
 
 void FileDataClient::performWritingToFile(const json &content, const Path &path)
 {
-    fileManager.writeToFile(path, QString::fromStdString(content.dump()));
+    FileManager::writeToFile(path, QString::fromStdString(content.dump()));
     addedParams.clear();
 }
 
 void FileDataClient::update(const Path &filePath)
 {
-    auto file = fileManager.readFromFile(filePath);
+    auto file = FileManager::readFromFile(filePath);
     if (file.has_value()) {
         json content = json::parse(file.value().toStdString());
         for (const auto &pair : addedParams.items()) {
@@ -27,7 +27,7 @@ void FileDataClient::update(const Path &filePath)
 
 void FileDataClient::remove(const Path &path)
 {
-    fileManager.removeFile(path);
+    FileManager::removeFile(path);
 }
 
 void FileDataClient::add(const Path &path)
@@ -37,7 +37,7 @@ void FileDataClient::add(const Path &path)
 
 std::optional<json> FileDataClient::get(const Path &path) const
 {
-    auto content = fileManager.readFromFile(path);
+    auto content = FileManager::readFromFile(path);
 
     if (content.has_value()) {
         return json::parse(content.value().toStdString());
@@ -47,7 +47,7 @@ std::optional<json> FileDataClient::get(const Path &path) const
 
 std::optional<json> FileDataClient::getGroup(const Path &path) const
 {
-    auto content = fileManager.readFromDir(path);
+    auto content = FileManager::readFromDir(path);
 
     if (content) {
         json jsonArray;
@@ -84,5 +84,6 @@ void FileDataClient::clearFilters()
 
 bool FileDataClient::isValid() const
 {
-    return QDir(FilePath("").getFullPath()).exists(); // @todo QDirInfo (or maybe QFileInfo)
+    return QFileInfo(FilePath("").getFullPath()).isDir();
+    //    return QDir(FilePath("").getFullPath()).exists();
 }

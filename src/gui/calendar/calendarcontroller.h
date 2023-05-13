@@ -27,7 +27,7 @@ constexpr int DEFAULT_MINIMUM_YEAR = 1960;
 //private:
 //};
 
-class CalendarController final : public QObject // @todo Marked as final
+class CalendarController final : public QObject
 {
     using EnumStatus = ModelStatuses::CalendarRoles;
     using CalendarListModel = CustomListModel<CalendarModel, EnumStatus>;
@@ -54,9 +54,7 @@ private:
     void setNewDate(int dayIndexDelta, int monthIndexDelta, int yearIndexDelta);
 
 public:
-    explicit CalendarController(QObject *obj = nullptr); // @todo Explicit here
-
-    //    void setMinMaxRange(int newMin, int newMax);
+    explicit CalendarController(QObject *obj = nullptr);
 
     void changeDate(int year, int month, int day);
 

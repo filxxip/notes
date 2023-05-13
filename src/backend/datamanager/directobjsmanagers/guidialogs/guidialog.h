@@ -2,7 +2,7 @@
 
 #include "../basicdatabasedata.h"
 
-struct GuiDialog
+struct GuiDialog final
 {
     ConstIntData id{"id"};
     StrData content{"content"};

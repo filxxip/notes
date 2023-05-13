@@ -22,7 +22,7 @@ class RadioButtonController : public QObject
     std::map<int, QString> codesMap;
 
 public:
-    RadioButtonController(QVector<RadioButtonModel> modelElements, QObject *parent); // @todo nullptr
+    RadioButtonController(QVector<RadioButtonModel> modelElements, QObject *parent = nullptr);
 
     void setValue(int index, bool value);
 

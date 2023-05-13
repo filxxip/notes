@@ -3,7 +3,7 @@
 #include "../../../../gui/cpputils/utils.h"
 #include "../basicdatabasedata.h"
 
-struct Person
+struct Person final
 {
     ConstIntData id{"id"};
     StrData name{"name"};

@@ -1,7 +1,7 @@
 #pragma once
 #include "../basicdatabasedata.h"
 
-struct Category
+struct Category final
 {
     ConstIntData id{"id"};
     StrData content{"color"};

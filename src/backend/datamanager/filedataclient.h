@@ -6,8 +6,6 @@
 
 class FileDataClient final : public DataClient
 {
-    FileManager fileManager;
-
     json addedParams;
 
     json filterParams;

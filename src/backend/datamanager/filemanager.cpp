@@ -1,29 +1,26 @@
 #include "filemanager.h"
 
 #include <QFileInfo>
+#include <QStringLiteral>
 
 namespace {
 
-namespace FileError {
-constexpr char CAN_NOT_READ_FILE[] = "File...";
-}
-
-bool isFileReadable(std::optional<QFile> file)
+bool isFileReadable(std::optional<QFile> &file)
 {
-    return !file.has_value() || !file->open(QIODevice::ReadOnly | QIODevice::Text);
+    return file.has_value() && file->open(QIODevice::ReadOnly | QIODevice::Text);
 }
 
-bool isFileWritable(std::optional<QFile> file)
+bool isFileWritable(std::optional<QFile> &file)
 {
-    return !file.has_value() || !file->open(QIODevice::WriteOnly | QIODevice::Text);
+    return file.has_value() && file->open(QIODevice::WriteOnly | QIODevice::Text);
 }
 
-std::optional<QFile> FileManager::createFile(const Path &path) const
+std::optional<QFile> createFile(const Path &path)
 {
     return std::make_optional<QFile>(path.getFullPath());
 }
 
-std::optional<QFile> FileManager::getFile(const Path &path) const
+std::optional<QFile> getFile(const Path &path)
 {
     if (!path.exists()) {
         return {};
@@ -31,21 +28,27 @@ std::optional<QFile> FileManager::getFile(const Path &path) const
     return createFile(path);
 }
 
+const auto CANNOT_READ_FILE = QStringLiteral("Cannot open file %1");
+const auto CANNOT_WRITE_FILE = QStringLiteral("Cannot write to file %1");
+
 } // namespace
 
-std::optional<QString> FileManager::readFromFile(const Path &path) const
+namespace FileManager {
+
+std::optional<QString> readFromFile(const Path &path)
 {
     auto file = getFile(path);
-    if (!file.has_value() || !file->open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Cannot open file";
-        return {};
+    if (!isFileReadable(file)) {
+        qDebug() << CANNOT_READ_FILE.arg(path.getFullPath());
+        return std::nullopt;
     }
     return file->readAll();
 }
 
-std::optional<QStringList> FileManager::readFromDir(const Path &path) const
+std::optional<QStringList> readFromDir(const Path &path)
 {
     auto dir = QDir(path.getFullPath());
+    qDebug() << dir.path();
     if (dir.exists()) {
         QStringList list;
         for (const auto &name : dir.entryInfoList(QDir::Files)) {
@@ -56,27 +59,27 @@ std::optional<QStringList> FileManager::readFromDir(const Path &path) const
         }
         return list;
     }
-    return {};
+    return std::nullopt;
 }
 
-void FileManager::writeToFile(const Path &path, const QString &content) const
+void writeToFile(const Path &path, const QString &content)
 {
     auto file = createFile(path);
-    if (!file.has_value() || !file->open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Cannot write data to file";
-        // @todo qDebug() << QStringLiteral("Cannot write data to file %1").arg(path);
+    if (!isFileWritable(file)) {
+        qDebug() << CANNOT_WRITE_FILE.arg(path.getFullPath());
         return;
     }
     QTextStream out(&file.value());
     out << content;
 }
 
-bool FileManager::removeFile(const Path &path) const
+bool removeFile(const Path &path)
 {
     auto file = getFile(path);
-    if (!file.has_value() || !file->open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Cannot write data to file";
+    if (!isFileWritable(file)) {
+        qDebug() << CANNOT_WRITE_FILE.arg(path.getFullPath());
         return false;
     }
     return file->remove();
 }
+} // namespace FileManager

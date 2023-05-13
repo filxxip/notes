@@ -1,7 +1,7 @@
 #pragma once
 #include "../basicdatabasedata.h"
 
-struct Note
+struct Note final
 {
     ConstIntData id{"id"};
     StrData content{"content"};

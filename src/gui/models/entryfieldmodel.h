@@ -9,7 +9,7 @@ struct EntryFieldModel
 {
     ModelStatuses::PersonComponents componentEnum;
     QString placeholder;
-    QString value = "";   // @todo What is that?
-    QColor color = "red"; // @todo Should be Qt.Color.red
+    QString value;
+    QColor color{Qt::GlobalColor::red};
     bool passwordStatus = false;
 };
