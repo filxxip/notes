@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/resources">
+        <file>anonymity.png</file>
+        <file>login.png</file>
+        <file>emailerror.png</file>
+        <file>passandemail.png</file>
+        <file>passerror.png</file>
+        <file>emptyfield.png</file>
+        <file>ghost.png</file>
+        <file>newuser.png</file>
+        <file>welcome.png</file>
+        <file>left-arrow.png</file>
+        <file>emailinuse.png</file>
+        <file>logout.png</file>
+        <file>removeaccount.png</file>
+        <file>question.png</file>
+        <file>resources.qrc</file>
+        <file>sad.png</file>
+        <file>updateperson.png</file>
+        <file>settings.png</file>
+        <file>closeapp.png</file>
+    </qresource>
+</RCC>
