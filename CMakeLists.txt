@@ -28,6 +28,9 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/maincontroller/maincontroller.cpp
     src/gui/maincontroller/maincontroller.h
 
+    src/gui/maincontroller/databasecontroller.cpp
+    src/gui/maincontroller/databasecontroller.h
+
     src/gui/customdialog/dialogcontroller.cpp
     src/gui/customdialog/dialogcontroller.h
 
@@ -97,6 +100,9 @@ qt_add_executable(appnotesdatabaseproject
 
     src/backend/datamanager/directobjsmanagers/overallmanager.h
     src/backend/datamanager/directobjsmanagers/overallmanager.cpp
+
+    src/backend/datamanager/directobjsmanagers/singletonobjectmanager/singletonobjectmanager.cpp
+    src/backend/datamanager/directobjsmanagers/singletonobjectmanager/singletonobjectmanager.h
 
     src/backend/datamanager/directobjsmanagers/notes/note.h
     src/backend/datamanager/directobjsmanagers/notes/notesmanager.h

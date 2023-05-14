@@ -1,4 +1,10 @@
 #include "overallmanager.h"
+#include <QStringLiteral>
+
+namespace {
+const auto ADDITION_PARAMS = QStringLiteral("&%1=%2");
+const auto ADDITION_URL_PATH = QStringLiteral("%1/%2");
+} // namespace
 
 template<typename DataObject>
 OverallManager<DataObject>::OverallManager(QString name_, std::shared_ptr<DataClient> dataClient_)
@@ -9,7 +15,7 @@ OverallManager<DataObject>::OverallManager(QString name_, std::shared_ptr<DataCl
 template<typename DataObject>
 UrlPath OverallManager<DataObject>::generatePath(int index) const
 {
-    return UrlPath(QString("%1/%2").arg(name, QString::number(index)));
+    return UrlPath(ADDITION_URL_PATH.arg(name, QString::number(index)));
 }
 
 template<typename DataObject>
@@ -30,7 +36,7 @@ QString OverallManager<DataObject>::generateParms(
 {
     QString params;
     for (const auto &[key, value] : *map) {
-        params += QString("&%1=%2").arg(key, value);
+        params += ADDITION_PARAMS.arg(key, value);
     }
     return params.remove(0, 1);
 }

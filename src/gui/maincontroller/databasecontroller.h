@@ -3,6 +3,7 @@
 #include "../../backend/datamanager/directobjsmanagers/guidialogs/guidialogmanager.h"
 #include "../../backend/datamanager/directobjsmanagers/notes/notesmanager.h"
 #include "../../backend/datamanager/directobjsmanagers/people/peoplemanager.h"
+#include "../../backend/datamanager/directobjsmanagers/singletonobjectmanager/singletonobjectmanager.h"
 
 #include <QPointer>
 
@@ -14,16 +15,13 @@ private:
     std::shared_ptr<DataClient> dataClient;
 
 public:
-    DatabaseController(std::shared_ptr<DataClient> dataClient_)
-        : dataClient(dataClient_)
-    {}
+    DatabaseController(std::shared_ptr<DataClient> dataClient_);
 
-    std::shared_ptr<PeopleManager> peopleManager = std::make_shared<PeopleManager>(dataClient);
-    std::shared_ptr<CategoriesManager> categoriesManager = std::make_shared<CategoriesManager>(
-        dataClient);
-    std::shared_ptr<NotesManager> notesManager = std::make_shared<NotesManager>(dataClient);
-    std::shared_ptr<GuiDialogsManager> dialogsManager = std::make_shared<GuiDialogsManager>(
-        dataClient);
+    std::shared_ptr<PeopleManager> peopleManager;
+    std::shared_ptr<CategoriesManager> categoriesManager;
+    std::shared_ptr<NotesManager> notesManager;
+    std::shared_ptr<GuiDialogsManager> dialogsManager;
+    std::shared_ptr<SingletonObjectManager<Person>> peopleTransferedManager;
 };
 
 //metoda zbiorowa add update ew to mozna jakos przy uzyciu constexpr i decltype(auto)

@@ -1,7 +1,7 @@
 #include "categoriesmanager.h"
 
-CategoriesManager::CategoriesManager(std::shared_ptr<DataClient> dataClient_)
-    : OverallManager("notes", dataClient_)
+CategoriesManager::CategoriesManager(QString databaseName, std::shared_ptr<DataClient> dataClient_)
+    : OverallManager(std::move(databaseName), dataClient_)
 {}
 
 Category CategoriesManager::generateInstance(const json &genson) const

@@ -52,7 +52,7 @@ class DialogController final : public QObject
 private:
     using Status = ModelStatuses::DialogRoles;
 
-    GuiDialogsManager manager;
+    std::shared_ptr<GuiDialogsManager> manager;
 
     int currentIndex = 0;
 
@@ -65,7 +65,7 @@ private:
     void setVisibility(bool value);
 
 public:
-    DialogController(std::shared_ptr<DataClient> dataClient, QObject *obj = nullptr);
+    DialogController(std::shared_ptr<GuiDialogsManager> manager_, QObject *obj = nullptr);
 
     enum class ActivityStatus { ACCEPT, REJECT };
 

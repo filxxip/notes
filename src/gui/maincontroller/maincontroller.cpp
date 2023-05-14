@@ -12,7 +12,7 @@ constexpr char MAIN_USER_CONTROLLER[] = "mainUserController";
 MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *obj)
     : QObject(obj)
     , databaseController(dataClient)
-    , dialogController(new DialogController(dataClient, this))
+    , dialogController(new DialogController(databaseController.dialogsManager, this))
     , calendarController(new CalendarController(this))
     , clockController(new ClockController(this))
     , logController(databaseController.peopleManager, calendarController, dialogController, this)

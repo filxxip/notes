@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import date
 
+from sqlalchemy import ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import DateTime, Integer, String
@@ -13,9 +14,9 @@ from ..utils import set_conversion, convert_str_date_to_datetime
 
 
 @auto_apply_jsonify_content
-@set_conversion(birthday=convert_str_date_to_datetime, created =convert_str_date_to_datetime)
-class Person(Base):
-    __tablename__ = tables_names.peopleName
+@set_conversion(birthday=convert_str_date_to_datetime, created=convert_str_date_to_datetime)
+class Person:
+    # __tablename__ = tables_names.peopleName
     id: Mapped[int] = mapped_column(
         Integer(), primary_key=True, nullable=False, autoincrement=True)
     name: Mapped[str] = mapped_column(String(50))
@@ -24,7 +25,7 @@ class Person(Base):
     password: Mapped[str] = mapped_column(String(50))
     country: Mapped[str] = mapped_column(String(50))
     birthday: Mapped[str] = mapped_column(DateTime())
-    gender : Mapped[str] = mapped_column(String(30))
+    gender: Mapped[str] = mapped_column(String(30))
     created: Mapped[str] = mapped_column(DateTime())
 
     @hybrid_property
@@ -36,3 +37,13 @@ class Person(Base):
         return years_diff
 
 
+class PersonTransfered(Person, Base):
+    __tablename__ = "peopleTransfered"
+    id: Mapped[int] = mapped_column(
+        Integer(), primary_key=True, nullable=False, autoincrement=True)
+
+
+class PersonNormal(Person, Base):
+    __tablename__ = tables_names.peopleName
+    id: Mapped[int] = mapped_column(
+        Integer(), primary_key=True, nullable=False, autoincrement=True)

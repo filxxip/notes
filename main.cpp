@@ -16,6 +16,7 @@
 #include "src/backend/datamanager/directobjsmanagers/guidialogs/guidialogmanager.h"
 #include "src/backend/datamanager/directobjsmanagers/notes/notesmanager.h"
 #include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"
+#include "src/backend/datamanager/directobjsmanagers/singletonobjectmanager/singletonobjectmanager.h"
 #include "src/backend/datamanager/filedataclient.h"
 #include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/backend/datamanager/serverdataclient.h"
@@ -38,18 +39,21 @@ using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
 #if RUN_DATABASE
-    auto filemanager = PeopleManager(
-        std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>()));
+    auto filemanager = PeopleManager("people",
+                                     std::make_shared<FileDataClientAdapter>(
+                                         std::make_shared<FileDataClient>()));
 
-    auto servermanager = PeopleManager(std::make_shared<ServerDataClient>());
-
-    //    for (int i = 1; i < 200; i++) {
-    //        filemanager.remove(i);
-    //    }
+    auto servermanager = PeopleManager("people", std::make_shared<ServerDataClient>());
     auto el = servermanager.get();
-    for (auto &e : el.value()) {
-        filemanager.add(e);
+    //    for (int i = 1; i < 200; i++) {
+    //        servermanager.remove(i);
+    //    }
+    if (el.has_value()) {
+        qDebug() << "hah";
     }
+//    for (auto &e : el.value()) {
+//        servermanager.add(e);
+//    }
 #endif
 
 #if RUN_QML

@@ -2,9 +2,7 @@ import random
 from datetime import datetime, timedelta
 
 from .seeder_base import Seeder
-from src.backend.database.tables import Base, Person
-
-
+from src.backend.database.tables import Base, PersonNormal
 
 from ..utils import convert_datetime_to_str
 
@@ -24,10 +22,9 @@ class PersonSeeder(Seeder):
             email = f'{name.lower()}.{surname.lower()}@example.com'
             password = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz1234567890', k=8))
             country = random.choice(countries)
-            birthday = convert_datetime_to_str(datetime.now() - timedelta(days=365 * random.randint(18, 65)))
             birthday = datetime.now() - timedelta(days=365 * random.randint(18, 65))
             creation = datetime.now()
-            person = Person(name=name, surname=surname, email=email, password=password, country=country,
-                            birthday=birthday, gender = random.choice(["male", "female"]), created =creation )
+            person = PersonNormal(name=name, surname=surname, email=email, password=password, country=country,
+                                  birthday=birthday, gender=random.choice(["male", "female"]), created=creation)
             people.append(person)
         return people

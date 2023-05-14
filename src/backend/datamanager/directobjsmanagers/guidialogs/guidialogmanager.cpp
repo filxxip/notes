@@ -1,8 +1,8 @@
 #include "guidialogmanager.h"
 #include "guidialog.h"
 
-GuiDialogsManager::GuiDialogsManager(std::shared_ptr<DataClient> dataClient_)
-    : OverallManager("guidialogs", dataClient_)
+GuiDialogsManager::GuiDialogsManager(QString databaseName, std::shared_ptr<DataClient> dataClient_)
+    : OverallManager(std::move(databaseName), dataClient_)
 {}
 
 GuiDialog GuiDialogsManager::generateInstance(const json &genson) const

@@ -128,7 +128,8 @@ std::optional<json> ServerDataClient::get(const Path &url) const
     return json::parse(response.str());
 }
 
-std::optional<json> ServerDataClient::getGroup(const Path &path) const
+std::optional<json> ServerDataClient::getGroup(
+    const Path &path) const //w tych grupach niestety cos nie tak z errorami gdy jest bledny key
 {
     return get(UrlPath(path.getRelativePath() + groupFilterString));
 }
@@ -137,8 +138,8 @@ void ServerDataClient::setGroupFilter(const json &genson)
 {
     QString separator = groupFilterString.isEmpty() ? "?" : "&";
     for (auto it = std::begin(genson); it != std::end(genson); ++it) {
-        groupFilterString += separator + codeTypeToQString(it.key()) + "="
-                             + codeTypeToQString(it.value());
+        groupFilterString = separator + codeTypeToQString(it.key()) + "="
+                            + codeTypeToQString(it.value()).split(" ").join("%20");
     }
 }
 void ServerDataClient::clearFilters()

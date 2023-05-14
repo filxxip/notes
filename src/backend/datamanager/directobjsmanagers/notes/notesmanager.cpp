@@ -1,7 +1,7 @@
 #include "notesmanager.h"
 
-NotesManager::NotesManager(std::shared_ptr<DataClient> dataClient_)
-    : OverallManager("notes", dataClient_)
+NotesManager::NotesManager(QString databaseName, std::shared_ptr<DataClient> dataClient_)
+    : OverallManager(std::move(databaseName), dataClient_)
 {}
 
 Note NotesManager::generateInstance(const json &genson) const
