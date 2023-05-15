@@ -7,6 +7,7 @@
 #include <QQmlContext>
 #include "../customdialog/dialogcontroller.h"
 
+#include "../cpputils/utils.h"
 #include "databasecontroller.h"
 #include "src/gui/calendar/calendarcontroller.h"
 #include "src/gui/calendar/clockcontroller.h"
@@ -20,12 +21,15 @@
 class MainController : public QObject
 {
     Q_OBJECT
-    DatabaseController databaseController;
     QPointer<DialogController> dialogController;
     QPointer<CalendarController> calendarController;
     QPointer<ClockController> clockController;
     LogController logController;
     MainUserController mainUserController;
+
+    ModelStatuses::MainUserViews m_userView = ModelStatuses::MainUserViews::LOG;
+
+    Q_PROPERTY(ModelStatuses::MainUserViews userView MEMBER m_userView CONSTANT)
 
 public:
     MainController(std::shared_ptr<DataClient> dataClient, QObject *obj = nullptr);

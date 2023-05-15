@@ -7,8 +7,11 @@
 class GuestController final : public EntryController
 {
     Q_OBJECT
+
 public:
-    GuestController(QPointer<DialogController> dialogController_, QObject *obj = nullptr);
+    GuestController(std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
+                    QPointer<DialogController> dialogController_,
+                    QObject *obj = nullptr);
 
 public slots:
     void onConfirmed() override;

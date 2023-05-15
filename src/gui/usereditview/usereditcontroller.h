@@ -17,7 +17,8 @@ class UserEditController : public UserConfigController
     std::optional<Person> person;
 
 public:
-    UserEditController(QPointer<CalendarController> calendarController,
+    UserEditController(std::unique_ptr<SingletonObjectManager<Person>> singletonObjectLogoutManager,
+                       QPointer<CalendarController> calendarController,
                        QPointer<DialogController> dialogController_,
                        QObject *obj = nullptr);
 

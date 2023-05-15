@@ -8,6 +8,6 @@ if __name__ == '__main__':
         controller = APIController()
         controller.reclear_tables()
         controller.init_schemas()
-        OverallSeeder(NotesSeeder(), PersonSeeder(), CategorySeeder(),GuiDialogSeeder() ).seed()
+        OverallSeeder(NotesSeeder(), PersonSeeder(), CategorySeeder() ).seed()
         controller.add_rules()
         app.run()

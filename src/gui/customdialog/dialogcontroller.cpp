@@ -8,9 +8,9 @@ const auto ACCESS_TO_DIALOG_ERROR = QStringLiteral(
     "Access to dialog code : %1 denied or is invalid. Check your database or data files.");
 } // namespace
 
-DialogController::DialogController(std::shared_ptr<GuiDialogsManager> manager_, QObject *obj)
+DialogController::DialogController(std::unique_ptr<GuiDialogsManager> manager_, QObject *obj)
     : QObject(obj)
-    , manager(manager_)
+    , manager(std::move(manager_))
 {
     dialogModel = ModelBuilder()
                       .add(Status::CONTENT, &GuiDialog::content)

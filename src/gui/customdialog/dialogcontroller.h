@@ -34,6 +34,7 @@ constexpr int CHECK_ACCOUNT_REMOVE = 14;
 constexpr int ACCOUNT_REMOVE_INFORMATION = 15;
 constexpr int LOGOUT = 16;
 constexpr int CLOSE_APP = 17;
+constexpr int LOGOUT_INFO = 18;
 } // namespace UserViews
 
 } // namespace DialogCodes
@@ -52,7 +53,7 @@ class DialogController final : public QObject
 private:
     using Status = ModelStatuses::DialogRoles;
 
-    std::shared_ptr<GuiDialogsManager> manager;
+    std::unique_ptr<GuiDialogsManager> manager;
 
     int currentIndex = 0;
 
@@ -65,7 +66,7 @@ private:
     void setVisibility(bool value);
 
 public:
-    DialogController(std::shared_ptr<GuiDialogsManager> manager_, QObject *obj = nullptr);
+    DialogController(std::unique_ptr<GuiDialogsManager> manager_, QObject *obj = nullptr);
 
     enum class ActivityStatus { ACCEPT, REJECT };
 

@@ -10,6 +10,7 @@ from jsonschema.exceptions import ValidationError, SchemaError
 from .constants import information_texts
 from .main_config_database_vars import db_session
 from .utils import _T, catchable_db_connection_exceptions, jsonify_result, get_relevant_sorted_query
+from .main_site_route import app
 
 
 @dataclass

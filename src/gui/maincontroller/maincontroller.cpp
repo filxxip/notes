@@ -11,13 +11,22 @@ constexpr char MAIN_USER_CONTROLLER[] = "mainUserController";
 
 MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *obj)
     : QObject(obj)
-    , databaseController(dataClient)
-    , dialogController(new DialogController(databaseController.dialogsManager, this))
+    //    , databaseController(dataClient)
+    , dialogController(
+          new DialogController(std::make_unique<GuiDialogsManager>(
+                                   DatabaseCodes::namesMap.at(DatabaseCodes::Names::GUI_DIALOGS),
+                                   dataClient),
+                               this))
     , calendarController(new CalendarController(this))
     , clockController(new ClockController(this))
-    , logController(databaseController.peopleManager, calendarController, dialogController, this)
-    , mainUserController(calendarController, dialogController, this)
-{}
+    , logController(dataClient, calendarController, dialogController, this)
+    , mainUserController(dataClient, calendarController, dialogController, this)
+{
+    connect(&mainUserController, &MainUserController::mainViewChanged, [this](auto viewType) {
+        qDebug() << "Ustawiam nowy widok";
+        this->m_userView = viewType;
+    });
+}
 
 void MainController::closeApp()
 {

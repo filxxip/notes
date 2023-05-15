@@ -7,10 +7,12 @@ constexpr const char *DOUBLE_EMAIL
 
 } // namespace
 
-LoginController::LoginController(std::shared_ptr<PeopleManager> peopleManager,
-                                 QPointer<DialogController> dialogController_,
-                                 QObject *obj)
-    : EntryController(dialogController_, obj)
+LoginController::LoginController(
+    std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager_,
+    std::shared_ptr<PeopleManager> peopleManager,
+    QPointer<DialogController> dialogController_,
+    QObject *obj)
+    : EntryController(std::move(singleLoginPersonManager_), dialogController_, obj)
     , manager(peopleManager)
 {
     model->setEntries({{EnumStatus::EMAIL, "Login..."}, {EnumStatus::PASSWORD, "Password..."}});

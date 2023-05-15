@@ -24,12 +24,18 @@ void SingletonObjectManager<DataObject>::set(const DataObject &object)
 template<typename DataObject>
 std::optional<DataObject> SingletonObjectManager<DataObject>::get()
 {
-    auto obj = manager->get(0);
-    if (obj.has_value()) {
-        manager->remove(0);
-        return obj;
+    auto obj = manager->get();
+    if (obj->size() > 0) {
+        manager->remove(1);
+        return obj->at(0);
     }
     return std::nullopt;
+}
+
+template<typename DataObject>
+bool SingletonObjectManager<DataObject>::isDataAvaible() const
+{
+    return manager->get()->size() > 0;
 }
 
 #include "../people/peoplemanager.h"

@@ -13,11 +13,14 @@
 #include "../modelutils/listmodelbuilder.h"
 #include "../radiobutton/radiobuttoncontroller.h"
 #include "../statuses.h"
+#include "src/backend/datamanager/directobjsmanagers/singletonobjectmanager/singletonobjectmanager.h"
 
 class EntryController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(UserViewListModel *model MEMBER model CONSTANT)
+
+    std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager;
 
 protected:
     using EnumStatus = ModelStatuses::PersonComponents;
@@ -29,14 +32,16 @@ protected:
     void emitSuccessDialogWithClear(int code, Person person);
 
 public:
-    EntryController(QPointer<DialogController> dialogController_, QObject *obj = nullptr);
+    EntryController(std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager_,
+                    QPointer<DialogController> dialogController_,
+                    QObject *obj = nullptr);
 
 signals:
     void confirm();
 
     void clear();
 
-    void changingViewOperationSuccess(Person person);
+    //    void changingViewOperationSuccess(Person person);
 
 private slots:
     virtual void onConfirmed() = 0;

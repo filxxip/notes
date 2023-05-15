@@ -1,10 +1,13 @@
 #pragma once
 #include <QObject>
 #include <QQmlEngine>
+#include "../cpputils/utils.h"
 #include "../models/switchermodel.h"
 #include "../models/userviewlistmodel.h"
 #include "../modelutils/listmodelbuilder.h"
 #include "../statuses.h"
+#include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"
+#include "src/backend/datamanager/directobjsmanagers/singletonobjectmanager/singletonobjectmanager.h"
 #include "usereditcontroller.h"
 
 class MainUserController : public QObject
@@ -21,17 +24,33 @@ class MainUserController : public QObject
 
     Q_OBJECT
 public:
-    explicit MainUserController(QPointer<CalendarController> calendarController,
+    explicit MainUserController(std::shared_ptr<DataClient> dataClient,
+                                QPointer<CalendarController> calendarController,
                                 QPointer<DialogController> dialogController,
                                 QObject *obj = nullptr);
 
 private:
+    void tryToUpdateEditView(SingletonObjectManager<Person> *manager);
+
     QPointer<UserSwitcherModel> switcherModel;
 
     EnumStatus m_userView = EnumStatus::EDIT;
 
     QPointer<UserEditController> userEditController;
 
+    PeopleManager manager;
+
+    SingletonObjectManager<Person> loginManager;
+
+    SingletonObjectManager<Person> registerManager;
+
 signals:
     void userViewChanged();
+
+    void mainViewChanged(ModelStatuses::MainUserViews userView);
+
+private slots:
+    void updatePersonInDatabase(const Person &person);
+
+    void removePersonFromDatabase(int index);
 };

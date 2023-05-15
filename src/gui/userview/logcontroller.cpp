@@ -12,20 +12,46 @@ constexpr const char *GUEST_CONTROLLER_NAME = "guestController";
 constexpr char LOGIN_TEXT[] = "login";
 constexpr char REGISTER_TEXT[] = "register";
 constexpr char GUEST_TEXT[] = "log as guest";
+
+std::unique_ptr<SingletonObjectManager<Person>> generateController(
+    std::shared_ptr<DataClient> dataClient, DatabaseCodes::Names code)
+{
+    return std::make_unique<SingletonObjectManager<Person>>(
+        std::make_unique<PeopleManager>(DatabaseCodes::namesMap.at(code), dataClient));
+}
+
 } // namespace
 
-LogController::LogController(std::shared_ptr<PeopleManager> peopleManager,
+LogController::LogController(std::shared_ptr<DataClient> dataClient,
                              QPointer<CalendarController> calendarController_,
                              QPointer<DialogController> dialogController_,
                              QObject *obj)
     : QObject(obj)
     , calendarController(calendarController_)
+    , logoutManager(std::make_unique<PeopleManager>(DatabaseCodes::namesMap.at(
+                                                        DatabaseCodes::Names::PEOPLE_LOGOUT),
+                                                    dataClient))
 {
+    auto ptr = std::make_shared<PeopleManager>(DatabaseCodes::namesMap.at(
+                                                   DatabaseCodes::Names::PEOPLE),
+                                               dataClient);
     controllers
         = {{EnumStatus::REGISTER,
-            new RegisterController(calendarController, peopleManager, dialogController_, this)},
-           {EnumStatus::LOGIN, new LoginController(peopleManager, dialogController_, this)},
-           {EnumStatus::GUEST, new GuestController(dialogController_, this)}};
+            new RegisterController(generateController(dataClient,
+                                                      DatabaseCodes::Names::PEOPLE_REGISTER),
+                                   calendarController,
+                                   ptr,
+                                   dialogController_,
+                                   this)},
+           {EnumStatus::LOGIN,
+            new LoginController(generateController(dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
+                                ptr,
+                                dialogController_,
+                                this)},
+           {EnumStatus::GUEST,
+            new GuestController(generateController(dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
+                                dialogController_,
+                                this)}};
 
     for (const auto &[enumType, name] :
          {std::make_pair(EnumStatus::REGISTER, REGISTER_CONTROLLER_NAME),
@@ -42,6 +68,15 @@ LogController::LogController(std::shared_ptr<PeopleManager> peopleManager,
     switcherModel->addEntry({LOGIN_TEXT, EnumStatus::LOGIN});
     switcherModel->addEntry({REGISTER_TEXT, EnumStatus::REGISTER});
     switcherModel->addEntry({GUEST_TEXT, EnumStatus::GUEST});
+
+    DatabaseUtilsFunctions::tickWait(
+        400,
+        [this] {
+            if (logoutManager.isDataAvaible()) {
+                emit mainViewChanged(ModelStatuses::MainUserViews::EDIT);
+            }
+        },
+        this);
 }
 
 LogController::EnumStatus LogController::getUserView() const

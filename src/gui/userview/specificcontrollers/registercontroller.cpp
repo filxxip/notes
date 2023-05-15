@@ -11,11 +11,16 @@ const auto PERSON_CREATED = QStringLiteral("New user : %1 has just been added to
 
 } // namespace
 
-RegisterController::RegisterController(QPointer<CalendarController> calendarController,
-                                       std::shared_ptr<PeopleManager> peopleManager,
-                                       QPointer<DialogController> dialogController_,
-                                       QObject *obj)
-    : UserConfigController(calendarController, dialogController_, obj)
+RegisterController::RegisterController(
+    std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
+    QPointer<CalendarController> calendarController,
+    std::shared_ptr<PeopleManager> peopleManager,
+    QPointer<DialogController> dialogController_,
+    QObject *obj)
+    : UserConfigController(std::move(singleLoginPersonManager),
+                           calendarController,
+                           dialogController_,
+                           obj)
     , manager(peopleManager)
 {
     model->setEntries({{EnumStatus::EMAIL, EMAIL_PLACEHOLDER},
@@ -77,6 +82,7 @@ void RegisterController::onConfirmed()
     person.name = std::move(name);
     person.surname = std::move(surname);
     person.gender.setByCode(radioButtonController->getValue(0) ? 0 : 1);
+    person.created = QDateTime().currentDateTime();
 
     manager->add(person);
 

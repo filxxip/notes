@@ -48,7 +48,6 @@ std::optional<QString> readFromFile(const Path &path)
 std::optional<QStringList> readFromDir(const Path &path)
 {
     auto dir = QDir(path.getFullPath());
-    qDebug() << dir.path();
     if (dir.exists()) {
         QStringList list;
         for (const auto &name : dir.entryInfoList(QDir::Files)) {

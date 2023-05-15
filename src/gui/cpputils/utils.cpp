@@ -1,6 +1,9 @@
 #include "utils.h"
+#include <QObject>
+#include <QPointer>
 #include <QRegularExpression>
 #include <QStringLiteral>
+#include <QTimer>
 
 namespace {
 
@@ -41,3 +44,14 @@ QString convertToStringFormat(const QDate &date)
 }
 
 } // namespace DateStringAlternatives
+
+namespace DatabaseUtilsFunctions {
+void tickWait(int interval, std::function<void()> func, QObject *parent)
+{
+    QPointer<QTimer> myTimer = new QTimer(parent);
+    myTimer->connect(myTimer, &QTimer::timeout, [func = std::move(func)] { func(); });
+    myTimer->setInterval(interval);
+    myTimer->start();
+}
+
+} // namespace DatabaseUtilsFunctions

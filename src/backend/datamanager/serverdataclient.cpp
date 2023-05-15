@@ -7,6 +7,8 @@ namespace {
 
 constexpr char NOT_SUPPORTED_MESSAGE[] = "This type is not supported";
 
+constexpr char DATABASE_ERROR[] = "Invalid access to database";
+
 const auto DATE_TIME_SYNTAX = QStringLiteral("%1-%2-%3-%4-%5-%6");
 const auto ADDED_PARMS_SYNTAX = QStringLiteral("&%1=%2");
 
@@ -89,10 +91,12 @@ void ServerDataClient::initRequest(const Path &url, QString mode) const
     request.setOpt<curlpp::options::CustomRequest>(mode.toStdString());
 }
 
-void ServerDataClient::performRequest() const
+int ServerDataClient::performRequest() const
 {
     request.perform();
+    auto code = curlpp::infos::ResponseCode::get(request);
     request.reset();
+    return code;
 }
 
 void ServerDataClient::addParamsToRequest() const
@@ -124,12 +128,10 @@ std::optional<json> ServerDataClient::get(const Path &url) const
     std::stringstream response;
     curlpp::options::WriteStream writeStream(&response);
     request.setOpt(writeStream);
-    performRequest();
-    return json::parse(response.str());
+    return performRequest() == 404 ? std::nullopt : std::make_optional(json::parse(response.str()));
 }
 
-std::optional<json> ServerDataClient::getGroup(
-    const Path &path) const //w tych grupach niestety cos nie tak z errorami gdy jest bledny key
+std::optional<json> ServerDataClient::getGroup(const Path &path) const
 {
     return get(UrlPath(path.getRelativePath() + groupFilterString));
 }

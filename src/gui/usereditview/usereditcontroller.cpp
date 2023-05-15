@@ -12,10 +12,15 @@ constexpr const char *CREATED = "Created Date";
 } // namespace
 
 //to do
-UserEditController::UserEditController(QPointer<CalendarController> calendarController,
-                                       QPointer<DialogController> dialogController_,
-                                       QObject *obj)
-    : UserConfigController(calendarController, dialogController_, obj)
+UserEditController::UserEditController(
+    std::unique_ptr<SingletonObjectManager<Person>> singletonObjectLogoutManager,
+    QPointer<CalendarController> calendarController,
+    QPointer<DialogController> dialogController_,
+    QObject *obj)
+    : UserConfigController(std::move(singletonObjectLogoutManager),
+                           calendarController,
+                           dialogController_,
+                           obj)
 {
     model->setEntries({{EnumStatus::CREATED, CREATED},
                        {EnumStatus::EMAIL, EMAIL},
@@ -110,6 +115,7 @@ void UserEditController::onConfirmed()
 
 void UserEditController::setNewPerson(Person person)
 {
+    qDebug() << "Ustawiam nowego persona";
     this->person = person;
 
     moveDataFromPersonToModel();
@@ -120,8 +126,9 @@ void UserEditController::onLogout()
     dialogController->showDialog(DialogCodes::UserViews::LOGOUT);
     dialogController->applyConnection([this](auto status) {
         if (status == DialogController::ActivityStatus::ACCEPT) {
-            emit changingViewOperationSuccess(person.value());
-            clear();
+            emitSuccessDialogWithClear(DialogCodes::UserViews::LOGOUT_INFO, person.value());
+            //            emit changingViewOperationSuccess(person.value());
+            //            clear();
             person.reset();
         }
     });

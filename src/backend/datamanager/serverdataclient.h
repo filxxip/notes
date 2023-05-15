@@ -5,6 +5,7 @@
 #include "dataclient.h"
 #include <curl/curl.h>
 #include <curlpp/Easy.hpp>
+#include <curlpp/Infos.hpp>
 #include <curlpp/Options.hpp>
 #include <curlpp/cURLpp.hpp>
 #include <nlohmann/json.hpp>
@@ -30,7 +31,7 @@ class ServerDataClient final : public DataClient
 
     void initRequest(const Path &url, QString mode) const;
 
-    void performRequest() const;
+    int performRequest() const;
 
     void addParamsToRequest() const;
 

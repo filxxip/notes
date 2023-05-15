@@ -6,10 +6,12 @@ constexpr const char *MALE_TEXT_BUTTON = "male";
 
 } // namespace
 
-UserConfigController::UserConfigController(QPointer<CalendarController> calendarController_,
-                                           QPointer<DialogController> dialogController_,
-                                           QObject *obj)
-    : EntryController(dialogController_, obj)
+UserConfigController::UserConfigController(
+    std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
+    QPointer<CalendarController> calendarController_,
+    QPointer<DialogController> dialogController_,
+    QObject *obj)
+    : EntryController(std::move(singleLoginPersonManager), dialogController_, obj)
     , calendarController(calendarController_)
 {
     radioButtonController = new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 1),

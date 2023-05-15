@@ -29,7 +29,7 @@ class LogController : public QObject
 
     Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
 public:
-    LogController(std::shared_ptr<PeopleManager> peopleManager,
+    LogController(std::shared_ptr<DataClient> dataClient,
                   QPointer<CalendarController> calendarController_,
                   QPointer<DialogController> dialogController_,
                   QObject *obj = nullptr);
@@ -41,6 +41,8 @@ private:
     QHash<EnumStatus, QPointer<EntryController>> controllers;
     QQmlPropertyMap *ownerData = new QQmlPropertyMap(this);
 
+    SingletonObjectManager<Person> logoutManager;
+
     QPointer<UserSwitcherModel> switcherModel;
 
     EnumStatus getUserView() const;
@@ -49,4 +51,6 @@ private:
 
 signals:
     void userViewChanged();
+
+    void mainViewChanged(ModelStatuses::MainUserViews mainView);
 };

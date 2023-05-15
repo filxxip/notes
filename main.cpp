@@ -39,21 +39,26 @@ using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
 #if RUN_DATABASE
-    auto filemanager = PeopleManager("people",
-                                     std::make_shared<FileDataClientAdapter>(
-                                         std::make_shared<FileDataClient>()));
+    auto filemanager = GuiDialogsManager("guidialogs",
+                                         std::make_shared<FileDataClientAdapter>(
+                                             std::make_shared<FileDataClient>()));
 
-    auto servermanager = PeopleManager("people", std::make_shared<ServerDataClient>());
-    auto el = servermanager.get();
-    //    for (int i = 1; i < 200; i++) {
-    //        servermanager.remove(i);
-    //    }
+    auto servermanager = GuiDialogsManager("guidialogs", std::make_shared<ServerDataClient>());
+    auto el = filemanager.get();
+    for (int i = 1; i < 20; i++) {
+        servermanager.remove(i);
+    }
     if (el.has_value()) {
         qDebug() << "hah";
     }
-//    for (auto &e : el.value()) {
-//        servermanager.add(e);
-//    }
+
+    std::sort(el->begin(), el->end(), [](const auto &el1, const auto &el2) {
+        return el1.id.get() < el2.id.get();
+    });
+    for (auto &e : el.value()) {
+        qDebug() << e.id.get();
+        servermanager.add(e);
+    }
 #endif
 
 #if RUN_QML
@@ -78,42 +83,13 @@ int main(int argc, char *argv[])
     auto fileClient = std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>());
     auto serverClient = std::make_shared<ServerDataClient>();
 
-    auto ptr = fileClient;
+    auto ptr = serverClient;
 
     if (ptr->isValid()) {
-        //        auto dialogController = new DialogController(ptr, &engine);
         auto mainController = new MainController(ptr, &engine);
-
-        //        auto clockController = new ClockController(&engine);
-
-        //        //        QPointer<CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>> listmodel
-        //        //            = new CustomListModel<RadioButtonModel, ModelStatuses::RadioButtonRoles>(&engine);
-        //        auto entry1 = RadioButtonModel("text1", false, 1);
-        //        auto entry2 = RadioButtonModel("text2", true, 1);
-        //        auto entry3 = RadioButtonModel("text3", false, 2);
-        //        auto entry4 = RadioButtonModel("text4", false, 2);
-
-        //        listmodel->setEntries({entry1, entry2, entry3, entry4});
-
-        //        auto buttonController = new RadioButtonController({entry1, entry2, entry3, entry4}, &engine);
-        //        auto userViewController = new UserEditController(new CalendarController(&engine),
-        //                                                         dialogController,
-        //                                                         &engine);
-
-        //        auto logController = new LogController(ptr, dialogController, &engine);
-
-        //        auto mainUserController = new MainUserController(&engine);
 
         engine.rootContext()->setContextProperty("mainController", mainController);
         mainController->registerControllers(engine.rootContext());
-        /*     engine.rootContext()->setContextProperty("logController", logController);
-
-        engine.rootContext()->setContextProperty("dialogController", dialogController);
-        engine.rootContext()->setContextProperty("buttonController", buttonController);
-        engine.rootContext()->setContextProperty("userEditController", userViewController);
-        engine.rootContext()->setContextProperty("clockController", clockController);
-        engine.rootContext()->setContextProperty("mainUserController", mainUserController)*/
-        ;
 
         engine.load(url);
 
