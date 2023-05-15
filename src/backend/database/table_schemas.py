@@ -54,7 +54,7 @@ schema_schema = {
     "type": "object",
     "properties": {
         "name": {"type": "string"},
-        "schema": {"type": "string"}#powinien byc dictionary
+        "schema": {"type": "string"}#should be dict
     },
     "additionalProperties": False
 }

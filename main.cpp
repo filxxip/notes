@@ -1,35 +1,18 @@
-#include <QColor>
 #include <QCoreApplication>
 #include <QDebug>
-#include <QDir>
-#include <QFileInfo>
 #include <QGuiApplication>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QObject>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QRegularExpression>
 #include <QString>
 #include "gui/statuses.h"
 #include "src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h"
 #include "src/backend/datamanager/directobjsmanagers/guidialogs/guidialogmanager.h"
 #include "src/backend/datamanager/directobjsmanagers/notes/notesmanager.h"
 #include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"
-#include "src/backend/datamanager/directobjsmanagers/singletonobjectmanager/singletonobjectmanager.h"
 #include "src/backend/datamanager/filedataclient.h"
 #include "src/backend/datamanager/filedataclientadapter.h"
 #include "src/backend/datamanager/serverdataclient.h"
-#include "src/gui/calendar/calendarcontroller.h"
-#include "src/gui/calendar/clockcontroller.h"
-#include "src/gui/customdialog/dialogcontroller.h"
 #include "src/gui/maincontroller/maincontroller.h"
-#include "src/gui/radiobutton/radiobuttoncontroller.h"
-#include "src/gui/usereditview/mainusercontroller.h"
-#include "src/gui/usereditview/usereditcontroller.h"
 #include "src/gui/userview/logcontroller.h"
-#include <cctype>
-#include <chrono>
 #include <memory>
 
 #define RUN_QML 1
