@@ -36,7 +36,7 @@ MainUserController::MainUserController(std::shared_ptr<DataClient> dataClient,
             &MainUserController::removePersonFromDatabase);
 
     connect(userEditController, &UserEditController::updatePersonData, [this](const auto &person) {
-        qDebug() << "hellll";
+        
         qDebug() << person.surname.get();
         manager.update(person);
     });
