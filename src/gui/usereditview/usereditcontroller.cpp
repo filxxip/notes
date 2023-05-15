@@ -29,15 +29,14 @@ UserEditController::UserEditController(
                        {EnumStatus::SURNAME, SURNAME},
                        {EnumStatus::COUNTRY, COUNTRY}});
 
-    connect(this, &EntryController::confirm, [this] { emit updatePersonData(person.value()); });
     connect(this, &UserEditController::remove, this, &UserEditController::onRemove);
     connect(this,
             &UserEditController::logout,
             this,
             &UserEditController::onLogout); //disconnect do tego pozniej
     Person person;
-    person.name = "Filip";
-    person.surname = "Poltoraczyk";
+    person.name = "F";
+    person.surname = "P";
     person.birthday = QDateTime(QDate(1999, 1, 1), QTime(1, 1, 1));
     person.created = QDateTime().currentDateTime();
     person.country = "Polska";
@@ -115,21 +114,19 @@ void UserEditController::onConfirmed()
 
 void UserEditController::setNewPerson(Person person)
 {
-    qDebug() << "Ustawiam nowego persona";
     this->person = person;
-
     moveDataFromPersonToModel();
 }
 
 void UserEditController::onLogout()
 {
     dialogController->showDialog(DialogCodes::UserViews::LOGOUT);
-    dialogController->applyConnection([this](auto status) {
-        if (status == DialogController::ActivityStatus::ACCEPT) {
-            emitSuccessDialogWithClear(DialogCodes::UserViews::LOGOUT_INFO, person.value());
-            //            emit changingViewOperationSuccess(person.value());
-            //            clear();
-            person.reset();
-        }
-    });
+    dialogController->applyConnection(
+        [this](auto status) {
+            if (status == DialogController::ActivityStatus::ACCEPT) {
+                emitSuccessDialogWithClear(DialogCodes::UserViews::LOGOUT_INFO, person.value());
+                person.reset();
+            }
+        },
+        true);
 }

@@ -29,7 +29,15 @@ class MainController : public QObject
 
     ModelStatuses::MainUserViews m_userView = ModelStatuses::MainUserViews::LOG;
 
-    Q_PROPERTY(ModelStatuses::MainUserViews userView MEMBER m_userView CONSTANT)
+    Q_PROPERTY(
+        ModelStatuses::MainUserViews userView MEMBER m_userView NOTIFY userViewChanged CONSTANT)
+
+private slots:
+    void changeView(ModelStatuses::MainUserViews viewType)
+    {
+        this->m_userView = viewType;
+        emit userViewChanged(viewType);
+    }
 
 public:
     MainController(std::shared_ptr<DataClient> dataClient, QObject *obj = nullptr);
@@ -37,4 +45,7 @@ public:
     void registerControllers(QQmlContext *context);
 
     Q_INVOKABLE void closeApp();
+
+signals:
+    void userViewChanged(ModelStatuses::MainUserViews);
 };

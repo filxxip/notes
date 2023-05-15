@@ -22,10 +22,12 @@ MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *
     , logController(dataClient, calendarController, dialogController, this)
     , mainUserController(dataClient, calendarController, dialogController, this)
 {
-    connect(&mainUserController, &MainUserController::mainViewChanged, [this](auto viewType) {
-        qDebug() << "Ustawiam nowy widok";
-        this->m_userView = viewType;
-    });
+    connect(&mainUserController,
+            &MainUserController::mainViewChanged,
+            this,
+            &MainController::changeView);
+
+    connect(&logController, &LogController::mainViewChanged, this, &MainController::changeView);
 }
 
 void MainController::closeApp()

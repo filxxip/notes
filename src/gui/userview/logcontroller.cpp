@@ -73,7 +73,8 @@ LogController::LogController(std::shared_ptr<DataClient> dataClient,
         400,
         [this] {
             if (logoutManager.isDataAvaible()) {
-                emit mainViewChanged(ModelStatuses::MainUserViews::EDIT);
+                auto obj = logoutManager.get();
+                emit mainViewChanged(ModelStatuses::MainUserViews::LOG);
             }
         },
         this);

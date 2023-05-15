@@ -48,7 +48,7 @@ void RegisterController::onConfirmed()
     auto hasNoEmailMatches = !Validators::emailValidator(email);
     auto hasNoUppercase = !Validators::passwordValidator(password);
 
-    auto searchedElements = manager->getFiltered({{"email", name.toStdString()}});
+    auto searchedElements = manager->getFiltered({{"email", email.toStdString()}});
 
     if (!searchedElements.has_value()) {
         qDebug() << Messages::INVALID_KEYWORD;

@@ -122,19 +122,17 @@ Column {
     //main part of log view
     spacing: GUIConfig.userView.layoutSpacing
     anchors.centerIn: parent
+    padding: 20
     ButtonSwitcher {
         enabled: swipeView.currentIndex !== 0
         model: logController.switcherModel
         tabSelectorEnum: logController.userViewType
-        Component.onCompleted: {
-            switched.connect(
-                        newstatus => logController.userViewType = newstatus)
-            console.log(y)
-            console.log(height)
-        }
+        Component.onCompleted: switched.connect(
+                                   newstatus => logController.userViewType = newstatus)
     }
 
     Rectangle {
+        anchors.horizontalCenter: parent.horizontalCenter
         width: GUIConfig.userView.width
         height: GUIConfig.userView.height
         radius: GUIConfig.userView.radiusOfMainRectangle

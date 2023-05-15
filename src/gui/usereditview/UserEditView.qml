@@ -39,7 +39,10 @@ Item {
                         width: listview.width
                         height: listview.singleComponentHeight
                         customcolor: model.color
-                        onTextChanged: model.value = entry.text
+                        onTextChanged: {
+                            model.value = entry.text
+                            console.log(model.value)
+                        }
 
                         function setModelValue() {
                             setText(model.value)
@@ -131,13 +134,13 @@ Item {
             CustomButton {
                 width: GUIConfig.userEditView.buttonWidth
                 height: GUIConfig.userEditView.buttonHeight
-                onReleased: userEditController.moveDataFromPersonToModel()
+                onReleased: mainUserController.userEditController.moveDataFromPersonToModel()
                 contentText: GUIConfig.userEditView.resetContentText
             }
             CustomButton {
                 width: GUIConfig.userEditView.buttonWidth
                 height: GUIConfig.userEditView.buttonHeight
-                onReleased: userEditController.confirm()
+                onReleased: mainUserController.userEditController.confirm()
                 contentText: GUIConfig.userEditView.saveContentText
             }
         }

@@ -58,7 +58,7 @@ class APIController:
 
     def reclear_tables(self, tables_to_clear=None):
         tabs = None
-        if tables_to_clear is list:
+        if isinstance(tables_to_clear,list):
             tabs = [table.__table__ for table in tables_to_clear]
         Base.metadata.drop_all(bind=engine, tables=tabs)
         Base.metadata.create_all(bind=engine, tables=tabs)

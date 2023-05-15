@@ -26,7 +26,10 @@ ListView {
         placeholder: model.placeholder
         passwordStatus: model.passwordStatus
         activeFocusOnTab: true
-        onTextChanged: model.value = entry.text
+        onTextChanged: {
+            model.value = entry.text
+            console.log(model.value)
+        }
         Component.onCompleted: controller.clear.connect(entry.clear)
         Component.onDestruction: controller.clear.disconnect(entry.clear)
     }
