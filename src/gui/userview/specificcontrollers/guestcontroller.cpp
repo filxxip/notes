@@ -5,10 +5,14 @@ const auto UNDEFINED_MOCK = QString("**undefined-mock-%1**");
 }
 
 GuestController::GuestController(
+    std::shared_ptr<PrevEnumViewController> mainViewController_,
     std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
     QPointer<DialogController> dialogController_,
     QObject *obj)
-    : EntryController(std::move(singleLoginPersonManager), dialogController_, obj)
+    : EntryController(mainViewController_,
+                      std::move(singleLoginPersonManager),
+                      dialogController_,
+                      obj)
 {
     model->setEntries({{EnumStatus::NAME, "Temporary name..."}});
 }

@@ -111,7 +111,7 @@ Item {
                     height: listview.singleComponentHeight
                     clickedSlot: () => swiper.open()
 
-                    placeholder: calendarController.niceFormat
+                    placeholder: mainUserController.userEditController.calendarController.niceFormat
                     customcolor: GUIConfig.colors.red
                     readOnly: true
                 }
@@ -151,7 +151,7 @@ Item {
             fontSize: GUIConfig.userEditView.dateChooserFontSize
             width: GUIConfig.userEditView.dateChooserWidth
             height: GUIConfig.userEditView.dateChooserHeight
-            controller: calendarController
+            controller: mainUserController.userEditController.calendarController
             itemNumber: GUIConfig.userEditView.dateChooserItemsNumber
         }
     }

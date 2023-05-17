@@ -26,7 +26,6 @@ class MainUserController : public QObject
 public:
     explicit MainUserController(std::shared_ptr<PrevEnumViewController> mainViewController,
                                 std::shared_ptr<DataClient> dataClient,
-                                QPointer<CalendarController> calendarController,
                                 QPointer<DialogController> dialogController,
                                 QObject *obj = nullptr);
 

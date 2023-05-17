@@ -157,7 +157,7 @@ Column {
                         width: GUIConfig.dateChooser.basicTumblerWidth * 3
                         backgroundColor: GUIConfig.colors.transparent
                         height: GUIConfig.userView.dateChooser.height
-                        controller: calendarController
+                        controller: logController.controllers.registerController.calendarController
                         itemNumber: GUIConfig.userView.dateChooser.itemNumber
                     }
 

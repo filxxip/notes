@@ -15,10 +15,9 @@ MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *
           new DialogController(std::make_unique<GuiDialogsManager>(DatabaseCodes::Names::GUI_DIALOGS,
                                                                    dataClient),
                                this))
-    , calendarController(new CalendarController(this))
     , clockController(new ClockController(this))
-    , logController(mainUserView, dataClient, calendarController, dialogController, this)
-    , mainUserController(mainUserView, dataClient, calendarController, dialogController, this)
+    , logController(mainUserView, dataClient, dialogController, this)
+    , mainUserController(mainUserView, dataClient, dialogController, this)
     , mainUserView(
           ViewControllerGenerators::createNonSwitcherViewContorller(ModelStatuses::MainUserViews::LOG,
                                                                     this))
@@ -47,7 +46,6 @@ void MainController::registerControllers(QQmlContext *context)
 {
     context->setContextProperty(LOG_CONTROLLER, &logController);
     context->setContextProperty(DIALOG_CONTROLLER, dialogController);
-    context->setContextProperty(CALENDAR_CONTROLLER, calendarController);
     context->setContextProperty(CLOCK_CONTROLLER, clockController);
     context->setContextProperty(MAIN_USER_CONTROLLER, &mainUserController);
 }

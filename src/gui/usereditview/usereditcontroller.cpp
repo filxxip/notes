@@ -13,12 +13,12 @@ constexpr const char *CREATED = "Created Date";
 
 //to do
 UserEditController::UserEditController(
+    std::shared_ptr<PrevEnumViewController> mainViewController,
     std::unique_ptr<SingletonObjectManager<Person>> singletonObjectLogoutManager,
-    QPointer<CalendarController> calendarController,
     QPointer<DialogController> dialogController_,
     QObject *obj)
-    : UserConfigController(std::move(singletonObjectLogoutManager),
-                           calendarController,
+    : UserConfigController(mainViewController,
+                           std::move(singletonObjectLogoutManager),
                            dialogController_,
                            obj)
 {

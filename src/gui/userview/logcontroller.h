@@ -28,17 +28,15 @@ class LogController : public QObject
 
     Q_PROPERTY(ViewController *view MEMBER logViewController CONSTANT)
 
-    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
+    //    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
 
 public:
     LogController(std::shared_ptr<PrevEnumViewController> mainViewController,
                   std::shared_ptr<DataClient> dataClient,
-                  QPointer<CalendarController> calendarController_,
                   QPointer<DialogController> dialogController_,
                   QObject *obj = nullptr);
 
 private:
-    QPointer<CalendarController> calendarController;
 
     QHash<EnumStatus, QPointer<EntryController>> controllers;
 

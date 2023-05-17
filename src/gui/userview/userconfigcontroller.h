@@ -15,8 +15,8 @@ protected:
     QString getPartOfPerson(EnumStatus componentEnum) const;
 
 public:
-    UserConfigController(std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
-                         QPointer<CalendarController> calendarController,
+    UserConfigController(std::shared_ptr<PrevEnumViewController> mainViewController_,
+                         std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
                          QPointer<DialogController> dialogController_,
                          QObject *obj = nullptr);
 };

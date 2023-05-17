@@ -7,12 +7,15 @@ constexpr const char *MALE_TEXT_BUTTON = "male";
 } // namespace
 
 UserConfigController::UserConfigController(
+    std::shared_ptr<PrevEnumViewController> mainViewController_,
     std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
-    QPointer<CalendarController> calendarController_,
     QPointer<DialogController> dialogController_,
     QObject *obj)
-    : EntryController(std::move(singleLoginPersonManager), dialogController_, obj)
-    , calendarController(calendarController_)
+    : EntryController(mainViewController_,
+                      std::move(singleLoginPersonManager),
+                      dialogController_,
+                      obj)
+    , calendarController(new CalendarController(this))
 {
     radioButtonController = new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 1),
                                                        RadioButtonModel(FEMALE_TEXT_BUTTON,
@@ -21,7 +24,8 @@ UserConfigController::UserConfigController(
                                                       this);
 
     //from level of qml also entries are cleared, they react on clear signal
-    connect(this, &UserConfigController::clear, [this] {
+    connect(this, &EntryController::clear, [this] {
+        qDebug() << "wykonuje tutut";
         calendarController->clear();
         radioButtonController->setValue(0, true);
     });

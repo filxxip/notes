@@ -28,13 +28,10 @@ std::unique_ptr<SingletonObjectManager<Person>> generateController(
 
 LogController::LogController(std::shared_ptr<PrevEnumViewController> mainViewController,
                              std::shared_ptr<DataClient> dataClient,
-                             QPointer<CalendarController> calendarController_,
                              QPointer<DialogController> dialogController_,
-
                              QObject *obj)
     : QObject(obj)
     , prevViewController(mainViewController)
-    , calendarController(calendarController_)
     , logoutManager(std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_LOGOUT, dataClient),
                     std::make_shared<PeopleManager>(DatabaseCodes::Names::PEOPLE, dataClient))
     , logViewController(
@@ -52,20 +49,22 @@ LogController::LogController(std::shared_ptr<PrevEnumViewController> mainViewCon
     auto ptr = std::make_shared<PeopleManager>(DatabaseCodes::Names::PEOPLE, dataClient);
     controllers = {
         {EnumStatus::REGISTER,
-         new RegisterController(generateController(ptr,
+         new RegisterController(mainViewController,
+                                generateController(ptr,
                                                    dataClient,
                                                    DatabaseCodes::Names::PEOPLE_REGISTER),
-                                calendarController,
                                 ptr,
                                 dialogController_,
                                 this)},
         {EnumStatus::LOGIN,
-         new LoginController(generateController(ptr, dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
+         new LoginController(mainViewController,
+                             generateController(ptr, dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
                              ptr,
                              dialogController_,
                              this)},
         {EnumStatus::GUEST,
-         new GuestController(generateController(ptr, dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
+         new GuestController(mainViewController,
+                             generateController(ptr, dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
                              dialogController_,
                              this)}};
 

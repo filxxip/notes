@@ -7,6 +7,7 @@ from src.backend.database.tables.base import Base
 from ..constants import tables_names
 from ..json_generator import auto_apply_jsonify_content
 
+
 @auto_apply_jsonify_content
 class IdTable:
     id: Mapped[int] = mapped_column(
@@ -28,5 +29,3 @@ class PersonLogin(IdTable, Base):
 
 class PersonLogout(IdTable, Base):
     __tablename__ = tables_names.peopleLogoutName
-
-

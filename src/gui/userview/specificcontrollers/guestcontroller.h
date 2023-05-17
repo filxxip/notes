@@ -9,7 +9,8 @@ class GuestController final : public EntryController
     Q_OBJECT
 
 public:
-    GuestController(std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
+    GuestController(std::shared_ptr<PrevEnumViewController> mainViewController_,
+                    std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
                     QPointer<DialogController> dialogController_,
                     QObject *obj = nullptr);
 

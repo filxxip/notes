@@ -23,7 +23,7 @@ enum class RadioButtonRoles { TEXT, VALUE, GROUP };
 
 enum class InnerUserEditViews { EDIT, NOTEBOOK };
 
-enum class MainUserViews { LOG, EDIT };
+enum class MainUserViews { LOG, EDIT, BACKGROUND };
 
 Q_ENUM_NS(MainUserViews);
 

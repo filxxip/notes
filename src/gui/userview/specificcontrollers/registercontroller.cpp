@@ -12,13 +12,13 @@ const auto PERSON_CREATED = QStringLiteral("New user : %1 has just been added to
 } // namespace
 
 RegisterController::RegisterController(
+    std::shared_ptr<PrevEnumViewController> mainViewController_,
     std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
-    QPointer<CalendarController> calendarController,
     std::shared_ptr<PeopleManager> peopleManager,
     QPointer<DialogController> dialogController_,
     QObject *obj)
-    : UserConfigController(std::move(singleLoginPersonManager),
-                           calendarController,
+    : UserConfigController(mainViewController_,
+                           std::move(singleLoginPersonManager),
                            dialogController_,
                            obj)
     , manager(peopleManager)

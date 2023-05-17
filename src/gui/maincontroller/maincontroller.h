@@ -24,7 +24,6 @@ class MainController : public QObject
     Q_PROPERTY(ViewController *view READ getViewController CONSTANT)
 
     QPointer<DialogController> dialogController;
-    QPointer<CalendarController> calendarController;
     QPointer<ClockController> clockController;
     std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> mainUserView;
     LogController logController;

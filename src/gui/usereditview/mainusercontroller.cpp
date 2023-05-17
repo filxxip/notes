@@ -2,7 +2,6 @@
 
 MainUserController::MainUserController(std::shared_ptr<PrevEnumViewController> mainViewController,
                                        std::shared_ptr<DataClient> dataClient,
-                                       QPointer<CalendarController> calendarController,
                                        QPointer<DialogController> dialogController,
                                        QObject *obj)
     : QObject(obj)
@@ -13,11 +12,11 @@ MainUserController::MainUserController(std::shared_ptr<PrevEnumViewController> m
                                                    dataClient),
                       manager)
     , userEditController(
-          new UserEditController(std::make_unique<SingletonObjectManager<Person>>(
+          new UserEditController(mainViewController,
+                                 std::make_unique<SingletonObjectManager<Person>>(
                                      std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_LOGOUT,
                                                                   dataClient),
                                      manager),
-                                 calendarController,
                                  dialogController,
                                  this))
     , prevViewController(mainViewController)

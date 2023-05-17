@@ -14,6 +14,7 @@ import "src/gui/calendar"
 import "src/gui/usereditview"
 
 Window {
+    id: window
     Rectangle {
         anchors.fill: parent
         gradient: Gradient {
@@ -47,10 +48,10 @@ Window {
     //        anchors.fill: parent
     //    }
     Loader {
+        id: loader
         anchors.fill: parent
-        property var map: [logView, userView]
+        property var map: [logView, userView, someBackground]
         sourceComponent: map[mainController.view.userViewType]
-        Component.onCompleted: console.log(mainController.view.userViewType)
     }
     Component {
         id: logView
@@ -63,7 +64,15 @@ Window {
         id: userView
         UserProfileView {
             id: userEditView
-            //        anchors.left: outerRectangle.left
+            anchors.centerIn: parent
+            anchors.fill: parent
+        }
+    }
+
+    Component {
+        id: someBackground
+        Rectangle {
+            color: "blue"
             anchors.centerIn: parent
             anchors.fill: parent
         }

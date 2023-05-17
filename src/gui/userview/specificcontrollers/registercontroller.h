@@ -9,8 +9,8 @@ class RegisterController final : public UserConfigController
     std::shared_ptr<PeopleManager> manager;
 
 public:
-    RegisterController(std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
-                       QPointer<CalendarController> calendarController,
+    RegisterController(std::shared_ptr<PrevEnumViewController> mainViewController_,
+                       std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
                        std::shared_ptr<PeopleManager> peopleManager,
                        QPointer<DialogController> dialogController_,
                        QObject *obj = nullptr);
