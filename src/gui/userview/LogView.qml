@@ -118,11 +118,6 @@ Column {
             }
         }
     }
-    Component.onCompleted: {
-        console.log(logController.view.switcherModel)
-        console.log(logController.view)
-        console.log(logController.view.userViewType)
-    }
     //main part of log view
     spacing: GUIConfig.userView.layoutSpacing
     anchors.centerIn: parent

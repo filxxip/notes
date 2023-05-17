@@ -39,10 +39,7 @@ Item {
                         width: listview.width
                         height: listview.singleComponentHeight
                         customcolor: model.color
-                        onTextChanged: {
-                            model.value = entry.text
-                            console.log(model.value)
-                        }
+                        onTextChanged: model.value = entry.text
 
                         function setModelValue() {
                             setText(model.value)

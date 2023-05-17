@@ -25,7 +25,6 @@ UserConfigController::UserConfigController(
 
     //from level of qml also entries are cleared, they react on clear signal
     connect(this, &EntryController::clear, [this] {
-        qDebug() << "wykonuje tutut";
         calendarController->clear();
         radioButtonController->setValue(0, true);
     });

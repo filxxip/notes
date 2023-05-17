@@ -74,8 +74,6 @@ void UserEditController::onRemove()
             if (status == DialogController::ActivityStatus::ACCEPT) {
                 emitSuccessDialogWithClear(DialogCodes::UserViews::ACCOUNT_REMOVE_INFORMATION,
                                            person.value());
-                //                dialogController->showDialog(DialogCodes::UserViews::ACCOUNT_REMOVE_INFORMATION);
-                //                emit clear();
                 emit removePersonData(person->id.get());
                 person.reset();
             }
@@ -98,6 +96,10 @@ void UserEditController::onConfirmed()
 
     if (!Validators::passwordValidator(password)) {
         dialogController->showDialog(DialogCodes::UserViews::INVALID_UPDATED_PASSWORD);
+        return;
+    }
+    if (!radioButtonController->isValid()) {
+        qDebug() << Messages::INVALID_RADIO_BUTTON;
         return;
     }
     person->name = std::move(name);

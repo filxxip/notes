@@ -52,6 +52,7 @@ Window {
         anchors.fill: parent
         property var map: [logView, userView, someBackground]
         sourceComponent: map[mainController.view.userViewType]
+        onSourceChanged: animation.running = true
     }
     Component {
         id: logView
@@ -72,9 +73,16 @@ Window {
     Component {
         id: someBackground
         Rectangle {
-            color: "blue"
+            color: GUIConfig.colors.grey
             anchors.centerIn: parent
             anchors.fill: parent
+            Image {
+                anchors.centerIn: parent
+                width: 0.15 * parent.width
+                height: 0.15 * parent.height
+                fillMode: Image.PreserveAspectFit
+                source: "qrc:/resources/loading.png"
+            }
         }
     }
 }

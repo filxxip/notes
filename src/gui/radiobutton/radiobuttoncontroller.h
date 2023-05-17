@@ -19,14 +19,14 @@ class RadioButtonController final : public QObject
 
     QPointer<Model> model;
 
-    std::map<int, QString> codesMap;
-
 public:
     RadioButtonController(QVector<RadioButtonModel> modelElements, QObject *parent = nullptr);
 
     void setValue(int index, bool value);
 
     bool getValue(int index) const;
+
+    bool isValid() const;
 
 signals:
     void assign(int index, bool value);

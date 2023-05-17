@@ -45,7 +45,9 @@ Rectangle {
             listview.itemAtIndex(index).checked = value
         }
 
-        Component.onCompleted: controller.assign.connect(onAssign)
+        Component.onCompleted: {
+            controller.assign.connect(onAssign)
+        }
         Component.onDestruction: controller.assign.disconnect(onAssign)
 
         delegate: RadioDelegate {
@@ -60,7 +62,7 @@ Rectangle {
             height: item.combinedHeight
             id: radiobutton
             text: model.text
-            Component.onCompleted: checked = model.value //nie ma binding!!!
+            Component.onCompleted: checked = model.value
             indicator: Rectangle {
                 id: innerComponent
                 anchors.fill: parent

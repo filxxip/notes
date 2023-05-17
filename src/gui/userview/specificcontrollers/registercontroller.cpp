@@ -73,6 +73,10 @@ void RegisterController::onConfirmed()
         dialogController->showDialog(DialogCodes::UserViews::INVALID_REGISTER_EMAIL);
         return;
     }
+    if (!radioButtonController->isValid()) {
+        qDebug() << Messages::INVALID_RADIO_BUTTON;
+        return;
+    }
     Person person;
 
     person.birthday = calendarController->getCurrentDateTime();

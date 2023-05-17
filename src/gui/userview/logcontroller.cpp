@@ -75,6 +75,10 @@ LogController::LogController(std::shared_ptr<PrevEnumViewController> mainViewCon
         ownerData->insert(name, QVariant::fromValue(controllers[enumType].data()));
     }
 
+    connect(logViewController, &ViewController::userViewTypeChanged, [this] {
+        emit controllers[EnumStatus::REGISTER]->clear();
+    });
+
     DatabaseUtilsFunctions::tickWait(
         400,
         [this] {

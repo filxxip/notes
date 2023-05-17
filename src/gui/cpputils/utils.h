@@ -8,6 +8,7 @@
 
 namespace Messages {
 constexpr const char *INVALID_KEYWORD = "Keyword passed as parameter is invalid.";
+constexpr const char *INVALID_RADIO_BUTTON = "Something is wrong with your radiobutton, check it!";
 }
 
 namespace DatabaseCodes {
