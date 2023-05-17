@@ -12,10 +12,8 @@
 #include "../models/userviewlistmodel.h"
 #include "../modelutils/listmodelbuilder.h"
 #include "../statuses.h"
+#include "../viewcontroller/viewcontroller.h"
 #include "entrycontroller.h"
-
-class ViewController;
-class ViewSwitcherController;
 
 class LogController : public QObject
 {
@@ -33,7 +31,8 @@ class LogController : public QObject
 
     Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
 public:
-    LogController(QPointer<ViewController> mainViewController,
+    LogController(std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>>
+                      mainViewController,
                   std::shared_ptr<DataClient> dataClient,
                   QPointer<CalendarController> calendarController_,
                   QPointer<DialogController> dialogController_,
@@ -50,7 +49,7 @@ private:
 
     QPointer<UserSwitcherModel> switcherModel;
 
-    QPointer<ViewController> prevViewController;
+    std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> prevViewController;
 
     QPointer<ViewController> logViewController;
 
@@ -64,48 +63,48 @@ private:
     //    void mainViewChanged(ModelStatuses::MainUserViews mainView);
 };
 
-class ViewController : public QObject
-{
-    Q_OBJECT
+//class ViewController : public QObject
+//{
+//    Q_OBJECT
 
-    //    QQmlProperty switcherModel;
-    Q_PROPERTY(QVariant userViewType MEMBER userViewType NOTIFY userViewTypeChanged)
+//    //    QQmlProperty switcherModel;
+//    Q_PROPERTY(QVariant userViewType MEMBER userViewType NOTIFY userViewTypeChanged)
 
-    QVariant userViewType;
+//    QVariant userViewType;
 
-public:
-    ViewController(QVariant defaultUserType, QObject *obj = nullptr)
-        : QObject(obj)
-        , userViewType(std::move(defaultUserType))
-    {}
+//public:
+//    ViewController(QVariant defaultUserType, QObject *obj = nullptr)
+//        : QObject(obj)
+//        , userViewType(std::move(defaultUserType))
+//    {}
 
-    void setUserViewType(QVariant userViewType)
-    {
-        this->userViewType = userViewType;
-        emit userViewTypeChanged();
-    }
+//    void setUserViewType(QVariant userViewType)
+//    {
+//        this->userViewType = userViewType;
+//        emit userViewTypeChanged();
+//    }
 
-    template<typename ViewType>
-    ViewType getUserViewType() const
-    {
-        return userViewType.value<ViewType>();
-    }
+//    template<typename ViewType>
+//    ViewType getUserViewType() const
+//    {
+//        return userViewType.value<ViewType>();
+//    }
 
-signals:
-    void userViewTypeChanged();
-};
+//signals:
+//    void userViewTypeChanged();
+//};
 
-class ViewSwitcherController : public ViewController
-{
-    Q_OBJECT
+//class ViewSwitcherController : public ViewController
+//{
+//    Q_OBJECT
 
-    Q_PROPERTY(QObject *switcherModel MEMBER switcherModel CONSTANT)
+//    Q_PROPERTY(QObject *switcherModel MEMBER switcherModel CONSTANT)
 
-    QObject *switcherModel;
+//    QObject *switcherModel;
 
-public:
-    ViewSwitcherController(QObject *switcher, QVariant defaultUserType, QObject *obj = nullptr)
-        : ViewController(std::move(defaultUserType), obj)
-        , switcherModel(switcher)
-    {}
-};
+//public:
+//    ViewSwitcherController(QObject *switcher, QVariant defaultUserType, QObject *obj = nullptr)
+//        : ViewController(std::move(defaultUserType), obj)
+//        , switcherModel(switcher)
+//    {}
+//};

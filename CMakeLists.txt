@@ -28,6 +28,9 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/maincontroller/maincontroller.cpp
     src/gui/maincontroller/maincontroller.h
 
+    src/gui/viewcontroller/viewcontroller.cpp
+    src/gui/viewcontroller/viewcontroller.h
+
     src/gui/maincontroller/databasecontroller.cpp
     src/gui/maincontroller/databasecontroller.h
 

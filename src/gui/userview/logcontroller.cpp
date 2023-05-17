@@ -22,27 +22,30 @@ std::unique_ptr<SingletonObjectManager<Person>> generateController(
 
 } // namespace
 
-LogController::LogController(QPointer<ViewController> mainViewController,
-                             std::shared_ptr<DataClient> dataClient,
-                             QPointer<CalendarController> calendarController_,
-                             QPointer<DialogController> dialogController_,
+LogController::LogController(
+    std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> mainViewController,
+    std::shared_ptr<DataClient> dataClient,
+    QPointer<CalendarController> calendarController_,
+    QPointer<DialogController> dialogController_,
 
-                             QObject *obj)
+    QObject *obj)
     : QObject(obj)
     , prevViewController(mainViewController)
     , calendarController(calendarController_)
     , logoutManager(std::make_unique<PeopleManager>(DatabaseCodes::namesMap.at(
                                                         DatabaseCodes::Names::PEOPLE_LOGOUT),
                                                     dataClient))
-    , logViewController(new ViewSwitcherController(
-          FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
-              .add(ModelStatuses::UserViewsRoles::TEXT, &SwitcherModel<EnumStatus>::text)
-              .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type)
-              .build({{LOGIN_TEXT, EnumStatus::LOGIN},
-                      {REGISTER_TEXT, EnumStatus::REGISTER},
-                      {GUEST_TEXT, EnumStatus::GUEST}}),
-          QVariant::fromValue(EnumStatus::LOGIN),
-          this))
+    , logViewController(
+          ViewControllerGenerators::createSwitcherViewContorller(
+              FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
+                  .add(ModelStatuses::UserViewsRoles::TEXT, &SwitcherModel<EnumStatus>::text)
+                  .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type)
+                  .build({{LOGIN_TEXT, EnumStatus::LOGIN},
+                          {REGISTER_TEXT, EnumStatus::REGISTER},
+                          {GUEST_TEXT, EnumStatus::GUEST}}),
+              EnumStatus::LOGIN,
+              this)
+              ->getController())
 {
     auto ptr = std::make_shared<PeopleManager>(DatabaseCodes::namesMap.at(
                                                    DatabaseCodes::Names::PEOPLE),
@@ -86,8 +89,7 @@ LogController::LogController(QPointer<ViewController> mainViewController,
         [this] {
             if (logoutManager.isDataAvaible()) {
                 auto obj = logoutManager.get();
-                prevViewController->setUserViewType(
-                    QVariant::fromValue(ModelStatuses::MainUserViews::LOG));
+                prevViewController->setUserViewType(ModelStatuses::MainUserViews::LOG);
                 //                emit mainViewChanged(ModelStatuses::MainUserViews::LOG);
             }
         },

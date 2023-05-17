@@ -27,16 +27,18 @@ class MainUserController : public QObject
 
     Q_OBJECT
 public:
-    explicit MainUserController(QPointer<ViewController> mainViewController,
-                                std::shared_ptr<DataClient> dataClient,
-                                QPointer<CalendarController> calendarController,
-                                QPointer<DialogController> dialogController,
-                                QObject *obj = nullptr);
+    explicit MainUserController(
+        std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>>
+            mainViewController,
+        std::shared_ptr<DataClient> dataClient,
+        QPointer<CalendarController> calendarController,
+        QPointer<DialogController> dialogController,
+        QObject *obj = nullptr);
 
 private:
     void tryToUpdateEditView(SingletonObjectManager<Person> *manager);
 
-    QPointer<ViewController> prevViewController;
+    std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> prevViewController;
     QPointer<ViewController> currentViewController;
 
     //    QPointer<UserSwitcherModel> switcherModel;

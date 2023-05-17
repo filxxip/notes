@@ -22,12 +22,12 @@ class MainController : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(ViewController *view MEMBER mainUserView CONSTANT)
+    Q_PROPERTY(ViewController *view READ getViewController CONSTANT)
 
     QPointer<DialogController> dialogController;
     QPointer<CalendarController> calendarController;
     QPointer<ClockController> clockController;
-    QPointer<ViewController> mainUserView;
+    std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> mainUserView;
     LogController logController;
     MainUserController mainUserController;
 
@@ -42,6 +42,8 @@ class MainController : public QObject
     //        this->m_userView = viewType;
     //        emit userViewChanged(viewType);
     //    }
+private:
+    QPointer<ViewController> getViewController() const;
 
 public:
     MainController(std::shared_ptr<DataClient> dataClient, QObject *obj = nullptr);

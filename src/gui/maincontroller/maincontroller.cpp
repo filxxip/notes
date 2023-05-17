@@ -21,15 +21,21 @@ MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *
     , clockController(new ClockController(this))
     , logController(mainUserView, dataClient, calendarController, dialogController, this)
     , mainUserController(mainUserView, dataClient, calendarController, dialogController, this)
-    , mainUserView(new ViewController(QVariant::fromValue(ModelStatuses::MainUserViews::LOG), this))
+    , mainUserView(
+          ViewControllerGenerators::createNonSwitcherViewContorller(ModelStatuses::MainUserViews::LOG,
+                                                                    this))
 {
-    mainUserView->setUserViewType(QVariant::fromValue(ModelStatuses::MainUserViews::LOG));
+    mainUserView->setUserViewType(ModelStatuses::MainUserViews::LOG);
     //    connect(&mainUserController,
     //            &MainUserController::mainViewChanged,
     //            this,
     //            &MainController::changeView);
 
     //    connect(&logController, &LogController::mainViewChanged, this, &MainController::changeView);
+}
+QPointer<ViewController> MainController::getViewController() const
+{
+    return mainUserView->getController();
 }
 
 void MainController::closeApp()
