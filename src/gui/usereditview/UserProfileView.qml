@@ -66,9 +66,9 @@ Rectangle {
 
     ButtonSwitcher {
         anchors.left: parent.left
-        model: mainUserController.switcherModel
-        tabSelectorEnum: mainUserController.userViewType
+        model: mainUserController.view.switcherModel
+        tabSelectorEnum: mainUserController.view.userViewType
         Component.onCompleted: switched.connect(
-                                   newstatus => mainUserController.userViewType = newstatus)
+                                   newstatus => mainUserController.view.userViewType = newstatus)
     }
 }

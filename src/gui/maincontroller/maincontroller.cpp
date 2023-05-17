@@ -19,15 +19,17 @@ MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *
                                this))
     , calendarController(new CalendarController(this))
     , clockController(new ClockController(this))
-    , logController(dataClient, calendarController, dialogController, this)
-    , mainUserController(dataClient, calendarController, dialogController, this)
+    , logController(mainUserView, dataClient, calendarController, dialogController, this)
+    , mainUserController(mainUserView, dataClient, calendarController, dialogController, this)
+    , mainUserView(new ViewController(QVariant::fromValue(ModelStatuses::MainUserViews::LOG), this))
 {
-    connect(&mainUserController,
-            &MainUserController::mainViewChanged,
-            this,
-            &MainController::changeView);
+    mainUserView->setUserViewType(QVariant::fromValue(ModelStatuses::MainUserViews::LOG));
+    //    connect(&mainUserController,
+    //            &MainUserController::mainViewChanged,
+    //            this,
+    //            &MainController::changeView);
 
-    connect(&logController, &LogController::mainViewChanged, this, &MainController::changeView);
+    //    connect(&logController, &LogController::mainViewChanged, this, &MainController::changeView);
 }
 
 void MainController::closeApp()

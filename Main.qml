@@ -42,11 +42,15 @@ Window {
     //        anchors.fill: parent
     //    }
     //    }
-    //    LogView {}
+    //    LogView {
+    //        anchors.centerIn: parent
+    //        anchors.fill: parent
+    //    }
     Loader {
         anchors.fill: parent
         property var map: [logView, userView]
-        sourceComponent: map[mainController.userView]
+        sourceComponent: map[mainController.view.userViewType]
+        Component.onCompleted: console.log(mainController.view.userViewType)
     }
     Component {
         id: logView

@@ -4,6 +4,7 @@
 #include <QModelIndex>
 #include <QObject>
 #include <QPointer>
+#include <QQmlProperty>
 #include <QQmlPropertyMap>
 #include <QTimer>
 #include "../calendar/calendarcontroller.h"
@@ -12,6 +13,9 @@
 #include "../modelutils/listmodelbuilder.h"
 #include "../statuses.h"
 #include "entrycontroller.h"
+
+class ViewController;
+class ViewSwitcherController;
 
 class LogController : public QObject
 {
@@ -23,19 +27,20 @@ class LogController : public QObject
 
     Q_PROPERTY(QQmlPropertyMap *controllers MEMBER ownerData CONSTANT)
 
-    Q_PROPERTY(EnumStatus userViewType READ getUserView WRITE setUserView NOTIFY userViewChanged)
+    Q_PROPERTY(ViewController *view MEMBER logViewController CONSTANT)
 
     Q_PROPERTY(UserSwitcherModel *switcherModel MEMBER switcherModel CONSTANT)
 
     Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
 public:
-    LogController(std::shared_ptr<DataClient> dataClient,
+    LogController(QPointer<ViewController> mainViewController,
+                  std::shared_ptr<DataClient> dataClient,
                   QPointer<CalendarController> calendarController_,
                   QPointer<DialogController> dialogController_,
                   QObject *obj = nullptr);
 
 private:
-    EnumStatus m_userView = EnumStatus::LOGIN;
+    //    EnumStatus m_userView = EnumStatus::LOGIN;
     QPointer<CalendarController> calendarController;
 
     QHash<EnumStatus, QPointer<EntryController>> controllers;
@@ -45,12 +50,62 @@ private:
 
     QPointer<UserSwitcherModel> switcherModel;
 
-    EnumStatus getUserView() const;
+    QPointer<ViewController> prevViewController;
 
-    void setUserView(EnumStatus newView);
+    QPointer<ViewController> logViewController;
+
+    //    EnumStatus getUserView() const;
+
+    //    void setUserView(EnumStatus newView);
+
+    //signals:
+    //    void userViewChanged();
+
+    //    void mainViewChanged(ModelStatuses::MainUserViews mainView);
+};
+
+class ViewController : public QObject
+{
+    Q_OBJECT
+
+    //    QQmlProperty switcherModel;
+    Q_PROPERTY(QVariant userViewType MEMBER userViewType NOTIFY userViewTypeChanged)
+
+    QVariant userViewType;
+
+public:
+    ViewController(QVariant defaultUserType, QObject *obj = nullptr)
+        : QObject(obj)
+        , userViewType(std::move(defaultUserType))
+    {}
+
+    void setUserViewType(QVariant userViewType)
+    {
+        this->userViewType = userViewType;
+        emit userViewTypeChanged();
+    }
+
+    template<typename ViewType>
+    ViewType getUserViewType() const
+    {
+        return userViewType.value<ViewType>();
+    }
 
 signals:
-    void userViewChanged();
+    void userViewTypeChanged();
+};
 
-    void mainViewChanged(ModelStatuses::MainUserViews mainView);
+class ViewSwitcherController : public ViewController
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QObject *switcherModel MEMBER switcherModel CONSTANT)
+
+    QObject *switcherModel;
+
+public:
+    ViewSwitcherController(QObject *switcher, QVariant defaultUserType, QObject *obj = nullptr)
+        : ViewController(std::move(defaultUserType), obj)
+        , switcherModel(switcher)
+    {}
 };

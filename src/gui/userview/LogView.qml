@@ -29,7 +29,7 @@ Column {
                     ButtonText {
                         Layout.fillWidth: true
                         contentText: GuiConfig.userView.loginView.accessRegisterText
-                        onCustomReleased: logController.userViewType
+                        onCustomReleased: logController.view.userViewType
                                           = ModelStatuses.UserViews.REGISTER
                         height: parent.height
                     }
@@ -94,7 +94,7 @@ Column {
                 contentText: GuiConfig.userView.registerView.accessLoginText
                 width: GUIConfig.userView.defaultEntryWidth
                 height: GuiConfig.userView.accessButtonHeight
-                onCustomReleased: logController.userViewType = ModelStatuses.UserViews.LOGIN
+                onCustomReleased: logController.view.userViewType = ModelStatuses.UserViews.LOGIN
             }
             ConfirmButton {
                 configurationObject: GUIConfig.userView.registerView
@@ -118,17 +118,21 @@ Column {
             }
         }
     }
-
+    Component.onCompleted: {
+        console.log(logController.view.switcherModel)
+        console.log(logController.view)
+        console.log(logController.view.userViewType)
+    }
     //main part of log view
     spacing: GUIConfig.userView.layoutSpacing
     anchors.centerIn: parent
     padding: 20
     ButtonSwitcher {
         enabled: swipeView.currentIndex !== 0
-        model: logController.switcherModel
-        tabSelectorEnum: logController.userViewType
+        model: logController.view.switcherModel
+        tabSelectorEnum: logController.view.userViewType
         Component.onCompleted: switched.connect(
-                                   newstatus => logController.userViewType = newstatus)
+                                   newstatus => logController.view.userViewType = newstatus)
     }
 
     Rectangle {
@@ -177,7 +181,7 @@ Column {
                     anchors.centerIn: itemLayout
                     id: column
                     TitleBox {
-                        title: GuiConfig.userView.userViewDetails[logController.userViewType].titleContent
+                        title: GuiConfig.userView.userViewDetails[logController.view.userViewType].titleContent
                         width: GUIConfig.userView.defaultEntryWidth
                         height: GuiConfig.userView.titleHeight
                         Layout.alignment: Qt.AlignHCenter
@@ -186,7 +190,7 @@ Column {
                         id: loader
                         Layout.alignment: Qt.AlignHCenter
                         property var registermap: [registerComponent, loginComponent, guestComponent]
-                        sourceComponent: registermap[logController.userViewType]
+                        sourceComponent: registermap[logController.view.userViewType]
                     }
                 }
             }

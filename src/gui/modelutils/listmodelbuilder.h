@@ -29,15 +29,6 @@ public:
         return *this;
     }
 
-    //    template<typename ReturnType>
-    //    FastModelBuilder &add(EnumRoles role,
-    //                          std::function<const ReturnType &(const ModelStructType &)> getter)
-    //    {
-    //        qDebug() << "second";
-    //        model->addPart(role, std::move(getter));
-    //        return *this;
-    //    }
-
     template<typename ReturnType>
     FastModelBuilder &add(EnumRoles role, std::function<ReturnType(const ModelStructType &)> getter)
     {
@@ -46,4 +37,10 @@ public:
     }
 
     QPointer<CustomListModel<ModelStructType, EnumRoles>> build() { return model; }
+
+    QPointer<CustomListModel<ModelStructType, EnumRoles>> build(QVector<ModelStructType> vector)
+    {
+        model->setEntries(std::move(vector));
+        return model;
+    }
 };
