@@ -10,7 +10,7 @@ protected:
     Category generateInstance(const json &genson) const override;
 
 public:
-    CategoriesManager(QString databaseName, std::shared_ptr<DataClient> dataClient_);
+    CategoriesManager(DatabaseCodes::Names databaseName, std::shared_ptr<DataClient> dataClient_);
 
     void update(const Category &object) override;
 

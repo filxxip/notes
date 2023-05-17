@@ -14,7 +14,8 @@ from ..utils import set_conversion, convert_str_date_to_datetime
 
 @auto_apply_jsonify_content
 @set_conversion(birthday=convert_str_date_to_datetime, created=convert_str_date_to_datetime)
-class Person:
+class Person(Base):
+    __tablename__ = tables_names.peopleName
     id: Mapped[int] = mapped_column(
         Integer(), primary_key=True, nullable=False, autoincrement=True)
     name: Mapped[str] = mapped_column(String(50))
@@ -35,21 +36,21 @@ class Person:
         return years_diff
 
 
-class PersonRemoveAccount(Person, Base):
-    __tablename__ = tables_names.peopleRemoveAccountName
+# class PersonRemoveAccount(Person, Base):
+#     __tablename__ = tables_names.peopleRemoveAccountName
+#
+#
+# class PersonRegister(Person, Base):
+#     __tablename__ = tables_names.peopleRegisterName
+#
+#
+# class PersonLogin(Person, Base):
+#     __tablename__ = tables_names.peopleLoginName
+#
+#
+# class PersonLogout(Person, Base):
+#     __tablename__ = tables_names.peopleLogoutName
 
 
-class PersonRegister(Person, Base):
-    __tablename__ = tables_names.peopleRegisterName
-
-
-class PersonLogin(Person, Base):
-    __tablename__ = tables_names.peopleLoginName
-
-
-class PersonLogout(Person, Base):
-    __tablename__ = tables_names.peopleLogoutName
-
-
-class PersonNormal(Person, Base):
-    __tablename__ = tables_names.peopleName
+# class PersonNormal(Person, Base):
+#     __tablename__ = tables_names.peopleName

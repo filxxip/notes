@@ -13,6 +13,14 @@ people_schema = {
     "additionalProperties": False
 }
 
+id_schema = {
+    "type": "object",
+    "properties": {
+        "index": {"type": ["number", "string"]}
+    },
+    "additionalProperties": False
+}
+
 notes_schema = {
     "type": "object",
     "properties": {
@@ -54,7 +62,7 @@ schema_schema = {
     "type": "object",
     "properties": {
         "name": {"type": "string"},
-        "schema": {"type": "string"}#should be dict
+        "schema": {"type": "string"}  # should be dict
     },
     "additionalProperties": False
 }

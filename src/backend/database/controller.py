@@ -16,7 +16,7 @@ class APIController:
         Base.metadata.create_all(bind=engine)
 
     def add_rules(self):
-        app.add_url_rule(api_data.people_index, view_func=ItemAPI.as_view(api_data.people_index_name, PersonNormal))
+        app.add_url_rule(api_data.people_index, view_func=ItemAPI.as_view(api_data.people_index_name, Person))
         app.add_url_rule(api_data.categories_index, view_func=ItemAPI.as_view(api_data.categories_index_name, Category))
         app.add_url_rule(api_data.notes_index, view_func=ItemAPI.as_view(api_data.notes_index_name, Note))
         app.add_url_rule(api_data.guidialogs_index,
@@ -33,7 +33,7 @@ class APIController:
         app.add_url_rule(api_data.people_remove_account_index,
                          view_func=ItemAPI.as_view(api_data.people_remove_account_index_name, PersonRemoveAccount))
 
-        app.add_url_rule(api_data.people, view_func=GroupAPI.as_view(api_data.people_name, PersonNormal))
+        app.add_url_rule(api_data.people, view_func=GroupAPI.as_view(api_data.people_name, Person))
         app.add_url_rule(api_data.categories, view_func=GroupAPI.as_view(api_data.categories_name, Category))
         app.add_url_rule(api_data.notes, view_func=GroupAPI.as_view(api_data.notes_name, Note))
         app.add_url_rule(api_data.guidialogs, view_func=GroupAPI.as_view(api_data.guidialogs_name, GuiDialog))
@@ -51,7 +51,7 @@ class APIController:
                          view_func=GroupAPI.as_view(api_data.people_remove_account_name, PersonRemoveAccount))
 
         app.add_url_rule(api_data.people_sorted,
-                         view_func=GroupSortedAPI.as_view(api_data.people_sorted_name, PersonNormal))
+                         view_func=GroupSortedAPI.as_view(api_data.people_sorted_name, Person))
         app.add_url_rule(api_data.categories_sorted,
                          view_func=GroupSortedAPI.as_view(api_data.categories_sorted_name, Category))
         app.add_url_rule(api_data.notes_sorted, view_func=GroupSortedAPI.as_view(api_data.notes_sorted_name, Note))
@@ -66,10 +66,10 @@ class APIController:
     def init_schemas(self):
         self.reclear_tables([Schemas])
         for T, schema in zip(
-                (PersonLogout, PersonRegister, PersonLogin, PersonRemoveAccount, PersonNormal, Note, Category,
+                (PersonLogout, PersonRegister, PersonLogin, PersonRemoveAccount, Person, Note, Category,
                  GuiDialog, Schemas),
-                (table_schemas.people_schema, table_schemas.people_schema, table_schemas.people_schema,
-                 table_schemas.people_schema, table_schemas.people_schema, table_schemas.notes_schema,
+                (table_schemas.id_schema, table_schemas.id_schema, table_schemas.id_schema,
+                 table_schemas.id_schema, table_schemas.people_schema, table_schemas.notes_schema,
                  table_schemas.category_schema,
                  table_schemas.guidialog_schema, table_schemas.schema_schema)):
             db_session.add(Schemas(name=T.__name__, schema=json.dumps(schema)))

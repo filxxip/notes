@@ -1,7 +1,8 @@
 #include "peoplemanager.h"
 
-PeopleManager::PeopleManager(QString databaseName, std::shared_ptr<DataClient> dataClient_)
-    : OverallManager(std::move(databaseName), dataClient_)
+PeopleManager::PeopleManager(DatabaseCodes::Names databaseName,
+                             std::shared_ptr<DataClient> dataClient_)
+    : OverallManager(databaseName, dataClient_)
 {}
 
 Person PeopleManager::generateInstance(const json &genson) const

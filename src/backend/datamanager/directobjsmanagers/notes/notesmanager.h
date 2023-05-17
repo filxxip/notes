@@ -10,7 +10,7 @@ protected:
     Note generateInstance(const json &genson) const override;
 
 public:
-    NotesManager(QString databaseName, std::shared_ptr<DataClient> dataClient_);
+    NotesManager(DatabaseCodes::Names databaseName, std::shared_ptr<DataClient> dataClient_);
 
     void update(const Note &object) override;
 

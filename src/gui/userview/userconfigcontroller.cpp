@@ -20,12 +20,11 @@ UserConfigController::UserConfigController(
                                                                         1)},
                                                       this);
 
-    connect(this,
-            &UserConfigController::clear,
-            [this] { //from level of qml also entries are cleared, they react on clear signal
-                calendarController->clear();
-                radioButtonController->setValue(0, true);
-            });
+    //from level of qml also entries are cleared, they react on clear signal
+    connect(this, &UserConfigController::clear, [this] {
+        calendarController->clear();
+        radioButtonController->setValue(0, true);
+    });
 }
 
 QString UserConfigController::getPartOfPerson(EnumStatus componentEnum) const

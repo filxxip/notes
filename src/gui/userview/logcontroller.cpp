@@ -2,6 +2,7 @@
 #include "specificcontrollers/guestcontroller.h"
 #include "specificcontrollers/logincontroller.h"
 #include "specificcontrollers/registercontroller.h"
+#include "src/backend/datamanager/directobjsmanagers/ids/idsmanager.h"
 #include <utility>
 
 namespace {
@@ -14,27 +15,28 @@ constexpr char REGISTER_TEXT[] = "register";
 constexpr char GUEST_TEXT[] = "log as guest";
 
 std::unique_ptr<SingletonObjectManager<Person>> generateController(
-    std::shared_ptr<DataClient> dataClient, DatabaseCodes::Names code)
+    std::shared_ptr<PeopleManager> ptr,
+    std::shared_ptr<DataClient> dataClient,
+    DatabaseCodes::Names code)
 {
-    return std::make_unique<SingletonObjectManager<Person>>(
-        std::make_unique<PeopleManager>(DatabaseCodes::namesMap.at(code), dataClient));
+    return std::make_unique<SingletonObjectManager<Person>>(std::make_unique<IdsManager>(code,
+                                                                                         dataClient),
+                                                            ptr);
 }
 
 } // namespace
 
-LogController::LogController(
-    std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> mainViewController,
-    std::shared_ptr<DataClient> dataClient,
-    QPointer<CalendarController> calendarController_,
-    QPointer<DialogController> dialogController_,
+LogController::LogController(std::shared_ptr<PrevEnumViewController> mainViewController,
+                             std::shared_ptr<DataClient> dataClient,
+                             QPointer<CalendarController> calendarController_,
+                             QPointer<DialogController> dialogController_,
 
-    QObject *obj)
+                             QObject *obj)
     : QObject(obj)
     , prevViewController(mainViewController)
     , calendarController(calendarController_)
-    , logoutManager(std::make_unique<PeopleManager>(DatabaseCodes::namesMap.at(
-                                                        DatabaseCodes::Names::PEOPLE_LOGOUT),
-                                                    dataClient))
+    , logoutManager(std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_LOGOUT, dataClient),
+                    std::make_shared<PeopleManager>(DatabaseCodes::Names::PEOPLE, dataClient))
     , logViewController(
           ViewControllerGenerators::createSwitcherViewContorller(
               FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
@@ -47,26 +49,25 @@ LogController::LogController(
               this)
               ->getController())
 {
-    auto ptr = std::make_shared<PeopleManager>(DatabaseCodes::namesMap.at(
-                                                   DatabaseCodes::Names::PEOPLE),
-                                               dataClient);
-    controllers
-        = {{EnumStatus::REGISTER,
-            new RegisterController(generateController(dataClient,
-                                                      DatabaseCodes::Names::PEOPLE_REGISTER),
-                                   calendarController,
-                                   ptr,
-                                   dialogController_,
-                                   this)},
-           {EnumStatus::LOGIN,
-            new LoginController(generateController(dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
+    auto ptr = std::make_shared<PeopleManager>(DatabaseCodes::Names::PEOPLE, dataClient);
+    controllers = {
+        {EnumStatus::REGISTER,
+         new RegisterController(generateController(ptr,
+                                                   dataClient,
+                                                   DatabaseCodes::Names::PEOPLE_REGISTER),
+                                calendarController,
                                 ptr,
                                 dialogController_,
                                 this)},
-           {EnumStatus::GUEST,
-            new GuestController(generateController(dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
-                                dialogController_,
-                                this)}};
+        {EnumStatus::LOGIN,
+         new LoginController(generateController(ptr, dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
+                             ptr,
+                             dialogController_,
+                             this)},
+        {EnumStatus::GUEST,
+         new GuestController(generateController(ptr, dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
+                             dialogController_,
+                             this)}};
 
     for (const auto &[enumType, name] :
          {std::make_pair(EnumStatus::REGISTER, REGISTER_CONTROLLER_NAME),
@@ -75,35 +76,13 @@ LogController::LogController(
         ownerData->insert(name, QVariant::fromValue(controllers[enumType].data()));
     }
 
-    //    switcherModel = FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
-    //                        .add(ModelStatuses::UserViewsRoles::TEXT, &SwitcherModel<EnumStatus>::text)
-    //                        .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type)
-    //                        .build();
-
-    //    switcherModel->addEntry({LOGIN_TEXT, EnumStatus::LOGIN});
-    //    switcherModel->addEntry({REGISTER_TEXT, EnumStatus::REGISTER});
-    //    switcherModel->addEntry({GUEST_TEXT, EnumStatus::GUEST});
-
     DatabaseUtilsFunctions::tickWait(
         400,
         [this] {
             if (logoutManager.isDataAvaible()) {
                 auto obj = logoutManager.get();
                 prevViewController->setUserViewType(ModelStatuses::MainUserViews::LOG);
-                //                emit mainViewChanged(ModelStatuses::MainUserViews::LOG);
             }
         },
         this);
 }
-
-//LogController::EnumStatus LogController::getUserView() const
-//{
-//    return m_userView;
-//}
-
-//void LogController::setUserView(EnumStatus newView)
-//{
-//    emit controllers[m_userView]->clear();
-//    m_userView = newView;
-//    emit userViewChanged();
-//}

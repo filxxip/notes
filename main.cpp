@@ -56,7 +56,6 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
 
-    //    ViewControllesr(ModelStatuses::CalendarRoles::CONTENT, ModelStatuses::CalendarRoles::OBJ);
     qmlRegisterUncreatableMetaObject(ModelStatuses::staticMetaObject,
                                      "ModelStatuses",
                                      1,

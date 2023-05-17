@@ -1,27 +1,25 @@
 #include "mainusercontroller.h"
 
-MainUserController::MainUserController(
-    std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> mainViewController,
-    std::shared_ptr<DataClient> dataClient,
-    QPointer<CalendarController> calendarController,
-    QPointer<DialogController> dialogController,
-    QObject *obj)
+MainUserController::MainUserController(std::shared_ptr<PrevEnumViewController> mainViewController,
+                                       std::shared_ptr<DataClient> dataClient,
+                                       QPointer<CalendarController> calendarController,
+                                       QPointer<DialogController> dialogController,
+                                       QObject *obj)
     : QObject(obj)
-    , manager(DatabaseCodes::namesMap.at(DatabaseCodes::Names::PEOPLE), dataClient)
-    , loginManager(std::make_unique<PeopleManager>(DatabaseCodes::namesMap.at(
-                                                       DatabaseCodes::Names::PEOPLE_LOGIN),
-                                                   dataClient))
-    , registerManager(std::make_unique<PeopleManager>(DatabaseCodes::namesMap.at(
-                                                          DatabaseCodes::Names::PEOPLE_REGISTER),
-                                                      dataClient))
-    , userEditController(new UserEditController(
-          std::make_unique<SingletonObjectManager<Person>>(
-              std::make_unique<PeopleManager>(DatabaseCodes::namesMap.at(
-                                                  DatabaseCodes::Names::PEOPLE_LOGOUT),
-                                              dataClient)),
-          calendarController,
-          dialogController,
-          this))
+    , manager(std::make_shared<PeopleManager>(DatabaseCodes::Names::PEOPLE, dataClient))
+    , loginManager(std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_LOGIN, dataClient),
+                   manager)
+    , registerManager(std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_REGISTER,
+                                                   dataClient),
+                      manager)
+    , userEditController(
+          new UserEditController(std::make_unique<SingletonObjectManager<Person>>(
+                                     std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_LOGOUT,
+                                                                  dataClient),
+                                     manager),
+                                 calendarController,
+                                 dialogController,
+                                 this))
     , prevViewController(mainViewController)
     , currentViewController(
           ViewControllerGenerators::createSwitcherViewContorller(
@@ -44,7 +42,7 @@ MainUserController::MainUserController(
             &MainUserController::removePersonFromDatabase);
 
     connect(userEditController, &UserEditController::updatePersonData, [this](const auto &person) {
-        manager.update(person);
+        manager->update(person);
     });
 
     DatabaseUtilsFunctions::tickWait(
@@ -66,10 +64,10 @@ void MainUserController::tryToUpdateEditView(SingletonObjectManager<Person> *man
 
 void MainUserController::updatePersonInDatabase(const Person &person)
 {
-    manager.update(person);
+    manager->update(person);
 }
 
 void MainUserController::removePersonFromDatabase(int index)
 {
-    manager.remove(index);
+    manager->remove(index);
 }

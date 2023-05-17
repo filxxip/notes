@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "../../../gui/cpputils/utils.h"
 #include "../dataclient.h"
 #include "../pathmanager/path.h"
 #include "basicdatabasedata.h"
@@ -91,7 +92,7 @@ protected:
     }
 
 public:
-    explicit OverallManager(QString name_, std::shared_ptr<DataClient> dataClient_);
+    OverallManager(DatabaseCodes::Names databaseName, std::shared_ptr<DataClient> dataClient_);
 
     virtual void update(const DataObject &object) = 0;
 

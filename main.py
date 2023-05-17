@@ -7,7 +7,7 @@ from src.backend.database.tables import *
 if __name__ == '__main__':
     with app.app_context():
         controller = APIController()
-        controller.reclear_tables(tables_to_clear=[PersonLogout, PersonRegister, PersonLogin, PersonRemoveAccount, PersonNormal, Note, Category, Schemas])
+        controller.reclear_tables(tables_to_clear=[PersonLogout, PersonRegister, PersonLogin, PersonRemoveAccount, Person, Note, Category, Schemas])
         controller.init_schemas()
         OverallSeeder(NotesSeeder(), PersonSeeder(), CategorySeeder() ).seed()
         controller.add_rules()

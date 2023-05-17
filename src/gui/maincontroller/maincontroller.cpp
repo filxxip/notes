@@ -11,11 +11,9 @@ constexpr char MAIN_USER_CONTROLLER[] = "mainUserController";
 
 MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *obj)
     : QObject(obj)
-    //    , databaseController(dataClient)
     , dialogController(
-          new DialogController(std::make_unique<GuiDialogsManager>(
-                                   DatabaseCodes::namesMap.at(DatabaseCodes::Names::GUI_DIALOGS),
-                                   dataClient),
+          new DialogController(std::make_unique<GuiDialogsManager>(DatabaseCodes::Names::GUI_DIALOGS,
+                                                                   dataClient),
                                this))
     , calendarController(new CalendarController(this))
     , clockController(new ClockController(this))
@@ -26,13 +24,8 @@ MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *
                                                                     this))
 {
     mainUserView->setUserViewType(ModelStatuses::MainUserViews::LOG);
-    //    connect(&mainUserController,
-    //            &MainUserController::mainViewChanged,
-    //            this,
-    //            &MainController::changeView);
-
-    //    connect(&logController, &LogController::mainViewChanged, this, &MainController::changeView);
 }
+
 QPointer<ViewController> MainController::getViewController() const
 {
     return mainUserView->getController();

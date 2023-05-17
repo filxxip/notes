@@ -18,6 +18,6 @@ class CustomJSONEncoder(JSONEncoder):
             return super().default(obj)
 
 
-app.json_encoder = CustomJSONEncoder  # seems to be working well
-engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], pool_size = 50,max_overflow = 100,pool_timeout = 10 )
+app.json_encoder = CustomJSONEncoder
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], pool_size=50, max_overflow=100, pool_timeout=10)
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))

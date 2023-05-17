@@ -72,8 +72,10 @@ void UserEditController::onRemove()
     dialogController->applyConnection(
         [this](auto status) {
             if (status == DialogController::ActivityStatus::ACCEPT) {
-                dialogController->showDialog(DialogCodes::UserViews::ACCOUNT_REMOVE_INFORMATION);
-                emit clear();
+                emitSuccessDialogWithClear(DialogCodes::UserViews::ACCOUNT_REMOVE_INFORMATION,
+                                           person.value());
+                //                dialogController->showDialog(DialogCodes::UserViews::ACCOUNT_REMOVE_INFORMATION);
+                //                emit clear();
                 emit removePersonData(person->id.get());
                 person.reset();
             }

@@ -8,7 +8,6 @@
 #include "../customdialog/dialogcontroller.h"
 
 #include "../cpputils/utils.h"
-#include "databasecontroller.h"
 #include "src/gui/calendar/calendarcontroller.h"
 #include "src/gui/calendar/clockcontroller.h"
 #include "src/gui/customdialog/dialogcontroller.h"
@@ -31,17 +30,6 @@ class MainController : public QObject
     LogController logController;
     MainUserController mainUserController;
 
-    //    ModelStatuses::MainUserViews m_userView = ModelStatuses::MainUserViews::LOG;
-
-    //    Q_PROPERTY(
-    //        ModelStatuses::MainUserViews userView MEMBER m_userView NOTIFY userViewChanged CONSTANT)
-
-    //private slots:
-    //    void changeView(ModelStatuses::MainUserViews viewType)
-    //    {
-    //        this->m_userView = viewType;
-    //        emit userViewChanged(viewType);
-    //    }
 private:
     QPointer<ViewController> getViewController() const;
 
@@ -51,7 +39,4 @@ public:
     void registerControllers(QQmlContext *context);
 
     Q_INVOKABLE void closeApp();
-
-    //signals:
-    //    void userViewChanged(ModelStatuses::MainUserViews);
 };

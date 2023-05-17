@@ -9,7 +9,7 @@ protected:
     GuiDialog generateInstance(const json &genson) const override;
 
 public:
-    GuiDialogsManager(QString databaseName, std::shared_ptr<DataClient> dataClient_);
+    GuiDialogsManager(DatabaseCodes::Names, std::shared_ptr<DataClient> dataClient_);
 
     void update(const GuiDialog &object) override;
 

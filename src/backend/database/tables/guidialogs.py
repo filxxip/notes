@@ -20,7 +20,6 @@ class GuiDialog(Base):
     isYes: Mapped[bool] = mapped_column(Boolean())
     isNo: Mapped[bool] = mapped_column(Boolean())
     title: Mapped[str] = mapped_column(String(50))
-    path : Mapped[str] = mapped_column(String(50))
+    path: Mapped[str] = mapped_column(String(50))
     content: Mapped[str] = mapped_column(Text())
-    fontSize : Mapped[int] = mapped_column(Integer())
-
+    fontSize: Mapped[int] = mapped_column(Integer())

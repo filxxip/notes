@@ -10,7 +10,7 @@ protected:
     Person generateInstance(const json &genson) const override;
 
 public:
-    PeopleManager(QString databaseName, std::shared_ptr<DataClient> dataClient_);
+    PeopleManager(DatabaseCodes::Names databaseName, std::shared_ptr<DataClient> dataClient_);
 
     void update(const Person &object) override;
 

@@ -7,9 +7,10 @@ const auto ADDITION_URL_PATH = QStringLiteral("%1/%2");
 } // namespace
 
 template<typename DataObject>
-OverallManager<DataObject>::OverallManager(QString name_, std::shared_ptr<DataClient> dataClient_)
+OverallManager<DataObject>::OverallManager(DatabaseCodes::Names databaseName,
+                                           std::shared_ptr<DataClient> dataClient_)
     : dataClient(dataClient_)
-    , name(std::move(name_))
+    , name(DatabaseCodes::namesMap.at(databaseName))
 {}
 
 template<typename DataObject>

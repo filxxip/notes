@@ -13,13 +13,10 @@
 
 class MainUserController : public QObject
 {
+    using PrevEnumViewController = AbstractViewControllerAdapter<ModelStatuses::MainUserViews>;
     using EnumStatus = ModelStatuses::InnerUserEditViews;
     using UserSwitcherModel
         = CustomListModel<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>;
-
-    //    Q_PROPERTY(EnumStatus userViewType MEMBER m_userView NOTIFY userViewChanged)
-
-    //    Q_PROPERTY(UserSwitcherModel *switcherModel MEMBER switcherModel CONSTANT)
 
     Q_PROPERTY(UserEditController *userEditController MEMBER userEditController CONSTANT)
 
@@ -27,36 +24,26 @@ class MainUserController : public QObject
 
     Q_OBJECT
 public:
-    explicit MainUserController(
-        std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>>
-            mainViewController,
-        std::shared_ptr<DataClient> dataClient,
-        QPointer<CalendarController> calendarController,
-        QPointer<DialogController> dialogController,
-        QObject *obj = nullptr);
+    explicit MainUserController(std::shared_ptr<PrevEnumViewController> mainViewController,
+                                std::shared_ptr<DataClient> dataClient,
+                                QPointer<CalendarController> calendarController,
+                                QPointer<DialogController> dialogController,
+                                QObject *obj = nullptr);
 
 private:
     void tryToUpdateEditView(SingletonObjectManager<Person> *manager);
 
-    std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> prevViewController;
+    std::shared_ptr<PrevEnumViewController> prevViewController;
+
+    std::shared_ptr<PeopleManager> manager;
+
     QPointer<ViewController> currentViewController;
 
-    //    QPointer<UserSwitcherModel> switcherModel;
-
-    //    EnumStatus m_userView = EnumStatus::EDIT;
-
     QPointer<UserEditController> userEditController;
-
-    PeopleManager manager;
 
     SingletonObjectManager<Person> loginManager;
 
     SingletonObjectManager<Person> registerManager;
-
-    //signals:
-    //    void userViewChanged();
-
-    //    void mainViewChanged(ModelStatuses::MainUserViews userView);
 
 private slots:
     void updatePersonInDatabase(const Person &person);

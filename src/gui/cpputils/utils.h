@@ -1,7 +1,7 @@
 #pragma once
+#include <QDate>
 #include <QObject>
 #include <QString>
-#include "../../backend/datamanager/directobjsmanagers/overallmanager.h"
 #include "../modelutils/customlistmodel.h"
 #include <functional>
 #include <initializer_list>
@@ -68,24 +68,6 @@ std::optional<int> convertCodeToIndex(int code,
 void tickWait(int interval, std::function<void()> func, QObject *parent);
 
 } // namespace DatabaseUtilsFunctions
-
-//namespace DatabaseSupportMethods {
-
-//template<typename Value, typename DataObject>
-//std::optional<int> getElementsWithGivenValue(
-//    const std::shared_ptr<OverallManager<DataObject>> &manager,
-//    const std::string &keyword,
-//    Value value)
-//{
-//    auto searchedElements = manager->getFiltered({{keyword, value}});
-//    if (searchedElements.has_value()) {
-//        return searchedElements->size();
-//    }
-//    qDebug() << Messages::INVALID_KEYWORD;
-//    return std::nullopt;
-//}
-
-//} // namespace DatabaseSupportMethods
 
 namespace DateStringAlternatives {
 const QVector<QString> monthsNames = {"January",

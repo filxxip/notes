@@ -31,9 +31,6 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/viewcontroller/viewcontroller.cpp
     src/gui/viewcontroller/viewcontroller.h
 
-    src/gui/maincontroller/databasecontroller.cpp
-    src/gui/maincontroller/databasecontroller.h
-
     src/gui/customdialog/dialogcontroller.cpp
     src/gui/customdialog/dialogcontroller.h
 
@@ -110,6 +107,10 @@ qt_add_executable(appnotesdatabaseproject
     src/backend/datamanager/directobjsmanagers/notes/note.h
     src/backend/datamanager/directobjsmanagers/notes/notesmanager.h
     src/backend/datamanager/directobjsmanagers/notes/notesmanager.cpp
+
+    src/backend/datamanager/directobjsmanagers/ids/ids.h
+    src/backend/datamanager/directobjsmanagers/ids/idsmanager.h
+    src/backend/datamanager/directobjsmanagers/ids/idsmanager.cpp
 
     src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h
     src/backend/datamanager/directobjsmanagers/categories/category.h
