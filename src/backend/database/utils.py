@@ -31,6 +31,8 @@ def set_conversion(**attrs: Callable):
 def jsonify_result(function: callable):
     @wraps(function)
     def wrapper(*args, **kwargs):
+        # print(function(*args, **kwargs))
+        print( jsonify(function(*args, **kwargs)).data, end="\n\n\n")
         return jsonify(function(*args, **kwargs))
 
     return wrapper
@@ -77,7 +79,7 @@ def get_relevant_sorted_query(cls_name: Type[_T], sorted_name: str = None) -> Qu
     base = db_session.query(cls_name)
     if base.count() > 0:
         for key in filter_dict:
-            if all(getattr(obj, key, None) for obj in base.all()):
+            if all(getattr(obj, key, None) is not None for obj in base.all()):
                 base = base.where(cls_name.__dict__[key] == filter_dict.get(key))
             else:
                 raise AttributeError(information_texts.emptyKey + str(key))

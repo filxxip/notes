@@ -25,4 +25,6 @@ class PersonSeeder(Seeder):
             person = Person(name=name, surname=surname, email=email, password=password, country=country,
                                   birthday=birthday, gender=random.choice(["male", "female"]), created=creation)
             people.append(person)
+        people.append(Person(name="", surname="", email="", password="", country="hkh",
+        birthday= datetime.now(), gender=random.choice(["male", "female"]), created= datetime.now()))
         return people
