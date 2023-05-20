@@ -1,16 +1,18 @@
 from __future__ import annotations
-from src.backend.database.tables.schema import Schemas
+
 import json
 from dataclasses import dataclass
 from typing import Type, Protocol
+
 import jsonschema
 from flask import request
 from flask.views import MethodView
 from jsonschema.exceptions import ValidationError, SchemaError
+
+from src.backend.database.tables.schema import Schemas
 from .constants import information_texts
 from .main_config_database_vars import db_session
 from .utils import _T, catchable_db_connection_exceptions, jsonify_result, get_relevant_sorted_query
-from .main_site_route import app
 
 
 @dataclass

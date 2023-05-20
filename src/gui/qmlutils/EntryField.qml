@@ -27,9 +27,10 @@ FocusScope {
         }
     }
 
-    function clear() {
-        textInput.text = ""
-    }
+    signal clear
+
+    onClear: textInput.text = ""
+
     ColorAnimation {
         id: myTurnOffAnimation
         target: outerRect

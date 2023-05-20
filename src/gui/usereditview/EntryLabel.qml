@@ -5,8 +5,8 @@ import ".."
 Label {
     id: label
     required property string contentText
-    width: GUIConfig.userView.defaultEntryWidth / 2
 
+    width: GUIConfig.userView.defaultEntryWidth / 2
     background: Rectangle {
         anchors.fill: parent
         gradient: GUIConfig.gradients.labelEntryGradient

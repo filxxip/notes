@@ -1,22 +1,20 @@
 #pragma once
 
+#include <QPointer>
 #include "entrycontroller.h"
 
-class UserConfigController : public EntryController
+namespace UserConfigControllerUtils {
+QPointer<RadioButtonController> generateRadioButton(QObject *object = nullptr);
+void connectClear(EntryController *obj,
+                  QPointer<CalendarController> calendar,
+                  QPointer<RadioButtonController> radioButton);
+
+template<typename EnumStatus>
+QString getPartOfPerson(EnumStatus componentEnum, QPointer<UserViewListModel> model)
 {
-    Q_OBJECT
-    Q_PROPERTY(RadioButtonController *radioButtonController MEMBER radioButtonController CONSTANT)
-    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
+    auto index = model->indexOf(componentEnum);
+    auto mydata = model->data(index, ModelStatuses::Roles::VALUE);
+    return mydata.template value<QString>();
+}
 
-protected:
-    QPointer<CalendarController> calendarController;
-    QPointer<RadioButtonController> radioButtonController;
-
-    QString getPartOfPerson(EnumStatus componentEnum) const;
-
-public:
-    UserConfigController(std::shared_ptr<PrevEnumViewController> mainViewController_,
-                         std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
-                         QPointer<DialogController> dialogController_,
-                         QObject *obj = nullptr);
-};
+} // namespace UserConfigControllerUtils

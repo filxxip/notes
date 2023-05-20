@@ -1,4 +1,5 @@
 #include "idsmanager.h"
+#include <QDateTime>
 #include "ids.h"
 
 IdsManager::IdsManager(DatabaseCodes::Names databaseName, std::shared_ptr<DataClient> dataClient_)
@@ -19,5 +20,5 @@ void IdsManager::update(const Ids &object)
 
 void IdsManager::add(const Ids &object)
 {
-    addObject(object.index);
+    addObject(object.index, object.pid);
 }

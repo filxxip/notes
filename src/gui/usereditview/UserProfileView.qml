@@ -1,6 +1,7 @@
 import QtQuick 2.15
 
 import QtQuick.Controls 2.15
+import ModelStatuses 1.0
 
 import ".."
 import "../calendar"
@@ -17,50 +18,48 @@ Rectangle {
     Column {
         id: column
         anchors.right: outerRectangle.right
-        anchors.margins: 30
-        spacing: 10
-        bottomPadding: 140
+        anchors.margins: GuiConfig.rightEditViewBar.margins
+        spacing: GuiConfig.rightEditViewBar.spacing
+        bottomPadding: GuiConfig.rightEditViewBar.padding
         anchors.bottom: outerRectangle.bottom
-
-        Repeater {
-            id: repeater
-            model: ListModel {
-                ListElement {
-                    buttonText: "Remove account"
-                    imagePath: "qrc:/resources/removeaccount.png"
-                    onClickedSignal: () => mainUserController.userEditController.remove()
-                }
-                ListElement {
-                    buttonText: "Log out"
-                    imagePath: "qrc:/resources/logout.png"
-                    onClickedSignal: () => mainUserController.userEditController.logout()
-                }
-                ListElement {
-                    buttonText: "Settings"
-                    imagePath: "qrc:/resources/settings.png"
-                    onClickedSignal: () => console.log("settings")
-                }
-                ListElement {
-                    buttonText: "Close App"
-                    imagePath: "qrc:/resources/closeapp.png"
-                    onClickedSignal: () => mainController.closeApp()
-                }
-            }
-
-            delegate: ButtonWithImage {
-                anchors.right: column.right
-                width: 180
-                height: 50
-                buttonText: model.buttonText
-                imagePath: model.imagePath
-                onClickedSignal: model.onClickedSignal()
-            }
+        ButtonWithImage {
+            anchors.right: column.right
+            width: GuiConfig.rightEditViewBar.width
+            height: GuiConfig.rightEditViewBar.height
+            buttonText: GUIConfig.rightEditViewBar.removeAccountText
+            imagePath: GUIConfig.imagePaths.removeAccount
+            onClickedSignal: mainUserController.userEditController.logout()
+            visible: mainController.view.userViewType === ModelStatuses.MainUserViews.EDIT_NORMAL
+        }
+        ButtonWithImage {
+            anchors.right: column.right
+            width: GuiConfig.rightEditViewBar.width
+            height: GuiConfig.rightEditViewBar.height
+            buttonText: GUIConfig.rightEditViewBar.logoutText
+            imagePath: GUIConfig.imagePaths.logout
+            onClickedSignal: mainUserController.userEditController.logout()
+        }
+        ButtonWithImage {
+            anchors.right: column.right
+            width: GuiConfig.rightEditViewBar.width
+            height: GuiConfig.rightEditViewBar.height
+            buttonText: GUIConfig.rightEditViewBar.settingsText
+            imagePath: GUIConfig.imagePaths.settings
+            onClickedSignal: console.log("settings")
+        }
+        ButtonWithImage {
+            anchors.right: column.right
+            width: GuiConfig.rightEditViewBar.width
+            height: GuiConfig.rightEditViewBar.height
+            buttonText: GUIConfig.rightEditViewBar.closeAppText
+            imagePath: GUIConfig.imagePaths.closeApp
+            onClickedSignal: mainController.closeApp()
         }
     }
     Clock {
         anchors.right: outerRectangle.right
         anchors.top: outerRectangle.top
-        anchors.margins: 40
+        anchors.margins: GuiConfig.rightEditViewBar.clockMargins
         controller: clockController
     }
 

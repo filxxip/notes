@@ -2,9 +2,18 @@
 #include <QDate>
 #include <QObject>
 #include <QString>
+
 #include "../modelutils/customlistmodel.h"
+//#include "src/gui/calendar/calendarcontroller.h"
+//#include "src/gui/modelutils/listmodelbuilder.h"
+//#include "src/gui/radiobutton/radiobuttoncontroller.h"
+//#include "src/gui/userview/entrycontroller.h"
+
+#include <algorithm>
 #include <functional>
 #include <initializer_list>
+template<typename T>
+class OverallManager;
 
 namespace Messages {
 constexpr const char *INVALID_KEYWORD = "Keyword passed as parameter is invalid.";
@@ -23,7 +32,8 @@ enum class Names {
     PEOPLE_LOGIN,
     PEOPLE_LOGOUT,
     PEOPLE_REGISTER,
-    PEOPLE_REMOVE_ACCOUNT
+    PEOPLE_REMOVE_ACCOUNT,
+    PEOPLE_GUEST
 };
 inline const std::map<Names, QString> namesMap{{Names::PEOPLE, "people"},
                                                {Names::CATEGORIES, "categories"},
@@ -32,6 +42,7 @@ inline const std::map<Names, QString> namesMap{{Names::PEOPLE, "people"},
                                                {Names::PEOPLE_LOGIN, "peopleLogin"},
                                                {Names::PEOPLE_LOGOUT, "peopleLogout"},
                                                {Names::PEOPLE_REGISTER, "peopleRegister"},
+                                               {Names::PEOPLE_GUEST, "peopleGuest"},
                                                {Names::PEOPLE_REMOVE_ACCOUNT,
                                                 "peopleRemoveAccount"}};
 } // namespace DatabaseCodes
@@ -66,6 +77,23 @@ std::optional<int> convertCodeToIndex(int code,
     return std::nullopt;
 }
 
+template<typename IdDataObject>
+std::optional<IdDataObject> getLastObjectOfDatabase(
+    const std::shared_ptr<OverallManager<IdDataObject>> &manager)
+{
+    auto elements = manager->get();
+    if (elements.has_value()) {
+        auto elemValue = elements.value();
+        std::sort(std::begin(elemValue),
+                  std::end(elemValue),
+                  [](const auto &element1, const auto &element2) {
+                      return element1.id.get() < element2.id.get();
+                  });
+        return *std::rbegin(elemValue);
+    }
+    return std::nullopt;
+}
+
 void tickWait(int interval, std::function<void()> func, QObject *parent);
 
 } // namespace DatabaseUtilsFunctions
@@ -85,4 +113,11 @@ const QVector<QString> monthsNames = {"January",
                                       "December"};
 
 QString convertToStringFormat(const QDate &date);
+
+constexpr const char *NAME_PLACEHOLDER = "Name...";
+constexpr const char *SURNAME_PLACEHOLDER = "Surname...";
+constexpr const char *EMAIL_PLACEHOLDER = "Email...";
+constexpr const char *PASSWORD_PLACEHOLDER = "Password...";
+constexpr const char *COUNTRY_PLACEHOLDER = "Country...";
+
 } // namespace DateStringAlternatives

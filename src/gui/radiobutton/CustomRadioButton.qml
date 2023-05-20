@@ -57,7 +57,7 @@ Rectangle {
                 color: GUIConfig.colors.transparent
             }
 
-            onCheckedChanged: model.value = checked //sprawdzic czy dziala
+            onCheckedChanged: model.value = checked
             width: item.combinedWidth / item.controller.model.rowCount()
             height: item.combinedHeight
             id: radiobutton

@@ -32,14 +32,12 @@ int main(int argc, char *argv[])
         servermanager.remove(i);
     }
     if (el.has_value()) {
-        qDebug() << "hah";
     }
 
     std::sort(el->begin(), el->end(), [](const auto &el1, const auto &el2) {
         return el1.id.get() < el2.id.get();
     });
     for (auto &e : el.value()) {
-        qDebug() << e.id.get();
         servermanager.add(e);
     }
 #endif
@@ -65,7 +63,7 @@ int main(int argc, char *argv[])
     auto fileClient = std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>());
     auto serverClient = std::make_shared<ServerDataClient>();
 
-    auto ptr = fileClient;
+    auto ptr = serverClient;
 
     if (ptr->isValid()) {
         auto mainController = new MainController(ptr, &engine);

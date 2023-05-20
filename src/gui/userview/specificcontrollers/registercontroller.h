@@ -2,11 +2,18 @@
 
 #include "../userconfigcontroller.h"
 
-class RegisterController final : public UserConfigController
+class RegisterController final : public EntryController
 {
     Q_OBJECT
 
+    Q_PROPERTY(RadioButtonController *radioButtonController MEMBER radioButtonController CONSTANT)
+    Q_PROPERTY(CalendarController *calendarController MEMBER calendarController CONSTANT)
+
     std::shared_ptr<PeopleManager> manager;
+
+protected:
+    QPointer<CalendarController> calendarController;
+    QPointer<RadioButtonController> radioButtonController;
 
 public:
     RegisterController(std::shared_ptr<PrevEnumViewController> mainViewController_,

@@ -21,13 +21,11 @@ TabBar {
         Repeater {
             id: repeater
             model: tabbar.model
-            Component.onCompleted: console.log(y)
             TabButton {
                 text: model.text
                 width: tabbar.combinedWidth / repeater.count
                 height: tabbar.elementHeight
                 anchors.top: repeater.top
-                Component.onCompleted: console.log(y)
                 background: Rectangle {
                     property color currentBasicColor: tabbar.currentIndex === model.type ? GUIConfig.switchbutton.enableColor : GUIConfig.switchbutton.disableColor
                     color: tabbar.enabled ? currentBasicColor : currentBasicColor.lighter()

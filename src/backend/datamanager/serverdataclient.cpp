@@ -144,6 +144,7 @@ void ServerDataClient::setGroupFilter(const json &genson)
                             + codeTypeToQString(it.value()).split(" ").join("%20");
     }
 }
+
 void ServerDataClient::clearFilters()
 {
     groupFilterString.clear();

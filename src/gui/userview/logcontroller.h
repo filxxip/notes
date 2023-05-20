@@ -29,12 +29,10 @@ class LogController : public QObject
     Q_PROPERTY(ViewController *view MEMBER logViewController CONSTANT)
 
 public:
-    LogController(
-        std::shared_ptr<PrevEnumViewController> mainViewController,
-        std::shared_ptr<DataClient> dataClient,
-        QPointer<DialogController> dialogController_,
-        QObject *obj
-        = nullptr); //ogarnac zeby sie zmienialo birthday, gdzies trzeba wyslac sygnal bo go usunalem register view login view itd
+    LogController(std::shared_ptr<PrevEnumViewController> mainViewController,
+                  std::shared_ptr<DataClient> dataClient,
+                  QPointer<DialogController> dialogController_,
+                  QObject *obj = nullptr);
 
 private:
 

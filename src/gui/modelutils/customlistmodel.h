@@ -24,16 +24,9 @@ std::function<QVariant(const T &)> makeGetterFunction(ReturnType T::*method)
     return [method](const T &object) { return variantFromValue(object.*method); };
 }
 
-//template<typename T, typename ReturnType>
-//std::function<QVariant(const T &)> makeGetterFunction(
-//    std::function<const ReturnType &(const T &)> getter)
-//{
-//    return [inner = std::move(getter)](const T &object) mutable {
-//        return variantFromValue(inner(object));
-//    };
-//}
 template<typename T, typename ReturnType>
-std::function<QVariant(const T &)> makeGetterFunction(std::function<ReturnType(const T &)> getter)
+std::function<QVariant(const T &)> makeGetterFunction(
+    std::function<ReturnType(const T &)> getter) //kopia?
 {
     return [inner = std::move(getter)](const T &object) mutable {
         return variantFromValue(inner(object));
@@ -111,15 +104,6 @@ public:
         updateActivities.insert(role, makeUpdateFunction(std::move(setter)));
         return *this;
     }
-
-    //    template<typename ReturnType>
-    //    CustomListModel &addPart(EnumData role,
-    //                             std::function<const ReturnType &(const StructType &)> getter)
-    //    {
-    //        updateNames(role);
-    //        getterActivities.insert(role, makeGetterFunction(std::move(getter)));
-    //        return *this;
-    //    }
 
     template<typename ReturnType>
     CustomListModel &addPart(EnumData role, std::function<ReturnType(const StructType &)> getter)

@@ -7,7 +7,7 @@ namespace ModelStatuses {
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
-enum class UserViews { REGISTER, LOGIN, GUEST };
+enum class UserViews { LOGIN, REGISTER, GUEST };
 
 enum class UserViewsRoles { TEXT, TYPE };
 
@@ -23,7 +23,13 @@ enum class RadioButtonRoles { TEXT, VALUE, GROUP };
 
 enum class InnerUserEditViews { EDIT, NOTEBOOK };
 
-enum class MainUserViews { LOG, EDIT, BACKGROUND };
+//enum class MainUserViews { LOG, EDIT, BACKGROUND };
+
+enum class MainUserViews { LOG, EDIT_GUEST, EDIT_NORMAL, BACKGROUND };
+
+//enum class GuestEditView { NORMAL, GUEST };
+
+//Q_ENUM_NS(GuestEditView);
 
 Q_ENUM_NS(MainUserViews);
 

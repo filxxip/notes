@@ -32,6 +32,8 @@ class APIController:
                          view_func=ItemAPI.as_view(api_data.people_logout_index_name, PersonLogout))
         app.add_url_rule(api_data.people_remove_account_index,
                          view_func=ItemAPI.as_view(api_data.people_remove_account_index_name, PersonRemoveAccount))
+        app.add_url_rule(api_data.people_guest_index,
+                         view_func=ItemAPI.as_view(api_data.people_guest_index_name, PersonGuest))
 
         app.add_url_rule(api_data.people, view_func=GroupAPI.as_view(api_data.people_name, Person))
         app.add_url_rule(api_data.categories, view_func=GroupAPI.as_view(api_data.categories_name, Category))
@@ -49,6 +51,8 @@ class APIController:
                          view_func=GroupAPI.as_view(api_data.people_logout_name, PersonLogout))
         app.add_url_rule(api_data.people_remove_account,
                          view_func=GroupAPI.as_view(api_data.people_remove_account_name, PersonRemoveAccount))
+        app.add_url_rule(api_data.people_guest,
+                         view_func=GroupAPI.as_view(api_data.people_guest_name, PersonGuest))
 
         app.add_url_rule(api_data.people_sorted,
                          view_func=GroupSortedAPI.as_view(api_data.people_sorted_name, Person))
@@ -58,7 +62,7 @@ class APIController:
 
     def reclear_tables(self, tables_to_clear=None):
         tabs = None
-        if isinstance(tables_to_clear,list):
+        if isinstance(tables_to_clear, list):
             tabs = [table.__table__ for table in tables_to_clear]
         Base.metadata.drop_all(bind=engine, tables=tabs)
         Base.metadata.create_all(bind=engine, tables=tabs)
@@ -66,9 +70,9 @@ class APIController:
     def init_schemas(self):
         self.reclear_tables([Schemas])
         for T, schema in zip(
-                (PersonLogout, PersonRegister, PersonLogin, PersonRemoveAccount, Person, Note, Category,
+                (PersonLogout, PersonRegister,PersonGuest, PersonLogin, PersonRemoveAccount, Person, Note, Category,
                  GuiDialog, Schemas),
-                (table_schemas.id_schema, table_schemas.id_schema, table_schemas.id_schema,
+                (table_schemas.id_schema,table_schemas.id_schema, table_schemas.id_schema, table_schemas.id_schema,
                  table_schemas.id_schema, table_schemas.people_schema, table_schemas.notes_schema,
                  table_schemas.category_schema,
                  table_schemas.guidialog_schema, table_schemas.schema_schema)):

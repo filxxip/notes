@@ -10,6 +10,7 @@
 #include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"
 #include "src/backend/datamanager/directobjsmanagers/singletonobjectmanager/singletonobjectmanager.h"
 #include "usereditcontroller.h"
+#include <unordered_map>
 
 class MainUserController : public QObject
 {
@@ -18,7 +19,7 @@ class MainUserController : public QObject
     using UserSwitcherModel
         = CustomListModel<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>;
 
-    Q_PROPERTY(UserEditController *userEditController MEMBER userEditController CONSTANT)
+    Q_PROPERTY(AbstractEditController *userEditController READ getController NOTIFY controllerChanged)
 
     Q_PROPERTY(ViewController *view MEMBER currentViewController CONSTANT)
 
@@ -29,8 +30,29 @@ public:
                                 QPointer<DialogController> dialogController,
                                 QObject *obj = nullptr);
 
+    Q_INVOKABLE virtual void moveDataGloabllyToModel();
+
 private:
-    void tryToUpdateEditView(SingletonObjectManager<Person> *manager);
+    QPointer<AbstractEditController> getController() const;
+
+    template<typename EditController>
+    QPointer<EditController> generateController(std::shared_ptr<DataClient> dataClient,
+                                                QPointer<DialogController> dialogController)
+    {
+        return new EditController(prevViewController,
+                                  std::make_unique<SingletonObjectManager<Person>>(
+                                      std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_LOGOUT,
+                                                                   dataClient),
+                                      manager),
+                                  dialogController,
+                                  this);
+    }
+
+    void connectControllersSignals(QPointer<AbstractEditController> controller);
+
+    void tryToUpdateEditView(SingletonObjectManager<Person> *manager,
+                             QPointer<AbstractEditController> controller,
+                             ModelStatuses::MainUserViews viewType);
 
     std::shared_ptr<PrevEnumViewController> prevViewController;
 
@@ -38,14 +60,17 @@ private:
 
     QPointer<ViewController> currentViewController;
 
-    QPointer<UserEditController> userEditController;
+    QPointer<AbstractEditController> userEditController;
 
-    SingletonObjectManager<Person> loginManager;
+    QPointer<AbstractEditController> guestEditController;
 
-    SingletonObjectManager<Person> registerManager;
+    std::unordered_map<ModelStatuses::UserViews, SingletonObjectManager<Person>> emitPersonManagers;
 
 private slots:
     void updatePersonInDatabase(const Person &person);
 
     void removePersonFromDatabase(int index);
+
+signals:
+    void controllerChanged();
 };

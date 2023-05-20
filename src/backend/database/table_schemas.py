@@ -16,7 +16,8 @@ people_schema = {
 id_schema = {
     "type": "object",
     "properties": {
-        "index": {"type": ["number", "string"]}
+        "index": {"type": ["number", "string"]},
+        "pid": {"type": ["number", "string"]}
     },
     "additionalProperties": False
 }
