@@ -6,6 +6,10 @@ constexpr char INVALID_ACCESS[]
 }
 
 template<typename DataObject>
+SingletonObjectManager<DataObject>::Status SingletonObjectManager<DataObject>::status
+    = SingletonObjectManager::Status::WAIT_FOR_LOAD;
+
+template<typename DataObject>
 SingletonObjectManager<DataObject>::SingletonObjectManager(
     std::unique_ptr<IdsManager> idsManager_, std::shared_ptr<OverallManager<DataObject>> manager_)
     : idsManager(std::move(idsManager_))
@@ -19,6 +23,7 @@ void SingletonObjectManager<DataObject>::set(const DataObject &object)
         Ids id;
         id.index = object.id.get();
         idsManager->add(id);
+        status = Status::READY_TO_GET;
         return;
     }
     qDebug() << INVALID_ACCESS;
@@ -27,10 +32,12 @@ void SingletonObjectManager<DataObject>::set(const DataObject &object)
 template<typename DataObject>
 std::optional<DataObject> SingletonObjectManager<DataObject>::get()
 {
-    auto obj = idsManager->get();
+    auto obj = idsManager->getFiltered({{"pid", PidContants::PID_VALUE}});
     if (obj.has_value() && obj->size() > 0) {
         idsManager->remove(1);
-        return manager->get(obj->at(0).index.get());
+        auto retrieve = manager->get(obj->at(0).index.get());
+        status = Status::WAIT_FOR_LOAD;
+        return retrieve;
     }
     return std::nullopt;
 }

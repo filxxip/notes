@@ -1,9 +1,12 @@
 #include "logincontroller.h"
+#include "../../cpputils/utils.h"
 
 namespace {
 
-constexpr const char *DOUBLE_EMAIL
+constexpr char DOUBLE_EMAIL[]
     = "This is email is not unique in database or your data files. Check it and fix this issue.";
+
+constexpr char EMAIL_KEY[] = "email";
 
 } // namespace
 
@@ -19,7 +22,8 @@ LoginController::LoginController(
                       obj)
     , manager(peopleManager)
 {
-    model->setEntries({{EnumStatus::EMAIL, "Login..."}, {EnumStatus::PASSWORD, "Password..."}});
+    model->setEntries({{EnumStatus::EMAIL, DateStringAlternatives::EMAIL_PLACEHOLDER},
+                       {EnumStatus::PASSWORD, DateStringAlternatives::PASSWORD_PLACEHOLDER}});
     model->setData(1, true, ModelStatuses::Roles::PASSWORD_STATUS);
 }
 
@@ -28,7 +32,7 @@ void LoginController::onConfirmed()
     auto name = model->data(0, ModelStatuses::Roles::VALUE).toString();
     auto password = model->data(1, ModelStatuses::Roles::VALUE).toString();
 
-    auto personWithGiveEmail = manager->getFiltered({{"email", name.toStdString()}});
+    auto personWithGiveEmail = manager->getFiltered({{EMAIL_KEY, name.toStdString()}});
 
     if (!personWithGiveEmail.has_value()) {
         qDebug() << Messages::INVALID_KEYWORD;

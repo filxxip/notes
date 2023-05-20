@@ -13,6 +13,7 @@ class IdTable:
     id: Mapped[int] = mapped_column(
         Integer(), primary_key=True, nullable=False, autoincrement=True)
     index: Mapped[int] = mapped_column(Integer())
+    pid: Mapped[int] = mapped_column(Integer())
 
 
 class PersonRemoveAccount(IdTable, Base):
@@ -21,6 +22,10 @@ class PersonRemoveAccount(IdTable, Base):
 
 class PersonRegister(IdTable, Base):
     __tablename__ = tables_names.peopleRegisterName
+
+
+class PersonGuest(IdTable, Base):
+    __tablename__ = tables_names.peopleGuestName
 
 
 class PersonLogin(IdTable, Base):

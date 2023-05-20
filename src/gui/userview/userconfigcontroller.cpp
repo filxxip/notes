@@ -6,32 +6,22 @@ constexpr const char *MALE_TEXT_BUTTON = "male";
 
 } // namespace
 
-UserConfigController::UserConfigController(
-    std::shared_ptr<PrevEnumViewController> mainViewController_,
-    std::unique_ptr<SingletonObjectManager<Person>> singleLoginPersonManager,
-    QPointer<DialogController> dialogController_,
-    QObject *obj)
-    : EntryController(mainViewController_,
-                      std::move(singleLoginPersonManager),
-                      dialogController_,
-                      obj)
-    , calendarController(new CalendarController(this))
-{
-    radioButtonController = new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 1),
-                                                       RadioButtonModel(FEMALE_TEXT_BUTTON,
-                                                                        false,
-                                                                        1)},
-                                                      this);
+namespace UserConfigControllerUtils {
 
-    //from level of qml also entries are cleared, they react on clear signal
-    connect(this, &EntryController::clear, [this] {
-        calendarController->clear();
-        radioButtonController->setValue(0, true);
+QPointer<RadioButtonController> generateRadioButton(QObject *object)
+{
+    return new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 1),
+                                      RadioButtonModel(FEMALE_TEXT_BUTTON, false, 1)},
+                                     object);
+}
+
+void connectClear(EntryController *obj,
+                  QPointer<CalendarController> calendar,
+                  QPointer<RadioButtonController> radioButton)
+{
+    obj->connect(obj, &EntryController::clear, [calendar, radioButton] {
+        calendar->clear();
+        radioButton->setValue(0, true);
     });
 }
-
-QString UserConfigController::getPartOfPerson(EnumStatus componentEnum) const
-{
-    auto index = model->indexOf(componentEnum);
-    return model->data(index, ModelStatuses::Roles::VALUE).value<QString>();
-}
+} // namespace UserConfigControllerUtils

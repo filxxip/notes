@@ -36,7 +36,7 @@ protected:
 
     QPointer<UserViewListModel> model = new UserViewListModel(this);
 
-    void emitSuccessDialogWithClear(int code, Person person);
+    virtual void emitSuccessDialogWithClear(int code, Person person);
 
 public:
     EntryController(std::shared_ptr<PrevEnumViewController> mainViewController_,
@@ -48,8 +48,6 @@ signals:
     void confirm();
 
     void clear();
-
-    //    void changingViewOperationSuccess(Person person);
 
 private slots:
     virtual void onConfirmed() = 0;

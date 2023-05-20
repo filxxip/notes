@@ -20,7 +20,7 @@ Window {
         gradient: Gradient {
             GradientStop {
                 position: 0.0
-                color: "#5ed4b1"
+                color: GUIConfig.colors.backgroundcolor
             }
         }
     }
@@ -28,32 +28,28 @@ Window {
         anchors.fill: parent
         onClicked: forceActiveFocus()
     }
-    width: 800
-    height: 640
+    width: GUIConfig.window.width
+    height: GUIConfig.window.height
     visible: true
     CustomDialog {
         visible: dialogController.visibility
     }
 
-    //            Item {
-    //    UserProfileView {
-    //        id: userEditView
-    //        //        anchors.left: outerRectangle.left
-    //        anchors.centerIn: parent
-    //        anchors.fill: parent
-    //    }
-    //    }
-    //    LogView {
-    //        anchors.centerIn: parent
-    //        anchors.fill: parent
-    //    }
     Loader {
-        id: loader
         anchors.fill: parent
-        property var map: [logView, userView, someBackground]
-        sourceComponent: map[mainController.view.userViewType]
-        onSourceChanged: animation.running = true
+        property var enumType: mainController.view.userViewType
+        sourceComponent: switch (enumType) {
+                         case (ModelStatuses.MainUserViews.BACKGROUND):
+                             return background
+                         case (ModelStatuses.MainUserViews.LOG):
+                             return logView
+                         case (ModelStatuses.MainUserViews.EDIT_GUEST):
+                             return userEditView
+                         case (ModelStatuses.MainUserViews.EDIT_NORMAL):
+                             return userEditView
+                         }
     }
+
     Component {
         id: logView
         LogView {
@@ -61,17 +57,9 @@ Window {
             anchors.fill: parent
         }
     }
-    Component {
-        id: userView
-        UserProfileView {
-            id: userEditView
-            anchors.centerIn: parent
-            anchors.fill: parent
-        }
-    }
 
     Component {
-        id: someBackground
+        id: background
         Rectangle {
             color: GUIConfig.colors.grey
             anchors.centerIn: parent
@@ -81,8 +69,31 @@ Window {
                 width: 0.15 * parent.width
                 height: 0.15 * parent.height
                 fillMode: Image.PreserveAspectFit
-                source: "qrc:/resources/loading.png"
+                source: GUIConfig.imagePaths.loading
             }
         }
     }
+    Component {
+        id: userEditView
+        UserProfileView {
+            anchors.centerIn: parent
+            anchors.fill: parent
+        }
+    }
+
+    //    Component {
+    //        id: someBackground
+    //        Rectangle {
+    //            color: GUIConfig.colors.grey
+    //            anchors.centerIn: parent
+    //            anchors.fill: parent
+    //            Image {
+    //                anchors.centerIn: parent
+    //                width: 0.15 * parent.width
+    //                height: 0.15 * parent.height
+    //                fillMode: Image.PreserveAspectFit
+    //                source: "qrc:/resources/loading.png"
+    //            }
+    //        }
+    //    }
 }

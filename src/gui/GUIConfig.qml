@@ -25,7 +25,11 @@ Item {
 
     readonly property alias swipeIn: swipeIn
 
+    readonly property alias rightEditViewBar: rightEditViewBar
+
     readonly property alias userEditView: userEditView
+
+    readonly property alias imagePaths: imagePaths
 
     QtObject {
         id: window
@@ -37,7 +41,13 @@ Item {
         id: userEditView
 
         readonly property int combinedListViewHeight: 200
+        readonly property int combinedGuestListViewHeight: 70
         readonly property int outerColumnSpacing: 25
+
+        readonly property int mainRectHeight: 400
+        readonly property int mainRectWidth: 500
+
+        readonly property int guestComponentPadding: 130
 
         readonly property int listviewSpacing: 8
         readonly property int defaultEntryWidth: 300
@@ -67,6 +77,30 @@ Item {
 
         readonly property int swipeInDateHeight: 100
         readonly property int dateSwipeX: 0
+    }
+
+    QtObject {
+        id: rightEditViewBar
+        readonly property int margins: 30
+        readonly property int spacing: 10
+        readonly property int padding: 140
+        readonly property int width: 180
+        readonly property int height: 50
+        readonly property int clockMargins: 40
+
+        readonly property string removeAccountText: "Remove account"
+        readonly property string logoutText: "Log out"
+        readonly property string settingsText: "Settings"
+        readonly property string closeAppText: "Close App"
+    }
+
+    QtObject {
+        id: imagePaths
+        readonly property string removeAccount: "qrc:/resources/removeaccount.png"
+        readonly property string logout: "qrc:/resources/logout.png"
+        readonly property string settings: "qrc:/resources/settings.png"
+        readonly property string closeApp: "qrc:/resources/closeapp.png"
+        readonly property string loading: "qrc:/resources/loading.png"
     }
 
     QtObject {
@@ -128,7 +162,7 @@ Item {
             readonly property int spacing: 170 //przerzucic tego radio button do wyzszego scopa bo zarowno edit view korzysta jak i ten
         }
 
-        readonly property var userViewDetails: [registerView, loginView, guestView]
+        readonly property var userViewDetails: [loginView, registerView, guestView]
 
         readonly property real checkButtonWidth: 0.4 * userView.defaultEntryWidth
         readonly property int checkButtonHeight: 40
@@ -172,6 +206,7 @@ Item {
         readonly property color backgroundGreen: "#376945"
         readonly property color nearlyWhite: "#aebbd1"
         readonly property color lightOrange: "#ee6c4d"
+        readonly property color backgroundcolor: "#5ed4b1"
     }
 
     QtObject {

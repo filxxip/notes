@@ -14,6 +14,8 @@ constexpr char LOGIN_TEXT[] = "login";
 constexpr char REGISTER_TEXT[] = "register";
 constexpr char GUEST_TEXT[] = "log as guest";
 
+constexpr int TICK_TIME = 150;
+
 std::unique_ptr<SingletonObjectManager<Person>> generateController(
     std::shared_ptr<PeopleManager> ptr,
     std::shared_ptr<DataClient> dataClient,
@@ -64,7 +66,8 @@ LogController::LogController(std::shared_ptr<PrevEnumViewController> mainViewCon
                              this)},
         {EnumStatus::GUEST,
          new GuestController(mainViewController,
-                             generateController(ptr, dataClient, DatabaseCodes::Names::PEOPLE_LOGIN),
+                             generateController(ptr, dataClient, DatabaseCodes::Names::PEOPLE_GUEST),
+                             ptr,
                              dialogController_,
                              this)}};
 
@@ -80,8 +83,12 @@ LogController::LogController(std::shared_ptr<PrevEnumViewController> mainViewCon
     });
 
     DatabaseUtilsFunctions::tickWait(
-        400,
+        TICK_TIME,
         [this] {
+            if (SingletonObjectManager<Person>::status
+                == SingletonObjectManager<Person>::Status::WAIT_FOR_LOAD) {
+                return;
+            }
             if (logoutManager.isDataAvaible()) {
                 auto obj = logoutManager.get();
                 prevViewController->setUserViewType(ModelStatuses::MainUserViews::LOG);

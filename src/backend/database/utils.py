@@ -31,8 +31,6 @@ def set_conversion(**attrs: Callable):
 def jsonify_result(function: callable):
     @wraps(function)
     def wrapper(*args, **kwargs):
-        # print(function(*args, **kwargs))
-        print( jsonify(function(*args, **kwargs)).data, end="\n\n\n")
         return jsonify(function(*args, **kwargs))
 
     return wrapper

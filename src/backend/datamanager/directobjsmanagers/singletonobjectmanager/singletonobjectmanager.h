@@ -12,6 +12,9 @@ class SingletonObjectManager
     std::shared_ptr<OverallManager<DataObject>> manager;
 
 public:
+    enum class Status { READY_TO_GET, WAIT_FOR_LOAD };
+    static Status status;
+
     SingletonObjectManager() = default;
     SingletonObjectManager(std::unique_ptr<IdsManager> idsManager_,
                            std::shared_ptr<OverallManager<DataObject>> manager_);

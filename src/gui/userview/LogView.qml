@@ -176,6 +176,7 @@ Column {
                     anchors.centerIn: itemLayout
                     id: column
                     TitleBox {
+                        id: titleBox
                         title: GuiConfig.userView.userViewDetails[logController.view.userViewType].titleContent
                         width: GUIConfig.userView.defaultEntryWidth
                         height: GuiConfig.userView.titleHeight
@@ -184,7 +185,7 @@ Column {
                     Loader {
                         id: loader
                         Layout.alignment: Qt.AlignHCenter
-                        property var registermap: [registerComponent, loginComponent, guestComponent]
+                        property var registermap: [loginComponent, registerComponent, guestComponent]
                         sourceComponent: registermap[logController.view.userViewType]
                     }
                 }
