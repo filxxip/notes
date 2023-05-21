@@ -23,7 +23,6 @@ void NotesManager::update(const Note &object)
     updateObject(object.id.get(),
                  object.category,
                  object.releaseDate,
-                 object.owner,
                  object.title,
                  object.content);
 }

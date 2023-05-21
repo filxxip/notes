@@ -7,4 +7,5 @@ struct Category final
     StrData content{"color"};
     StrData title{"name"};
     DateData creationDate{"creationDate"};
+    ConstIntData owner{"owner"};
 };

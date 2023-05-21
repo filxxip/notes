@@ -2,8 +2,9 @@ import random
 from datetime import datetime, timedelta
 
 from .seeder_base import Seeder
-from src.backend.database.tables  import Base, Category
+from src.backend.database.tables import Base, Category
 from ..utils import convert_datetime_to_str
+
 
 class CategorySeeder(Seeder):
     def seed(self) -> list[Base]:
@@ -15,8 +16,10 @@ class CategorySeeder(Seeder):
         for i in range(50):
             name = random.choice(names)
             color = random.choice(colors)
-            creation_date = convert_datetime_to_str(datetime.now() - timedelta(minutes=random.randint(1, 60), hours=random.randint(1, 24),
-                                                       days=random.randint(1, 90)))
-            cat = Category(name=name, color=color, creationDate=creation_date)
+            creation_date = convert_datetime_to_str(
+                datetime.now() - timedelta(minutes=random.randint(1, 60), hours=random.randint(1, 24),
+                                           days=random.randint(1, 90)))
+            owner = random.randrange(10)
+            cat = Category(name=name, color=color, creationDate=creation_date, owner=owner)
             categories.append(cat)
         return categories

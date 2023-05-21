@@ -25,6 +25,11 @@ qt_add_executable(appnotesdatabaseproject
     main.cpp
     src/gui/statuses.h
 
+    src/gui/notebook/categorycontroller.cpp
+    src/gui/notebook/categorycontroller.h
+    src/gui/notebook/texteditorcontroller.h
+    src/gui/notebook/texteditorcontroller.cpp
+
     src/gui/maincontroller/maincontroller.cpp
     src/gui/maincontroller/maincontroller.h
 
@@ -135,6 +140,9 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/calendar/DateChooser.qml
         src/gui/calendar/Clock.qml
         src/gui/calendar/TumblerComponent.qml
+
+        src/gui/notebook/CategoryView.qml
+        src/gui/notebook/TextEditorView.qml
 
         src/gui/qmlutils/SwipeInComponent.qml
 

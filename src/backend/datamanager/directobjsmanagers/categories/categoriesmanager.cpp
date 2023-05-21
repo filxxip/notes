@@ -8,7 +8,7 @@ CategoriesManager::CategoriesManager(DatabaseCodes::Names databaseName,
 Category CategoriesManager::generateInstance(const json &genson) const
 {
     Category category;
-    initObject(category.id, category.content, category.creationDate, category.title);
+    initObject(category.id, category.content, category.creationDate, category.title, category.owner);
     return category;
 }
 
@@ -19,5 +19,5 @@ void CategoriesManager::update(const Category &object)
 
 void CategoriesManager::add(const Category &object)
 {
-    addObject(object.creationDate, object.title, object.content);
+    addObject(object.creationDate, object.title, object.content, object.owner);
 }
