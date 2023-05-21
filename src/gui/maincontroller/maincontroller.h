@@ -8,10 +8,12 @@
 #include "../customdialog/dialogcontroller.h"
 
 #include "../cpputils/utils.h"
+#include "src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h"
 #include "src/gui/calendar/calendarcontroller.h"
 #include "src/gui/calendar/clockcontroller.h"
 #include "src/gui/customdialog/dialogcontroller.h"
 #include "src/gui/maincontroller/maincontroller.h"
+#include "src/gui/notebook/categorycontroller.h"
 #include "src/gui/radiobutton/radiobuttoncontroller.h"
 #include "src/gui/usereditview/mainusercontroller.h"
 #include "src/gui/usereditview/usereditcontroller.h"
@@ -27,6 +29,7 @@ class MainController : public QObject
     QPointer<ClockController> clockController;
     std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> mainUserView;
     LogController logController;
+    CategoryController categoryController;
     MainUserController mainUserController;
 
 private:

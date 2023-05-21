@@ -15,8 +15,8 @@
 #include "src/gui/userview/logcontroller.h"
 #include <memory>
 
-#define RUN_QML 0
-#define RUN_DATABASE 1
+#define RUN_QML 1
+#define RUN_DATABASE 0
 
 using json = nlohmann::json;
 int main(int argc, char *argv[])
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     auto fileClient = std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>());
     auto serverClient = std::make_shared<ServerDataClient>();
 
-    auto ptr = fileClient;
+    auto ptr = serverClient;
 
     if (ptr->isValid()) {
         auto mainController = new MainController(ptr, &engine);

@@ -143,6 +143,7 @@ qt_add_qml_module(appnotesdatabaseproject
 
         src/gui/notebook/CategoryView.qml
         src/gui/notebook/TextEditorView.qml
+        src/gui/notebook/NotebookListViewElement.qml
 
         src/gui/qmlutils/SwipeInComponent.qml
 

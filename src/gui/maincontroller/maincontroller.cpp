@@ -7,6 +7,7 @@ constexpr char CALENDAR_CONTROLLER[] = "calendarController";
 constexpr char CLOCK_CONTROLLER[] = "clockController";
 constexpr char LOG_CONTROLLER[] = "logController";
 constexpr char MAIN_USER_CONTROLLER[] = "mainUserController";
+constexpr char CATEGORY_CONTROLLER[] = "categoryController";
 } // namespace
 
 MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *obj)
@@ -21,6 +22,10 @@ MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *
     , mainUserView(
           ViewControllerGenerators::createNonSwitcherViewContorller(ModelStatuses::MainUserViews::LOG,
                                                                     this))
+    , categoryController(std::make_unique<CategoriesManager>(DatabaseCodes::Names::CATEGORIES,
+                                                             dataClient),
+                         dialogController,
+                         this)
 {
     mainUserView->setUserViewType(ModelStatuses::MainUserViews::LOG);
 }
@@ -48,4 +53,5 @@ void MainController::registerControllers(QQmlContext *context)
     context->setContextProperty(DIALOG_CONTROLLER, dialogController);
     context->setContextProperty(CLOCK_CONTROLLER, clockController);
     context->setContextProperty(MAIN_USER_CONTROLLER, &mainUserController);
+    context->setContextProperty(CATEGORY_CONTROLLER, &categoryController);
 }

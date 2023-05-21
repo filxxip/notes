@@ -101,6 +101,8 @@ Item {
         readonly property string settings: "qrc:/resources/settings.png"
         readonly property string closeApp: "qrc:/resources/closeapp.png"
         readonly property string loading: "qrc:/resources/loading.png"
+        readonly property string editNote: "qrc:/resources/editnote.png"
+        readonly property string trashNote: "qrc:/resources/trashnote.png"
     }
 
     QtObject {

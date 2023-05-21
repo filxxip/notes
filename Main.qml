@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.15
 import QtQml 2.3
 import ModelStatuses 1.0
 
+import "src/gui/notebook"
 import "src/gui"
 import "src/gui/customdialog"
 import "src/gui/userview"
@@ -34,55 +35,37 @@ Window {
     CustomDialog {
         visible: dialogController.visibility
     }
-
-    Loader {
-        anchors.fill: parent
-        property var enumType: mainController.view.userViewType
-        sourceComponent: switch (enumType) {
-                         case (ModelStatuses.MainUserViews.BACKGROUND):
-                             return background
-                         case (ModelStatuses.MainUserViews.LOG):
-                             return logView
-                         case (ModelStatuses.MainUserViews.EDIT_GUEST):
-                             return userEditView
-                         case (ModelStatuses.MainUserViews.EDIT_NORMAL):
-                             return userEditView
-                         }
+    CategoryView {
+        anchors.centerIn: parent
+        width: parent.width * 0.5
+        height: parent.height * 0.5
     }
 
-    Component {
-        id: logView
-        LogView {
-            anchors.centerIn: parent
-            anchors.fill: parent
-        }
-    }
-
-    Component {
-        id: background
-        Rectangle {
-            color: GUIConfig.colors.grey
-            anchors.centerIn: parent
-            anchors.fill: parent
-            Image {
-                anchors.centerIn: parent
-                width: 0.15 * parent.width
-                height: 0.15 * parent.height
-                fillMode: Image.PreserveAspectFit
-                source: GUIConfig.imagePaths.loading
-            }
-        }
-    }
-    Component {
-        id: userEditView
-        UserProfileView {
-            anchors.centerIn: parent
-            anchors.fill: parent
-        }
-    }
+    //    Loader {
+    //        anchors.fill: parent
+    //        property var enumType: mainController.view.userViewType
+    //        sourceComponent: switch (enumType) {
+    //                         case (ModelStatuses.MainUserViews.BACKGROUND):
+    //                             return background
+    //                         case (ModelStatuses.MainUserViews.LOG):
+    //                             return logView
+    //                         case (ModelStatuses.MainUserViews.EDIT_GUEST):
+    //                             return userEditView
+    //                         case (ModelStatuses.MainUserViews.EDIT_NORMAL):
+    //                             return userEditView
+    //                         }
+    //    }
 
     //    Component {
-    //        id: someBackground
+    //        id: logView
+    //        LogView {
+    //            anchors.centerIn: parent
+    //            anchors.fill: parent
+    //        }
+    //    }
+
+    //    Component {
+    //        id: background
     //        Rectangle {
     //            color: GUIConfig.colors.grey
     //            anchors.centerIn: parent
@@ -92,8 +75,15 @@ Window {
     //                width: 0.15 * parent.width
     //                height: 0.15 * parent.height
     //                fillMode: Image.PreserveAspectFit
-    //                source: "qrc:/resources/loading.png"
+    //                source: GUIConfig.imagePaths.loading
     //            }
+    //        }
+    //    }
+    //    Component {
+    //        id: userEditView
+    //        UserProfileView {
+    //            anchors.centerIn: parent
+    //            anchors.fill: parent
     //        }
     //    }
 }

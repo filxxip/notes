@@ -8,16 +8,21 @@ CategoriesManager::CategoriesManager(DatabaseCodes::Names databaseName,
 Category CategoriesManager::generateInstance(const json &genson) const
 {
     Category category;
-    initObject(category.id, category.content, category.creationDate, category.title, category.owner);
+    initObject(genson,
+               category.id,
+               category.color,
+               category.creationDate,
+               category.title,
+               category.owner);
     return category;
 }
 
 void CategoriesManager::update(const Category &object)
 {
-    updateObject(object.id.get(), object.creationDate, object.title, object.content);
+    updateObject(object.id.get(), object.creationDate, object.title, object.color);
 }
 
 void CategoriesManager::add(const Category &object)
 {
-    addObject(object.creationDate, object.title, object.content, object.owner);
+    addObject(object.creationDate, object.title, object.color, object.owner);
 }
