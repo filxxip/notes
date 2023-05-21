@@ -4,6 +4,7 @@ namespace {
 
 constexpr char PROFILE_TITLE[] = "profile";
 constexpr char NOTEBOOK_TITLE[] = "notebook";
+constexpr char EDITOR_TITLE[] = "text editor";
 constexpr char PERSON_GLOBAL_ERROR_MESSAGE[]
     = "Invalid person request, none person is set or access data is invalid.";
 constexpr int TICK_TIME = 150;
@@ -53,8 +54,10 @@ MainUserController::MainUserController(std::shared_ptr<PrevEnumViewController> m
               FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
                   .add(ModelStatuses::UserViewsRoles::TEXT, &SwitcherModel<EnumStatus>::text)
                   .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type)
-                  .build(
-                      {{PROFILE_TITLE, EnumStatus::EDIT}, {NOTEBOOK_TITLE, EnumStatus::NOTEBOOK}}),
+                  .add(ModelStatuses::UserViewsRoles::ENABLED, &SwitcherModel<EnumStatus>::enabled)
+                  .build({{PROFILE_TITLE, EnumStatus::EDIT},
+                          {NOTEBOOK_TITLE, EnumStatus::NOTEBOOK, false},
+                          {EDITOR_TITLE, EnumStatus::TEXT_EDITOR, false}}),
               EnumStatus::EDIT,
               this)
               ->getController())

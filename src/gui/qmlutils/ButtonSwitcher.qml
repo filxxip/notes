@@ -22,10 +22,17 @@ TabBar {
             id: repeater
             model: tabbar.model
             TabButton {
-                text: model.text
+                id: tab
+                enabled: model.enabled
+                Text {
+                    text: model.text
+                    color: tab.enabled ? GUIConfig.colors.white : GUIConfig.colors.lightOrange
+                    anchors.centerIn: parent
+                }
                 width: tabbar.combinedWidth / repeater.count
                 height: tabbar.elementHeight
                 anchors.top: repeater.top
+
                 background: Rectangle {
                     property color currentBasicColor: tabbar.currentIndex === model.type ? GUIConfig.switchbutton.enableColor : GUIConfig.switchbutton.disableColor
                     color: tabbar.enabled ? currentBasicColor : currentBasicColor.lighter()

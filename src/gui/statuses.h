@@ -9,7 +9,7 @@ Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
 enum class UserViews { LOGIN, REGISTER, GUEST };
 
-enum class UserViewsRoles { TEXT, TYPE };
+enum class UserViewsRoles { TEXT, TYPE, ENABLED };
 
 enum class PersonComponents { EMAIL, PASSWORD, NAME, SURNAME, BIRTHDAY, COUNTRY, CREATED };
 
@@ -21,7 +21,7 @@ enum class CalendarRoles { CONTENT, VALUE, OBJ };
 
 enum class RadioButtonRoles { TEXT, VALUE, GROUP };
 
-enum class InnerUserEditViews { EDIT, NOTEBOOK };
+enum class InnerUserEditViews { EDIT, NOTEBOOK, TEXT_EDITOR };
 
 //enum class MainUserViews { LOG, EDIT, BACKGROUND };
 

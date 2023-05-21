@@ -7,4 +7,5 @@ struct SwitcherModel
 {
     QString text;
     EnumType type;
+    bool enabled = true;
 };

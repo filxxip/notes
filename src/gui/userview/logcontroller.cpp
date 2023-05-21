@@ -42,6 +42,7 @@ LogController::LogController(std::shared_ptr<PrevEnumViewController> mainViewCon
               FastModelBuilder<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>(this)
                   .add(ModelStatuses::UserViewsRoles::TEXT, &SwitcherModel<EnumStatus>::text)
                   .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type)
+                  .add(ModelStatuses::UserViewsRoles::ENABLED, &SwitcherModel<EnumStatus>::enabled)
                   .build({{LOGIN_TEXT, EnumStatus::LOGIN},
                           {REGISTER_TEXT, EnumStatus::REGISTER},
                           {GUEST_TEXT, EnumStatus::GUEST}}),

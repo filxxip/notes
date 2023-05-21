@@ -198,6 +198,7 @@ Item {
         id: colors
 
         readonly property color transparent: "transparent"
+        readonly property color white: "white"
         readonly property color black: "black"
         readonly property color red: "red"
         readonly property color grey: "grey"
