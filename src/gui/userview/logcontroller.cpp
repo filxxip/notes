@@ -3,6 +3,7 @@
 #include "specificcontrollers/logincontroller.h"
 #include "specificcontrollers/registercontroller.h"
 #include "src/backend/datamanager/directobjsmanagers/ids/idsmanager.h"
+#include <type_traits>
 #include <utility>
 
 namespace {
@@ -16,14 +17,14 @@ constexpr char GUEST_TEXT[] = "log as guest";
 
 constexpr int TICK_TIME = 150;
 
+template<typename ControllerType = SingletonObjectManager<Person>>
 std::unique_ptr<SingletonObjectManager<Person>> generateController(
     std::shared_ptr<PeopleManager> ptr,
     std::shared_ptr<DataClient> dataClient,
     DatabaseCodes::Names code)
 {
-    return std::make_unique<SingletonObjectManager<Person>>(std::make_unique<IdsManager>(code,
-                                                                                         dataClient),
-                                                            ptr);
+    static_assert(std::is_base_of_v<SingletonObjectManager<Person>, ControllerType>);
+    return std::make_unique<ControllerType>(std::make_unique<IdsManager>(code, dataClient), ptr);
 }
 
 } // namespace

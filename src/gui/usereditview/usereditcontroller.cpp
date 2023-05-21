@@ -170,25 +170,6 @@ void GuestEditController::onConfirmed()
     emit updatePersonData(person.value());
 }
 
-void GuestEditController::emitSuccessDialogWithClear(int code, Person person)
-{
-    removePerson();
-    AbstractEditController::emitSuccessDialogWithClear(code, std::move(person));
-}
-
-void GuestEditController::setNewPerson(Person person)
-{
-    removePerson();
-    AbstractEditController::setNewPerson(std::move(person));
-}
-
-void GuestEditController::removePerson()
-{
-    if (person.has_value()) {
-        emit removePersonData(person.value().id.get());
-    }
-}
-
 void GuestEditController::moveDataFromPersonToModel()
 {
     model->setData(model->indexOf(EnumStatus::NAME), person->name.get(), EntryRoles::VALUE);

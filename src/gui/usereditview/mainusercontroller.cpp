@@ -59,30 +59,30 @@ MainUserController::MainUserController(std::shared_ptr<PrevEnumViewController> m
               this)
               ->getController())
 {
-    auto extendEmitPersonManagers = [this](const auto &ptrDataClient, auto name, auto key) {
-        emitPersonManagers[key]
-            = SingletonObjectManager<Person>(std::make_unique<IdsManager>(name, ptrDataClient),
-                                             manager);
-    };
-    for (const auto &[name, key] :
-         {std::make_pair(DatabaseCodes::Names::PEOPLE_LOGIN, ModelStatuses::UserViews::LOGIN),
-          std::make_pair(DatabaseCodes::Names::PEOPLE_REGISTER, ModelStatuses::UserViews::REGISTER),
-          std::make_pair(DatabaseCodes::Names::PEOPLE_GUEST, ModelStatuses::UserViews::GUEST)}) {
-        extendEmitPersonManagers(dataClient, name, key);
-    }
+    emitPersonManagers[ModelStatuses::UserViews::LOGIN]
+        = std::make_unique<SingletonObjectManager<Person>>(
+            std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_LOGIN, dataClient), manager);
+    emitPersonManagers[ModelStatuses::UserViews::REGISTER]
+        = std::make_unique<SingletonObjectManager<Person>>(
+            std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_REGISTER, dataClient),
+            manager);
+    emitPersonManagers[ModelStatuses::UserViews::GUEST]
+        = std::make_unique<AutoRemoveSingleObjectManager<Person>>(
+            std::make_unique<IdsManager>(DatabaseCodes::Names::PEOPLE_GUEST, dataClient), manager);
+
     connectControllersSignals(userEditController);
     connectControllersSignals(guestEditController);
 
     DatabaseUtilsFunctions::tickWait(
         TICK_TIME,
         [this] {
-            tryToUpdateEditView(&(emitPersonManagers[ModelStatuses::UserViews::LOGIN]),
+            tryToUpdateEditView(ModelStatuses::UserViews::LOGIN,
                                 userEditController,
                                 ModelStatuses::MainUserViews::EDIT_NORMAL);
-            tryToUpdateEditView(&(emitPersonManagers[ModelStatuses::UserViews::REGISTER]),
+            tryToUpdateEditView(ModelStatuses::UserViews::REGISTER,
                                 userEditController,
                                 ModelStatuses::MainUserViews::EDIT_NORMAL);
-            tryToUpdateEditView(&(emitPersonManagers[ModelStatuses::UserViews::GUEST]),
+            tryToUpdateEditView(ModelStatuses::UserViews::GUEST,
                                 guestEditController,
                                 ModelStatuses::MainUserViews::EDIT_GUEST);
         },
@@ -121,7 +121,7 @@ QPointer<AbstractEditController> MainUserController::getController() const
     return nullptr;
 }
 
-void MainUserController::tryToUpdateEditView(SingletonObjectManager<Person> *manager,
+void MainUserController::tryToUpdateEditView(ModelStatuses::UserViews managerType,
                                              QPointer<AbstractEditController> controller,
                                              ModelStatuses::MainUserViews viewType)
 {
@@ -129,8 +129,9 @@ void MainUserController::tryToUpdateEditView(SingletonObjectManager<Person> *man
         == SingletonObjectManager<Person>::Status::WAIT_FOR_LOAD) {
         return;
     }
-    if (manager->isDataAvaible()) {
-        controller->setNewPerson(manager->get().value());
+    if (emitPersonManagers.contains(managerType)
+        && emitPersonManagers[managerType]->isDataAvaible()) {
+        controller->setNewPerson(emitPersonManagers[managerType]->get().value());
         prevViewController->setUserViewType(viewType);
     }
 }

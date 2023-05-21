@@ -23,6 +23,6 @@ void EntryController::emitSuccessDialogWithClear(int code, Person person)
     dialogController->applyConnection([this, person = std::move(person)](auto status) mutable {
         emit clear();
         mainViewController->setUserViewType(ModelStatuses::MainUserViews::BACKGROUND);
-        singleLoginPersonManager->set(person);
+        singleLoginPersonManager->set(person, true);
     });
 }

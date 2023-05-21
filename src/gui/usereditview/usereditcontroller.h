@@ -47,8 +47,6 @@ class GuestEditController : public AbstractEditController
 {
     Q_OBJECT
 
-    void removePerson();
-
 public:
     GuestEditController(std::shared_ptr<PrevEnumViewController> mainViewController,
                         std::unique_ptr<SingletonObjectManager<Person>> singletonObjectLogoutManager,
@@ -57,12 +55,7 @@ public:
 
     Q_INVOKABLE void moveDataFromPersonToModel() override;
 
-protected:
-    virtual void emitSuccessDialogWithClear(int code, Person person) override;
-
 public slots:
-    void setNewPerson(Person person) override;
-
     void onConfirmed() override;
 };
 

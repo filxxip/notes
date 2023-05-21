@@ -50,7 +50,7 @@ private:
 
     void connectControllersSignals(QPointer<AbstractEditController> controller);
 
-    void tryToUpdateEditView(SingletonObjectManager<Person> *manager,
+    void tryToUpdateEditView(ModelStatuses::UserViews managerType,
                              QPointer<AbstractEditController> controller,
                              ModelStatuses::MainUserViews viewType);
 
@@ -64,7 +64,8 @@ private:
 
     QPointer<AbstractEditController> guestEditController;
 
-    std::unordered_map<ModelStatuses::UserViews, SingletonObjectManager<Person>> emitPersonManagers;
+    std::unordered_map<ModelStatuses::UserViews, std::unique_ptr<SingletonObjectManager<Person>>>
+        emitPersonManagers;
 
 private slots:
     void updatePersonInDatabase(const Person &person);
