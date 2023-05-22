@@ -1,4 +1,4 @@
-import QtQuick 2.15
+﻿import QtQuick 2.15
 import ".."
 import "../qmlutils"
 import QtQuick.Controls 2.15
@@ -7,66 +7,32 @@ import QtQuick.Layouts 1.15
 Item {
     id: item
     property var controller
+    property int pickerWidth
+    property int pickerElementHeight
+    width: pickerWidth
+    height: 4 * pickerElementHeight + 15
 
-    function uploadColor(color) {
-        var myColor = Qt.color(color)
-        green.setColor(myColor.g * GUIConfig.colorPicker.maxColorValue)
-        red.setColor(myColor.r * GUIConfig.colorPicker.maxColorValue)
-        blue.setColor(myColor.b * GUIConfig.colorPicker.maxColorValue)
-    }
+    Component.onCompleted: console.log(categoryController.colorGeneratePicker)
 
-    Component.onCompleted: {
-        controller.colorChanged.connect(uploadColor)
-        uploadColor(controller.color)
-    }
     ColumnLayout {
-        Column {
-            spacing: 5
-            SingleColorPicker {
-                id: red
-                customColor: Qt.rgba(
-                                 sliderValue / GUIConfig.colorPicker.maxColorValue,
-                                 0, 0)
-                barGradient: GUIConfig.gradients.redGradient
-            }
-
-            SingleColorPicker {
-                id: green
-                customColor: Qt.rgba(
-                                 0,
-                                 sliderValue / GUIConfig.colorPicker.maxColorValue,
-                                 0)
-                barGradient: GUIConfig.gradients.greenGradient
-            }
-
-            SingleColorPicker {
-                id: blue
-                customColor: Qt.rgba(
-                                 0, 0,
-                                 sliderValue / GUIConfig.colorPicker.maxColorValue)
-                barGradient: GUIConfig.gradients.blueGradient
-            }
+        TripleColorPicker {
+            id: pickers
+            controller: item.controller
+            pickerWidth: item.pickerWidth
+            pickerElementHeight: item.pickerElementHeight
         }
         RowLayout {
             id: resultantBar
-            height: GUIConfig.colorPicker.downBarHeight
-            readonly property var combinedColor: Qt.rgba(
-                                                     red.sliderValue
-                                                     / GUIConfig.colorPicker.maxColorValue,
-                                                     green.sliderValue
-                                                     / GUIConfig.colorPicker.maxColorValue,
-                                                     blue.sliderValue
-                                                     / GUIConfig.colorPicker.maxColorValue)
-
+            height: pickerElementHeight
             Button {
-                Layout.preferredWidth: GUIConfig.colorPicker.downBarButtonWidth
-                Layout.preferredHeight: GUIConfig.colorPicker.downBarHeight
+                Layout.preferredWidth: pickerElementHeight
+                Layout.preferredHeight: pickerElementHeight
                 background: Rectangle {
                     anchors.fill: parent
                     color: GUIConfig.colors.transparent
                 }
 
-                onReleased: controller.colorChanged(resultantBar.combinedColor)
+                onReleased: controller.color = pickers.combinedColor
 
                 Image {
                     anchors.fill: parent
@@ -75,23 +41,23 @@ Item {
                 opacity: down ? GUIConfig.colorPicker.opacityOnClicked : 1
             }
             Rectangle {
-                Layout.preferredWidth: GUIConfig.colorPicker.downBarResultColorBarWidth
-                Layout.preferredHeight: GUIConfig.colorPicker.downBarResultColorBarHeight
+                Layout.preferredWidth: 0.45 * pickerWidth
+                Layout.preferredHeight: 0.7 * pickerElementHeight
                 Layout.alignment: Qt.AlignVCenter
-                color: resultantBar.combinedColor
+                color: pickers.combinedColor
                 radius: GUIConfig.colorPicker.downBarResultColorBarRadius
             }
             spacing: 10
 
             Button {
                 opacity: down ? GUIConfig.colorPicker.opacityOnClicked : 1
-                Layout.preferredWidth: GUIConfig.colorPicker.downBarButtonWidth
-                Layout.preferredHeight: GUIConfig.colorPicker.downBarHeight
+                Layout.preferredWidth: pickerElementHeight
+                Layout.preferredHeight: pickerElementHeight
                 background: Rectangle {
                     anchors.fill: parent
                     color: GUIConfig.colors.transparent
                 }
-                onReleased: item.uploadColor(controller.color)
+                onReleased: pickers.uploadColor(controller.color)
 
                 Image {
                     anchors.fill: parent

@@ -24,5 +24,6 @@
         <file>trashnote.png</file>
         <file>reset.png</file>
         <file>set.png</file>
+        <file>removecategory.png</file>
     </qresource>
 </RCC>

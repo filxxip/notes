@@ -1,14 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import ModelStatuses 1.0
 
 import "../qmlutils"
 import ".."
 
 RowLayout {
     id: row
-    height: 40
-    width: 300
     spacing: 5
     readonly property ListView __lv: ListView.view
     HoverHandler {
@@ -26,10 +25,11 @@ RowLayout {
         id: button
         property color basicColor: model.color
         contentText: modelText
-        Layout.topMargin: 5
-        Layout.bottomMargin: 5
+        Layout.topMargin: 2
+        Layout.bottomMargin: 2
+        Layout.leftMargin: 4
 
-        Layout.preferredWidth: 200
+        Layout.preferredWidth: 220
         Layout.fillHeight: true
         background: Rectangle {
             radius: 10
@@ -39,7 +39,12 @@ RowLayout {
     }
 
     Button {
-        onReleased: swiper.open()
+        onReleased: {
+            swiper.open()
+            categoryController.view.userViewType = ModelStatuses.CategoryViewTypes.EDIT_COLOR
+            console.log(model.color) //todo
+            categoryController.colorEditPicker.color = model.color
+        }
         Layout.preferredWidth: height
         Layout.margins: 5
         opacity: down ? 0.7 : 1
@@ -63,7 +68,7 @@ RowLayout {
             anchors.fill: parent
         }
         opacity: down ? 0.7 : 1
-        onReleased: console.log("aaa")
+        onReleased: categoryController.remove(model.index)
         Image {
             source: GUIConfig.imagePaths.trashNote
             anchors.fill: parent
@@ -72,6 +77,7 @@ RowLayout {
 
     SwipeInComponent {
         id: swiper
+        closePolicy: Popup.CloseOnPressOutsideParent
         innerColor: button.basicColor
         width: row.width - 10
         height: row.height

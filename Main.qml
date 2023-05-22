@@ -38,11 +38,10 @@ Window {
     CustomDialog {
         visible: dialogController.visibility
     }
-    //    CategoryView {
-    //        anchors.centerIn: parent
-    //        width: parent.width * 0.5
-    //        height: parent.height * 0.5
-    //    }
+    CategoryView {
+        anchors.centerIn: parent
+        anchors.fill: parent
+    }
     //    ColorDialog {
     //        id: colorDialog
     //        colorDialog.
@@ -57,11 +56,11 @@ Window {
     //        }
     //        Component.onCompleted: visible = true
     //    }
-    ColorPicker {
-        anchors.centerIn: parent
-        controller: categoryController.colorPicker
-        //        width: 300
-    }
+    //    ColorPicker {
+    //        anchors.centerIn: parent
+    //        controller: categoryController.colorPicker
+    //        //        width: 300
+    //    }
     //    Column {
 
     //        SingleColorPicker {

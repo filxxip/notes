@@ -147,6 +147,8 @@ qt_add_qml_module(appnotesdatabaseproject
 
         src/gui/colorpicker/ColorPicker.qml
         src/gui/colorpicker/SingleColorPicker.qml
+        src/gui/colorpicker/TripleColorPicker.qml
+
 
         src/gui/notebook/CategoryView.qml
         src/gui/notebook/TextEditorView.qml

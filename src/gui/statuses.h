@@ -27,7 +27,11 @@ enum class InnerUserEditViews { EDIT, NOTEBOOK, TEXT_EDITOR };
 
 enum class MainUserViews { LOG, EDIT_GUEST, EDIT_NORMAL, BACKGROUND };
 
+enum class CategoryViewTypes { EDIT_COLOR, GENERATE_COLOR, BUTTON_LISTS, NONE };
+
 Q_ENUM_NS(MainUserViews);
+
+Q_ENUM_NS(CategoryViewTypes);
 
 Q_ENUM_NS(CategoryRoles);
 

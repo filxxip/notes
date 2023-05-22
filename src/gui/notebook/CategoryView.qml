@@ -1,31 +1,36 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+
+import ModelStatuses 1.0
 import ".."
 import "../qmlutils"
+import "../colorpicker"
 import QtQuick.Layouts 1.15
 
 Item {
 
     ListView {
-        height: 300
-        width: 300
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 70
+        height: 370
+        width: 350
         id: listview
-        //        interactive: true
         spacing: 10
-        //        focus: true
         clip: true
         model: categoryController.model
-        Component.onCompleted: console.log(categoryController.model.rowCount())
         delegate: NotebookListViewElement {
+            width: listview.width
+            height: 35
             modelText: model.title
             readonly property var color: model.color
         }
         highlight: Rectangle {
             anchors {
-                left: parent.left
-                right: parent.right
+                left: parent ? parent.left : undefined
+                right: parent ? parent.right : undefined
             }
-            color: listview.currentItem.color
+            color: listview.currentItem ? listview.currentItem.color : GUIConfig.colors.transparent
             opacity: 0.2
         }
 
@@ -37,7 +42,83 @@ Item {
                 anchors.topMargin: 10
                 anchors.fill: parent
                 contentText: "Add new category"
+                onReleased: categoryController.view.userViewType
+                            = ModelStatuses.CategoryViewTypes.GENERATE_COLOR
             }
+        }
+    }
+    Loader {
+        id: loader
+        sourceComponent: switch (categoryController.view.userViewType) {
+                         case (ModelStatuses.CategoryViewTypes.EDIT_COLOR):
+                             return colorEditPicker
+                         case (ModelStatuses.CategoryViewTypes.GENERATE_COLOR):
+                             return colorPicker
+                         case (ModelStatuses.CategoryViewTypes.BUTTON_LISTS):
+                             return emptyComponent
+                         case (ModelStatuses.CategoryViewTypes.NONE):
+                             return emptyComponent
+                         }
+        anchors.right: parent.right
+        width: GUIConfig.colorPicker.elementWidth
+        height: 300
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 70
+        anchors.rightMargin: 70
+    }
+
+    Component {
+        id: emptyComponent
+        Item {
+            anchors.fill: parent
+        }
+    }
+
+    Component {
+        id: colorPicker
+        Column {
+            spacing: 20
+            anchors.fill: parent
+            EntryField {
+                id: nameWidget
+                width: GUIConfig.colorPicker.elementWidth
+                height: GUIConfig.colorPicker.elementHeight
+                placeholder: "Category name... "
+                customcolor: GUIConfig.colors.red
+            }
+            TripleColorPicker {
+                id: pickers
+                controller: categoryController.colorGeneratePicker
+                pickerWidth: GUIConfig.colorPicker.elementWidth
+                pickerElementHeight: GUIConfig.colorPicker.elementHeight
+            }
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: resultantBar
+                spacing: 5
+                Rectangle {
+                    width: 0.45 * GUIConfig.colorPicker.elementWidth
+                    height: 0.8 * GUIConfig.colorPicker.elementHeight
+                    color: pickers.combinedColor
+                    radius: 10
+                }
+
+                CustomButton {
+                    contentText: "create"
+                    width: 0.45 * GUIConfig.colorPicker.elementWidth
+                    height: 0.8 * GUIConfig.colorPicker.elementHeight
+                    onReleased: categoryController.add(nameWidget.text,
+                                                       pickers.combinedColor)
+                }
+            }
+        }
+    }
+    Component {
+        id: colorEditPicker
+        ColorPicker {
+            controller: categoryController.colorEditPicker
+            pickerWidth: GUIConfig.colorPicker.elementWidth
+            pickerElementHeight: GUIConfig.colorPicker.elementHeight
         }
     }
 }

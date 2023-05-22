@@ -22,29 +22,29 @@ using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
 #if RUN_DATABASE
-    //    auto filemanager = GuiDialogsManager("guidialogs",
-    //                                         std::make_shared<FileDataClientAdapter>(
-    //                                             std::make_shared<FileDataClient>()));
+    auto filemanager = GuiDialogsManager(DatabaseCodes::Names::GUI_DIALOGS,
+                                         std::make_shared<FileDataClientAdapter>(
+                                             std::make_shared<FileDataClient>()));
 
-    auto servermanager = CategoriesManager(DatabaseCodes::Names::CATEGORIES,
+    //    auto servermanager = GuiDialogsManager(DatabaseCodes::Names::CATEGORIES,
+    //                                           std::make_shared<ServerDataClient>());
+    auto servermanager = GuiDialogsManager(DatabaseCodes::Names::GUI_DIALOGS,
                                            std::make_shared<ServerDataClient>());
-    auto servermanager2 = PeopleManager(DatabaseCodes::Names::PEOPLE,
-                                        std::make_shared<ServerDataClient>());
-    servermanager2.remove(1);
+    //    servermanager2.remove(1);
 
-//    auto el = filemanager.get();
-//    //    for (int i = 1; i < 20; i++) {
-//    //        servermanager.remove(i);
-//    //    }
-//    if (el.has_value()) {
-//    }
+    auto el = filemanager.get();
+    for (int i = 1; i < 20; i++) {
+        servermanager.remove(i);
+    }
+    //    if (el.has_value()) {
+    //    }
 
-//    std::sort(el->begin(), el->end(), [](const auto &el1, const auto &el2) {
-//        return el1.id.get() < el2.id.get();
-//    });
-//    for (auto &e : el.value()) {
-//        servermanager.add(e);
-//    }
+    std::sort(el->begin(), el->end(), [](const auto &el1, const auto &el2) {
+        return el1.id.get() < el2.id.get();
+    });
+    for (auto &e : el.value()) {
+        servermanager.add(e);
+    }
 #endif
 
 #if RUN_QML

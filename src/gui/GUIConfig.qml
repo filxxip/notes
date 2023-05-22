@@ -204,16 +204,15 @@ Item {
         readonly property int sliderWidth: 200
         readonly property int innerElementRadius: 10
         readonly property int innerElementWidth: 2
-        readonly property int sliderHeight: 24
+        readonly property real sliderHeightRatio: 0.6
         readonly property int maxColorValue: 255
         readonly property int elementWidth: 300
-        readonly property int downBarHeight: 40
-        readonly property int downBarButtonWidth: 40
-        readonly property real opacityOnClicked : 0.5
-        readonly property int downBarResultColorBarWidth : 140
-        readonly property int downBarResultColorBarHeight : 27
-        readonly property int downBarResultColorBarRadius : 4
-
+        //        readonly property int downBarHeight: 40
+        //        readonly property int downBarButtonWidth: 40
+        readonly property real opacityOnClicked: 0.5
+        //        readonly property int downBarResultColorBarWidth: 140
+        //        readonly property int downBarResultColorBarHeight: 27
+        readonly property int downBarResultColorBarRadius: 4
     }
 
     QtObject {

@@ -7,9 +7,7 @@ import ".."
 RowLayout {
     id: row
     spacing: GUIConfig.colorPicker.spacing
-    width: GUIConfig.colorPicker.elementWidth
-    height: GUIConfig.colorPicker.elementHeight
-    readonly property int sliderValue: slider.value
+    readonly property real sliderValue: slider.value / GUIConfig.colorPicker.maxColorValue
     property var customColor
     property var barGradient
 
@@ -18,7 +16,7 @@ RowLayout {
     Connections {
         target: row
         function onSetColor(value) {
-            slider.value = value
+            slider.value = value * GUIConfig.colorPicker.maxColorValue
         }
     }
     Rectangle {
@@ -29,7 +27,7 @@ RowLayout {
         color: row.customColor
         Text {
             anchors.fill: parent
-            text: row.sliderValue
+            text: parseInt(slider.value)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             color: slider.value < GUIConfig.colorPicker.sliderColorTextPositionChanged ? GUIConfig.colors.white : GUIConfig.colors.black
@@ -39,7 +37,7 @@ RowLayout {
     Slider {
         id: slider
         Layout.fillWidth: true
-        Layout.preferredHeight: GUIConfig.colorPicker.sliderHeight
+        Layout.preferredHeight: GUIConfig.colorPicker.sliderHeightRatio * row.height
         background: Rectangle {
             anchors.fill: parent
             gradient: barGradient
