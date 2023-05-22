@@ -19,7 +19,7 @@ class CategorySeeder(Seeder):
             creation_date = convert_datetime_to_str(
                 datetime.now() - timedelta(minutes=random.randint(1, 60), hours=random.randint(1, 24),
                                            days=random.randint(1, 90)))
-            owner = random.randrange(10)
+            owner = random.randrange(4)
             cat = Category(name=name, color=color, creationDate=creation_date, owner=owner)
             categories.append(cat)
         return categories

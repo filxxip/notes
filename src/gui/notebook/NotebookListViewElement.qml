@@ -1,45 +1,63 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
 import "../qmlutils"
 import ".."
 
-Row {
+RowLayout {
     id: row
     height: 40
+    width: 300
+    spacing: 5
+    readonly property ListView __lv: ListView.view
+    HoverHandler {
+        onHoveredChanged: {
+            if (hovered) {
+                __lv.currentIndex = model.index
+            }
+        }
+    }
 
     property var modelText
+    property bool isActive: false
 
     CustomButton {
         id: button
         property color basicColor: model.color
         contentText: modelText
-        height: row.height - 2 * row.anchors.margins
-        width: 200
+        Layout.topMargin: 5
+        Layout.bottomMargin: 5
+
+        Layout.preferredWidth: 200
+        Layout.fillHeight: true
         background: Rectangle {
             radius: 10
+            anchors.fill: button
             color: button.down ? button.basicColor : button.basicColor.lighter()
         }
     }
 
     Button {
         onReleased: swiper.open()
-        width: height
+        Layout.preferredWidth: height
+        Layout.margins: 5
         opacity: down ? 0.7 : 1
         background: Rectangle {
             color: GUIConfig.colors.transparent
             anchors.fill: parent
         }
 
-        height: row.height - 2 * row.anchors.margins
+        Layout.fillHeight: true
         Image {
             source: GUIConfig.imagePaths.editNote
             anchors.fill: parent
         }
     }
     Button {
-        height: row.height - 2 * row.anchors.margins
-        width: height
+        Layout.fillHeight: true
+        Layout.preferredWidth: height
+
         background: Rectangle {
             color: GUIConfig.colors.transparent
             anchors.fill: parent
@@ -57,6 +75,7 @@ Row {
         innerColor: button.basicColor
         width: row.width - 10
         height: row.height
+
         customContentItem: Component {
             id: sourceComponent
             EntryField {

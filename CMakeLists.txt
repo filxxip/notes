@@ -25,6 +25,10 @@ qt_add_executable(appnotesdatabaseproject
     main.cpp
     src/gui/statuses.h
 
+    src/gui/colorpicker/colorpicker.h
+    src/gui/colorpicker/colorpicker.cpp
+
+
     src/gui/notebook/categorycontroller.cpp
     src/gui/notebook/categorycontroller.h
     src/gui/notebook/texteditorcontroller.h
@@ -140,6 +144,9 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/calendar/DateChooser.qml
         src/gui/calendar/Clock.qml
         src/gui/calendar/TumblerComponent.qml
+
+        src/gui/colorpicker/ColorPicker.qml
+        src/gui/colorpicker/SingleColorPicker.qml
 
         src/gui/notebook/CategoryView.qml
         src/gui/notebook/TextEditorView.qml

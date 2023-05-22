@@ -31,6 +31,8 @@ Item {
 
     readonly property alias imagePaths: imagePaths
 
+    readonly property alias colorPicker: colorPicker
+
     QtObject {
         id: window
         readonly property int width: 800
@@ -103,6 +105,8 @@ Item {
         readonly property string loading: "qrc:/resources/loading.png"
         readonly property string editNote: "qrc:/resources/editnote.png"
         readonly property string trashNote: "qrc:/resources/trashnote.png"
+        readonly property string reset: "qrc:/resources/reset.png"
+        readonly property string set: "qrc:/resources/set.png"
     }
 
     QtObject {
@@ -191,6 +195,28 @@ Item {
     }
 
     QtObject {
+        id: colorPicker
+
+        readonly property int elementHeight: 40
+        readonly property int spacing: 10
+        readonly property int rightAngle: 90
+        readonly property int sliderColorTextPositionChanged: 170
+        readonly property int sliderWidth: 200
+        readonly property int innerElementRadius: 10
+        readonly property int innerElementWidth: 2
+        readonly property int sliderHeight: 24
+        readonly property int maxColorValue: 255
+        readonly property int elementWidth: 300
+        readonly property int downBarHeight: 40
+        readonly property int downBarButtonWidth: 40
+        readonly property real opacityOnClicked : 0.5
+        readonly property int downBarResultColorBarWidth : 140
+        readonly property int downBarResultColorBarHeight : 27
+        readonly property int downBarResultColorBarRadius : 4
+
+    }
+
+    QtObject {
         id: fonts
 
         readonly property string decoratedFont: "TeX Gyre Cursor"
@@ -215,6 +241,43 @@ Item {
     QtObject {
         id: gradients
 
+        readonly property var redGradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop {
+                position: 0
+                color: "#000000"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#ff0000"
+            }
+        }
+        readonly property var greenGradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop {
+                position: 0
+                color: "#000000"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#00ff00"
+            }
+        }
+
+        readonly property var blueGradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop {
+                position: 0
+                color: "#000000"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#0000ff"
+            }
+        }
         readonly property var disabledButtonGradient: Gradient {
             GradientStop {
                 position: 0
