@@ -56,7 +56,7 @@ MainUserController::MainUserController(std::shared_ptr<PrevEnumViewController> m
                   .add(ModelStatuses::UserViewsRoles::TYPE, &SwitcherModel<EnumStatus>::type)
                   .add(ModelStatuses::UserViewsRoles::ENABLED, &SwitcherModel<EnumStatus>::enabled)
                   .build({{PROFILE_TITLE, EnumStatus::EDIT},
-                          {NOTEBOOK_TITLE, EnumStatus::NOTEBOOK, false},
+                          {NOTEBOOK_TITLE, EnumStatus::NOTEBOOK},
                           {EDITOR_TITLE, EnumStatus::TEXT_EDITOR, false}}),
               EnumStatus::EDIT,
               this)

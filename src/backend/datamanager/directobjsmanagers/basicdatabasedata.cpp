@@ -151,7 +151,6 @@ DbData<T>::DbData(QString name)
 template<typename T>
 void DbData<T>::set(T newvalue)
 {
-    qDebug() << "tutut";
     if (!initValue.has_value()) {
         initValue = std::move(newvalue);
         return;

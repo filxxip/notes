@@ -37,7 +37,7 @@ void CustomListModel<StructType, EnumData>::setEntries(QVector<StructType> vecto
 {
     beginResetModel();
     m_data = std::move(vector);
-    endResetModel(); // to check if it works!
+    endResetModel();
 }
 
 template<typename StructType, typename EnumData>
@@ -68,7 +68,6 @@ bool CustomListModel<StructType, EnumData>::setData(const QModelIndex &index,
                                                     const QVariant &value,
                                                     int role)
 {
-    qDebug() << "wykonuje ustawienie";
     if (index.row() < 0 || index.row() >= m_data.count()
         || !updateActivities.contains(static_cast<EnumData>(role))) {
         return false;

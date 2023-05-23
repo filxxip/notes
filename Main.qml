@@ -38,10 +38,11 @@ Window {
     CustomDialog {
         visible: dialogController.visibility
     }
-    CategoryView {
-        anchors.centerIn: parent
-        anchors.fill: parent
-    }
+    //    CategoryView {
+    //        anchors.centerIn: parent
+    //        anchors.fill: parent
+    //    }
+
     //    ColorDialog {
     //        id: colorDialog
     //        colorDialog.
@@ -135,50 +136,48 @@ Window {
     //            }
     //        }
     //    }
+    Loader {
+        anchors.fill: parent
+        property var enumType: mainController.view.userViewType
+        sourceComponent: switch (enumType) {
+                         case (ModelStatuses.MainUserViews.BACKGROUND):
+                             return background
+                         case (ModelStatuses.MainUserViews.LOG):
+                             return logView
+                         case (ModelStatuses.MainUserViews.EDIT_GUEST):
+                             return userEditView
+                         case (ModelStatuses.MainUserViews.EDIT_NORMAL):
+                             return userEditView
+                         }
+    }
+    Component {
+        id: logView
+        LogView {
+            anchors.centerIn: parent
+            anchors.fill: parent
+        }
+    }
 
-    //    Loader {
-    //        anchors.fill: parent
-    //        property var enumType: mainController.view.userViewType
-    //        sourceComponent: switch (enumType) {
-    //                         case (ModelStatuses.MainUserViews.BACKGROUND):
-    //                             return background
-    //                         case (ModelStatuses.MainUserViews.LOG):
-    //                             return logView
-    //                         case (ModelStatuses.MainUserViews.EDIT_GUEST):
-    //                             return userEditView
-    //                         case (ModelStatuses.MainUserViews.EDIT_NORMAL):
-    //                             return userEditView
-    //                         }
-    //    }
-
-    //    Component {
-    //        id: logView
-    //        LogView {
-    //            anchors.centerIn: parent
-    //            anchors.fill: parent
-    //        }
-    //    }
-
-    //    Component {
-    //        id: background
-    //        Rectangle {
-    //            color: GUIConfig.colors.grey
-    //            anchors.centerIn: parent
-    //            anchors.fill: parent
-    //            Image {
-    //                anchors.centerIn: parent
-    //                width: 0.15 * parent.width
-    //                height: 0.15 * parent.height
-    //                fillMode: Image.PreserveAspectFit
-    //                source: GUIConfig.imagePaths.loading
-    //            }
-    //        }
-    //    }
-    //    Component {
-    //        id: userEditView
-    //        UserProfileView {
-    //            anchors.centerIn: parent
-    //            anchors.fill: parent
-    //        }
-    //    }
+    Component {
+        id: background
+        Rectangle {
+            color: GUIConfig.colors.grey
+            anchors.centerIn: parent
+            anchors.fill: parent
+            Image {
+                anchors.centerIn: parent
+                width: 0.15 * parent.width
+                height: 0.15 * parent.height
+                fillMode: Image.PreserveAspectFit
+                source: GUIConfig.imagePaths.loading
+            }
+        }
+    }
+    Component {
+        id: userEditView
+        UserProfileView {
+            anchors.centerIn: parent
+            anchors.fill: parent
+        }
+    }
 }

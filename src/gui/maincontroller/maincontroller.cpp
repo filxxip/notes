@@ -1,7 +1,7 @@
 #include "maincontroller.h"
 
 namespace {
-constexpr const char *CLOSE_APP_MESSAGE = "App closed successfully";
+constexpr char CLOSE_APP_MESSAGE[] = "App closed successfully";
 constexpr char DIALOG_CONTROLLER[] = "dialogController";
 constexpr char CALENDAR_CONTROLLER[] = "calendarController";
 constexpr char CLOCK_CONTROLLER[] = "clockController";

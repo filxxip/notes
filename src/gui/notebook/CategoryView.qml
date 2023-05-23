@@ -108,8 +108,8 @@ Item {
                     contentText: "create"
                     width: 0.45 * GUIConfig.colorPicker.elementWidth
                     height: 0.8 * GUIConfig.colorPicker.elementHeight
-                    onReleased: categoryController.add(nameWidget.text,
-                                                       pickers.combinedColor)
+                    onReleased: categoryController.addElement(
+                                    nameWidget.text, pickers.combinedColor)
                 }
             }
         }

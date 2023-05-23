@@ -40,7 +40,6 @@ Item {
                                 pickers.combinedColor,
                                 ModelStatuses.CategoryRoles.COLOR)
                     categoryController.changeColor(pickers.combinedColor)
-                    //emisja do bazy danych
                 }
 
                 Image {

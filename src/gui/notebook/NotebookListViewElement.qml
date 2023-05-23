@@ -11,8 +11,8 @@ RowLayout {
     spacing: 5
     readonly property ListView __lv: ListView.view
     readonly property var swiperOpened: swiper.opened
+    readonly property color basicColor: model.color
 
-    //    property var sideBarColorPicker
     HoverHandler {
         onHoveredChanged: {
             if (hovered) {
@@ -23,7 +23,6 @@ RowLayout {
 
     CustomButton {
         id: button
-        property color basicColor: model.color
         contentText: model.title
         Layout.topMargin: 2
         Layout.bottomMargin: 2
@@ -33,7 +32,7 @@ RowLayout {
         background: Rectangle {
             radius: 10
             anchors.fill: button
-            color: button.down ? button.basicColor : button.basicColor.lighter()
+            color: button.down ? basicColor : basicColor.lighter()
         }
     }
 
@@ -78,18 +77,17 @@ RowLayout {
 
         id: swiper
         closePolicy: Popup.NoAutoClose
-        readonly property color componentColor: model.color
-        innerColor: componentColor
+
+        innerColor: basicColor
         width: row.width - 10
         height: row.height
-        //        }
         customContentItem: Component {
             id: sourceComponent
             EntryField {
                 id: entryField
                 width: swiper.width - 30
                 height: swiper.height
-                customcolor: swiper.componentColor //todo kwestia zbyt dlugiego tytulul
+                customcolor: basicColor //todo kwestia zbyt dlugiego tytulul
                 Component.onCompleted: {
                     setText(model.title)
                     swiper.aboutToHide.connect(() => {
@@ -100,11 +98,6 @@ RowLayout {
                                                    categoryController.editedItem = -1
                                                })
                 }
-
-                //                onTextChanged: modelText = text //tez z pomoca tego indexa by trzeba bo ten modelText nie dziala jak alias tylko na nowo zmienia properrty, chyba ze z zewnatrz to zbiore, wtedy okej
-                //                onTextChanged: categoryController.model.get(
-                //                                   categoryController.editedItem).update(
-                //                                   text, ModelStatuses.CategoryRoles.TITLE)
             }
         }
         duration: 400
