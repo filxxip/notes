@@ -16,13 +16,15 @@ Item {
         height: 370
         width: 350
         id: listview
+        enabled: true
         spacing: 10
         clip: true
         model: categoryController.model
         delegate: NotebookListViewElement {
+            onSwiperOpenedChanged: listview.enabled = !swiperOpened
             width: listview.width
             height: 35
-            modelText: model.title
+
             readonly property var color: model.color
         }
         highlight: Rectangle {
@@ -88,7 +90,6 @@ Item {
             }
             TripleColorPicker {
                 id: pickers
-                //                controller: categoryController.colorGeneratePicker
                 pickerWidth: GUIConfig.colorPicker.elementWidth
                 pickerElementHeight: GUIConfig.colorPicker.elementHeight
             }
@@ -117,7 +118,6 @@ Item {
         id: colorEditPicker
         ColorPicker {
             modelItem: listview.itemAtIndex(categoryController.editedItem)
-            //            controller: categoryController.colorEditPicker
             pickerWidth: GUIConfig.colorPicker.elementWidth
             pickerElementHeight: GUIConfig.colorPicker.elementHeight
         }

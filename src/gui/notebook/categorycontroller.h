@@ -1,7 +1,8 @@
 #pragma once
 
+#include <QColor>
 #include <QObject>
-#include "../colorpicker/colorpicker.h"
+//#include "../colorpicker/colorpicker.h"
 #include "../customdialog/dialogcontroller.h"
 #include "../modelutils/customlistmodel.h"
 #include "../modelutils/listmodelbuilder.h"
@@ -29,47 +30,26 @@ class CategoryController : public QObject
     QPointer<Model> categoryModel;
 
     QPointer<DialogController> dialogController;
-    QPointer<ColorPicker> colorEditController;
+    //    QPointer<ColorPicker> colorEditController;
     QPointer<ViewController> innerViewController;
     std::optional<int> owner = 2;
-    std::unique_ptr<CategoriesManager> manager;
+    std::shared_ptr<CategoriesManager> manager;
     int editedItem = -1;
 
 public:
-    CategoryController(std::unique_ptr<CategoriesManager> manager_,
+    CategoryController(std::shared_ptr<CategoriesManager> manager_,
                        QPointer<DialogController> dialogController_,
                        QObject *obj = nullptr)
         : QObject(obj)
         , manager(std::move(manager_))
         , dialogController(dialogController_)
-        , colorEditController(new ColorPicker(this))
+        //        , colorEditController(new ColorPicker(this))
         , innerViewController(ViewControllerGenerators::createNonSwitcherViewContorller(
                                   ModelStatuses::CategoryViewTypes::NONE, this)
                                   ->getController())
     {
         categoryModel
             = FastModelBuilder<Category, EnumStatus>(this)
-                  //                            .add<int>(
-                  //                                EnumStatus::ID,
-                  //                                [](const auto &obj) { return obj.id.get(); },
-                  //                                [](auto &obj, const auto &value) { obj.id.set(value); })
-                  //                            .add<QString>(
-                  //                                EnumStatus::COLOR,
-                  //                                [](const auto &obj) { return obj.color.get(); },
-                  //                                [](auto &obj, const auto &value) { obj.color.set(value); })
-                  //                            .add<QString>(
-                  //                                EnumStatus::TITLE,
-                  //                                [](const auto &obj) { return obj.title.get(); },
-                  //                                [](auto &obj, const auto &value) { obj.title.set(value); })
-                  //                            .add<QDateTime>(
-                  //                                EnumStatus::CREATION_DATE,
-                  //                                [](const auto &obj) { return obj.creationDate.get(); },
-                  //                                [](auto &obj, const auto &value) { obj.creationDate.set(value); })
-                  //                            .add<int>(
-                  //                                EnumStatus::OWNER,
-                  //                                [](const auto &obj) { return obj.owner.get(); },
-                  //                                [](auto &obj, const auto &value) { obj.owner.set(value); })
-                  //                            .build(manager->getFiltered({{"owner", 2}}).value());
                   .add(EnumStatus::ID, &Category::id)
                   .add(EnumStatus::COLOR, &Category::color)
                   .add(EnumStatus::TITLE, &Category::title)
@@ -78,12 +58,20 @@ public:
                   .build(manager->getFiltered({{"owner", 2}}).value());
         connect(this, &CategoryController::remove, this, &CategoryController::onRemove);
         //        connect(colorEditController, &ColorPicker::colorChanged)
+
+        connect(this, &CategoryController::changeColor, this, &CategoryController::onColorChanged);
+        connect(this, &CategoryController::changeName, this, &CategoryController::onChangeName);
     }
 
     void setOwner(int id) { this->owner = id; }
 
     Q_INVOKABLE void add(const QString &name, const QColor &newColor)
     {
+        if (name.isEmpty()) {
+            dialogController->showDialog(DialogCodes::UserViews::EMPTY_CATEGORY_NAME);
+            return;
+        }
+
         Category category;
         category.color = newColor.name();
         category.creationDate = QDateTime::currentDateTime();
@@ -91,10 +79,26 @@ public:
         category.title = name;
 
         manager->add(category);
-        categoryModel->addEntry(std::move(category));
+        categoryModel->addEntry(
+            DatabaseUtilsFunctions::getLastObjectOfDatabase<Category>(manager).value());
     }
 
 private slots:
+
+    void onColorChanged(QColor color)
+    {
+        if (editedItem < 0 && editedItem >= categoryModel->rowCount()) {
+            qDebug() << "todo";
+            return;
+        }
+        auto index = categoryModel->data(editedItem, ModelStatuses::CategoryRoles::ID).value<int>();
+        auto item = manager->get(index);
+        if (item.has_value() && item->color.get() != color) {
+            item->color = std::move(color);
+            manager->update(item.value());
+        }
+    }
+
     void onRemove(int index)
     {
         if (index >= categoryModel->rowCount()) {
@@ -106,13 +110,33 @@ private slots:
                 manager->remove(
                     categoryModel->data(index, ModelStatuses::CategoryRoles::ID).value<int>());
                 categoryModel->removeRow(index);
+                innerViewController->setUserViewType(QVariant::fromValue(
+                    ModelStatuses::CategoryViewTypes::NONE)); //zmienic na adaptera
             }
         });
         dialogController->showDialog(DialogCodes::UserViews::REMOVE_CATEGORY);
     }
 
+    void onChangeName(const QString &title)
+    {
+        qDebug() << title;
+        qDebug() << "hello";
+        if (title.isEmpty()) {
+            dialogController->showDialog(DialogCodes::UserViews::EMPTY_CATEGORY_NAME);
+            return;
+        }
+        auto index = categoryModel->data(editedItem, ModelStatuses::CategoryRoles::ID).value<int>();
+        auto item = manager->get(index);
+        if (item.has_value() && item->title.get() != title) {
+            categoryModel->setData(editedItem, title, ModelStatuses::CategoryRoles::TITLE);
+            item->title = std::move(title);
+            manager->update(item.value());
+        }
+    }
+
 signals:
     void remove(int index);
     void editedItemIndexChanged(int index);
-    //    void updateColor()
+    void changeColor(const QColor &color);
+    void changeName(const QString &text);
 };

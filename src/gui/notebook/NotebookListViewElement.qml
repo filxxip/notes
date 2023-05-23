@@ -10,6 +10,9 @@ RowLayout {
     id: row
     spacing: 5
     readonly property ListView __lv: ListView.view
+    readonly property var swiperOpened: swiper.opened
+
+    //    property var sideBarColorPicker
     HoverHandler {
         onHoveredChanged: {
             if (hovered) {
@@ -18,17 +21,13 @@ RowLayout {
         }
     }
 
-    property var modelText
-    property bool isActive: false
-
     CustomButton {
         id: button
         property color basicColor: model.color
-        contentText: modelText
+        contentText: model.title
         Layout.topMargin: 2
         Layout.bottomMargin: 2
         Layout.leftMargin: 4
-
         Layout.preferredWidth: 220
         Layout.fillHeight: true
         background: Rectangle {
@@ -42,9 +41,7 @@ RowLayout {
         onReleased: {
             swiper.open()
             categoryController.view.userViewType = ModelStatuses.CategoryViewTypes.EDIT_COLOR
-            console.log(model.color) //todo
             categoryController.editedItem = model.index
-            //            categoryController.colorEditPicker.color = model.color
         }
         Layout.preferredWidth: height
         Layout.margins: 5
@@ -70,6 +67,7 @@ RowLayout {
         }
         opacity: down ? 0.7 : 1
         onReleased: categoryController.remove(model.index)
+
         Image {
             source: GUIConfig.imagePaths.trashNote
             anchors.fill: parent
@@ -77,23 +75,36 @@ RowLayout {
     }
 
     SwipeInComponent {
+
         id: swiper
-        closePolicy: Popup.CloseOnPressOutsideParent
-        innerColor: button.basicColor
+        closePolicy: Popup.NoAutoClose
+        readonly property color componentColor: model.color
+        innerColor: componentColor
         width: row.width - 10
         height: row.height
-
+        //        }
         customContentItem: Component {
             id: sourceComponent
             EntryField {
                 id: entryField
                 width: swiper.width - 30
                 height: swiper.height
-                customcolor: swiper.innerColor
+                customcolor: swiper.componentColor //todo kwestia zbyt dlugiego tytulul
                 Component.onCompleted: {
-                    setText(modelText)
+                    setText(model.title)
+                    swiper.aboutToHide.connect(() => {
+                                                   categoryController.view.userViewType
+                                                   = ModelStatuses.CategoryViewTypes.NONE
+                                                   categoryController.changeName(
+                                                       text)
+                                                   categoryController.editedItem = -1
+                                               })
                 }
-                onTextChanged: modelText = text //tez z pomoca tego indexa by trzeba bo ten modelText nie dziala jak alias tylko na nowo zmienia properrty, chyba ze z zewnatrz to zbiore, wtedy okej
+
+                //                onTextChanged: modelText = text //tez z pomoca tego indexa by trzeba bo ten modelText nie dziala jak alias tylko na nowo zmienia properrty, chyba ze z zewnatrz to zbiore, wtedy okej
+                //                onTextChanged: categoryController.model.get(
+                //                                   categoryController.editedItem).update(
+                //                                   text, ModelStatuses.CategoryRoles.TITLE)
             }
         }
         duration: 400

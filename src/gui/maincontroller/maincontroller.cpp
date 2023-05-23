@@ -22,7 +22,7 @@ MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *
     , mainUserView(
           ViewControllerGenerators::createNonSwitcherViewContorller(ModelStatuses::MainUserViews::LOG,
                                                                     this))
-    , categoryController(std::make_unique<CategoriesManager>(DatabaseCodes::Names::CATEGORIES,
+    , categoryController(std::make_shared<CategoriesManager>(DatabaseCodes::Names::CATEGORIES,
                                                              dataClient),
                          dialogController,
                          this)

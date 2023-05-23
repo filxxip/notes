@@ -25,8 +25,8 @@ qt_add_executable(appnotesdatabaseproject
     main.cpp
     src/gui/statuses.h
 
-    src/gui/colorpicker/colorpicker.h
-    src/gui/colorpicker/colorpicker.cpp
+#    src/gui/colorpicker/colorpicker.h
+#    src/gui/colorpicker/colorpicker.cpp
 
 
     src/gui/notebook/categorycontroller.cpp

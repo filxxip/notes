@@ -7,18 +7,20 @@ import ModelStatuses 1.0
 
 Item {
     id: item
-    //    property var controller
     property var modelItem
     property int pickerWidth
     property int pickerElementHeight
     width: pickerWidth
     height: 4 * pickerElementHeight + 15
 
+    onModelItemChanged: {
+        if (modelItem)
+            pickers.uploadColor(modelItem.color)
+    }
+
     ColumnLayout {
         TripleColorPicker {
             id: pickers
-            //            controller: item.controller
-            //            modelItem: item.modelItem
             pickerWidth: item.pickerWidth
             pickerElementHeight: item.pickerElementHeight
         }
@@ -32,16 +34,15 @@ Item {
                     anchors.fill: parent
                     color: GUIConfig.colors.transparent
                 }
-
-                //                onReleased: modelItem.color = pickers.combinedColor
                 onReleased: {
                     categoryController.model.get(
                                 categoryController.editedItem).update(
                                 pickers.combinedColor,
                                 ModelStatuses.CategoryRoles.COLOR)
+                    categoryController.changeColor(pickers.combinedColor)
+                    //emisja do bazy danych
                 }
 
-                //                onReleased: controller.color = pickers.combinedColor
                 Image {
                     anchors.fill: parent
                     source: GUIConfig.imagePaths.set
@@ -65,7 +66,6 @@ Item {
                     anchors.fill: parent
                     color: GUIConfig.colors.transparent
                 }
-                //                onReleased: pickers.uploadColor(controller.color)
                 onReleased: pickers.uploadColor(modelItem.color)
 
                 Image {
