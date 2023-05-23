@@ -21,6 +21,10 @@
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
+//    QVariant a = "data";
+//    DbData<QString> x{"data"};
+//    x = a.value<QString>();
+//    qDebug() << "hahaha";
 #if RUN_DATABASE
     auto filemanager = GuiDialogsManager(DatabaseCodes::Names::GUI_DIALOGS,
                                          std::make_shared<FileDataClientAdapter>(

@@ -68,6 +68,7 @@ bool CustomListModel<StructType, EnumData>::setData(const QModelIndex &index,
                                                     const QVariant &value,
                                                     int role)
 {
+    qDebug() << "wykonuje ustawienie";
     if (index.row() < 0 || index.row() >= m_data.count()
         || !updateActivities.contains(static_cast<EnumData>(role))) {
         return false;

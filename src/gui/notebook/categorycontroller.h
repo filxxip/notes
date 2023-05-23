@@ -21,7 +21,9 @@ class CategoryController : public QObject
     Q_OBJECT
 
     Q_PROPERTY(Model *model MEMBER categoryModel CONSTANT)
-    Q_PROPERTY(ColorPicker *colorEditPicker MEMBER colorEditController CONSTANT)
+    //    Q_PROPERTY(ColorPicker *colorEditPicker MEMBER colorEditController CONSTANT)
+
+    Q_PROPERTY(int editedItem MEMBER editedItem NOTIFY editedItemIndexChanged)
     Q_PROPERTY(ViewController *view MEMBER innerViewController CONSTANT)
 
     QPointer<Model> categoryModel;
@@ -31,6 +33,7 @@ class CategoryController : public QObject
     QPointer<ViewController> innerViewController;
     std::optional<int> owner = 2;
     std::unique_ptr<CategoriesManager> manager;
+    int editedItem = -1;
 
 public:
     CategoryController(std::unique_ptr<CategoriesManager> manager_,
@@ -44,14 +47,35 @@ public:
                                   ModelStatuses::CategoryViewTypes::NONE, this)
                                   ->getController())
     {
-        categoryModel = FastModelBuilder<Category, EnumStatus>(this)
-                            .add(EnumStatus::ID, &Category::id)
-                            .add(EnumStatus::COLOR, &Category::color)
-                            .add(EnumStatus::TITLE, &Category::title)
-                            .add(EnumStatus::CREATION_DATE, &Category::creationDate)
-                            .add(EnumStatus::OWNER, &Category::owner)
-                            .build(manager->getFiltered({{"owner", 2}}).value());
-
+        categoryModel
+            = FastModelBuilder<Category, EnumStatus>(this)
+                  //                            .add<int>(
+                  //                                EnumStatus::ID,
+                  //                                [](const auto &obj) { return obj.id.get(); },
+                  //                                [](auto &obj, const auto &value) { obj.id.set(value); })
+                  //                            .add<QString>(
+                  //                                EnumStatus::COLOR,
+                  //                                [](const auto &obj) { return obj.color.get(); },
+                  //                                [](auto &obj, const auto &value) { obj.color.set(value); })
+                  //                            .add<QString>(
+                  //                                EnumStatus::TITLE,
+                  //                                [](const auto &obj) { return obj.title.get(); },
+                  //                                [](auto &obj, const auto &value) { obj.title.set(value); })
+                  //                            .add<QDateTime>(
+                  //                                EnumStatus::CREATION_DATE,
+                  //                                [](const auto &obj) { return obj.creationDate.get(); },
+                  //                                [](auto &obj, const auto &value) { obj.creationDate.set(value); })
+                  //                            .add<int>(
+                  //                                EnumStatus::OWNER,
+                  //                                [](const auto &obj) { return obj.owner.get(); },
+                  //                                [](auto &obj, const auto &value) { obj.owner.set(value); })
+                  //                            .build(manager->getFiltered({{"owner", 2}}).value());
+                  .add(EnumStatus::ID, &Category::id)
+                  .add(EnumStatus::COLOR, &Category::color)
+                  .add(EnumStatus::TITLE, &Category::title)
+                  .add(EnumStatus::CREATION_DATE, &Category::creationDate)
+                  .add(EnumStatus::OWNER, &Category::owner)
+                  .build(manager->getFiltered({{"owner", 2}}).value());
         connect(this, &CategoryController::remove, this, &CategoryController::onRemove);
         //        connect(colorEditController, &ColorPicker::colorChanged)
     }
@@ -89,4 +113,6 @@ private slots:
 
 signals:
     void remove(int index);
+    void editedItemIndexChanged(int index);
+    //    void updateColor()
 };

@@ -43,7 +43,8 @@ RowLayout {
             swiper.open()
             categoryController.view.userViewType = ModelStatuses.CategoryViewTypes.EDIT_COLOR
             console.log(model.color) //todo
-            categoryController.colorEditPicker.color = model.color
+            categoryController.editedItem = model.index
+            //            categoryController.colorEditPicker.color = model.color
         }
         Layout.preferredWidth: height
         Layout.margins: 5
@@ -92,7 +93,7 @@ RowLayout {
                 Component.onCompleted: {
                     setText(modelText)
                 }
-                onTextChanged: modelText = text
+                onTextChanged: modelText = text //tez z pomoca tego indexa by trzeba bo ten modelText nie dziala jak alias tylko na nowo zmienia properrty, chyba ze z zewnatrz to zbiore, wtedy okej
             }
         }
         duration: 400

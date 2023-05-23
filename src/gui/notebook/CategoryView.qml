@@ -88,7 +88,7 @@ Item {
             }
             TripleColorPicker {
                 id: pickers
-                controller: categoryController.colorGeneratePicker
+                //                controller: categoryController.colorGeneratePicker
                 pickerWidth: GUIConfig.colorPicker.elementWidth
                 pickerElementHeight: GUIConfig.colorPicker.elementHeight
             }
@@ -116,7 +116,8 @@ Item {
     Component {
         id: colorEditPicker
         ColorPicker {
-            controller: categoryController.colorEditPicker
+            modelItem: listview.itemAtIndex(categoryController.editedItem)
+            //            controller: categoryController.colorEditPicker
             pickerWidth: GUIConfig.colorPicker.elementWidth
             pickerElementHeight: GUIConfig.colorPicker.elementHeight
         }

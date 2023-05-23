@@ -7,8 +7,8 @@ Column {
     readonly property alias green: green
     readonly property alias blue: blue
 
-    property var controller
-
+    //    property alias modelItem
+    //    property var controller
     function uploadColor(color) {
         var myColor = Qt.color(color)
 
@@ -30,17 +30,17 @@ Column {
     readonly property var combinedColor: Qt.rgba(pickers.red.sliderValue,
                                                  pickers.green.sliderValue,
                                                  pickers.blue.sliderValue)
-    Component.onCompleted: {
-        if (controller) {
-            column.uploadColor(column.controller.color)
-            controller.colorChanged.connect(color => {
-                                                console.log(color)
-                                                console.log("hahahah")
-                                                column.uploadColor(color)
-                                            })
-        }
-    }
 
+    //    Component.onCompleted: {
+    //        if (controller) {
+    //            column.uploadColor(column.controller.color)
+    //            controller.colorChangedLocally.connect(color => {
+    //                                                       console.log(color)
+    //                                                       console.log("hahahah")
+    //                                                       column.uploadColor(color)
+    //                                                   })
+    //        }
+    //    }
     spacing: 5
     property var pickerElementHeight
     property var pickerWidth

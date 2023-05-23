@@ -121,6 +121,12 @@ BaseData<T> &BaseData<T>::operator=(const T &obj)
 }
 
 template<typename T>
+BaseData<T> &BaseData<T>::operator=(const QVariant &obj)
+{
+    return operator=(obj.value<T>());
+}
+
+template<typename T>
 const QString &BaseData<T>::getName() const
 {
     return __name__;
@@ -145,6 +151,7 @@ DbData<T>::DbData(QString name)
 template<typename T>
 void DbData<T>::set(T newvalue)
 {
+    qDebug() << "tutut";
     if (!initValue.has_value()) {
         initValue = std::move(newvalue);
         return;

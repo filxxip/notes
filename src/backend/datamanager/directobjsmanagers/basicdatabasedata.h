@@ -40,6 +40,8 @@ public:
 
     BaseData<T> &operator=(const T &obj);
 
+    BaseData<T> &operator=(const QVariant &obj);
+
     virtual const T &get() const = 0;
 
     virtual const QString &getName() const;

@@ -22,7 +22,7 @@ public:
 
     template<typename ReturnType>
     FastModelBuilder &add(EnumRoles role,
-                          std::function<const ReturnType &(const ModelStructType &)> getter,
+                          std::function<ReturnType(const ModelStructType &)> getter,
                           std::function<void(ModelStructType &, const ReturnType &)> setter)
     {
         model->addPart(role, std::move(getter), std::move(setter));

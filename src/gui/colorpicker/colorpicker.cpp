@@ -10,11 +10,15 @@ void ColorPicker::setColor(const QColor &newColor)
     qDebug() << newColor;
     qDebug() << newColor.name();
     color = newColor;
-    emit colorChanged(newColor);
+    emit colorChangedLocally(newColor);
+    if (globalMode) {
+        emit colorChanged(newColor);
+    }
 }
 
 void ColorPicker::reset()
 {
+    globalMode = false;
     setColor("black");
 }
 //void ColorPicker::applyColorChangedActivity(std::function<void()> func)
