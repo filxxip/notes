@@ -7,12 +7,16 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import DateTime, Integer, String
 
 from src.backend.database.tables.base import Base
-from ..constants import tables_names
+from . import Category, Note
+from .. import property_utils
+from ..constants import tables_names, attribute_dep_names
 from ..json_generator import auto_apply_jsonify_content
 from ..utils import set_conversion, convert_str_date_to_datetime
 
 
 @auto_apply_jsonify_content
+@property_utils.register_dependency(Category, attribute_dep_names.ownerName)
+@property_utils.register_dependency(Note, attribute_dep_names.ownerName)
 @set_conversion(birthday=convert_str_date_to_datetime, created=convert_str_date_to_datetime)
 class Person(Base):
     __tablename__ = tables_names.peopleName
@@ -34,23 +38,3 @@ class Person(Base):
         if today.month < self.birthday.month or (today.month == self.birthday.month and today.day < self.birthday.day):
             years_diff -= 1
         return years_diff
-
-
-# class PersonRemoveAccount(Person, Base):
-#     __tablename__ = tables_names.peopleRemoveAccountName
-#
-#
-# class PersonRegister(Person, Base):
-#     __tablename__ = tables_names.peopleRegisterName
-#
-#
-# class PersonLogin(Person, Base):
-#     __tablename__ = tables_names.peopleLoginName
-#
-#
-# class PersonLogout(Person, Base):
-#     __tablename__ = tables_names.peopleLogoutName
-
-
-# class PersonNormal(Person, Base):
-#     __tablename__ = tables_names.peopleName

@@ -7,6 +7,6 @@ struct Note final
     StrData content{"content"};
     StrData title{"title"};
     DateData releaseDate{"releaseDate"};
-    IntData owner{"owner"};
+    ConstIntData owner{"owner"};
     IntData category{"category"};
 };

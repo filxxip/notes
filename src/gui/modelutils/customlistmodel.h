@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QDebug>
 #include <QMetaEnum>
 #include "../models/calendarmodel.h"
 #include "invokablelistmodel.h"
@@ -12,10 +13,11 @@ template<typename Value>
 QVariant variantFromValue(const Value &value)
 {
     constexpr auto isConstructible = std::is_constructible<QVariant, Value>::value;
-    if constexpr (isConstructible)
+    if constexpr (isConstructible) {
         return QVariant(value);
-    else
+    } else {
         return QVariant::fromValue(value);
+    }
 }
 
 template<typename T, typename ReturnType>
@@ -34,20 +36,32 @@ std::function<QVariant(const T &)> makeGetterFunction(
 }
 
 template<typename T, typename ReturnType>
-std::function<void(T &, const QVariant &)> makeUpdateFunction(ReturnType T::*method)
+std::function<void(T &, const QVariant &)> makeUpdateFunction(
+    ReturnType T::*
+        method) //search if there is any operator= which can assign varaint object to object.*method
 {
     return [method](T &object, const QVariant &variant) {
-        object.*method = variant.value<ReturnType>();
+        constexpr auto isAssignable = std::is_assignable<ReturnType, QVariant>::value;
+        if constexpr (isAssignable) {
+            object.*method = variant;
+        } else {
+            object.*method = variant.value<ReturnType>();
+        }
     };
 }
 
 template<typename T, typename ReturnType>
-std::function<void(T &, const QVariant &)> makeUpdateFunction(
+std::function<void(T &, const QVariant &)>
+makeUpdateFunction( //take exacly this type which is in ReturnType
     std::function<void(T &, const ReturnType &)> setter)
 {
-    return [setter = std::move(setter)](T &object, const QVariant &variant) mutable {
-        setter(object, variant.value<ReturnType>());
-    };
+    return
+        [setter = std::move(setter)](
+            T &object,
+            const QVariant &
+                variant) mutable { //can be problem with copying, copy operator, should be const reference
+            setter(object, variant.value<ReturnType>());
+        };
 }
 
 } // namespace

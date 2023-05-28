@@ -35,6 +35,8 @@ constexpr int ACCOUNT_REMOVE_INFORMATION = 15;
 constexpr int LOGOUT = 16;
 constexpr int CLOSE_APP = 17;
 constexpr int LOGOUT_INFO = 18;
+constexpr int REMOVE_CATEGORY = 19;
+constexpr int EMPTY_CATEGORY_NAME = 20;
 } // namespace UserViews
 
 } // namespace DialogCodes

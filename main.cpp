@@ -21,18 +21,27 @@
 using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
+//    QVariant a = "data";
+//    DbData<QString> x{"data"};
+//    x = a.value<QString>();
+//    qDebug() << "hahaha";
 #if RUN_DATABASE
-    auto filemanager = GuiDialogsManager("guidialogs",
+    auto filemanager = GuiDialogsManager(DatabaseCodes::Names::GUI_DIALOGS,
                                          std::make_shared<FileDataClientAdapter>(
                                              std::make_shared<FileDataClient>()));
 
-    auto servermanager = GuiDialogsManager("guidialogs", std::make_shared<ServerDataClient>());
+    //    auto servermanager = GuiDialogsManager(DatabaseCodes::Names::CATEGORIES,
+    //                                           std::make_shared<ServerDataClient>());
+    auto servermanager = GuiDialogsManager(DatabaseCodes::Names::GUI_DIALOGS,
+                                           std::make_shared<ServerDataClient>());
+    //    servermanager2.remove(1);
+
     auto el = filemanager.get();
     for (int i = 1; i < 20; i++) {
         servermanager.remove(i);
     }
-    if (el.has_value()) {
-    }
+    //    if (el.has_value()) {
+    //    }
 
     std::sort(el->begin(), el->end(), [](const auto &el1, const auto &el2) {
         return el1.id.get() < el2.id.get();

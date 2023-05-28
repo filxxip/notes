@@ -5,6 +5,7 @@
 #include "../models/switchermodel.h"
 #include "../models/userviewlistmodel.h"
 #include "../modelutils/listmodelbuilder.h"
+#include "../notebook/category/categorycontroller.h"
 #include "../statuses.h"
 #include "../userview/logcontroller.h"
 #include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"
@@ -20,6 +21,8 @@ class MainUserController : public QObject
         = CustomListModel<SwitcherModel<EnumStatus>, ModelStatuses::UserViewsRoles>;
 
     Q_PROPERTY(AbstractEditController *userEditController READ getController NOTIFY controllerChanged)
+
+    Q_PROPERTY(CategoryController *categoryController MEMBER categoryController CONSTANT)
 
     Q_PROPERTY(ViewController *view MEMBER currentViewController CONSTANT)
 
@@ -63,6 +66,8 @@ private:
     QPointer<AbstractEditController> userEditController;
 
     QPointer<AbstractEditController> guestEditController;
+
+    QPointer<CategoryController> categoryController;
 
     std::unordered_map<ModelStatuses::UserViews, std::unique_ptr<SingletonObjectManager<Person>>>
         emitPersonManagers;

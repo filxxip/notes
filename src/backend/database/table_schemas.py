@@ -38,6 +38,7 @@ category_schema = {
     "type": "object",
     "properties": {
         "name": {"type": "string"},
+        "owner": {"type": ["number", "string"]},
         "color": {"type": "string"},
         "creationDate": {"type": "string"},
     },

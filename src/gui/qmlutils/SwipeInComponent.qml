@@ -8,6 +8,7 @@ Popup {
     property int leftButtonPadding: GUIConfig.swipeIn.defaultPadding
     property int duration: GUIConfig.swipeIn.defaultDuration
     property color innerColor
+    Overlay.modeless: customContentItem
     enter: Transition {
         NumberAnimation {
             property: GUIConfig.swipeIn.widthProperty
@@ -25,7 +26,6 @@ Popup {
         }
     }
     clip: true
-    modal: true
     focus: true
     QtObject {
         id: internal

@@ -20,5 +20,10 @@
         <file>settings.png</file>
         <file>closeapp.png</file>
         <file>loading.png</file>
+        <file>editnote.png</file>
+        <file>trashnote.png</file>
+        <file>reset.png</file>
+        <file>set.png</file>
+        <file>removecategory.png</file>
     </qresource>
 </RCC>

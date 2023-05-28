@@ -37,7 +37,7 @@ void CustomListModel<StructType, EnumData>::setEntries(QVector<StructType> vecto
 {
     beginResetModel();
     m_data = std::move(vector);
-    endResetModel(); // to check if it works!
+    endResetModel();
 }
 
 template<typename StructType, typename EnumData>

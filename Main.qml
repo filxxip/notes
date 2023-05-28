@@ -5,7 +5,11 @@ import QtQuick.Shapes 1.15
 import QtQuick.Layouts 1.15
 import QtQml 2.3
 import ModelStatuses 1.0
+import QtQuick.Dialogs
 
+import "src/gui/colorpicker"
+
+import "src/gui/notebook"
 import "src/gui"
 import "src/gui/customdialog"
 import "src/gui/userview"
@@ -34,7 +38,6 @@ Window {
     CustomDialog {
         visible: dialogController.visibility
     }
-
     Loader {
         anchors.fill: parent
         property var enumType: mainController.view.userViewType
@@ -49,7 +52,6 @@ Window {
                              return userEditView
                          }
     }
-
     Component {
         id: logView
         LogView {
@@ -75,25 +77,9 @@ Window {
     }
     Component {
         id: userEditView
-        UserProfileView {
+        MainUserView {
             anchors.centerIn: parent
             anchors.fill: parent
         }
     }
-
-    //    Component {
-    //        id: someBackground
-    //        Rectangle {
-    //            color: GUIConfig.colors.grey
-    //            anchors.centerIn: parent
-    //            anchors.fill: parent
-    //            Image {
-    //                anchors.centerIn: parent
-    //                width: 0.15 * parent.width
-    //                height: 0.15 * parent.height
-    //                fillMode: Image.PreserveAspectFit
-    //                source: "qrc:/resources/loading.png"
-    //            }
-    //        }
-    //    }
 }

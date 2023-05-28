@@ -25,6 +25,13 @@ qt_add_executable(appnotesdatabaseproject
     main.cpp
     src/gui/statuses.h
 
+
+    src/gui/notebook/category/categorycontroller.cpp
+    src/gui/notebook/category/categorycontroller.h
+
+    src/gui/notebook/texteditorcontroller.h
+    src/gui/notebook/texteditorcontroller.cpp
+
     src/gui/maincontroller/maincontroller.cpp
     src/gui/maincontroller/maincontroller.h
 
@@ -136,6 +143,15 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/calendar/Clock.qml
         src/gui/calendar/TumblerComponent.qml
 
+        src/gui/colorpicker/ColorPicker.qml
+        src/gui/colorpicker/SingleColorPicker.qml
+        src/gui/colorpicker/TripleColorPicker.qml
+
+
+        src/gui/notebook/category/CategoryView.qml
+        src/gui/notebook/TextEditorView.qml
+        src/gui/notebook/category/NotebookListViewElement.qml
+
         src/gui/qmlutils/SwipeInComponent.qml
 
         src/gui/qmlutils/ButtonSwitcher.qml
@@ -155,6 +171,7 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/usereditview/UserProfileView.qml
         src/gui/usereditview/ButtonWithImage.qml
         src/gui/usereditview/UserEditListView.qml
+        src/gui/usereditview/MainUserView.qml
 
         src/gui/GUIConfig.qml
         src/gui/qmldir

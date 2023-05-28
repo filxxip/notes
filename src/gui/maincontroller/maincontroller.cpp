@@ -1,12 +1,13 @@
 #include "maincontroller.h"
 
 namespace {
-constexpr const char *CLOSE_APP_MESSAGE = "App closed successfully";
+constexpr char CLOSE_APP_MESSAGE[] = "App closed successfully";
 constexpr char DIALOG_CONTROLLER[] = "dialogController";
 constexpr char CALENDAR_CONTROLLER[] = "calendarController";
 constexpr char CLOCK_CONTROLLER[] = "clockController";
 constexpr char LOG_CONTROLLER[] = "logController";
 constexpr char MAIN_USER_CONTROLLER[] = "mainUserController";
+constexpr char CATEGORY_CONTROLLER[] = "categoryController";
 } // namespace
 
 MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *obj)
@@ -21,6 +22,10 @@ MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *
     , mainUserView(
           ViewControllerGenerators::createNonSwitcherViewContorller(ModelStatuses::MainUserViews::LOG,
                                                                     this))
+//    , categoryController(std::make_shared<CategoriesManager>(DatabaseCodes::Names::CATEGORIES,
+//                                                             dataClient),
+//                         dialogController,
+//                         this)
 {
     mainUserView->setUserViewType(ModelStatuses::MainUserViews::LOG);
 }

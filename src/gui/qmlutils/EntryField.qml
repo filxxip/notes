@@ -75,7 +75,6 @@ FocusScope {
                 anchors.fill: parent
             }
         }
-        Component.onCompleted: color
-                               = root.activeFocus ? root.secondCustomAnimColor : root.customcolor
+        color: root.activeFocus ? root.secondCustomAnimColor : root.customcolor
     }
 }

@@ -6,7 +6,7 @@ from functools import wraps
 from typing import Any, Callable, Type, TypeVar
 
 import jsonschema
-from flask import request, jsonify, Response
+from flask import request, jsonify
 from flask_sqlalchemy.query import Query
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 

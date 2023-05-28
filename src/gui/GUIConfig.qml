@@ -31,10 +31,64 @@ Item {
 
     readonly property alias imagePaths: imagePaths
 
+    readonly property alias colorPicker: colorPicker
+
+    readonly property alias category: category
+
+    readonly property alias notebookListViewElement: notebookListViewElement
+
     QtObject {
         id: window
         readonly property int width: 800
         readonly property int height: 640
+    }
+
+    QtObject {
+        id: category
+
+        readonly property int width: 350
+        readonly property int height: 370
+        readonly property int bottomMargin: 70
+        readonly property int spacing: 10
+        readonly property int listViewElementHeight: 35
+        readonly property real hoverBarOpacity: 0.2
+
+        readonly property int headerHeight: 40
+        readonly property string headerText: "Category list empty"
+        readonly property int headerRadius: 10
+
+        readonly property int footerHeight: 40
+        readonly property int footerWidth: 200
+        readonly property int footerMargin: 10
+        readonly property string footerText: "Add new category"
+
+        readonly property int loaderHeight: 300
+        readonly property int loaderBottomMargin: 70
+        readonly property int loaderRightMargin: 70
+
+        readonly property int pickerSpacing: 20
+        readonly property string pickerNewNamePlaceholder: "Category name... "
+        readonly property real pickerSubmitElementWidthRatio: 0.45
+        readonly property real pickerSubmitElementHeightRatio: 0.8
+        readonly property int pickerRowSpacing: 5
+        readonly property string pickerCreateText: "create"
+    }
+
+    QtObject {
+        id: notebookListViewElement
+
+        readonly property int rowSpacing: 5
+        readonly property int buttonTopMargin: 2
+        readonly property int buttonBottomMargin: 2
+        readonly property int buttonLeftMargin: 4
+        readonly property int buttonWidth: 220
+        readonly property int buttonRadius: 10
+        readonly property int editButtonMargins: 5
+        readonly property real opacityWhenClicked: 0.7
+
+        readonly property int swipeInWidthDelta: 20
+        readonly property int swipeInWidthEntryDelta: 30
+        readonly property int swipeInDuration: 200
     }
 
     QtObject {
@@ -101,6 +155,10 @@ Item {
         readonly property string settings: "qrc:/resources/settings.png"
         readonly property string closeApp: "qrc:/resources/closeapp.png"
         readonly property string loading: "qrc:/resources/loading.png"
+        readonly property string editNote: "qrc:/resources/editnote.png"
+        readonly property string trashNote: "qrc:/resources/trashnote.png"
+        readonly property string reset: "qrc:/resources/reset.png"
+        readonly property string set: "qrc:/resources/set.png"
     }
 
     QtObject {
@@ -189,6 +247,27 @@ Item {
     }
 
     QtObject {
+        id: colorPicker
+
+        readonly property int elementHeight: 40
+        readonly property int spacing: 10
+        readonly property int rightAngle: 90
+        readonly property int sliderColorTextPositionChanged: 170
+        readonly property int sliderWidth: 200
+        readonly property int innerElementRadius: 10
+        readonly property int innerElementWidth: 2
+        readonly property real sliderHeightRatio: 0.6
+        readonly property int maxColorValue: 255
+        readonly property int elementWidth: 300
+        //        readonly property int downBarHeight: 40
+        //        readonly property int downBarButtonWidth: 40
+        readonly property real opacityOnClicked: 0.5
+        //        readonly property int downBarResultColorBarWidth: 140
+        //        readonly property int downBarResultColorBarHeight: 27
+        readonly property int downBarResultColorBarRadius: 4
+    }
+
+    QtObject {
         id: fonts
 
         readonly property string decoratedFont: "TeX Gyre Cursor"
@@ -213,6 +292,43 @@ Item {
     QtObject {
         id: gradients
 
+        readonly property var redGradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop {
+                position: 0
+                color: "#000000"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#ff0000"
+            }
+        }
+        readonly property var greenGradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop {
+                position: 0
+                color: "#000000"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#00ff00"
+            }
+        }
+
+        readonly property var blueGradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop {
+                position: 0
+                color: "#000000"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#0000ff"
+            }
+        }
         readonly property var disabledButtonGradient: Gradient {
             GradientStop {
                 position: 0
