@@ -5,7 +5,7 @@
 #include "../models/switchermodel.h"
 #include "../models/userviewlistmodel.h"
 #include "../modelutils/listmodelbuilder.h"
-#include "../notebook/categorycontroller.h"
+#include "../notebook/category/categorycontroller.h"
 #include "../statuses.h"
 #include "../userview/logcontroller.h"
 #include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"

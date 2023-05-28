@@ -2,7 +2,7 @@ import QtQuick 2.15
 import ".."
 import "../calendar"
 import "../qmlutils"
-import "../notebook"
+import "../notebook/category"
 import ModelStatuses 1.0
 
 Rectangle {

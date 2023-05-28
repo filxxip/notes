@@ -25,12 +25,10 @@ qt_add_executable(appnotesdatabaseproject
     main.cpp
     src/gui/statuses.h
 
-#    src/gui/colorpicker/colorpicker.h
-#    src/gui/colorpicker/colorpicker.cpp
 
+    src/gui/notebook/category/categorycontroller.cpp
+    src/gui/notebook/category/categorycontroller.h
 
-    src/gui/notebook/categorycontroller.cpp
-    src/gui/notebook/categorycontroller.h
     src/gui/notebook/texteditorcontroller.h
     src/gui/notebook/texteditorcontroller.cpp
 
@@ -150,9 +148,9 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/colorpicker/TripleColorPicker.qml
 
 
-        src/gui/notebook/CategoryView.qml
+        src/gui/notebook/category/CategoryView.qml
         src/gui/notebook/TextEditorView.qml
-        src/gui/notebook/NotebookListViewElement.qml
+        src/gui/notebook/category/NotebookListViewElement.qml
 
         src/gui/qmlutils/SwipeInComponent.qml
 

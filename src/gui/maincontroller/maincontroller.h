@@ -13,7 +13,7 @@
 #include "src/gui/calendar/clockcontroller.h"
 #include "src/gui/customdialog/dialogcontroller.h"
 #include "src/gui/maincontroller/maincontroller.h"
-#include "src/gui/notebook/categorycontroller.h"
+#include "src/gui/notebook/category/categorycontroller.h"
 #include "src/gui/radiobutton/radiobuttoncontroller.h"
 #include "src/gui/usereditview/mainusercontroller.h"
 #include "src/gui/usereditview/usereditcontroller.h"

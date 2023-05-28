@@ -2,11 +2,11 @@
 
 #include <QColor>
 #include <QObject>
-#include "../customdialog/dialogcontroller.h"
-#include "../modelutils/customlistmodel.h"
-#include "../modelutils/listmodelbuilder.h"
-#include "../statuses.h"
-#include "../viewcontroller/viewcontroller.h"
+#include "../../customdialog/dialogcontroller.h"
+#include "../../modelutils/customlistmodel.h"
+#include "../../modelutils/listmodelbuilder.h"
+#include "../../statuses.h"
+#include "../../viewcontroller/viewcontroller.h"
 #include "src/backend/datamanager/directobjsmanagers/categories/categoriesmanager.h"
 
 class CategoryController : public QObject
