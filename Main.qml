@@ -175,7 +175,7 @@ Window {
     }
     Component {
         id: userEditView
-        UserProfileView {
+        MainUserView {
             anchors.centerIn: parent
             anchors.fill: parent
         }

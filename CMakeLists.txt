@@ -173,6 +173,7 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/usereditview/UserProfileView.qml
         src/gui/usereditview/ButtonWithImage.qml
         src/gui/usereditview/UserEditListView.qml
+        src/gui/usereditview/MainUserView.qml
 
         src/gui/GUIConfig.qml
         src/gui/qmldir

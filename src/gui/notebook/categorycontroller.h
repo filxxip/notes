@@ -27,11 +27,11 @@ class CategoryController : public QObject
     QPointer<Model> categoryModel;
 
     std::optional<int> owner = 2;
-    int editedItem = -1; //todo z optional
+    int editedItem = -1;
 
-    int getItemID() const;
+    int getItemID(int index) const;
 
-    ViewController *getViewController() { return innerViewController->getController(); }
+    ViewController *getViewController();
 
 public:
     CategoryController(std::shared_ptr<CategoriesManager> manager_,

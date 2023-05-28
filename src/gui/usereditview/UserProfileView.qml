@@ -7,9 +7,9 @@ import ".."
 import "../calendar"
 import "../qmlutils"
 
-Rectangle {
+Item {
     id: outerRectangle
-    color: GUIConfig.colors.transparent
+    //    color: GUIConfig.colors.transparent
     UserEditView {
         id: userEditView
         anchors.left: outerRectangle.left
@@ -59,15 +59,15 @@ Rectangle {
     Clock {
         anchors.right: outerRectangle.right
         anchors.top: outerRectangle.top
-        anchors.margins: GuiConfig.rightEditViewBar.clockMargins
+        anchors.rightMargin: GuiConfig.rightEditViewBar.clockMargins
         controller: clockController
     }
 
-    ButtonSwitcher {
-        anchors.left: parent.left
-        model: mainUserController.view.switcherModel
-        tabSelectorEnum: mainUserController.view.userViewType
-        Component.onCompleted: switched.connect(
-                                   newstatus => mainUserController.view.userViewType = newstatus)
-    }
+    //    ButtonSwitcher {
+    //        anchors.left: parent.left
+    //        model: mainUserController.view.switcherModel
+    //        tabSelectorEnum: mainUserController.view.userViewType
+    //        Component.onCompleted: switched.connect(
+    //                                   newstatus => mainUserController.view.userViewType = newstatus)
+    //    }
 }

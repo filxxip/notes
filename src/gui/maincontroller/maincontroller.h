@@ -29,7 +29,7 @@ class MainController : public QObject
     QPointer<ClockController> clockController;
     std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::MainUserViews>> mainUserView;
     LogController logController;
-    CategoryController categoryController;
+    //    CategoryController categoryController;
     MainUserController mainUserController;
 
 private:

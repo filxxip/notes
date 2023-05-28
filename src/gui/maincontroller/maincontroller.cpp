@@ -22,10 +22,10 @@ MainController::MainController(std::shared_ptr<DataClient> dataClient, QObject *
     , mainUserView(
           ViewControllerGenerators::createNonSwitcherViewContorller(ModelStatuses::MainUserViews::LOG,
                                                                     this))
-    , categoryController(std::make_shared<CategoriesManager>(DatabaseCodes::Names::CATEGORIES,
-                                                             dataClient),
-                         dialogController,
-                         this)
+//    , categoryController(std::make_shared<CategoriesManager>(DatabaseCodes::Names::CATEGORIES,
+//                                                             dataClient),
+//                         dialogController,
+//                         this)
 {
     mainUserView->setUserViewType(ModelStatuses::MainUserViews::LOG);
 }
@@ -53,5 +53,4 @@ void MainController::registerControllers(QQmlContext *context)
     context->setContextProperty(DIALOG_CONTROLLER, dialogController);
     context->setContextProperty(CLOCK_CONTROLLER, clockController);
     context->setContextProperty(MAIN_USER_CONTROLLER, &mainUserController);
-    context->setContextProperty(CATEGORY_CONTROLLER, &categoryController);
 }

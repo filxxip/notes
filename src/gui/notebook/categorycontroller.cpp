@@ -18,7 +18,7 @@ CategoryController::CategoryController(std::shared_ptr<CategoriesManager> manage
                         .add(EnumStatus::TITLE, &Category::title)
                         .add(EnumStatus::CREATION_DATE, &Category::creationDate)
                         .add(EnumStatus::OWNER, &Category::owner)
-                        .build(manager->getFiltered({{"owner", 2}}).value()))
+                        .build())
 {
     connect(this, &CategoryController::remove, this, &CategoryController::onRemove);
     connect(this, &CategoryController::changeColor, this, &CategoryController::onColorChanged);
@@ -29,7 +29,19 @@ CategoryController::CategoryController(std::shared_ptr<CategoriesManager> manage
 void CategoryController::setOwner(int id)
 {
     this->owner = id;
+    auto filtered = manager->getFiltered({{"owner", id}});
+    if (filtered.has_value()) {
+        categoryModel->setEntries(filtered.value());
+        return;
+    }
+    qDebug() << "Invalid index passed as owner, check your database!";
 }
+
+ViewController *CategoryController::getViewController()
+{
+    return innerViewController->getController();
+}
+
 void CategoryController::add(const QString &name, const QColor &newColor)
 {
     if (name.isEmpty()) {
@@ -48,9 +60,9 @@ void CategoryController::add(const QString &name, const QColor &newColor)
         DatabaseUtilsFunctions::getLastObjectOfDatabase<Category>(manager).value());
 }
 
-int CategoryController::getItemID() const
+int CategoryController::getItemID(int index) const
 {
-    return categoryModel->data(editedItem, ModelStatuses::CategoryRoles::ID).value<int>();
+    return categoryModel->data(index, ModelStatuses::CategoryRoles::ID).value<int>();
 }
 
 void CategoryController::onChangeName(const QString &title)
@@ -59,7 +71,7 @@ void CategoryController::onChangeName(const QString &title)
         dialogController->showDialog(DialogCodes::UserViews::EMPTY_CATEGORY_NAME);
         return;
     }
-    auto item = manager->get(getItemID());
+    auto item = manager->get(getItemID(editedItem));
     if (item.has_value() && item->title.get() != title) {
         categoryModel->setData(editedItem, title, ModelStatuses::CategoryRoles::TITLE);
         item->title = std::move(title);
@@ -75,10 +87,9 @@ void CategoryController::onRemove(int index)
     }
     dialogController->applyConnection([this, index](const auto &status) {
         if (status == DialogController::ActivityStatus::ACCEPT) {
-            manager->remove(getItemID());
+            manager->remove(getItemID(index));
             categoryModel->removeRow(index);
-            innerViewController->setUserViewType(
-                ModelStatuses::CategoryViewTypes::NONE); //zmienic na adaptera
+            innerViewController->setUserViewType(ModelStatuses::CategoryViewTypes::NONE);
         }
     });
     dialogController->showDialog(DialogCodes::UserViews::REMOVE_CATEGORY);
@@ -90,7 +101,7 @@ void CategoryController::onColorChanged(QColor color)
         qDebug() << INVALID_INDEX_ERROR;
         return;
     }
-    auto item = manager->get(getItemID());
+    auto item = manager->get(getItemID(editedItem));
     if (item.has_value() && item->color.get() != color) {
         item->color = std::move(color);
         manager->update(item.value());

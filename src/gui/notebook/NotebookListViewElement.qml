@@ -39,8 +39,9 @@ RowLayout {
     Button {
         onReleased: {
             swiper.open()
-            categoryController.view.userViewType = ModelStatuses.CategoryViewTypes.EDIT_COLOR
-            categoryController.editedItem = model.index
+            mainUserController.categoryController.view.userViewType
+                    = ModelStatuses.CategoryViewTypes.EDIT_COLOR
+            mainUserController.categoryController.editedItem = model.index
         }
         Layout.preferredWidth: height
         Layout.margins: 5
@@ -65,7 +66,7 @@ RowLayout {
             anchors.fill: parent
         }
         opacity: down ? 0.7 : 1
-        onReleased: categoryController.remove(model.index)
+        onReleased: mainUserController.categoryController.remove(model.index)
 
         Image {
             source: GUIConfig.imagePaths.trashNote
@@ -91,11 +92,11 @@ RowLayout {
                 Component.onCompleted: {
                     setText(model.title)
                     swiper.aboutToHide.connect(() => {
-                                                   categoryController.view.userViewType
-                                                   = ModelStatuses.CategoryViewTypes.NONE
-                                                   categoryController.changeName(
+                                                   mainUserController.categoryController.view.userViewType = ModelStatuses.CategoryViewTypes.NONE
+                                                   mainUserController.categoryController.changeName(
                                                        text)
-                                                   categoryController.editedItem = -1
+                                                   mainUserController.categoryController.editedItem
+                                                   = -1
                                                })
                 }
             }

@@ -61,6 +61,11 @@ MainUserController::MainUserController(std::shared_ptr<PrevEnumViewController> m
               EnumStatus::EDIT,
               this)
               ->getController())
+    , categoryController(
+          new CategoryController(std::make_shared<CategoriesManager>(DatabaseCodes::Names::CATEGORIES,
+                                                                     dataClient),
+                                 dialogController,
+                                 this))
 {
     emitPersonManagers[ModelStatuses::UserViews::LOGIN]
         = std::make_unique<SingletonObjectManager<Person>>(
@@ -134,7 +139,9 @@ void MainUserController::tryToUpdateEditView(ModelStatuses::UserViews managerTyp
     }
     if (emitPersonManagers.contains(managerType)
         && emitPersonManagers[managerType]->isDataAvaible()) {
-        controller->setNewPerson(emitPersonManagers[managerType]->get().value());
+        auto person = emitPersonManagers[managerType]->get().value();
+        categoryController->setOwner(person.id.get());
+        controller->setNewPerson(std::move(person));
         prevViewController->setUserViewType(viewType);
     }
 }
@@ -147,5 +154,4 @@ void MainUserController::updatePersonInDatabase(const Person &person)
 void MainUserController::removePersonFromDatabase(int index)
 {
     manager->remove(index);
-    qDebug() << "Object is removed";
 }

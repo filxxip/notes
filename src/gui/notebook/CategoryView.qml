@@ -19,7 +19,7 @@ Item {
         enabled: true
         spacing: 10
         clip: true
-        model: categoryController.model
+        model: mainUserController.categoryController.model
         delegate: NotebookListViewElement {
             onSwiperOpenedChanged: listview.enabled = !swiperOpened
             width: listview.width
@@ -32,8 +32,30 @@ Item {
                 left: parent ? parent.left : undefined
                 right: parent ? parent.right : undefined
             }
+
             color: listview.currentItem ? listview.currentItem.color : GUIConfig.colors.transparent
             opacity: 0.2
+        }
+
+        header: Item {
+            visible: listview.model.count === 0
+            height: 40
+            anchors.right: parent.right
+            anchors.left: parent.left
+            Label {
+                anchors.fill: parent
+                Text {
+                    anchors.fill: parent
+                    text: "Category list empty"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+                background: Rectangle {
+                    anchors.fill: parent
+                    color: GUIConfig.colors.red
+                    radius: 10
+                }
+            }
         }
 
         footer: Item {
@@ -44,14 +66,14 @@ Item {
                 anchors.topMargin: 10
                 anchors.fill: parent
                 contentText: "Add new category"
-                onReleased: categoryController.view.userViewType
+                onReleased: mainUserController.categoryController.view.userViewType
                             = ModelStatuses.CategoryViewTypes.GENERATE_COLOR
             }
         }
     }
     Loader {
         id: loader
-        sourceComponent: switch (categoryController.view.userViewType) {
+        sourceComponent: switch (mainUserController.categoryController.view.userViewType) {
                          case (ModelStatuses.CategoryViewTypes.EDIT_COLOR):
                              return colorEditPicker
                          case (ModelStatuses.CategoryViewTypes.GENERATE_COLOR):
@@ -108,7 +130,7 @@ Item {
                     contentText: "create"
                     width: 0.45 * GUIConfig.colorPicker.elementWidth
                     height: 0.8 * GUIConfig.colorPicker.elementHeight
-                    onReleased: categoryController.addElement(
+                    onReleased: mainUserController.categoryController.addElement(
                                     nameWidget.text, pickers.combinedColor)
                 }
             }
@@ -117,7 +139,8 @@ Item {
     Component {
         id: colorEditPicker
         ColorPicker {
-            modelItem: listview.itemAtIndex(categoryController.editedItem)
+            modelItem: listview.itemAtIndex(
+                           mainUserController.categoryController.editedItem)
             pickerWidth: GUIConfig.colorPicker.elementWidth
             pickerElementHeight: GUIConfig.colorPicker.elementHeight
         }

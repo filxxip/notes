@@ -6,6 +6,8 @@ class AbstractListModelInvokableClass : public QAbstractListModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(int count READ rowCount NOTIFY rowCountChanged CONSTANT)
+
     AdapterForQmlModelObject *model;
 
 public:
@@ -14,4 +16,7 @@ public:
     virtual ~AbstractListModelInvokableClass() { delete model; }
 
     Q_INVOKABLE AdapterForQmlModelObject *get(int elementIndex);
+
+signals:
+    void rowCountChanged(int value);
 };
