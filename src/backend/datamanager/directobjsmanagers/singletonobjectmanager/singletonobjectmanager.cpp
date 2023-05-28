@@ -39,6 +39,7 @@ void SingletonObjectManager<DataObject>::set(const DataObject &object, bool auto
         if (autoReady) {
             setReadyStatus();
         }
+        qDebug() << "dodany";
         return;
     }
     qDebug() << INVALID_ACCESS;

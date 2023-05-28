@@ -35,6 +35,7 @@ int CustomListModel<StructType, EnumData>::rowCount(const QModelIndex &parent) c
 template<typename StructType, typename EnumData>
 void CustomListModel<StructType, EnumData>::setEntries(QVector<StructType> vector)
 {
+    qDebug() << "ustawiam nowe entries";
     beginResetModel();
     m_data = std::move(vector);
     endResetModel();

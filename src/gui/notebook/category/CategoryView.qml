@@ -5,6 +5,8 @@ import ModelStatuses 1.0
 import "../.."
 import "../../qmlutils"
 import "../../colorpicker"
+import ".."
+import "../notes/"
 import QtQuick.Layouts 1.15
 
 Item {
@@ -42,19 +44,8 @@ Item {
             height: GUIConfig.category.headerHeight
             anchors.right: parent.right
             anchors.left: parent.left
-            Label {
-                anchors.fill: parent
-                Text {
-                    anchors.fill: parent
-                    text: GUIConfig.category.headerText
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-                background: Rectangle {
-                    anchors.fill: parent
-                    color: GUIConfig.colors.red
-                    radius: GUIConfig.category.headerRadius
-                }
+            ContentLabel {
+                contentText: GUIConfig.category.headerText
             }
         }
 
@@ -84,7 +75,7 @@ Item {
                              return emptyComponent
                          }
         anchors.right: parent.right
-        width: GUIConfig.colorPicker.elementWidth
+        width: GUIConfig.category.loaderWidth
         height: GUIConfig.category.loaderHeight
         anchors.bottom: parent.bottom
         anchors.bottomMargin: GUIConfig.category.loaderBottomMargin
@@ -93,60 +84,73 @@ Item {
 
     Component {
         id: emptyComponent
-        Item {
-            anchors.fill: parent
-        }
+        NotesShortView {}
     }
 
     Component {
         id: colorPicker
-        Column {
-            spacing: GUIConfig.category.pickerSpacing
-            anchors.fill: parent
-            EntryField {
-                id: nameWidget
-                width: GUIConfig.colorPicker.elementWidth
-                height: GUIConfig.colorPicker.elementHeight
-                placeholder: GUIConfig.category.pickerNewNamePlaceholder
-                customcolor: GUIConfig.colors.red
-            }
-            TripleColorPicker {
-                id: pickers
-                pickerWidth: GUIConfig.colorPicker.elementWidth
-                pickerElementHeight: GUIConfig.colorPicker.elementHeight
-            }
-            Row {
-                anchors.horizontalCenter: parent.horizontalCenter
-                id: resultantBar
-                spacing: GUIConfig.category.pickerRowSpacing
-                Rectangle {
-                    width: GUIConfig.category.pickerSubmitElementWidthRatio
-                           * GUIConfig.colorPicker.elementWidth
-                    height: GUIConfig.category.pickerSubmitElementHeightRatio
-                            * GUIConfig.colorPicker.elementHeight
-                    color: pickers.combinedColor
-                    radius: 10
+        Item {
+            anchors.right: loader.right
+            anchors.top: loader.top
+            Column {
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.rightMargin: GUIConfig.category.loaderSmallElementRightMargin
+                anchors.topMargin: GUIConfig.category.loaderSmallElementTopMargin
+                spacing: GUIConfig.category.pickerSpacing
+                EntryField {
+                    id: nameWidget
+                    width: GUIConfig.colorPicker.elementWidth
+                    height: GUIConfig.colorPicker.elementHeight
+                    placeholder: GUIConfig.category.pickerNewNamePlaceholder
+                    customcolor: GUIConfig.colors.red
                 }
+                TripleColorPicker {
+                    id: pickers
+                    pickerWidth: GUIConfig.colorPicker.elementWidth
+                    pickerElementHeight: GUIConfig.colorPicker.elementHeight
+                }
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    id: resultantBar
+                    spacing: GUIConfig.category.pickerRowSpacing
+                    Rectangle {
+                        width: GUIConfig.category.pickerSubmitElementWidthRatio
+                               * GUIConfig.colorPicker.elementWidth
+                        height: GUIConfig.category.pickerSubmitElementHeightRatio
+                                * GUIConfig.colorPicker.elementHeight
+                        color: pickers.combinedColor
+                        radius: 10
+                    }
 
-                CustomButton {
-                    contentText: GUIConfig.category.pickerCreateText
-                    width: GUIConfig.category.pickerSubmitElementWidthRatio
-                           * GUIConfig.colorPicker.elementWidth
-                    height: GUIConfig.category.pickerSubmitElementHeightRatio
-                            * GUIConfig.colorPicker.elementHeight
-                    onReleased: mainUserController.categoryController.addElement(
-                                    nameWidget.text, pickers.combinedColor)
+                    CustomButton {
+                        contentText: GUIConfig.category.pickerCreateText
+                        width: GUIConfig.category.pickerSubmitElementWidthRatio
+                               * GUIConfig.colorPicker.elementWidth
+                        height: GUIConfig.category.pickerSubmitElementHeightRatio
+                                * GUIConfig.colorPicker.elementHeight
+                        onReleased: mainUserController.categoryController.addElement(
+                                        nameWidget.text, pickers.combinedColor)
+                    }
                 }
             }
         }
     }
     Component {
         id: colorEditPicker
-        ColorPicker {
-            modelItem: listview.itemAtIndex(
-                           mainUserController.categoryController.editedItem)
-            pickerWidth: GUIConfig.colorPicker.elementWidth
-            pickerElementHeight: GUIConfig.colorPicker.elementHeight
+        Item {
+            anchors.right: loader.right
+            anchors.top: loader.top
+            ColorPicker {
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.rightMargin: GUIConfig.category.loaderSmallElementRightMargin
+                anchors.topMargin: GUIConfig.category.loaderSmallElementTopMargin
+                modelItem: listview.itemAtIndex(
+                               mainUserController.categoryController.editedItem)
+                pickerWidth: GUIConfig.colorPicker.elementWidth
+                pickerElementHeight: GUIConfig.colorPicker.elementHeight
+            }
         }
     }
 }

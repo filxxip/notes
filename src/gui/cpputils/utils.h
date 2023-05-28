@@ -4,10 +4,6 @@
 #include <QString>
 
 #include "../modelutils/customlistmodel.h"
-//#include "src/gui/calendar/calendarcontroller.h"
-//#include "src/gui/modelutils/listmodelbuilder.h"
-//#include "src/gui/radiobutton/radiobuttoncontroller.h"
-//#include "src/gui/userview/entrycontroller.h"
 
 #include <algorithm>
 #include <functional>
@@ -113,6 +109,8 @@ const QVector<QString> monthsNames = {"January",
                                       "December"};
 
 QString convertToStringFormat(const QDate &date);
+
+QString convertToStringFormat(const QDateTime &datetime);
 
 constexpr const char *NAME_PLACEHOLDER = "Name...";
 constexpr const char *SURNAME_PLACEHOLDER = "Surname...";

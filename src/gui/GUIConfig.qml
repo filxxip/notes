@@ -62,9 +62,12 @@ Item {
         readonly property int footerMargin: 10
         readonly property string footerText: "Add new category"
 
-        readonly property int loaderHeight: 300
+        readonly property int loaderHeight: 400
+        readonly property int loaderWidth: 400
         readonly property int loaderBottomMargin: 70
-        readonly property int loaderRightMargin: 70
+        readonly property int loaderRightMargin: 10
+        readonly property int loaderSmallElementRightMargin: 60
+        readonly property int loaderSmallElementTopMargin: 100
 
         readonly property int pickerSpacing: 20
         readonly property string pickerNewNamePlaceholder: "Category name... "

@@ -26,29 +26,29 @@ int main(int argc, char *argv[])
 //    x = a.value<QString>();
 //    qDebug() << "hahaha";
 #if RUN_DATABASE
-    auto filemanager = GuiDialogsManager(DatabaseCodes::Names::GUI_DIALOGS,
-                                         std::make_shared<FileDataClientAdapter>(
-                                             std::make_shared<FileDataClient>()));
+    auto filemanager = NotesManager(DatabaseCodes::Names::NOTES,
+                                    std::make_shared<FileDataClientAdapter>(
+                                        std::make_shared<FileDataClient>()));
 
     //    auto servermanager = GuiDialogsManager(DatabaseCodes::Names::CATEGORIES,
     //                                           std::make_shared<ServerDataClient>());
-    auto servermanager = GuiDialogsManager(DatabaseCodes::Names::GUI_DIALOGS,
-                                           std::make_shared<ServerDataClient>());
+    auto servermanager = NotesManager(DatabaseCodes::Names::NOTES,
+                                      std::make_shared<ServerDataClient>());
     //    servermanager2.remove(1);
 
-    auto el = filemanager.get();
-    for (int i = 1; i < 20; i++) {
-        servermanager.remove(i);
+    auto el = servermanager.get().value();
+    for (auto e : el) {
+        filemanager.add(e);
     }
     //    if (el.has_value()) {
     //    }
 
-    std::sort(el->begin(), el->end(), [](const auto &el1, const auto &el2) {
-        return el1.id.get() < el2.id.get();
-    });
-    for (auto &e : el.value()) {
-        servermanager.add(e);
-    }
+//    std::sort(el->begin(), el->end(), [](const auto &el1, const auto &el2) {
+//        return el1.id.get() < el2.id.get();
+//    });
+//    for (auto &e : el.value()) {
+//        servermanager.add(e);
+//    }
 #endif
 
 #if RUN_QML
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     auto fileClient = std::make_shared<FileDataClientAdapter>(std::make_shared<FileDataClient>());
     auto serverClient = std::make_shared<ServerDataClient>();
 
-    auto ptr = fileClient;
+    auto ptr = serverClient;
 
     if (ptr->isValid()) {
         auto mainController = new MainController(ptr, &engine);

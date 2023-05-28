@@ -19,6 +19,7 @@ class CategoryController : public QObject
     Q_PROPERTY(Model *model MEMBER categoryModel CONSTANT)
     Q_PROPERTY(int editedItem MEMBER editedItem NOTIFY editedItemIndexChanged)
     Q_PROPERTY(ViewController *view READ getViewController CONSTANT)
+    Q_PROPERTY(int owner MEMBER owner CONSTANT)
 
     QPointer<DialogController> dialogController;
     std::shared_ptr<AbstractViewControllerAdapter<ModelStatuses::CategoryViewTypes>>
@@ -26,7 +27,7 @@ class CategoryController : public QObject
     std::shared_ptr<CategoriesManager> manager;
     QPointer<Model> categoryModel;
 
-    std::optional<int> owner = -1;
+    int owner = -1;
     int editedItem = -1;
 
     int getItemID(int index) const;

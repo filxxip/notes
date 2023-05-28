@@ -9,7 +9,15 @@ namespace {
 
 const QRegularExpression emailRegex(".*@.*\\.com");
 
+QString intToTwoLetterString(int value)
+{
+    auto str = QString::number(value);
+    if (str.length() < 2) {
+        str = "0" + str;
+    }
+    return str;
 }
+} // namespace
 
 namespace Validators {
 
@@ -43,6 +51,15 @@ QString convertToStringFormat(const QDate &date)
              QString::number(date.year()));
 }
 
+QString convertToStringFormat(const QDateTime &datetime)
+{
+    auto time = datetime.time();
+    return QStringLiteral("%1:%2 %3")
+        .arg(intToTwoLetterString(time.hour()))
+        .arg(intToTwoLetterString(time.minute()))
+        .arg(convertToStringFormat(datetime.date()));
+}
+
 } // namespace DateStringAlternatives
 
 namespace DatabaseUtilsFunctions {
@@ -61,23 +78,3 @@ constexpr const char *FEMALE_TEXT_BUTTON = "female";
 constexpr const char *MALE_TEXT_BUTTON = "male";
 
 } // namespace
-
-//namespace UserConfigControllerUtils2 {
-
-//QPointer<RadioButtonController> generateRadioButton(QObject *object)
-//{
-//    return new RadioButtonController({RadioButtonModel(MALE_TEXT_BUTTON, true, 1),
-//                                      RadioButtonModel(FEMALE_TEXT_BUTTON, false, 1)},
-//                                     object);
-//}
-
-//void connectClear(EntryController *obj,
-//                  QPointer<CalendarController> calendar,
-//                  QPointer<RadioButtonController> radioButton)
-//{
-//    obj->connect(obj, &EntryController::clear, [calendar, radioButton] {
-//        calendar->clear();
-//        radioButton->setValue(0, true);
-//    });
-//}
-//} // namespace UserConfigControllerUtils2

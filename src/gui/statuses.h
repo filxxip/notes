@@ -11,6 +11,8 @@ enum class UserViews { LOGIN, REGISTER, GUEST };
 
 enum class CategoryRoles { ID, COLOR, TITLE, CREATION_DATE, OWNER };
 
+enum class NoteRoles { ID, CONTENT, TITLE, RELEASE_DATE, OWNER, CATEGORY };
+
 enum class UserViewsRoles { TEXT, TYPE, ENABLED };
 
 enum class PersonComponents { EMAIL, PASSWORD, NAME, SURNAME, BIRTHDAY, COUNTRY, CREATED };
@@ -30,6 +32,8 @@ enum class MainUserViews { LOG, EDIT_GUEST, EDIT_NORMAL, BACKGROUND };
 enum class CategoryViewTypes { EDIT_COLOR, GENERATE_COLOR, BUTTON_LISTS, NONE };
 
 Q_ENUM_NS(MainUserViews);
+
+Q_ENUM_NS(NoteRoles);
 
 Q_ENUM_NS(CategoryViewTypes);
 

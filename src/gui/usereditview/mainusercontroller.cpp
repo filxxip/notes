@@ -66,6 +66,10 @@ MainUserController::MainUserController(std::shared_ptr<PrevEnumViewController> m
                                                                      dataClient),
                                  dialogController,
                                  this))
+    , notesController(new NotesController(std::make_shared<NotesManager>(DatabaseCodes::Names::NOTES,
+                                                                         dataClient),
+                                          dialogController,
+                                          this))
 {
     emitPersonManagers[ModelStatuses::UserViews::LOGIN]
         = std::make_unique<SingletonObjectManager<Person>>(
@@ -141,6 +145,7 @@ void MainUserController::tryToUpdateEditView(ModelStatuses::UserViews managerTyp
         && emitPersonManagers[managerType]->isDataAvaible()) {
         auto person = emitPersonManagers[managerType]->get().value();
         categoryController->setOwner(person.id.get());
+        notesController->setModel(person.id.get());
         controller->setNewPerson(std::move(person));
         prevViewController->setUserViewType(viewType);
     }

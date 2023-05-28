@@ -140,8 +140,8 @@ void ServerDataClient::setGroupFilter(const json &genson)
 {
     QString separator = groupFilterString.isEmpty() ? "?" : "&";
     for (auto it = std::begin(genson); it != std::end(genson); ++it) {
-        groupFilterString = separator + codeTypeToQString(it.key()) + "="
-                            + codeTypeToQString(it.value()).split(" ").join("%20");
+        groupFilterString += separator + codeTypeToQString(it.key()) + "="
+                             + codeTypeToQString(it.value()).split(" ").join("%20");
     }
 }
 

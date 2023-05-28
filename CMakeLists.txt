@@ -32,6 +32,9 @@ qt_add_executable(appnotesdatabaseproject
     src/gui/notebook/texteditorcontroller.h
     src/gui/notebook/texteditorcontroller.cpp
 
+    src/gui/notebook/notes/notescontroller.h
+    src/gui/notebook/notes/notescontroller.cpp
+
     src/gui/maincontroller/maincontroller.cpp
     src/gui/maincontroller/maincontroller.h
 
@@ -151,6 +154,9 @@ qt_add_qml_module(appnotesdatabaseproject
         src/gui/notebook/category/CategoryView.qml
         src/gui/notebook/TextEditorView.qml
         src/gui/notebook/category/NotebookListViewElement.qml
+        src/gui/notebook/ContentLabel.qml
+
+        src/gui/notebook/notes/NotesShortView.qml
 
         src/gui/qmlutils/SwipeInComponent.qml
 

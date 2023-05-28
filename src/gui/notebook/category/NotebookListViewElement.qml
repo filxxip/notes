@@ -34,6 +34,20 @@ RowLayout {
             anchors.fill: button
             color: button.down ? basicColor : basicColor.lighter()
         }
+        Component.onCompleted: {
+            console.log(model.id)
+            console.log(model)
+            console.log(model.index)
+            console.log(mainUserController.categoryController.owner)
+            console.log("mainUserController.categoryController.owner")
+        }
+
+        onReleased: {
+            mainUserController.categoryController.view.userViewType
+                    = ModelStatuses.CategoryViewTypes.NONE
+            mainUserController.notesController.setModel(
+                        mainUserController.categoryController.owner, model.id)
+        }
     }
 
     Button {
@@ -93,6 +107,8 @@ RowLayout {
                     setText(model.title)
                     swiper.aboutToHide.connect(() => {
                                                    mainUserController.categoryController.view.userViewType = ModelStatuses.CategoryViewTypes.NONE
+                                                   mainUserController.notesController.setModel(
+                                                       mainUserController.categoryController.owner)
                                                    mainUserController.categoryController.changeName(
                                                        text)
                                                    mainUserController.categoryController.editedItem

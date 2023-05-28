@@ -6,6 +6,7 @@
 #include "../models/userviewlistmodel.h"
 #include "../modelutils/listmodelbuilder.h"
 #include "../notebook/category/categorycontroller.h"
+#include "../notebook/notes/notescontroller.h"
 #include "../statuses.h"
 #include "../userview/logcontroller.h"
 #include "src/backend/datamanager/directobjsmanagers/people/peoplemanager.h"
@@ -23,6 +24,8 @@ class MainUserController : public QObject
     Q_PROPERTY(AbstractEditController *userEditController READ getController NOTIFY controllerChanged)
 
     Q_PROPERTY(CategoryController *categoryController MEMBER categoryController CONSTANT)
+
+    Q_PROPERTY(NotesController *notesController MEMBER notesController CONSTANT)
 
     Q_PROPERTY(ViewController *view MEMBER currentViewController CONSTANT)
 
@@ -68,6 +71,8 @@ private:
     QPointer<AbstractEditController> guestEditController;
 
     QPointer<CategoryController> categoryController;
+
+    QPointer<NotesController> notesController;
 
     std::unordered_map<ModelStatuses::UserViews, std::unique_ptr<SingletonObjectManager<Person>>>
         emitPersonManagers;

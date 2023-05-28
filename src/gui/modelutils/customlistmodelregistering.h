@@ -6,12 +6,14 @@
 #include "../models/radiobuttonmodel.h"
 #include "../models/switchermodel.h"
 #include "src/backend/datamanager/directobjsmanagers/categories/category.h"
+#include "src/backend/datamanager/directobjsmanagers/notes/note.h"
 
 template class CustomListModel<EntryFieldModel, ModelStatuses::Roles>;
 template class CustomListModel<GuiDialog, ModelStatuses::DialogRoles>;
 template class CustomListModel<SwitcherModel<ModelStatuses::UserViews>,
                                ModelStatuses::UserViewsRoles>;
 template class CustomListModel<Category, ModelStatuses::CategoryRoles>;
+template class CustomListModel<Note, ModelStatuses::NoteRoles>;
 template class CustomListModel<SwitcherModel<ModelStatuses::InnerUserEditViews>,
                                ModelStatuses::UserViewsRoles>;
 template class CustomListModel<CalendarModel, ModelStatuses::CalendarRoles>;

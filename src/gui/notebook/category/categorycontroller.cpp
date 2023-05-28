@@ -54,7 +54,7 @@ void CategoryController::add(const QString &name, const QColor &newColor)
     Category category;
     category.color = newColor.name();
     category.creationDate = QDateTime::currentDateTime();
-    category.owner = owner.value();
+    category.owner = owner;
     category.title = name;
 
     manager->add(category);
