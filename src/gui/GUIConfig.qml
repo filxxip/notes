@@ -33,10 +33,62 @@ Item {
 
     readonly property alias colorPicker: colorPicker
 
+    readonly property alias category: category
+
+    readonly property alias notebookListViewElement: notebookListViewElement
+
     QtObject {
         id: window
         readonly property int width: 800
         readonly property int height: 640
+    }
+
+    QtObject {
+        id: category
+
+        readonly property int width: 350
+        readonly property int height: 370
+        readonly property int bottomMargin: 70
+        readonly property int spacing: 10
+        readonly property int listViewElementHeight: 35
+        readonly property real hoverBarOpacity: 0.2
+
+        readonly property int headerHeight: 40
+        readonly property string headerText: "Category list empty"
+        readonly property int headerRadius: 10
+
+        readonly property int footerHeight: 40
+        readonly property int footerWidth: 200
+        readonly property int footerMargin: 10
+        readonly property string footerText: "Add new category"
+
+        readonly property int loaderHeight: 300
+        readonly property int loaderBottomMargin: 70
+        readonly property int loaderRightMargin: 70
+
+        readonly property int pickerSpacing: 20
+        readonly property string pickerNewNamePlaceholder: "Category name... "
+        readonly property real pickerSubmitElementWidthRatio: 0.45
+        readonly property real pickerSubmitElementHeightRatio: 0.8
+        readonly property int pickerRowSpacing: 5
+        readonly property string pickerCreateText: "create"
+    }
+
+    QtObject {
+        id: notebookListViewElement
+
+        readonly property int rowSpacing: 5
+        readonly property int buttonTopMargin: 2
+        readonly property int buttonBottomMargin: 2
+        readonly property int buttonLeftMargin: 4
+        readonly property int buttonWidth: 220
+        readonly property int buttonRadius: 10
+        readonly property int editButtonMargins: 5
+        readonly property real opacityWhenClicked: 0.7
+
+        readonly property int swipeInWidthDelta: 20
+        readonly property int swipeInWidthEntryDelta: 30
+        readonly property int swipeInDuration: 200
     }
 
     QtObject {

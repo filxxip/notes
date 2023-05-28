@@ -8,7 +8,7 @@ import "../.."
 
 RowLayout {
     id: row
-    spacing: 5
+    spacing: GUIConfig.notebookListViewElement.rowSpacing
     readonly property ListView __lv: ListView.view
     readonly property var swiperOpened: swiper.opened
     readonly property color basicColor: model.color
@@ -24,13 +24,13 @@ RowLayout {
     CustomButton {
         id: button
         contentText: model.title
-        Layout.topMargin: 2
-        Layout.bottomMargin: 2
-        Layout.leftMargin: 4
-        Layout.preferredWidth: 220
+        Layout.topMargin: GUIConfig.notebookListViewElement.buttonTopMargin
+        Layout.bottomMargin: GUIConfig.notebookListViewElement.buttonBottomMargin
+        Layout.leftMargin: GUIConfig.notebookListViewElement.buttonLeftMargin
+        Layout.preferredWidth: GUIConfig.notebookListViewElement.buttonWidth
         Layout.fillHeight: true
         background: Rectangle {
-            radius: 10
+            radius: GUIConfig.notebookListViewElement.buttonRadius
             anchors.fill: button
             color: button.down ? basicColor : basicColor.lighter()
         }
@@ -44,8 +44,8 @@ RowLayout {
             mainUserController.categoryController.editedItem = model.index
         }
         Layout.preferredWidth: height
-        Layout.margins: 5
-        opacity: down ? 0.7 : 1
+        Layout.margins: GUIConfig.notebookListViewElement.editButtonMargins
+        opacity: down ? GUIConfig.notebookListViewElement.opacityWhenClicked : 1
         background: Rectangle {
             color: GUIConfig.colors.transparent
             anchors.fill: parent
@@ -65,7 +65,7 @@ RowLayout {
             color: GUIConfig.colors.transparent
             anchors.fill: parent
         }
-        opacity: down ? 0.7 : 1
+        opacity: down ? GUIConfig.notebookListViewElement.opacityWhenClicked : 1
         onReleased: mainUserController.categoryController.remove(model.index)
 
         Image {
@@ -80,13 +80,13 @@ RowLayout {
         closePolicy: Popup.NoAutoClose
 
         innerColor: basicColor
-        width: row.width - 10
+        width: row.width - GUIConfig.notebookListViewElement.swipeInWidthDelta
         height: row.height
         customContentItem: Component {
             id: sourceComponent
             EntryField {
                 id: entryField
-                width: swiper.width - 30
+                width: swiper.width - GUIConfig.notebookListViewElement.swipeInWidthEntryDelta
                 height: swiper.height
                 customcolor: basicColor //todo kwestia zbyt dlugiego tytulul
                 Component.onCompleted: {
@@ -101,6 +101,6 @@ RowLayout {
                 }
             }
         }
-        duration: 400
+        duration: GUIConfig.notebookListViewElement.swipeInDuration
     }
 }

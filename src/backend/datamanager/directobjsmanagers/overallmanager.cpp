@@ -54,7 +54,6 @@ std::optional<DataObject> OverallManager<DataObject>::get(int index) const
 template<typename DataObject>
 std::optional<QVector<DataObject>> OverallManager<DataObject>::get() const
 {
-    qDebug() << generatePath().getFullPath();
     if (auto content = dataClient->getGroup(generatePath()); content.has_value()) {
         dataClient->clearFilters();
         QVector<DataObject> list;

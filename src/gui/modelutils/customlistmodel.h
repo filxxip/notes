@@ -43,7 +43,6 @@ std::function<void(T &, const QVariant &)> makeUpdateFunction(
     return [method](T &object, const QVariant &variant) {
         constexpr auto isAssignable = std::is_assignable<ReturnType, QVariant>::value;
         if constexpr (isAssignable) {
-            qDebug() << variant;
             object.*method = variant;
         } else {
             object.*method = variant.value<ReturnType>();

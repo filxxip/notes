@@ -12,18 +12,18 @@ Item {
     ListView {
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 70
-        height: 370
-        width: 350
+        anchors.bottomMargin: GUIConfig.category.bottomMargin
+        height: GUIConfig.category.height
+        width: GUIConfig.category.width
         id: listview
         enabled: true
-        spacing: 10
+        spacing: GUIConfig.category.spacing
         clip: true
         model: mainUserController.categoryController.model
         delegate: NotebookListViewElement {
             onSwiperOpenedChanged: listview.enabled = !swiperOpened
             width: listview.width
-            height: 35
+            height: GUIConfig.category.listViewElementHeight
 
             readonly property var color: model.color
         }
@@ -34,38 +34,38 @@ Item {
             }
 
             color: listview.currentItem ? listview.currentItem.color : GUIConfig.colors.transparent
-            opacity: 0.2
+            opacity: GUIConfig.category.hoverBarOpacity
         }
 
         header: Item {
             visible: listview.model.count === 0
-            height: 40
+            height: GUIConfig.category.headerHeight
             anchors.right: parent.right
             anchors.left: parent.left
             Label {
                 anchors.fill: parent
                 Text {
                     anchors.fill: parent
-                    text: "Category list empty"
+                    text: GUIConfig.category.headerText
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
                 background: Rectangle {
                     anchors.fill: parent
                     color: GUIConfig.colors.red
-                    radius: 10
+                    radius: GUIConfig.category.headerRadius
                 }
             }
         }
 
         footer: Item {
-            height: 40
-            width: 200
+            height: GUIConfig.category.footerHeight
+            width: GUIConfig.category.footerWidth
             anchors.horizontalCenter: parent.horizontalCenter
             CustomButton {
-                anchors.topMargin: 10
+                anchors.topMargin: GUIConfig.category.footerMargin
                 anchors.fill: parent
-                contentText: "Add new category"
+                contentText: GUIConfig.category.footerText
                 onReleased: mainUserController.categoryController.view.userViewType
                             = ModelStatuses.CategoryViewTypes.GENERATE_COLOR
             }
@@ -85,10 +85,10 @@ Item {
                          }
         anchors.right: parent.right
         width: GUIConfig.colorPicker.elementWidth
-        height: 300
+        height: GUIConfig.category.loaderHeight
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 70
-        anchors.rightMargin: 70
+        anchors.bottomMargin: GUIConfig.category.loaderBottomMargin
+        anchors.rightMargin: GUIConfig.category.loaderRightMargin
     }
 
     Component {
@@ -101,13 +101,13 @@ Item {
     Component {
         id: colorPicker
         Column {
-            spacing: 20
+            spacing: GUIConfig.category.pickerSpacing
             anchors.fill: parent
             EntryField {
                 id: nameWidget
                 width: GUIConfig.colorPicker.elementWidth
                 height: GUIConfig.colorPicker.elementHeight
-                placeholder: "Category name... "
+                placeholder: GUIConfig.category.pickerNewNamePlaceholder
                 customcolor: GUIConfig.colors.red
             }
             TripleColorPicker {
@@ -118,18 +118,22 @@ Item {
             Row {
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: resultantBar
-                spacing: 5
+                spacing: GUIConfig.category.pickerRowSpacing
                 Rectangle {
-                    width: 0.45 * GUIConfig.colorPicker.elementWidth
-                    height: 0.8 * GUIConfig.colorPicker.elementHeight
+                    width: GUIConfig.category.pickerSubmitElementWidthRatio
+                           * GUIConfig.colorPicker.elementWidth
+                    height: GUIConfig.category.pickerSubmitElementHeightRatio
+                            * GUIConfig.colorPicker.elementHeight
                     color: pickers.combinedColor
                     radius: 10
                 }
 
                 CustomButton {
-                    contentText: "create"
-                    width: 0.45 * GUIConfig.colorPicker.elementWidth
-                    height: 0.8 * GUIConfig.colorPicker.elementHeight
+                    contentText: GUIConfig.category.pickerCreateText
+                    width: GUIConfig.category.pickerSubmitElementWidthRatio
+                           * GUIConfig.colorPicker.elementWidth
+                    height: GUIConfig.category.pickerSubmitElementHeightRatio
+                            * GUIConfig.colorPicker.elementHeight
                     onReleased: mainUserController.categoryController.addElement(
                                     nameWidget.text, pickers.combinedColor)
                 }

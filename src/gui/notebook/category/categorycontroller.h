@@ -26,7 +26,7 @@ class CategoryController : public QObject
     std::shared_ptr<CategoriesManager> manager;
     QPointer<Model> categoryModel;
 
-    std::optional<int> owner = 2;
+    std::optional<int> owner = -1;
     int editedItem = -1;
 
     int getItemID(int index) const;

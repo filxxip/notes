@@ -2,6 +2,8 @@
 
 namespace {
 constexpr char INVALID_INDEX_ERROR[] = "Index is out of range, check your code and fix this error.";
+constexpr char INVALID_OWNER_ERROR[] = "Invalid index passed as owner, check your database!";
+constexpr char OWNER[] = "owner";
 }
 
 CategoryController::CategoryController(std::shared_ptr<CategoriesManager> manager_,
@@ -29,12 +31,12 @@ CategoryController::CategoryController(std::shared_ptr<CategoriesManager> manage
 void CategoryController::setOwner(int id)
 {
     this->owner = id;
-    auto filtered = manager->getFiltered({{"owner", id}});
+    auto filtered = manager->getFiltered({{OWNER, id}});
     if (filtered.has_value()) {
         categoryModel->setEntries(filtered.value());
         return;
     }
-    qDebug() << "Invalid index passed as owner, check your database!";
+    qDebug() << INVALID_OWNER_ERROR;
 }
 
 ViewController *CategoryController::getViewController()
